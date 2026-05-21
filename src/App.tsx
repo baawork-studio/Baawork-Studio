@@ -92,7 +92,7 @@ export default function App() {
     event.preventDefault();
     if (!form.title || !form.subtitle || !form.shortDescription || !form.description || !slug || !coverImage) {
       setStatus('error');
-      setMessage('Please complete project details and choose a cover image.');
+      setMessage('กรุณากรอกรายละเอียดโปรเจกต์และเลือกรูปหน้าปก');
       return;
     }
 
@@ -123,13 +123,13 @@ export default function App() {
 
       setCreatedProject(latest);
       setStatus('success');
-      setMessage('Project published successfully.');
+      setMessage('เผยแพร่ผลงานสำเร็จแล้ว');
       setForm(initialForm);
       setCoverImage(null);
       setGalleryImages([]);
     } catch {
       setStatus('error');
-      setMessage('Could not save project. Check that the API is running.');
+      setMessage('บันทึกผลงานไม่สำเร็จ กรุณาตรวจสอบว่า API กำลังทำงานอยู่');
     }
   }
 
@@ -140,9 +140,9 @@ export default function App() {
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Stack direction="row" alignItems="center" spacing={1.5}>
               <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: palette.primaryPink }} />
-              <Typography fontWeight={800}>Baawork Studio Admin</Typography>
+              <Typography fontWeight={800}>หลังบ้าน Baawork Studio</Typography>
             </Stack>
-            <Chip label="Add work" sx={{ bgcolor: palette.accentYellow, fontWeight: 800 }} />
+            <Chip label="เพิ่มผลงาน" sx={{ bgcolor: palette.accentYellow, fontWeight: 800 }} />
           </Stack>
         </Container>
       </Box>
@@ -154,10 +154,10 @@ export default function App() {
               <Stack spacing={2.5}>
                 <Box>
                   <Typography variant="h4" fontWeight={800}>
-                    Add portfolio work
+                    เพิ่มผลงาน
                   </Typography>
                   <Typography color="text.secondary">
-                    Upload images and describe the system for the public showcase.
+                    อัปโหลดรูปภาพและอธิบายระบบสำหรับหน้าโชว์ผลงาน
                   </Typography>
                 </Box>
 
@@ -168,28 +168,28 @@ export default function App() {
                     <Box
                       component="img"
                       src={coverPreview}
-                      alt="Cover preview"
+                      alt="ตัวอย่างรูปหน้าปก"
                       sx={{ width: '100%', maxHeight: 220, objectFit: 'cover', borderRadius: 1 }}
                     />
                   ) : (
-                    <Typography fontWeight={800}>Choose cover image</Typography>
+                    <Typography fontWeight={800}>เลือกรูปหน้าปก</Typography>
                   )}
                   <input hidden type="file" accept="image/*" onChange={handleCoverChange} />
                 </Button>
 
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 12, md: 6 }}>
-                    <TextField fullWidth label="Project title" value={form.title} onChange={(event) => updateField('title', event.target.value)} />
+                    <TextField fullWidth label="ชื่อผลงาน" value={form.title} onChange={(event) => updateField('title', event.target.value)} />
                   </Grid>
                   <Grid size={{ xs: 12, md: 6 }}>
-                    <TextField fullWidth label="Slug" value={slug} disabled />
+                    <TextField fullWidth label="ลิงก์หน้าเว็บ" value={slug} disabled />
                   </Grid>
                 </Grid>
 
-                <TextField fullWidth label="Subtitle" value={form.subtitle} onChange={(event) => updateField('subtitle', event.target.value)} />
+                <TextField fullWidth label="คำโปรย" value={form.subtitle} onChange={(event) => updateField('subtitle', event.target.value)} />
                 <TextField
                   fullWidth
-                  label="Short description"
+                  label="คำอธิบายสั้น"
                   value={form.shortDescription}
                   onChange={(event) => updateField('shortDescription', event.target.value)}
                 />
@@ -197,7 +197,7 @@ export default function App() {
                   fullWidth
                   multiline
                   minRows={5}
-                  label="System description"
+                  label="รายละเอียดระบบ"
                   value={form.description}
                   onChange={(event) => updateField('description', event.target.value)}
                 />
@@ -205,7 +205,7 @@ export default function App() {
                   fullWidth
                   multiline
                   minRows={3}
-                  label="Stack, one per line"
+                  label="เทคโนโลยีที่ใช้ แยกบรรทัดละ 1 รายการ"
                   value={form.stack}
                   onChange={(event) => updateField('stack', event.target.value)}
                 />
@@ -213,23 +213,23 @@ export default function App() {
                   fullWidth
                   multiline
                   minRows={3}
-                  label="Highlights, one per line"
+                  label="จุดเด่น แยกบรรทัดละ 1 รายการ"
                   value={form.highlights}
                   onChange={(event) => updateField('highlights', event.target.value)}
                 />
 
                 <Button component="label" variant="outlined">
-                  Add gallery images
+                  เพิ่มรูปภาพแกลเลอรี
                   <input hidden multiple type="file" accept="image/*" onChange={handleGalleryChange} />
                 </Button>
 
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Typography fontWeight={700}>Publish immediately</Typography>
+                  <Typography fontWeight={700}>เผยแพร่ทันที</Typography>
                   <Switch checked={form.published} onChange={(event) => updateField('published', event.target.checked)} />
                 </Stack>
 
                 <Button type="submit" variant="contained" size="large" disabled={status === 'saving'}>
-                  {status === 'saving' ? 'Saving...' : 'Publish work'}
+                  {status === 'saving' ? 'กำลังบันทึก...' : 'เผยแพร่ผลงาน'}
                 </Button>
               </Stack>
             </Paper>
@@ -239,27 +239,27 @@ export default function App() {
             <Paper sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, position: 'sticky', top: 24 }}>
               <Stack spacing={2}>
                 <Typography variant="h5" fontWeight={800}>
-                  Preview
+                  ตัวอย่าง
                 </Typography>
                 <Box sx={{ minHeight: 260, borderRadius: 2, bgcolor: '#fff', border: `1px solid ${palette.border}`, overflow: 'hidden' }}>
                   {coverPreview ? (
-                    <Box component="img" src={coverPreview} alt="Preview" sx={{ width: '100%', height: 260, objectFit: 'cover' }} />
+                    <Box component="img" src={coverPreview} alt="ตัวอย่าง" sx={{ width: '100%', height: 260, objectFit: 'cover' }} />
                   ) : (
                     <Box sx={{ height: 260, display: 'grid', placeItems: 'center', bgcolor: palette.accentYellow }}>
-                      <Typography fontWeight={900}>Image preview</Typography>
+                      <Typography fontWeight={900}>ตัวอย่างรูปภาพ</Typography>
                     </Box>
                   )}
                 </Box>
                 <Typography variant="h4" fontWeight={900}>
-                  {form.title || 'Project title'}
+                  {form.title || 'ชื่อผลงาน'}
                 </Typography>
-                <Typography color="text.secondary">{form.shortDescription || 'Short description appears here.'}</Typography>
+                <Typography color="text.secondary">{form.shortDescription || 'คำอธิบายสั้นจะแสดงที่นี่'}</Typography>
                 <Stack direction="row" flexWrap="wrap" gap={1}>
                   {splitLines(form.stack).map((item) => (
                     <Chip key={item} label={item} sx={{ bgcolor: palette.accentYellow, fontWeight: 800 }} />
                   ))}
                 </Stack>
-                {createdProject && <Alert severity="success">Last created: {createdProject.title}</Alert>}
+                {createdProject && <Alert severity="success">ผลงานล่าสุด: {createdProject.title}</Alert>}
               </Stack>
             </Paper>
           </Grid>
