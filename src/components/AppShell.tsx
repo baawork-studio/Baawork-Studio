@@ -16,7 +16,6 @@ export function AppShell({ children }: AppShellProps) {
           zIndex: 10,
           backdropFilter: 'blur(18px)',
           bgcolor: 'rgba(255,255,255,0.82)',
-          borderBottom: `1px solid ${palette.border}`,
         }}
       >
         <Container maxWidth="lg">
