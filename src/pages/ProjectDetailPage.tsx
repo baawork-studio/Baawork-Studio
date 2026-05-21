@@ -41,13 +41,13 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
       <Container maxWidth="lg" sx={{ py: { xs: 7, md: 10 } }}>
         <Stack spacing={5}>
           <Button href="/" sx={{ alignSelf: 'flex-start' }}>
-            Back to work
+            กลับไปหน้าผลงาน
           </Button>
           <Grid container spacing={5} alignItems="end">
             <Grid size={{ xs: 12, md: 7 }}>
               <Stack spacing={2}>
                 <Typography variant="overline" color="primary" fontWeight={800}>
-                  Project detail
+                  รายละเอียดผลงาน
                 </Typography>
                 <Typography variant="h1" sx={{ fontSize: { xs: 48, md: 86 }, lineHeight: 0.95 }}>
                   {project.title}
@@ -66,7 +66,7 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
 
           {status === 'fallback' && (
             <Box sx={{ p: 2, borderRadius: 2, bgcolor: palette.accentYellow, fontWeight: 800 }}>
-              Showing local sample content because the API is unavailable.
+              กำลังแสดงเนื้อหาตัวอย่างในเครื่อง เพราะ API ยังไม่พร้อมใช้งาน
             </Box>
           )}
 
@@ -100,7 +100,7 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={2}>
                 <Typography variant="h4" fontWeight={800}>
-                  Highlights
+                  จุดเด่น
                 </Typography>
                 {project.highlights.map((highlight) => (
                   <Box key={highlight} sx={{ p: 2, borderLeft: `4px solid ${palette.primaryPink}`, bgcolor: palette.softGray }}>
@@ -112,7 +112,7 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={2}>
                 <Typography variant="h4" fontWeight={800}>
-                  Stack
+                  เทคโนโลยีที่ใช้
                 </Typography>
                 <Stack direction="row" flexWrap="wrap" gap={1}>
                   {project.stack.map((item) => (

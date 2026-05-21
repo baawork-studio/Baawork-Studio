@@ -46,10 +46,10 @@ export function HomePage() {
                 Baawork Studio
               </Typography>
               <Typography variant="h5" color="text.secondary" sx={{ maxWidth: 720, lineHeight: 1.45 }}>
-                We design and build portfolio-ready systems with polished interfaces, practical admin tools, and API-backed workflows.
+                เราออกแบบและพัฒนาระบบสำหรับโชว์ผลงาน พร้อมหน้าตาที่ประณีต เครื่องมือหลังบ้านที่ใช้งานจริง และเวิร์กโฟลว์ที่เชื่อมต่อ API
               </Typography>
               <Button href="#work" variant="contained" size="large">
-                View work
+                ดูผลงาน
               </Button>
             </Stack>
             <Box
@@ -74,16 +74,16 @@ export function HomePage() {
             <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" spacing={2}>
               <Box>
                 <Typography variant="overline" color="primary" fontWeight={800}>
-                  Work
+                  ผลงาน
                 </Typography>
                 <Typography variant="h3" fontWeight={800}>
-                  Systems built to be seen and used.
+                  ระบบที่ออกแบบมาให้ทั้งน่าดูและใช้งานได้จริง
                 </Typography>
               </Box>
               <Typography color="text.secondary" sx={{ maxWidth: 420 }}>
                 {status === 'fallback'
-                  ? 'Showing local sample work while the API is unavailable.'
-                  : 'Published work from Baawork Studio.'}
+                  ? 'กำลังแสดงตัวอย่างผลงานในเครื่องระหว่างที่ API ยังไม่พร้อมใช้งาน'
+                  : 'ผลงานที่เผยแพร่จาก Baawork Studio'}
               </Typography>
             </Stack>
             <Grid container spacing={2.5}>

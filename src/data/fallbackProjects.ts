@@ -4,12 +4,12 @@ export const fallbackProjects: Project[] = [
   {
     id: 'demo-1',
     slug: 'baawork-command-center',
-    title: 'Baawork Command Center',
-    subtitle: 'Operations dashboard for service teams',
+    title: 'ศูนย์ควบคุมงาน Baawork',
+    subtitle: 'แดชบอร์ดปฏิบัติการสำหรับทีมบริการ',
     shortDescription:
-      'A polished operating system for tracking work, requests, and delivery status.',
+      'ระบบปฏิบัติการภายในที่ช่วยติดตามงาน คำขอ และสถานะการส่งมอบได้อย่างเป็นระเบียบ',
     description:
-      'Baawork Command Center brings project status, service requests, and operational context into one fast interface. The system is designed for teams that need clean visibility without exposing unnecessary complexity.',
+      'ศูนย์ควบคุมงาน Baawork รวมสถานะโปรเจกต์ คำขอบริการ และบริบทของงานปฏิบัติการไว้ในหน้าจอเดียวที่ใช้งานได้รวดเร็ว เหมาะกับทีมที่ต้องการเห็นภาพรวมชัดเจนโดยไม่ต้องเจอกับความซับซ้อนเกินจำเป็น',
     coverImageUrl:
       'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1600&q=80',
     galleryImageUrls: [
@@ -18,9 +18,9 @@ export const fallbackProjects: Project[] = [
     ],
     stack: ['React', 'Go', 'PostgreSQL', 'Redis'],
     highlights: [
-      'Real-time operational visibility',
-      'Clean case workflow for daily teams',
-      'Responsive interface for repeated use',
+      'เห็นสถานะงานปฏิบัติการได้ชัดเจน',
+      'เวิร์กโฟลว์จัดการเคสที่เหมาะกับงานประจำวัน',
+      'อินเทอร์เฟซตอบสนองดีสำหรับการใช้งานซ้ำทุกวัน',
     ],
     published: true,
     createdAt: new Date().toISOString(),
@@ -29,12 +29,12 @@ export const fallbackProjects: Project[] = [
   {
     id: 'demo-2',
     slug: 'studio-booking-flow',
-    title: 'Studio Booking Flow',
-    subtitle: 'Reservation flow for creative services',
+    title: 'ระบบจองบริการสตูดิโอ',
+    subtitle: 'ขั้นตอนการจองสำหรับบริการงานสร้างสรรค์',
     shortDescription:
-      'A direct booking experience that keeps choices clear and confirmation fast.',
+      'ประสบการณ์จองบริการที่เลือกง่าย เข้าใจเร็ว และยืนยันได้ทันที',
     description:
-      'This booking system focuses on reducing friction between discovery, service selection, and confirmation. The interface keeps the visual language premium while staying practical for daily business operations.',
+      'ระบบจองนี้ออกแบบเพื่อลดความยุ่งยากตั้งแต่การเลือกบริการไปจนถึงการยืนยันรายการ หน้าตายังคงให้ความรู้สึกพรีเมียม แต่ใช้งานได้จริงสำหรับงานธุรกิจประจำวัน',
     coverImageUrl:
       'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=80',
     galleryImageUrls: [
@@ -43,9 +43,9 @@ export const fallbackProjects: Project[] = [
     ],
     stack: ['Vite', 'MUI', 'Axios', 'Gin'],
     highlights: [
-      'Simple service selection',
-      'Image-led presentation',
-      'Fast API-backed publishing',
+      'เลือกบริการได้ง่าย',
+      'นำเสนอด้วยภาพเป็นหลัก',
+      'เผยแพร่ข้อมูลผ่าน API ได้รวดเร็ว',
     ],
     published: true,
     createdAt: new Date().toISOString(),

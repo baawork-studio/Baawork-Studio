@@ -26,12 +26,12 @@ export function AppShell({ children }: AppShellProps) {
               <Typography fontWeight={800}>Baawork Studio</Typography>
             </Stack>
             <Stack direction="row" spacing={3} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-              <Typography variant="body2">Work</Typography>
-              <Typography variant="body2">Studio</Typography>
-              <Typography variant="body2">Contact</Typography>
+              <Typography variant="body2">ผลงาน</Typography>
+              <Typography variant="body2">สตูดิโอ</Typography>
+              <Typography variant="body2">ติดต่อ</Typography>
             </Stack>
             <Button href="#contact" variant="contained" size="small">
-              Start a project
+              เริ่มโปรเจกต์
             </Button>
           </Stack>
         </Container>
@@ -41,10 +41,10 @@ export function AppShell({ children }: AppShellProps) {
         <Container maxWidth="lg">
           <Stack spacing={2}>
             <Typography variant="h4" fontWeight={800}>
-              Build the next system with Baawork Studio.
+              สร้างระบบถัดไปกับ Baawork Studio
             </Typography>
             <Typography color="text.secondary">
-              Portfolio systems, admin tools, and API-backed product experiences.
+              ระบบโชว์ผลงาน เครื่องมือหลังบ้าน และประสบการณ์ใช้งานที่เชื่อมต่อ API
             </Typography>
           </Stack>
         </Container>
