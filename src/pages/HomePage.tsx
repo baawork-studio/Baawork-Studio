@@ -6,7 +6,6 @@ import { palette } from '../theme';
 
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'fallback'>('loading');
 
   useEffect(() => {
     let active = true;
@@ -15,12 +14,10 @@ export function HomePage() {
       .then((items) => {
         if (!active) return;
         setProjects(items.length > 0 ? items : fallbackProjects);
-        setStatus('ready');
       })
       .catch(() => {
         if (!active) return;
         setProjects(fallbackProjects);
-        setStatus('fallback');
       });
 
     return () => {
@@ -129,11 +126,6 @@ export function HomePage() {
                   ระบบที่ออกแบบมาให้ทั้งน่าดูและใช้งานได้จริง
                 </Typography>
               </Box>
-              <Typography color="text.secondary" sx={{ maxWidth: 420 }}>
-                {status === 'fallback'
-                  ? 'กำลังแสดงตัวอย่างผลงานในเครื่องระหว่างที่ API ยังไม่พร้อมใช้งาน'
-                  : 'ผลงานที่เผยแพร่จาก Baawork Studio'}
-              </Typography>
             </Stack>
             <Grid container spacing={2.5}>
               {projects.map((project) => (
