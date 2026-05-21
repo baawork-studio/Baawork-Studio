@@ -14,7 +14,7 @@ type Config struct {
 func Load() Config {
 	return Config{
 		Port:          getEnv("PORT", "8080"),
-		DatabaseURL:   getEnv("DATABASE_URL", "postgres://baawork:baawork@localhost:5432/baawork_studio?sslmode=disable"),
+		DatabaseURL:   getEnv("DATABASE_URL", "postgres://baawork:baawork@localhost:55432/baawork_studio?sslmode=disable"),
 		RedisAddr:     getEnv("REDIS_ADDR", "localhost:6379"),
 		RedisPassword: getEnv("REDIS_PASSWORD", ""),
 		UploadDir:     getEnv("UPLOAD_DIR", "uploads"),
