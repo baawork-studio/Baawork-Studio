@@ -29,7 +29,7 @@ export function HomePage() {
   const featured = projects[0];
   const carouselProjects =
     projects.length > 0
-      ? Array.from({ length: Math.max(projects.length, 4) }, (_, index) => projects[index % projects.length])
+      ? Array.from({ length: Math.max(projects.length, 5) }, (_, index) => projects[index % projects.length])
       : fallbackProjects;
 
   const scrollWorkCards = (direction: -1 | 1) => {
@@ -148,7 +148,8 @@ export function HomePage() {
             gap: { xs: 2, md: '20px' },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
-            mx: { xs: 3, sm: 4, md: 'max(22px, calc((100vw - 1107px) / 2))' },
+            ml: { xs: 1.5, sm: 2, md: 'max(11px, calc((100vw - 1239px) / 2))' },
+            mr: 0,
             pt: { xs: 1.5, md: 2 },
             pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',
@@ -156,8 +157,6 @@ export function HomePage() {
           }}
         >
           {carouselProjects.map((project, index) => {
-            const isFullBleed = index % 2 === 1;
-
             return (
             <Box
               key={`${project.id}-${index}`}
@@ -188,11 +187,11 @@ export function HomePage() {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  top: isFullBleed ? 0 : 'auto',
+                  top: 0,
                   width: '100%',
-                  height: isFullBleed ? '100%' : { xs: 432, md: 420 },
+                  height: '100%',
                   objectFit: 'cover',
-                  filter: isFullBleed ? 'grayscale(1) contrast(1.05)' : 'saturate(1.04) contrast(1.02)',
+                  filter: 'saturate(1.04) contrast(1.02)',
                 }}
               />
               <Box
@@ -200,9 +199,7 @@ export function HomePage() {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    isFullBleed
-                      ? 'linear-gradient(180deg, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.10) 100%)'
-                      : 'linear-gradient(180deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.86) 26%, rgba(0,0,0,0.24) 64%, rgba(0,0,0,0.08) 100%)',
+                    'linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.42) 36%, rgba(0,0,0,0.10) 72%, rgba(0,0,0,0.18) 100%)',
                 }}
               />
               <Stack
