@@ -16,20 +16,38 @@ export function AppShell({ children }: AppShellProps) {
           zIndex: 10,
           backdropFilter: 'blur(18px)',
           bgcolor: 'rgba(255,255,255,0.82)',
+          height: 64,
         }}
       >
-        <Container maxWidth="lg">
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ height: 64 }}>
-            <Stack direction="row" alignItems="center" spacing={1.5}>
+        <Container maxWidth="lg" sx={{ height: '100%' }}>
+          <Box sx={{ position: 'relative', height: '100%' }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1.5}
+              sx={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}
+            >
               <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: palette.primaryPink }} />
             </Stack>
-            <Stack direction="row" spacing={3} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-              <Typography variant="body2">ผลงาน</Typography>
-              <Typography variant="body2">สตูดิโอ</Typography>
-              <Typography variant="body2">ติดต่อ</Typography>
-            </Stack>
-          </Stack>
+          </Box>
         </Container>
+        <Stack
+          component="nav"
+          aria-label="เมนูหลัก"
+          direction="row"
+          spacing={3}
+          sx={{
+            display: { xs: 'none', sm: 'flex' },
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <Typography variant="body2">ผลงาน</Typography>
+          <Typography variant="body2">สตูดิโอ</Typography>
+          <Typography variant="body2">ติดต่อ</Typography>
+        </Stack>
       </Box>
       {children}
       <Box component="footer" id="contact" sx={{ py: 8, borderTop: `1px solid ${palette.border}` }}>
