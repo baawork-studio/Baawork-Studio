@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
@@ -43,9 +43,11 @@ const aiShowcaseCards = [
 ];
 
 const workCarouselGutter = 'clamp(24px, 6.27vw, 127.5px)';
+const workCarouselEdgeTolerance = 24;
 
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const [workCarouselState, setWorkCarouselState] = useState({ canScrollPrev: false, canScrollNext: false });
   const workCarouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -68,8 +70,59 @@ export function HomePage() {
 
   const featured = projects[0];
 
+  const updateWorkCarouselState = useCallback(() => {
+    const carousel = workCarouselRef.current;
+    if (!carousel) return;
+
+    const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+    const nextState = {
+      canScrollPrev: carousel.scrollLeft > workCarouselEdgeTolerance,
+      canScrollNext: carousel.scrollLeft < maxScrollLeft - workCarouselEdgeTolerance,
+    };
+
+    setWorkCarouselState((current) => {
+      if (
+        current.canScrollPrev === nextState.canScrollPrev &&
+        current.canScrollNext === nextState.canScrollNext
+      ) {
+        return current;
+      }
+
+      return nextState;
+    });
+  }, []);
+
+  useEffect(() => {
+    const carousel = workCarouselRef.current;
+    if (!carousel) return undefined;
+
+    carousel.scrollLeft = 0;
+    updateWorkCarouselState();
+
+    const handleScroll = () => {
+      updateWorkCarouselState();
+    };
+
+    carousel.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+
+    const resizeObserver = new ResizeObserver(handleScroll);
+    resizeObserver.observe(carousel);
+
+    return () => {
+      carousel.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      resizeObserver.disconnect();
+    };
+  }, [updateWorkCarouselState]);
+
   const scrollWorkCards = (direction: -1 | 1) => {
-    workCarouselRef.current?.scrollBy({ left: direction * 392, behavior: 'smooth' });
+    const carousel = workCarouselRef.current;
+    if (!carousel) return;
+    if (direction === -1 && !workCarouselState.canScrollPrev) return;
+    if (direction === 1 && !workCarouselState.canScrollNext) return;
+
+    carousel.scrollBy({ left: direction * 392, behavior: 'smooth' });
   };
 
   return (
@@ -320,6 +373,7 @@ export function HomePage() {
             component="button"
             type="button"
             aria-label="เลื่อนผลงานไปทางซ้าย"
+            disabled={!workCarouselState.canScrollPrev}
             onClick={() => scrollWorkCards(-1)}
             sx={{
               display: 'grid',
@@ -331,10 +385,17 @@ export function HomePage() {
               boxSizing: 'border-box',
               borderRadius: '50%',
               appearance: 'none',
-              bgcolor: '#F5F5F7',
-              color: '#C7C7CC',
-              cursor: 'pointer',
-              '&:hover': { bgcolor: '#E8E8ED', color: '#1D1D1F' },
+              bgcolor: workCarouselState.canScrollPrev ? '#E8E8ED' : '#F5F5F7',
+              color: workCarouselState.canScrollPrev ? '#6E6E73' : '#C7C7CC',
+              cursor: workCarouselState.canScrollPrev ? 'pointer' : 'default',
+              transition: 'background-color 180ms ease, color 180ms ease',
+              '&:hover': {
+                bgcolor: workCarouselState.canScrollPrev ? '#D2D2D7' : '#F5F5F7',
+                color: workCarouselState.canScrollPrev ? '#1D1D1F' : '#C7C7CC',
+              },
+              '&:disabled': {
+                pointerEvents: 'none',
+              },
             }}
           >
             <Box
@@ -353,6 +414,7 @@ export function HomePage() {
             component="button"
             type="button"
             aria-label="เลื่อนผลงานไปทางขวา"
+            disabled={!workCarouselState.canScrollNext}
             onClick={() => scrollWorkCards(1)}
             sx={{
               display: 'grid',
@@ -364,10 +426,17 @@ export function HomePage() {
               boxSizing: 'border-box',
               borderRadius: '50%',
               appearance: 'none',
-              bgcolor: '#E8E8ED',
-              color: '#6E6E73',
-              cursor: 'pointer',
-              '&:hover': { bgcolor: '#D2D2D7', color: '#1D1D1F' },
+              bgcolor: workCarouselState.canScrollNext ? '#E8E8ED' : '#F5F5F7',
+              color: workCarouselState.canScrollNext ? '#6E6E73' : '#C7C7CC',
+              cursor: workCarouselState.canScrollNext ? 'pointer' : 'default',
+              transition: 'background-color 180ms ease, color 180ms ease',
+              '&:hover': {
+                bgcolor: workCarouselState.canScrollNext ? '#D2D2D7' : '#F5F5F7',
+                color: workCarouselState.canScrollNext ? '#1D1D1F' : '#C7C7CC',
+              },
+              '&:disabled': {
+                pointerEvents: 'none',
+              },
             }}
           >
             <Box
