@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette } from '../theme';
@@ -114,7 +114,7 @@ export function HomePage() {
         </Container>
       </Box>
 
-      <Box id="work" sx={{ bgcolor: palette.softGray, py: { xs: 7, md: 10 } }}>
+      <Box id="work" sx={{ bgcolor: palette.background, py: { xs: 7, md: 10 }, overflow: 'hidden' }}>
         <Container maxWidth="lg">
           <Stack spacing={4}>
             <Stack spacing={1.5} alignItems="center" textAlign="center">
@@ -129,44 +129,114 @@ export function HomePage() {
                 ระบบที่ออกแบบมาให้ทั้งน่าดูและใช้งานได้จริง
               </Typography>
             </Stack>
-            <Grid container spacing={2.5}>
-              {projects.map((project) => (
-                <Grid key={project.id} size={{ xs: 12, md: 6 }}>
-                  <Box
-                    component="a"
-                    href={`/projects/${project.slug}`}
-                    sx={{
-                      display: 'block',
-                      height: '100%',
-                      bgcolor: '#fff',
-                      borderRadius: 2,
-                      overflow: 'hidden',
-                      border: `1px solid ${palette.border}`,
-                      transition: 'transform 180ms ease, box-shadow 180ms ease',
-                      '&:hover': {
-                        transform: 'translateY(-4px)',
-                        boxShadow: '0 22px 60px rgba(17,24,39,0.12)',
-                      },
-                    }}
-                  >
-                    <Box
-                      component="img"
-                      src={project.coverImageUrl}
-                      alt={project.title}
-                      sx={{ width: '100%', height: 320, objectFit: 'cover' }}
-                    />
-                    <Stack spacing={1.5} sx={{ p: 3 }}>
-                      <Typography variant="h5" fontWeight={800}>
-                        {project.title}
-                      </Typography>
-                      <Typography color="text.secondary">{project.shortDescription}</Typography>
-                    </Stack>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
           </Stack>
         </Container>
+        <Box
+          sx={{
+            mt: { xs: 4, md: 5 },
+            display: 'flex',
+            gap: { xs: 2, md: 3.5 },
+            overflowX: 'auto',
+            scrollSnapType: 'x mandatory',
+            px: { xs: 2.5, md: 'max(48px, calc((100vw - 1240px) / 2))' },
+            pb: 2,
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+          }}
+        >
+          {projects.map((project) => (
+            <Box
+              key={project.id}
+              component="a"
+              href={`/projects/${project.slug}`}
+              sx={{
+                position: 'relative',
+                flex: '0 0 auto',
+                width: { xs: '82vw', sm: 420, md: 520 },
+                height: { xs: 560, md: 680 },
+                overflow: 'hidden',
+                borderRadius: { xs: 4, md: 6 },
+                bgcolor: '#000',
+                color: '#fff',
+                scrollSnapAlign: 'start',
+                boxShadow: '0 1px 2px rgba(17,24,39,0.16)',
+                transition: 'transform 180ms ease',
+                '&:hover': { transform: 'scale(1.01)' },
+              }}
+            >
+              <Box
+                component="img"
+                src={project.coverImageUrl}
+                alt={project.title}
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'saturate(0.9) contrast(1.02)',
+                }}
+              />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  background:
+                    'linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.24) 34%, rgba(0,0,0,0.08) 58%, rgba(0,0,0,0.28) 100%)',
+                }}
+              />
+              <Stack
+                spacing={2}
+                sx={{
+                  position: 'relative',
+                  zIndex: 1,
+                  p: { xs: 3, md: 4.5 },
+                  pr: { xs: 4, md: 6 },
+                }}
+              >
+                <Typography sx={{ color: 'rgba(255,255,255,0.72)', fontSize: { xs: 16, md: 18 }, fontWeight: 800 }}>
+                  ผลงาน
+                </Typography>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    color: '#fff',
+                    fontSize: { xs: 31, md: 42 },
+                    lineHeight: 1.16,
+                    fontWeight: 800,
+                    maxWidth: 420,
+                  }}
+                >
+                  {project.title}
+                </Typography>
+                <Typography sx={{ color: 'rgba(255,255,255,0.78)', fontSize: { xs: 17, md: 21 }, lineHeight: 1.45 }}>
+                  {project.shortDescription}
+                </Typography>
+              </Stack>
+              <Box
+                aria-hidden="true"
+                sx={{
+                  position: 'absolute',
+                  right: { xs: 24, md: 30 },
+                  bottom: { xs: 24, md: 30 },
+                  zIndex: 1,
+                  display: 'grid',
+                  placeItems: 'center',
+                  width: { xs: 44, md: 52 },
+                  height: { xs: 44, md: 52 },
+                  borderRadius: '50%',
+                  bgcolor: 'rgba(255,255,255,0.94)',
+                  color: '#111827',
+                  fontSize: { xs: 30, md: 36 },
+                  fontWeight: 700,
+                  lineHeight: 1,
+                }}
+              >
+                +
+              </Box>
+            </Box>
+          ))}
+        </Box>
       </Box>
     </Box>
   );
