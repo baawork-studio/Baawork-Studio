@@ -4,74 +4,99 @@ import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette } from '../theme';
 
-const aiShowcaseCards = [
+type ShowcaseCard = {
+  id: string;
+  slug: string;
+  title: string;
+  shortDescription: string;
+  coverImageUrl: string;
+};
+
+const aiShowcaseCards: ShowcaseCard[] = [
   {
     id: 'ai-command-center',
     slug: 'baawork-command-center',
-    title: 'AI Command Center',
+    title: 'ศูนย์สั่งการ AI',
     shortDescription: 'ศูนย์วิเคราะห์งานแบบเรียลไทม์ที่สรุปสถานะ เคสเร่งด่วน และแนวโน้มความเสี่ยงให้ทีมตัดสินใจเร็วขึ้น',
     coverImageUrl: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'ai-sales-forecast',
     slug: 'studio-booking-flow',
-    title: 'AI Sales Forecast',
+    title: 'ระบบคาดการณ์ยอดขาย',
     shortDescription: 'แดชบอร์ดคาดการณ์ยอดขายและพฤติกรรมลูกค้าด้วยโมเดล Machine Learning สำหรับทีมบริหาร',
     coverImageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'ai-document-review',
     slug: 'baawork-command-center',
-    title: 'AI Document Review',
+    title: 'ระบบอ่านเอกสาร AI',
     shortDescription: 'ระบบช่วยอ่านเอกสาร สกัดใจความสำคัญ และจัดหมวดหมู่คำขอจากหน้าจอเดียว',
     coverImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'ai-service-agent',
     slug: 'studio-booking-flow',
-    title: 'AI Service Agent',
+    title: 'ผู้ช่วยบริการอัตโนมัติ',
     shortDescription: 'ระบบผู้ช่วยตอบกลับอัตโนมัติที่ติดตามบทสนทนา งานค้าง และคุณภาพบริการของทีม',
     coverImageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'ai-devops-monitor',
     slug: 'baawork-command-center',
-    title: 'AI DevOps Monitor',
+    title: 'ระบบเฝ้าระวัง API',
     shortDescription: 'หน้าจอตรวจจับ anomaly ของระบบ API พร้อมแจ้งเตือนเหตุการณ์ผิดปกติก่อนกระทบผู้ใช้',
     coverImageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80',
+  },
+];
+
+const webAppShowcaseCards: ShowcaseCard[] = [
+  {
+    id: 'operations-dashboard',
+    slug: 'baawork-command-center',
+    title: 'แดชบอร์ดควบคุมงาน',
+    shortDescription: 'ระบบติดตามคำขอ สถานะงาน และการส่งมอบสำหรับทีมปฏิบัติการที่ต้องดูข้อมูลหลายมุมพร้อมกัน',
+    coverImageUrl: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'booking-platform',
+    slug: 'studio-booking-flow',
+    title: 'ระบบจองบริการออนไลน์',
+    shortDescription: 'เว็บแอปสำหรับเลือกบริการ ตรวจสอบเวลาว่าง และยืนยันการจองได้ทันทีจากทุกอุปกรณ์',
+    coverImageUrl: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'crm-workspace',
+    slug: 'baawork-command-center',
+    title: 'พื้นที่ทำงาน CRM',
+    shortDescription: 'ระบบจัดการลูกค้า งานขาย และประวัติการติดต่อในหน้าเดียวเพื่อให้ทีมทำงานต่อเนื่อง',
+    coverImageUrl: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'inventory-control',
+    slug: 'studio-booking-flow',
+    title: 'ระบบจัดการสต็อก',
+    shortDescription: 'เว็บแอปสำหรับตรวจนับสินค้า อัปเดตสถานะ และดูคำเตือนเมื่อจำนวนคงเหลือต่ำกว่ากำหนด',
+    coverImageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'analytics-portal',
+    slug: 'baawork-command-center',
+    title: 'พอร์ทัลวิเคราะห์ธุรกิจ',
+    shortDescription: 'หน้ารายงานผู้บริหารที่รวมตัวเลขสำคัญ กราฟเปรียบเทียบ และ insight เพื่อใช้ตัดสินใจเร็วขึ้น',
+    coverImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
   },
 ];
 
 const workCarouselGutter = 'clamp(24px, 6.27vw, 127.5px)';
 const workCarouselEdgeTolerance = 24;
 
-export function HomePage() {
-  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
-  const [workCarouselState, setWorkCarouselState] = useState({ canScrollPrev: false, canScrollNext: false });
-  const workCarouselRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let active = true;
-
-    fetchProjects()
-      .then((items) => {
-        if (!active) return;
-        setProjects(items.length > 0 ? items : fallbackProjects);
-      })
-      .catch(() => {
-        if (!active) return;
-        setProjects(fallbackProjects);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  const featured = projects[0];
+function useShowcaseCarousel() {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [carouselState, setCarouselState] = useState({ canScrollPrev: false, canScrollNext: false });
 
   const updateWorkCarouselState = useCallback(() => {
-    const carousel = workCarouselRef.current;
+    const carousel = carouselRef.current;
     if (!carousel) return;
 
     const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
@@ -80,7 +105,7 @@ export function HomePage() {
       canScrollNext: carousel.scrollLeft < maxScrollLeft - workCarouselEdgeTolerance,
     };
 
-    setWorkCarouselState((current) => {
+    setCarouselState((current) => {
       if (
         current.canScrollPrev === nextState.canScrollPrev &&
         current.canScrollNext === nextState.canScrollNext
@@ -93,7 +118,7 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
-    const carousel = workCarouselRef.current;
+    const carousel = carouselRef.current;
     if (!carousel) return undefined;
 
     carousel.scrollLeft = 0;
@@ -116,145 +141,75 @@ export function HomePage() {
     };
   }, [updateWorkCarouselState]);
 
-  const scrollWorkCards = (direction: -1 | 1) => {
-    const carousel = workCarouselRef.current;
+  const scrollCards = (direction: -1 | 1) => {
+    const carousel = carouselRef.current;
     if (!carousel) return;
-    if (direction === -1 && !workCarouselState.canScrollPrev) return;
-    if (direction === 1 && !workCarouselState.canScrollNext) return;
+    if (direction === -1 && !carouselState.canScrollPrev) return;
+    if (direction === 1 && !carouselState.canScrollNext) return;
 
     carousel.scrollBy({ left: direction * 392, behavior: 'smooth' });
   };
 
+  return { carouselRef, carouselState, scrollCards };
+}
+
+function carouselControlSx(enabled: boolean) {
+  return {
+    display: 'grid',
+    placeItems: 'center',
+    width: 48,
+    height: 48,
+    p: 0,
+    border: 0,
+    boxSizing: 'border-box',
+    borderRadius: '50%',
+    appearance: 'none',
+    bgcolor: enabled ? '#E8E8ED' : '#F5F5F7',
+    color: enabled ? '#6E6E73' : '#C7C7CC',
+    cursor: enabled ? 'pointer' : 'default',
+    transition: 'background-color 180ms ease, color 180ms ease',
+    '&:hover': {
+      bgcolor: enabled ? '#D2D2D7' : '#F5F5F7',
+      color: enabled ? '#1D1D1F' : '#C7C7CC',
+    },
+    '&:disabled': {
+      pointerEvents: 'none',
+    },
+  };
+}
+
+function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: string }) {
+  const { carouselRef, carouselState, scrollCards } = useShowcaseCarousel();
+
   return (
-    <Box component="main">
+    <>
       <Box
+        ref={carouselRef}
+        aria-label={label}
         sx={{
-          position: 'relative',
-          overflow: 'hidden',
-          display: 'grid',
-          alignItems: 'end',
-          minHeight: { xs: 620, md: 'calc(100svh - 44px)' },
-          pb: { xs: 5, md: 7 },
-          pt: { xs: 6, md: 5 },
-          bgcolor: palette.text,
+          mt: { xs: 3, md: 4 },
+          display: 'flex',
+          gap: { xs: 2, md: '20px' },
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          scrollBehavior: 'smooth',
+          overscrollBehaviorX: 'contain',
+          pr: workCarouselGutter,
+          pt: { xs: 2.5, md: 3 },
+          pb: { xs: 7, md: 8 },
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
         }}
       >
         <Box
-          component="img"
-          src={featured.coverImageUrl}
-          alt=""
           aria-hidden="true"
           sx={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            opacity: 1,
-            filter: 'saturate(0.95) contrast(1.02)',
+            flex: '0 0 auto',
+            width: workCarouselGutter,
           }}
         />
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            background:
-              'linear-gradient(180deg, rgba(17,24,39,0.08) 0%, rgba(17,24,39,0.18) 42%, rgba(17,24,39,0.78) 100%)',
-          }}
-        />
-        <Container maxWidth={false} sx={{ maxWidth: 1680, px: { xs: 2.5, md: 4 } }}>
-          <Stack
-            spacing={{ xs: 1.5, md: 2.25 }}
-            alignItems="center"
-            textAlign="center"
-            sx={{ position: 'relative', zIndex: 1 }}
-          >
-            <Typography
-              variant="h1"
-              sx={{
-                width: '100%',
-                color: '#fff',
-                fontSize: { xs: 48, sm: 72, md: 88, lg: 96 },
-                lineHeight: 1,
-                textShadow: '0 18px 50px rgba(0,0,0,0.42)',
-              }}
-            >
-              Baawork Studio
-            </Typography>
-            <Stack spacing={{ xs: 2.5, md: 3 }} alignItems="center" sx={{ maxWidth: 980 }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  color: 'rgba(255,255,255,0.92)',
-                  fontSize: { xs: 20, md: 34 },
-                  lineHeight: 1.35,
-                  fontWeight: 400,
-                  textShadow: '0 12px 34px rgba(0,0,0,0.48)',
-                }}
-              >
-                เราออกแบบและพัฒนาระบบสำหรับโชว์ผลงาน พร้อมหน้าตาที่ประณีต เครื่องมือหลังบ้านที่ใช้งานจริง และเวิร์กโฟลว์ที่เชื่อมต่อ API
-              </Typography>
-              <Button
-                href="#work"
-                variant="contained"
-                size="large"
-                sx={{
-                  borderRadius: 999,
-                  px: 3.5,
-                  py: 1.15,
-                  boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
-                }}
-              >
-                ดูผลงาน
-              </Button>
-            </Stack>
-          </Stack>
-        </Container>
-      </Box>
-
-      <Box id="work" sx={{ bgcolor: palette.background, py: { xs: 7, md: 10 }, overflow: 'hidden' }}>
-        <Container maxWidth="lg">
-          <Stack spacing={4}>
-            <Stack spacing={1.5} alignItems="center" textAlign="center">
-              <Typography
-                variant="h2"
-                color="primary"
-                sx={{ fontSize: { xs: 56, md: 96 }, lineHeight: 1, fontWeight: 800 }}
-              >
-                ผลงาน
-              </Typography>
-              <Typography variant="h4" fontWeight={800} sx={{ maxWidth: 760 }}>
-                ระบบที่ออกแบบมาให้ทั้งน่าดูและใช้งานได้จริง
-              </Typography>
-            </Stack>
-          </Stack>
-        </Container>
-        <Box
-          ref={workCarouselRef}
-          sx={{
-            mt: { xs: 4, md: 5 },
-            display: 'flex',
-            gap: { xs: 2, md: '20px' },
-            overflowX: 'auto',
-            scrollSnapType: 'x mandatory',
-            scrollBehavior: 'smooth',
-            overscrollBehaviorX: 'contain',
-            pr: workCarouselGutter,
-            pt: { xs: 2.5, md: 3 },
-            pb: { xs: 7, md: 8 },
-            scrollbarWidth: 'none',
-            '&::-webkit-scrollbar': { display: 'none' },
-          }}
-        >
-          <Box
-            aria-hidden="true"
-            sx={{
-              flex: '0 0 auto',
-              width: workCarouselGutter,
-            }}
-          />
-          {aiShowcaseCards.map((project) => {
-            return (
+        {cards.map((project) => {
+          return (
             <Box
               key={project.id}
               component="a"
@@ -360,96 +315,240 @@ export function HomePage() {
                 +
               </Box>
             </Box>
-            );
-          })}
-        </Box>
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          spacing={2}
-          sx={{ mt: { xs: -4, md: -5 }, px: workCarouselGutter, position: 'relative', zIndex: 2 }}
+          );
+        })}
+      </Box>
+      <Stack
+        direction="row"
+        justifyContent="flex-end"
+        spacing={2}
+        sx={{ mt: { xs: -4, md: -5 }, px: workCarouselGutter, position: 'relative', zIndex: 2 }}
+      >
+        <Box
+          component="button"
+          type="button"
+          aria-label={`เลื่อน${label}ไปทางซ้าย`}
+          disabled={!carouselState.canScrollPrev}
+          onClick={() => scrollCards(-1)}
+          sx={carouselControlSx(carouselState.canScrollPrev)}
         >
           <Box
-            component="button"
-            type="button"
-            aria-label="เลื่อนผลงานไปทางซ้าย"
-            disabled={!workCarouselState.canScrollPrev}
-            onClick={() => scrollWorkCards(-1)}
+            component="span"
             sx={{
-              display: 'grid',
-              placeItems: 'center',
-              width: 48,
-              height: 48,
-              p: 0,
-              border: 0,
-              boxSizing: 'border-box',
-              borderRadius: '50%',
-              appearance: 'none',
-              bgcolor: workCarouselState.canScrollPrev ? '#E8E8ED' : '#F5F5F7',
-              color: workCarouselState.canScrollPrev ? '#6E6E73' : '#C7C7CC',
-              cursor: workCarouselState.canScrollPrev ? 'pointer' : 'default',
-              transition: 'background-color 180ms ease, color 180ms ease',
-              '&:hover': {
-                bgcolor: workCarouselState.canScrollPrev ? '#D2D2D7' : '#F5F5F7',
-                color: workCarouselState.canScrollPrev ? '#1D1D1F' : '#C7C7CC',
-              },
-              '&:disabled': {
-                pointerEvents: 'none',
-              },
+              width: 12,
+              height: 12,
+              ml: 0.5,
+              borderRight: '3px solid currentColor',
+              borderBottom: '3px solid currentColor',
+              transform: 'rotate(135deg)',
             }}
-          >
-            <Box
-              component="span"
-              sx={{
-                width: 12,
-                height: 12,
-                ml: 0.5,
-                borderRight: '3px solid currentColor',
-                borderBottom: '3px solid currentColor',
-                transform: 'rotate(135deg)',
-              }}
-            />
-          </Box>
+          />
+        </Box>
+        <Box
+          component="button"
+          type="button"
+          aria-label={`เลื่อน${label}ไปทางขวา`}
+          disabled={!carouselState.canScrollNext}
+          onClick={() => scrollCards(1)}
+          sx={carouselControlSx(carouselState.canScrollNext)}
+        >
           <Box
-            component="button"
-            type="button"
-            aria-label="เลื่อนผลงานไปทางขวา"
-            disabled={!workCarouselState.canScrollNext}
-            onClick={() => scrollWorkCards(1)}
+            component="span"
             sx={{
-              display: 'grid',
-              placeItems: 'center',
-              width: 48,
-              height: 48,
-              p: 0,
-              border: 0,
-              boxSizing: 'border-box',
-              borderRadius: '50%',
-              appearance: 'none',
-              bgcolor: workCarouselState.canScrollNext ? '#E8E8ED' : '#F5F5F7',
-              color: workCarouselState.canScrollNext ? '#6E6E73' : '#C7C7CC',
-              cursor: workCarouselState.canScrollNext ? 'pointer' : 'default',
-              transition: 'background-color 180ms ease, color 180ms ease',
-              '&:hover': {
-                bgcolor: workCarouselState.canScrollNext ? '#D2D2D7' : '#F5F5F7',
-                color: workCarouselState.canScrollNext ? '#1D1D1F' : '#C7C7CC',
-              },
-              '&:disabled': {
-                pointerEvents: 'none',
-              },
+              width: 12,
+              height: 12,
+              mr: 0.5,
+              borderRight: '3px solid currentColor',
+              borderBottom: '3px solid currentColor',
+              transform: 'rotate(-45deg)',
             }}
+          />
+        </Box>
+      </Stack>
+    </>
+  );
+}
+
+export function HomePage() {
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+
+  useEffect(() => {
+    let active = true;
+
+    fetchProjects()
+      .then((items) => {
+        if (!active) return;
+        setProjects(items.length > 0 ? items : fallbackProjects);
+      })
+      .catch(() => {
+        if (!active) return;
+        setProjects(fallbackProjects);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const featured = projects[0];
+
+  return (
+    <Box component="main">
+      <Box
+        sx={{
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'grid',
+          alignItems: 'end',
+          minHeight: { xs: 620, md: 'calc(100svh - 44px)' },
+          pb: { xs: 5, md: 7 },
+          pt: { xs: 6, md: 5 },
+          bgcolor: palette.text,
+        }}
+      >
+        <Box
+          component="img"
+          src={featured.coverImageUrl}
+          alt=""
+          aria-hidden="true"
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: 1,
+            filter: 'saturate(0.95) contrast(1.02)',
+          }}
+        />
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            background:
+              'linear-gradient(180deg, rgba(17,24,39,0.08) 0%, rgba(17,24,39,0.18) 42%, rgba(17,24,39,0.78) 100%)',
+          }}
+        />
+        <Container maxWidth={false} sx={{ maxWidth: 1680, px: { xs: 2.5, md: 4 } }}>
+          <Stack
+            spacing={{ xs: 1.5, md: 2.25 }}
+            alignItems="center"
+            textAlign="center"
+            sx={{ position: 'relative', zIndex: 1 }}
           >
-            <Box
-              component="span"
+            <Typography
+              variant="h1"
               sx={{
-                width: 12,
-                height: 12,
-                mr: 0.5,
-                borderRight: '3px solid currentColor',
-                borderBottom: '3px solid currentColor',
-                transform: 'rotate(-45deg)',
+                width: '100%',
+                color: '#fff',
+                fontSize: { xs: 48, sm: 72, md: 88, lg: 96 },
+                lineHeight: 1,
+                textShadow: '0 18px 50px rgba(0,0,0,0.42)',
               }}
-            />
+            >
+              Baawork Studio
+            </Typography>
+            <Stack spacing={{ xs: 2.5, md: 3 }} alignItems="center" sx={{ maxWidth: 980 }}>
+              <Typography
+                variant="h5"
+                sx={{
+                  color: 'rgba(255,255,255,0.92)',
+                  fontSize: { xs: 20, md: 34 },
+                  lineHeight: 1.35,
+                  fontWeight: 400,
+                  textShadow: '0 12px 34px rgba(0,0,0,0.48)',
+                }}
+              >
+                เราออกแบบและพัฒนาระบบสำหรับโชว์ผลงาน พร้อมหน้าตาที่ประณีต เครื่องมือหลังบ้านที่ใช้งานจริง และเวิร์กโฟลว์ที่เชื่อมต่อ API
+              </Typography>
+              <Button
+                href="#work"
+                variant="contained"
+                size="large"
+                sx={{
+                  borderRadius: 999,
+                  px: 3.5,
+                  py: 1.15,
+                  boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
+                }}
+              >
+                ดูผลงาน
+              </Button>
+            </Stack>
+          </Stack>
+        </Container>
+      </Box>
+
+      <Box id="work" sx={{ bgcolor: palette.background, py: { xs: 7, md: 10 }, overflow: 'hidden' }}>
+        <Stack spacing={{ xs: 7, md: 9 }}>
+          <Box>
+            <Stack
+              spacing={1.25}
+              sx={{
+                px: workCarouselGutter,
+                maxWidth: { xs: '100%', md: 900 },
+                alignItems: 'flex-start',
+                textAlign: 'left',
+              }}
+            >
+              <Typography
+                variant="h2"
+                sx={{
+                  color: palette.text,
+                  fontSize: { xs: 42, md: 64 },
+                  lineHeight: 1.08,
+                  fontWeight: 800,
+                }}
+              >
+                ระบบ AI ที่คิดทันงานจริง
+              </Typography>
+              <Typography
+                sx={{
+                  color: '#4B5563',
+                  fontSize: { xs: 19, md: 24 },
+                  lineHeight: 1.45,
+                  maxWidth: 760,
+                }}
+              >
+                ออกแบบประสบการณ์ AI สำหรับอ่านข้อมูล วิเคราะห์สัญญาณสำคัญ และช่วยทีมตัดสินใจจากหน้าจอที่ใช้งานง่าย
+              </Typography>
+            </Stack>
+            <ShowcaseCarousel cards={aiShowcaseCards} label="ผลงานระบบ AI" />
+          </Box>
+
+          <Box>
+            <Stack
+              spacing={1.25}
+              sx={{
+                px: workCarouselGutter,
+                maxWidth: { xs: '100%', md: 900 },
+                alignItems: 'flex-start',
+                textAlign: 'left',
+              }}
+            >
+              <Typography
+                variant="h2"
+                sx={{
+                  color: palette.text,
+                  fontSize: { xs: 42, md: 64 },
+                  lineHeight: 1.08,
+                  fontWeight: 800,
+                }}
+              >
+                ระบบ Web App สำหรับทีมที่ต้องทำงานเร็ว
+              </Typography>
+              <Typography
+                sx={{
+                  color: '#4B5563',
+                  fontSize: { xs: 19, md: 24 },
+                  lineHeight: 1.45,
+                  maxWidth: 760,
+                }}
+              >
+                เว็บแอปสำหรับงานหลังบ้าน แดชบอร์ด และเวิร์กโฟลว์ธุรกิจที่เชื่อมข้อมูลจริง ใช้งานง่าย และขยายต่อได้
+              </Typography>
+            </Stack>
+            <ShowcaseCarousel cards={webAppShowcaseCards} label="ผลงานระบบ Web App" />
           </Box>
         </Stack>
       </Box>
