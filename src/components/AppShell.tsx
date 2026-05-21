@@ -15,8 +15,8 @@ export function AppShell({ children }: AppShellProps) {
           top: 0,
           zIndex: 10,
           backdropFilter: 'blur(18px)',
-          bgcolor: 'rgba(255,255,255,0.82)',
-          height: 64,
+          bgcolor: 'rgba(22,22,23,0.92)',
+          height: 44,
         }}
       >
         <Container maxWidth="lg" sx={{ height: '100%' }}>
@@ -24,10 +24,9 @@ export function AppShell({ children }: AppShellProps) {
             <Stack
               direction="row"
               alignItems="center"
-              spacing={1.5}
               sx={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}
             >
-              <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: palette.primaryPink }} />
+              <Box sx={{ width: 16, height: 16, borderRadius: '50%', bgcolor: palette.primaryPink }} />
             </Stack>
           </Box>
         </Container>
@@ -35,7 +34,7 @@ export function AppShell({ children }: AppShellProps) {
           component="nav"
           aria-label="เมนูหลัก"
           direction="row"
-          spacing={3}
+          spacing={{ sm: 4.5, md: 6 }}
           sx={{
             display: { xs: 'none', sm: 'flex' },
             position: 'absolute',
@@ -44,9 +43,15 @@ export function AppShell({ children }: AppShellProps) {
             transform: 'translate(-50%, -50%)',
           }}
         >
-          <Typography variant="body2">ผลงาน</Typography>
-          <Typography variant="body2">สตูดิโอ</Typography>
-          <Typography variant="body2">ติดต่อ</Typography>
+          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px' }}>
+            ผลงาน
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px' }}>
+            สตูดิโอ
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px' }}>
+            ติดต่อ
+          </Typography>
         </Stack>
       </Box>
       {children}
