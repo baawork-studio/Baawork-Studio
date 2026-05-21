@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
@@ -6,6 +6,7 @@ import { palette } from '../theme';
 
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const workCarouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let active = true;
@@ -26,6 +27,14 @@ export function HomePage() {
   }, []);
 
   const featured = projects[0];
+  const carouselProjects =
+    projects.length > 0
+      ? Array.from({ length: Math.max(projects.length, 4) }, (_, index) => projects[index % projects.length])
+      : fallbackProjects;
+
+  const scrollWorkCards = (direction: -1 | 1) => {
+    workCarouselRef.current?.scrollBy({ left: direction * 548, behavior: 'smooth' });
+  };
 
   return (
     <Box component="main">
@@ -132,36 +141,40 @@ export function HomePage() {
           </Stack>
         </Container>
         <Box
+          ref={workCarouselRef}
           sx={{
             mt: { xs: 4, md: 5 },
             display: 'flex',
-            gap: { xs: 2, md: 3.5 },
+            gap: { xs: 2, md: '28px' },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
-            px: { xs: 2.5, md: 'max(48px, calc((100vw - 1240px) / 2))' },
-            pb: 2,
+            px: { xs: 2.5, md: 'max(27px, calc((100vw - 1778px) / 2))' },
+            pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',
             '&::-webkit-scrollbar': { display: 'none' },
           }}
         >
-          {projects.map((project) => (
+          {carouselProjects.map((project, index) => {
+            const isFullBleed = index % 2 === 1;
+
+            return (
             <Box
-              key={project.id}
+              key={`${project.id}-${index}`}
               component="a"
               href={`/projects/${project.slug}`}
               sx={{
                 position: 'relative',
                 flex: '0 0 auto',
-                width: { xs: '82vw', sm: 420, md: 520 },
-                height: { xs: 560, md: 680 },
+                width: { xs: 320, sm: 420, md: 520 },
+                height: { xs: 620, md: 948 },
                 overflow: 'hidden',
-                borderRadius: { xs: 4, md: 6 },
+                borderRadius: { xs: '28px', md: '32px' },
                 bgcolor: '#000',
                 color: '#fff',
                 scrollSnapAlign: 'start',
-                boxShadow: '0 1px 2px rgba(17,24,39,0.16)',
+                boxShadow: 'none',
                 transition: 'transform 180ms ease',
-                '&:hover': { transform: 'scale(1.01)' },
+                '&:hover': { transform: 'scale(1.006)' },
               }}
             >
               <Box
@@ -170,11 +183,14 @@ export function HomePage() {
                 alt={project.title}
                 sx={{
                   position: 'absolute',
-                  inset: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  top: isFullBleed ? 0 : 'auto',
                   width: '100%',
-                  height: '100%',
+                  height: isFullBleed ? '100%' : { xs: 432, md: 678 },
                   objectFit: 'cover',
-                  filter: 'saturate(0.9) contrast(1.02)',
+                  filter: isFullBleed ? 'grayscale(1) contrast(1.05)' : 'saturate(1.04) contrast(1.02)',
                 }}
               />
               <Box
@@ -182,34 +198,36 @@ export function HomePage() {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.24) 34%, rgba(0,0,0,0.08) 58%, rgba(0,0,0,0.28) 100%)',
+                    isFullBleed
+                      ? 'linear-gradient(180deg, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.10) 100%)'
+                      : 'linear-gradient(180deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.86) 26%, rgba(0,0,0,0.24) 64%, rgba(0,0,0,0.08) 100%)',
                 }}
               />
               <Stack
-                spacing={2}
+                spacing={{ xs: 1.7, md: 2.5 }}
                 sx={{
                   position: 'relative',
                   zIndex: 1,
-                  p: { xs: 3, md: 4.5 },
-                  pr: { xs: 4, md: 6 },
+                  p: { xs: '28px', md: '48px' },
+                  pr: { xs: '32px', md: '46px' },
                 }}
               >
-                <Typography sx={{ color: 'rgba(255,255,255,0.72)', fontSize: { xs: 16, md: 18 }, fontWeight: 800 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.72)', fontSize: { xs: 16, md: 21 }, fontWeight: 800 }}>
                   ผลงาน
                 </Typography>
                 <Typography
                   variant="h3"
                   sx={{
                     color: '#fff',
-                    fontSize: { xs: 31, md: 42 },
+                    fontSize: { xs: 30, md: 40 },
                     lineHeight: 1.16,
                     fontWeight: 800,
-                    maxWidth: 420,
+                    maxWidth: 430,
                   }}
                 >
                   {project.title}
                 </Typography>
-                <Typography sx={{ color: 'rgba(255,255,255,0.78)', fontSize: { xs: 17, md: 21 }, lineHeight: 1.45 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.78)', fontSize: { xs: 17, md: 20 }, lineHeight: 1.45 }}>
                   {project.shortDescription}
                 </Typography>
               </Stack>
@@ -217,8 +235,8 @@ export function HomePage() {
                 aria-hidden="true"
                 sx={{
                   position: 'absolute',
-                  right: { xs: 24, md: 30 },
-                  bottom: { xs: 24, md: 30 },
+                  right: { xs: 22, md: 28 },
+                  bottom: { xs: 22, md: 28 },
                   zIndex: 1,
                   display: 'grid',
                   placeItems: 'center',
@@ -235,8 +253,58 @@ export function HomePage() {
                 +
               </Box>
             </Box>
-          ))}
+            );
+          })}
         </Box>
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          spacing={2}
+          sx={{ mt: 3, px: { xs: 2.5, md: 'max(27px, calc((100vw - 1778px) / 2))' } }}
+        >
+          <Box
+            component="button"
+            type="button"
+            aria-label="เลื่อนผลงานไปทางซ้าย"
+            onClick={() => scrollWorkCards(-1)}
+            sx={{
+              display: 'grid',
+              placeItems: 'center',
+              width: 48,
+              height: 48,
+              border: 0,
+              borderRadius: '50%',
+              bgcolor: '#F5F5F7',
+              color: '#86868B',
+              fontSize: 34,
+              cursor: 'pointer',
+              '&:hover': { bgcolor: '#E8E8ED', color: '#1D1D1F' },
+            }}
+          >
+            ‹
+          </Box>
+          <Box
+            component="button"
+            type="button"
+            aria-label="เลื่อนผลงานไปทางขวา"
+            onClick={() => scrollWorkCards(1)}
+            sx={{
+              display: 'grid',
+              placeItems: 'center',
+              width: 48,
+              height: 48,
+              border: 0,
+              borderRadius: '50%',
+              bgcolor: '#E8E8ED',
+              color: '#6E6E73',
+              fontSize: 34,
+              cursor: 'pointer',
+              '&:hover': { bgcolor: '#D2D2D7', color: '#1D1D1F' },
+            }}
+          >
+            ›
+          </Box>
+        </Stack>
       </Box>
     </Box>
   );
