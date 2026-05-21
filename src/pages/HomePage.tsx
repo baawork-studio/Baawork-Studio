@@ -4,6 +4,44 @@ import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette } from '../theme';
 
+const aiShowcaseCards = [
+  {
+    id: 'ai-command-center',
+    slug: 'baawork-command-center',
+    title: 'AI Command Center',
+    shortDescription: 'ศูนย์วิเคราะห์งานแบบเรียลไทม์ที่สรุปสถานะ เคสเร่งด่วน และแนวโน้มความเสี่ยงให้ทีมตัดสินใจเร็วขึ้น',
+    coverImageUrl: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'ai-sales-forecast',
+    slug: 'studio-booking-flow',
+    title: 'AI Sales Forecast',
+    shortDescription: 'แดชบอร์ดคาดการณ์ยอดขายและพฤติกรรมลูกค้าด้วยโมเดล Machine Learning สำหรับทีมบริหาร',
+    coverImageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'ai-document-review',
+    slug: 'baawork-command-center',
+    title: 'AI Document Review',
+    shortDescription: 'ระบบช่วยอ่านเอกสาร สกัดใจความสำคัญ และจัดหมวดหมู่คำขอจากหน้าจอเดียว',
+    coverImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'ai-service-agent',
+    slug: 'studio-booking-flow',
+    title: 'AI Service Agent',
+    shortDescription: 'ระบบผู้ช่วยตอบกลับอัตโนมัติที่ติดตามบทสนทนา งานค้าง และคุณภาพบริการของทีม',
+    coverImageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'ai-devops-monitor',
+    slug: 'baawork-command-center',
+    title: 'AI DevOps Monitor',
+    shortDescription: 'หน้าจอตรวจจับ anomaly ของระบบ API พร้อมแจ้งเตือนเหตุการณ์ผิดปกติก่อนกระทบผู้ใช้',
+    coverImageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80',
+  },
+];
+
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
   const workCarouselRef = useRef<HTMLDivElement>(null);
@@ -27,10 +65,6 @@ export function HomePage() {
   }, []);
 
   const featured = projects[0];
-  const carouselProjects =
-    projects.length > 0
-      ? Array.from({ length: Math.max(projects.length, 5) }, (_, index) => projects[index % projects.length])
-      : fallbackProjects;
 
   const scrollWorkCards = (direction: -1 | 1) => {
     workCarouselRef.current?.scrollBy({ left: direction * 392, behavior: 'smooth' });
@@ -148,6 +182,7 @@ export function HomePage() {
             gap: { xs: 2, md: '20px' },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
+            pr: { xs: 3, sm: 4, md: '24px' },
             pt: { xs: 1.5, md: 2 },
             pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',
@@ -158,13 +193,13 @@ export function HomePage() {
             aria-hidden="true"
             sx={{
               flex: '0 0 auto',
-              width: { xs: 1.5, sm: 2, md: 'max(11px, calc((100vw - 1239px) / 2))' },
+              width: { xs: 3, sm: 4, md: 'max(22px, calc((100vw - 1107px) / 2))' },
             }}
           />
-          {carouselProjects.map((project, index) => {
+          {aiShowcaseCards.map((project) => {
             return (
             <Box
-              key={`${project.id}-${index}`}
+              key={project.id}
               component="a"
               href={`/projects/${project.slug}`}
               sx={{
@@ -177,7 +212,7 @@ export function HomePage() {
                 bgcolor: '#000',
                 color: '#fff',
                 scrollSnapAlign: 'start',
-                scrollMarginInline: { xs: 12, md: 11 },
+                scrollMarginInline: { xs: 24, md: 24 },
                 boxShadow: 'none',
                 transition: 'transform 180ms ease',
                 transformOrigin: 'center center',
@@ -217,9 +252,6 @@ export function HomePage() {
                   pr: { xs: '32px', md: '34px' },
                 }}
               >
-                <Typography sx={{ color: 'rgba(255,255,255,0.72)', fontSize: { xs: 16, md: 17 }, fontWeight: 800 }}>
-                  ผลงาน
-                </Typography>
                 <Typography
                   variant="h3"
                   sx={{
@@ -260,13 +292,6 @@ export function HomePage() {
             </Box>
             );
           })}
-          <Box
-            aria-hidden="true"
-            sx={{
-              flex: '0 0 auto',
-              width: { xs: 3, sm: 4, md: 'max(22px, calc((100vw - 1107px) / 2))' },
-            }}
-          />
         </Box>
         <Stack
           direction="row"
