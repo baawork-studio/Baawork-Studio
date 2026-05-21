@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Chip, Container, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material';
 import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette } from '../theme';
@@ -34,16 +34,14 @@ export function HomePage() {
     <Box component="main">
       <Box
         sx={{
-          minHeight: { xs: 'auto', md: 'calc(100vh - 64px)' },
           display: 'grid',
-          alignItems: 'center',
-          py: { xs: 9, md: 6 },
+          alignItems: 'start',
+          py: { xs: 7, md: 9 },
         }}
       >
         <Container maxWidth="lg">
           <Stack spacing={5} alignItems="center" textAlign="center">
             <Stack spacing={2.5} alignItems="center" sx={{ maxWidth: 880 }}>
-              <Chip label="Selected systems" sx={{ bgcolor: palette.accentYellow, fontWeight: 800 }} />
               <Typography variant="h1" sx={{ fontSize: { xs: 58, md: 104 }, lineHeight: 0.92 }}>
                 Baawork Studio
               </Typography>
