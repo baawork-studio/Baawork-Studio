@@ -281,7 +281,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                   variant="h3"
                   sx={{
                     color: '#fff',
-                    fontSize: { xs: 30, md: 31 },
+                    fontSize: { xs: 28, sm: 30, md: 31 },
                     lineHeight: 1.16,
                     fontWeight: 800,
                     maxWidth: 430,
@@ -289,7 +289,13 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                 >
                   {project.title}
                 </Typography>
-                <Typography sx={{ color: 'rgba(255,255,255,0.78)', fontSize: { xs: 17, md: 18 }, lineHeight: 1.45 }}>
+                <Typography
+                  sx={{
+                    color: 'rgba(255,255,255,0.78)',
+                    fontSize: { xs: 16, sm: 17, md: 18 },
+                    lineHeight: 1.45,
+                  }}
+                >
                   {project.shortDescription}
                 </Typography>
               </Stack>
@@ -479,14 +485,34 @@ export function HomePage() {
         </Container>
       </Box>
 
-      <Box id="work" sx={{ bgcolor: palette.background, py: { xs: 7, md: 10 }, overflow: 'hidden' }}>
-        <Stack spacing={{ xs: 7, md: 9 }}>
-          <Box>
+      <Box id="work" sx={{ bgcolor: palette.background, overflow: 'hidden' }}>
+        <Box
+          sx={{
+            px: workCarouselGutter,
+            pt: { xs: 7, sm: 8, md: 10, lg: 12 },
+            pb: { xs: 4, sm: 5, md: 6 },
+          }}
+        >
+          <Typography
+            variant="h2"
+            sx={{
+              color: palette.text,
+              fontSize: { xs: 48, sm: 64, md: 82, lg: 96 },
+              lineHeight: 1,
+              fontWeight: 800,
+            }}
+          >
+            ผลงาน Baawork
+          </Typography>
+        </Box>
+
+        <Stack spacing={0}>
+          <Box sx={{ bgcolor: '#FFFFFF', py: { xs: 4, sm: 5, md: 6 } }}>
             <Stack
               spacing={1.25}
               sx={{
                 px: workCarouselGutter,
-                maxWidth: { xs: '100%', md: 900 },
+                maxWidth: { xs: '100%', md: 900, lg: 980 },
                 alignItems: 'flex-start',
                 textAlign: 'left',
               }}
@@ -495,7 +521,7 @@ export function HomePage() {
                 variant="h2"
                 sx={{
                   color: palette.text,
-                  fontSize: { xs: 42, md: 64 },
+                  fontSize: { xs: 32, sm: 42, md: 56, lg: 64 },
                   lineHeight: 1.08,
                   fontWeight: 800,
                 }}
@@ -505,7 +531,7 @@ export function HomePage() {
               <Typography
                 sx={{
                   color: '#4B5563',
-                  fontSize: { xs: 19, md: 24 },
+                  fontSize: { xs: 17, sm: 19, md: 22, lg: 24 },
                   lineHeight: 1.45,
                   maxWidth: 760,
                 }}
@@ -516,12 +542,12 @@ export function HomePage() {
             <ShowcaseCarousel cards={aiShowcaseCards} label="ผลงานระบบ AI" />
           </Box>
 
-          <Box>
+          <Box sx={{ bgcolor: '#F7F8FA', py: { xs: 6, sm: 7, md: 8 } }}>
             <Stack
               spacing={1.25}
               sx={{
                 px: workCarouselGutter,
-                maxWidth: { xs: '100%', md: 900 },
+                maxWidth: { xs: '100%', md: 900, lg: 980 },
                 alignItems: 'flex-start',
                 textAlign: 'left',
               }}
@@ -530,7 +556,7 @@ export function HomePage() {
                 variant="h2"
                 sx={{
                   color: palette.text,
-                  fontSize: { xs: 42, md: 64 },
+                  fontSize: { xs: 32, sm: 42, md: 56, lg: 64 },
                   lineHeight: 1.08,
                   fontWeight: 800,
                 }}
@@ -540,7 +566,7 @@ export function HomePage() {
               <Typography
                 sx={{
                   color: '#4B5563',
-                  fontSize: { xs: 19, md: 24 },
+                  fontSize: { xs: 17, sm: 19, md: 22, lg: 24 },
                   lineHeight: 1.45,
                   maxWidth: 760,
                 }}
