@@ -37,10 +37,11 @@ export function HomePage() {
           position: 'relative',
           overflow: 'hidden',
           display: 'grid',
-          alignItems: 'start',
-          minHeight: { xs: 520, md: 560 },
-          pb: { xs: 4, md: 3 },
+          alignItems: 'end',
+          minHeight: { xs: 620, md: 'calc(100svh - 64px)' },
+          pb: { xs: 5, md: 7 },
           pt: { xs: 6, md: 5 },
+          bgcolor: palette.text,
         }}
       >
         <Box
@@ -54,8 +55,8 @@ export function HomePage() {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            opacity: 0.16,
-            filter: 'saturate(0.85)',
+            opacity: 1,
+            filter: 'saturate(0.95) contrast(1.02)',
           }}
         />
         <Box
@@ -63,35 +64,52 @@ export function HomePage() {
             position: 'absolute',
             inset: 0,
             background:
-              'linear-gradient(180deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.94) 58%, #FFFFFF 100%)',
+              'linear-gradient(180deg, rgba(17,24,39,0.08) 0%, rgba(17,24,39,0.18) 42%, rgba(17,24,39,0.78) 100%)',
           }}
         />
         <Container maxWidth={false} sx={{ maxWidth: 1680, px: { xs: 2.5, md: 4 } }}>
           <Stack
-            spacing={{ xs: 3, md: 4 }}
+            spacing={{ xs: 1.5, md: 2.25 }}
             alignItems="center"
             textAlign="center"
-            sx={{ position: 'relative', zIndex: 1, pb: { xs: 2, md: 3 } }}
+            sx={{ position: 'relative', zIndex: 1 }}
           >
             <Typography
               variant="h1"
               sx={{
                 width: '100%',
-                fontSize: { xs: 62, sm: 104, md: 132, lg: 160 },
-                lineHeight: 0.92,
+                color: '#fff',
+                fontSize: { xs: 48, sm: 72, md: 88, lg: 96 },
+                lineHeight: 1,
+                textShadow: '0 18px 50px rgba(0,0,0,0.42)',
               }}
             >
               Baawork Studio
             </Typography>
-            <Stack spacing={3} alignItems="center" sx={{ maxWidth: 1180 }}>
+            <Stack spacing={{ xs: 2.5, md: 3 }} alignItems="center" sx={{ maxWidth: 980 }}>
               <Typography
                 variant="h5"
-                color="text.secondary"
-                sx={{ fontSize: { xs: 24, md: 40 }, lineHeight: 1.45, fontWeight: 400 }}
+                sx={{
+                  color: 'rgba(255,255,255,0.92)',
+                  fontSize: { xs: 20, md: 34 },
+                  lineHeight: 1.35,
+                  fontWeight: 400,
+                  textShadow: '0 12px 34px rgba(0,0,0,0.48)',
+                }}
               >
                 เราออกแบบและพัฒนาระบบสำหรับโชว์ผลงาน พร้อมหน้าตาที่ประณีต เครื่องมือหลังบ้านที่ใช้งานจริง และเวิร์กโฟลว์ที่เชื่อมต่อ API
               </Typography>
-              <Button href="#work" variant="contained" size="large">
+              <Button
+                href="#work"
+                variant="contained"
+                size="large"
+                sx={{
+                  borderRadius: 999,
+                  px: 3.5,
+                  py: 1.15,
+                  boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
+                }}
+              >
                 ดูผลงาน
               </Button>
             </Stack>
