@@ -182,7 +182,7 @@ export function HomePage() {
             gap: { xs: 2, md: '20px' },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
-            pr: { xs: 3, sm: 4, md: '24px' },
+            pr: '48px',
             pt: { xs: 1.5, md: 2 },
             pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',
@@ -193,7 +193,7 @@ export function HomePage() {
             aria-hidden="true"
             sx={{
               flex: '0 0 auto',
-              width: { xs: 3, sm: 4, md: 'max(22px, calc((100vw - 1107px) / 2))' },
+              width: 48,
             }}
           />
           {aiShowcaseCards.map((project) => {
@@ -212,7 +212,7 @@ export function HomePage() {
                 bgcolor: '#000',
                 color: '#fff',
                 scrollSnapAlign: 'start',
-                scrollMarginInline: { xs: 24, md: 24 },
+                scrollMarginInline: 48,
                 boxShadow: 'none',
                 transition: 'transform 180ms ease',
                 transformOrigin: 'center center',
