@@ -90,9 +90,9 @@ export default function App() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!form.title || !form.subtitle || !form.shortDescription || !form.description || !slug) {
+    if (!form.title || !form.subtitle || !form.shortDescription || !form.description || !slug || !coverImage) {
       setStatus('error');
-      setMessage('Please complete title, subtitle, short description, and description.');
+      setMessage('Please complete project details and choose a cover image.');
       return;
     }
 
