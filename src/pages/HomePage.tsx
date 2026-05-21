@@ -117,15 +117,17 @@ export function HomePage() {
       <Box id="work" sx={{ bgcolor: palette.softGray, py: { xs: 7, md: 10 } }}>
         <Container maxWidth="lg">
           <Stack spacing={4}>
-            <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" spacing={2}>
-              <Box>
-                <Typography variant="overline" color="primary" fontWeight={800}>
-                  ผลงาน
-                </Typography>
-                <Typography variant="h3" fontWeight={800}>
-                  ระบบที่ออกแบบมาให้ทั้งน่าดูและใช้งานได้จริง
-                </Typography>
-              </Box>
+            <Stack spacing={1.5} alignItems="center" textAlign="center">
+              <Typography
+                variant="h2"
+                color="primary"
+                sx={{ fontSize: { xs: 56, md: 96 }, lineHeight: 1, fontWeight: 800 }}
+              >
+                ผลงาน
+              </Typography>
+              <Typography variant="h4" fontWeight={800} sx={{ maxWidth: 760 }}>
+                ระบบที่ออกแบบมาให้ทั้งน่าดูและใช้งานได้จริง
+              </Typography>
             </Stack>
             <Grid container spacing={2.5}>
               {projects.map((project) => (
