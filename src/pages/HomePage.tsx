@@ -314,7 +314,7 @@ export function HomePage() {
           direction="row"
           justifyContent="flex-end"
           spacing={2}
-          sx={{ mt: 3, px: { xs: 3, sm: 4, md: 'max(22px, calc((100vw - 1107px) / 2))' } }}
+          sx={{ mt: { xs: -4, md: -5 }, px: workCarouselGutter, position: 'relative', zIndex: 2 }}
         >
           <Box
             component="button"
