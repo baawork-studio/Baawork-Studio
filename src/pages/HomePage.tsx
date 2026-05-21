@@ -33,7 +33,7 @@ export function HomePage() {
       : fallbackProjects;
 
   const scrollWorkCards = (direction: -1 | 1) => {
-    workCarouselRef.current?.scrollBy({ left: direction * 548, behavior: 'smooth' });
+    workCarouselRef.current?.scrollBy({ left: direction * 392, behavior: 'smooth' });
   };
 
   return (
@@ -145,10 +145,10 @@ export function HomePage() {
           sx={{
             mt: { xs: 4, md: 5 },
             display: 'flex',
-            gap: { xs: 2, md: '28px' },
+            gap: { xs: 2, md: '20px' },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
-            px: { xs: 2.5, md: 'max(27px, calc((100vw - 1778px) / 2))' },
+            px: { xs: 2.5, md: 'max(22px, calc((100vw - 1107px) / 2))' },
             pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',
             '&::-webkit-scrollbar': { display: 'none' },
@@ -165,10 +165,10 @@ export function HomePage() {
               sx={{
                 position: 'relative',
                 flex: '0 0 auto',
-                width: { xs: 320, sm: 420, md: 520 },
-                height: { xs: 620, md: 948 },
+                width: { xs: 320, sm: 372, md: 372 },
+                height: { xs: 620, md: 680 },
                 overflow: 'hidden',
-                borderRadius: { xs: '28px', md: '32px' },
+                borderRadius: '28px',
                 bgcolor: '#000',
                 color: '#fff',
                 scrollSnapAlign: 'start',
@@ -188,7 +188,7 @@ export function HomePage() {
                   bottom: 0,
                   top: isFullBleed ? 0 : 'auto',
                   width: '100%',
-                  height: isFullBleed ? '100%' : { xs: 432, md: 678 },
+                  height: isFullBleed ? '100%' : { xs: 432, md: 420 },
                   objectFit: 'cover',
                   filter: isFullBleed ? 'grayscale(1) contrast(1.05)' : 'saturate(1.04) contrast(1.02)',
                 }}
@@ -208,18 +208,18 @@ export function HomePage() {
                 sx={{
                   position: 'relative',
                   zIndex: 1,
-                  p: { xs: '28px', md: '48px' },
-                  pr: { xs: '32px', md: '46px' },
+                  p: { xs: '28px', md: '32px' },
+                  pr: { xs: '32px', md: '34px' },
                 }}
               >
-                <Typography sx={{ color: 'rgba(255,255,255,0.72)', fontSize: { xs: 16, md: 21 }, fontWeight: 800 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.72)', fontSize: { xs: 16, md: 17 }, fontWeight: 800 }}>
                   ผลงาน
                 </Typography>
                 <Typography
                   variant="h3"
                   sx={{
                     color: '#fff',
-                    fontSize: { xs: 30, md: 40 },
+                    fontSize: { xs: 30, md: 31 },
                     lineHeight: 1.16,
                     fontWeight: 800,
                     maxWidth: 430,
@@ -227,7 +227,7 @@ export function HomePage() {
                 >
                   {project.title}
                 </Typography>
-                <Typography sx={{ color: 'rgba(255,255,255,0.78)', fontSize: { xs: 17, md: 20 }, lineHeight: 1.45 }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.78)', fontSize: { xs: 17, md: 18 }, lineHeight: 1.45 }}>
                   {project.shortDescription}
                 </Typography>
               </Stack>
@@ -260,7 +260,7 @@ export function HomePage() {
           direction="row"
           justifyContent="flex-end"
           spacing={2}
-          sx={{ mt: 3, px: { xs: 2.5, md: 'max(27px, calc((100vw - 1778px) / 2))' } }}
+          sx={{ mt: 3, px: { xs: 2.5, md: 'max(22px, calc((100vw - 1107px) / 2))' } }}
         >
           <Box
             component="button"
