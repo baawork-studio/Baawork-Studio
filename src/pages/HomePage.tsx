@@ -187,8 +187,8 @@ export function HomePage() {
             scrollBehavior: 'smooth',
             overscrollBehaviorX: 'contain',
             pr: workCarouselGutter,
-            pt: { xs: 1.5, md: 2 },
-            pb: { xs: 2, md: 3 },
+            pt: { xs: 2.5, md: 3 },
+            pb: { xs: 7, md: 8 },
             scrollbarWidth: 'none',
             '&::-webkit-scrollbar': { display: 'none' },
           }}
@@ -219,12 +219,14 @@ export function HomePage() {
                 scrollMarginInline: workCarouselGutter,
                 display: 'block',
                 boxShadow: 'none',
+                zIndex: 1,
                 transform: 'translate3d(0, 0, 0)',
                 transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
                 willChange: 'transform',
                 '&:hover': {
                   transform: 'translate3d(0, -6px, 0)',
                   boxShadow: '0 18px 40px rgba(17,24,39,0.14)',
+                  zIndex: 2,
                 },
                 '&:hover img': {
                   transform: 'scale(1.035)',
