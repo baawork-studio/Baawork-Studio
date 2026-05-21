@@ -42,6 +42,8 @@ const aiShowcaseCards = [
   },
 ];
 
+const workCarouselGutter = 'clamp(24px, 6.27vw, 127.5px)';
+
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
   const workCarouselRef = useRef<HTMLDivElement>(null);
@@ -182,7 +184,7 @@ export function HomePage() {
             gap: { xs: 2, md: '20px' },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
-            pr: '127.5px',
+            pr: workCarouselGutter,
             pt: { xs: 1.5, md: 2 },
             pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',
@@ -193,7 +195,7 @@ export function HomePage() {
             aria-hidden="true"
             sx={{
               flex: '0 0 auto',
-              width: 127.5,
+              width: workCarouselGutter,
             }}
           />
           {aiShowcaseCards.map((project) => {
@@ -212,7 +214,7 @@ export function HomePage() {
                 bgcolor: '#000',
                 color: '#fff',
                 scrollSnapAlign: 'start',
-                scrollMarginInline: 127.5,
+                scrollMarginInline: workCarouselGutter,
                 boxShadow: 'none',
                 transition: 'transform 180ms ease',
                 transformOrigin: 'center center',
