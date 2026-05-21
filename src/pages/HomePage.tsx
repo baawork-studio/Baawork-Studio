@@ -148,14 +148,19 @@ export function HomePage() {
             gap: { xs: 2, md: '20px' },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
-            ml: { xs: 1.5, sm: 2, md: 'max(11px, calc((100vw - 1239px) / 2))' },
-            mr: 0,
             pt: { xs: 1.5, md: 2 },
             pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',
             '&::-webkit-scrollbar': { display: 'none' },
           }}
         >
+          <Box
+            aria-hidden="true"
+            sx={{
+              flex: '0 0 auto',
+              width: { xs: 1.5, sm: 2, md: 'max(11px, calc((100vw - 1239px) / 2))' },
+            }}
+          />
           {carouselProjects.map((project, index) => {
             return (
             <Box
@@ -172,6 +177,7 @@ export function HomePage() {
                 bgcolor: '#000',
                 color: '#fff',
                 scrollSnapAlign: 'start',
+                scrollMarginInline: { xs: 12, md: 11 },
                 boxShadow: 'none',
                 transition: 'transform 180ms ease',
                 transformOrigin: 'center center',
@@ -254,6 +260,13 @@ export function HomePage() {
             </Box>
             );
           })}
+          <Box
+            aria-hidden="true"
+            sx={{
+              flex: '0 0 auto',
+              width: { xs: 3, sm: 4, md: 'max(22px, calc((100vw - 1107px) / 2))' },
+            }}
+          />
         </Box>
         <Stack
           direction="row"
