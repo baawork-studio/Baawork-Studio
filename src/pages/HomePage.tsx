@@ -148,7 +148,8 @@ export function HomePage() {
             gap: { xs: 2, md: '20px' },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
-            px: { xs: 2.5, md: 'max(22px, calc((100vw - 1107px) / 2))' },
+            mx: { xs: 3, sm: 4, md: 'max(22px, calc((100vw - 1107px) / 2))' },
+            pt: { xs: 1.5, md: 2 },
             pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',
             '&::-webkit-scrollbar': { display: 'none' },
@@ -165,7 +166,7 @@ export function HomePage() {
               sx={{
                 position: 'relative',
                 flex: '0 0 auto',
-                width: { xs: 320, sm: 372, md: 372 },
+                width: { xs: 'calc(100vw - 64px)', sm: 372, md: 372 },
                 height: { xs: 620, md: 680 },
                 overflow: 'hidden',
                 borderRadius: '28px',
@@ -174,6 +175,7 @@ export function HomePage() {
                 scrollSnapAlign: 'start',
                 boxShadow: 'none',
                 transition: 'transform 180ms ease',
+                transformOrigin: 'center center',
                 '&:hover': { transform: 'scale(1.006)' },
               }}
             >
@@ -260,7 +262,7 @@ export function HomePage() {
           direction="row"
           justifyContent="flex-end"
           spacing={2}
-          sx={{ mt: 3, px: { xs: 2.5, md: 'max(22px, calc((100vw - 1107px) / 2))' } }}
+          sx={{ mt: 3, px: { xs: 3, sm: 4, md: 'max(22px, calc((100vw - 1107px) / 2))' } }}
         >
           <Box
             component="button"
