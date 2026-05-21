@@ -22,7 +22,6 @@ export function AppShell({ children }: AppShellProps) {
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ height: 64 }}>
             <Stack direction="row" alignItems="center" spacing={1.5}>
               <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: palette.primaryPink }} />
-              <Typography fontWeight={800}>Baawork Studio</Typography>
             </Stack>
             <Stack direction="row" spacing={3} sx={{ display: { xs: 'none', sm: 'flex' } }}>
               <Typography variant="body2">ผลงาน</Typography>
