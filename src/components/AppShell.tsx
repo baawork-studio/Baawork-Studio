@@ -1,4 +1,4 @@
-import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import { palette } from '../theme';
 
 type AppShellProps = {
@@ -28,9 +28,6 @@ export function AppShell({ children }: AppShellProps) {
               <Typography variant="body2">สตูดิโอ</Typography>
               <Typography variant="body2">ติดต่อ</Typography>
             </Stack>
-            <Button href="#contact" variant="contained" size="small">
-              เริ่มโปรเจกต์
-            </Button>
           </Stack>
         </Container>
       </Box>
