@@ -274,16 +274,28 @@ export function HomePage() {
               placeItems: 'center',
               width: 48,
               height: 48,
+              p: 0,
               border: 0,
+              boxSizing: 'border-box',
               borderRadius: '50%',
+              appearance: 'none',
               bgcolor: '#F5F5F7',
-              color: '#86868B',
-              fontSize: 34,
+              color: '#C7C7CC',
               cursor: 'pointer',
               '&:hover': { bgcolor: '#E8E8ED', color: '#1D1D1F' },
             }}
           >
-            ‹
+            <Box
+              component="span"
+              sx={{
+                width: 12,
+                height: 12,
+                ml: 0.5,
+                borderRight: '3px solid currentColor',
+                borderBottom: '3px solid currentColor',
+                transform: 'rotate(135deg)',
+              }}
+            />
           </Box>
           <Box
             component="button"
@@ -295,16 +307,28 @@ export function HomePage() {
               placeItems: 'center',
               width: 48,
               height: 48,
+              p: 0,
               border: 0,
+              boxSizing: 'border-box',
               borderRadius: '50%',
+              appearance: 'none',
               bgcolor: '#E8E8ED',
               color: '#6E6E73',
-              fontSize: 34,
               cursor: 'pointer',
               '&:hover': { bgcolor: '#D2D2D7', color: '#1D1D1F' },
             }}
           >
-            ›
+            <Box
+              component="span"
+              sx={{
+                width: 12,
+                height: 12,
+                mr: 0.5,
+                borderRight: '3px solid currentColor',
+                borderBottom: '3px solid currentColor',
+                transform: 'rotate(-45deg)',
+              }}
+            />
           </Box>
         </Stack>
       </Box>
