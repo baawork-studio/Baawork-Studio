@@ -55,8 +55,16 @@ export function AppShell({ children }: AppShellProps) {
         </Stack>
       </Box>
       {children}
-      <Box component="footer" id="contact" sx={{ py: 8, borderTop: `1px solid ${palette.border}` }}>
-        <Container maxWidth="lg">
+      <Box
+        component="footer"
+        id="contact"
+        sx={{
+          py: 8,
+          borderTop: `1px solid ${palette.border}`,
+          px: { xs: 3, sm: 4, md: 'max(24px, calc((100vw - 1628px) / 2))' },
+        }}
+      >
+        <Box>
           <Stack spacing={2}>
             <Typography variant="h4" fontWeight={800}>
               สร้างระบบถัดไปกับ Baawork Studio
@@ -65,7 +73,7 @@ export function AppShell({ children }: AppShellProps) {
               ระบบโชว์ผลงาน เครื่องมือหลังบ้าน และประสบการณ์ใช้งานที่เชื่อมต่อ API
             </Typography>
           </Stack>
-        </Container>
+        </Box>
       </Box>
     </Box>
   );
