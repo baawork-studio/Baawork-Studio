@@ -496,10 +496,11 @@ export function HomePage() {
           <Typography
             variant="h2"
             sx={{
-              color: palette.text,
+              color: palette.primaryPink,
               fontSize: { xs: 48, sm: 64, md: 82, lg: 96 },
               lineHeight: 1,
               fontWeight: 800,
+              textAlign: 'center',
             }}
           >
             ผลงาน Baawork
