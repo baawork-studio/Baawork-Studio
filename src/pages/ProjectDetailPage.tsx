@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Box, Button, Chip, Container, Grid, Stack, Typography } from '@mui/material';
 import { fetchProject, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
-import { palette } from '../theme';
+import { palette, typeScale } from '../theme';
 
 type ProjectDetailPageProps = {
   slug: string;
@@ -46,26 +46,26 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
           <Grid container spacing={5} alignItems="end">
             <Grid size={{ xs: 12, md: 7 }}>
               <Stack spacing={2}>
-                <Typography variant="overline" color="primary" fontWeight={800}>
+                <Typography variant="overline" color="primary">
                   รายละเอียดผลงาน
                 </Typography>
-                <Typography variant="h1" sx={{ fontSize: { xs: 48, md: 86 }, lineHeight: 0.95 }}>
+                <Typography variant="h1" sx={typeScale.hero}>
                   {project.title}
                 </Typography>
-                <Typography variant="h5" color="text.secondary" sx={{ lineHeight: 1.45 }}>
+                <Typography variant="h5" color="text.secondary">
                   {project.subtitle}
                 </Typography>
               </Stack>
             </Grid>
             <Grid size={{ xs: 12, md: 5 }}>
-              <Typography color="text.secondary" sx={{ lineHeight: 1.75 }}>
+              <Typography color="text.secondary" sx={typeScale.body}>
                 {project.description}
               </Typography>
             </Grid>
           </Grid>
 
           {status === 'fallback' && (
-            <Box sx={{ p: 2, borderRadius: 2, bgcolor: palette.accentYellow, fontWeight: 800 }}>
+            <Box sx={{ p: 2, borderRadius: 2, bgcolor: palette.accentYellow, fontWeight: 600 }}>
               กำลังแสดงเนื้อหาตัวอย่างในเครื่อง เพราะ API ยังไม่พร้อมใช้งาน
             </Box>
           )}
@@ -99,7 +99,7 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
           <Grid container spacing={4}>
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={2}>
-                <Typography variant="h4" fontWeight={800}>
+                <Typography variant="h4">
                   จุดเด่น
                 </Typography>
                 {project.highlights.map((highlight) => (
@@ -111,12 +111,12 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={2}>
-                <Typography variant="h4" fontWeight={800}>
+                <Typography variant="h4">
                   เทคโนโลยีที่ใช้
                 </Typography>
                 <Stack direction="row" flexWrap="wrap" gap={1}>
                   {project.stack.map((item) => (
-                    <Chip key={item} label={item} sx={{ bgcolor: palette.accentYellow, fontWeight: 800 }} />
+                    <Chip key={item} label={item} sx={{ bgcolor: palette.accentYellow, fontWeight: 600 }} />
                   ))}
                 </Stack>
               </Stack>

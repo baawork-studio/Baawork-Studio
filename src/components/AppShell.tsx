@@ -43,13 +43,13 @@ export function AppShell({ children }: AppShellProps) {
             transform: 'translate(-50%, -50%)',
           }}
         >
-          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px' }}>
+          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px', fontWeight: 400 }}>
             ผลงาน
           </Typography>
-          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px' }}>
+          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px', fontWeight: 400 }}>
             สตูดิโอ
           </Typography>
-          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px' }}>
+          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px', fontWeight: 400 }}>
             ติดต่อ
           </Typography>
         </Stack>
@@ -66,7 +66,7 @@ export function AppShell({ children }: AppShellProps) {
       >
         <Box>
           <Stack spacing={2}>
-            <Typography variant="h4" fontWeight={800}>
+            <Typography variant="h4">
               สร้างระบบถัดไปกับ Baawork Studio
             </Typography>
             <Typography color="text.secondary">

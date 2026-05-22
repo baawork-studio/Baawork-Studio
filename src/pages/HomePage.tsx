@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
-import { palette } from '../theme';
+import { palette, typeScale } from '../theme';
 
 type ShowcaseCard = {
   id: string;
@@ -281,9 +281,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                   variant="h3"
                   sx={{
                     color: '#fff',
-                    fontSize: { xs: 28, sm: 30, md: 31 },
-                    lineHeight: 1.16,
-                    fontWeight: 800,
+                    ...typeScale.cardTitle,
                     maxWidth: 430,
                   }}
                 >
@@ -292,8 +290,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                 <Typography
                   sx={{
                     color: 'rgba(255,255,255,0.78)',
-                    fontSize: { xs: 16, sm: 17, md: 18 },
-                    lineHeight: 1.45,
+                    ...typeScale.body,
                   }}
                 >
                   {project.shortDescription}
@@ -314,7 +311,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                   bgcolor: 'rgba(255,255,255,0.94)',
                   color: '#111827',
                   fontSize: { xs: 30, md: 36 },
-                  fontWeight: 700,
+                  fontWeight: 600,
                   lineHeight: 1,
                 }}
               >
@@ -447,8 +444,7 @@ export function HomePage() {
               sx={{
                 width: '100%',
                 color: '#fff',
-                fontSize: { xs: 48, sm: 72, md: 88, lg: 96 },
-                lineHeight: 1,
+                ...typeScale.hero,
                 textShadow: '0 18px 50px rgba(0,0,0,0.42)',
               }}
             >
@@ -459,9 +455,7 @@ export function HomePage() {
                 variant="h5"
                 sx={{
                   color: 'rgba(255,255,255,0.92)',
-                  fontSize: { xs: 20, md: 34 },
-                  lineHeight: 1.35,
-                  fontWeight: 400,
+                  ...typeScale.intro,
                   textShadow: '0 12px 34px rgba(0,0,0,0.48)',
                 }}
               >
@@ -497,9 +491,7 @@ export function HomePage() {
             variant="h2"
             sx={{
               color: palette.primaryPink,
-              fontSize: { xs: 48, sm: 64, md: 82, lg: 96 },
-              lineHeight: 1,
-              fontWeight: 800,
+              ...typeScale.hero,
               textAlign: 'center',
             }}
           >
@@ -522,9 +514,7 @@ export function HomePage() {
                 variant="h2"
                 sx={{
                   color: palette.text,
-                  fontSize: { xs: 32, sm: 42, md: 56, lg: 64 },
-                  lineHeight: 1.08,
-                  fontWeight: 800,
+                  ...typeScale.sectionTitle,
                 }}
               >
                 ระบบ AI ที่คิดทันงานจริง
@@ -532,8 +522,7 @@ export function HomePage() {
               <Typography
                 sx={{
                   color: '#4B5563',
-                  fontSize: { xs: 17, sm: 19, md: 22, lg: 24 },
-                  lineHeight: 1.45,
+                  ...typeScale.bodyLarge,
                   maxWidth: 760,
                 }}
               >
@@ -557,9 +546,7 @@ export function HomePage() {
                 variant="h2"
                 sx={{
                   color: palette.text,
-                  fontSize: { xs: 32, sm: 42, md: 56, lg: 64 },
-                  lineHeight: 1.08,
-                  fontWeight: 800,
+                  ...typeScale.sectionTitle,
                 }}
               >
                 ระบบ Web App สำหรับทีมที่ต้องทำงานเร็ว
@@ -567,8 +554,7 @@ export function HomePage() {
               <Typography
                 sx={{
                   color: '#4B5563',
-                  fontSize: { xs: 17, sm: 19, md: 22, lg: 24 },
-                  lineHeight: 1.45,
+                  ...typeScale.bodyLarge,
                   maxWidth: 760,
                 }}
               >
