@@ -140,7 +140,7 @@ const textLogo = (label: string) => (
 
 const toolSections: Array<{ title: string; logos: LogoItem[] }> = [
   {
-    title: 'Frontend',
+    title: 'หน้าบ้าน',
     logos: [
       { node: <SiReact />, title: 'React' },
       { node: <SiVite />, title: 'Vite' },
@@ -150,7 +150,7 @@ const toolSections: Array<{ title: string; logos: LogoItem[] }> = [
     ],
   },
   {
-    title: 'Backend',
+    title: 'หลังบ้าน',
     logos: [
       { node: <SiGo />, title: 'Go' },
       { node: textLogo('G'), title: 'Gin' },
@@ -160,7 +160,7 @@ const toolSections: Array<{ title: string; logos: LogoItem[] }> = [
     ],
   },
   {
-    title: 'Database',
+    title: 'ฐานข้อมูล',
     logos: [
       { node: <SiPostgresql />, title: 'PostgreSQL' },
       { node: <SiRedis />, title: 'Redis' },
@@ -169,7 +169,7 @@ const toolSections: Array<{ title: string; logos: LogoItem[] }> = [
     ],
   },
   {
-    title: 'Cloud / DevOps',
+    title: 'คลาวด์และเดฟออปส์',
     logos: [
       { node: <SiDocker />, title: 'Docker' },
       { node: <SiGithubactions />, title: 'GitHub Actions' },
@@ -754,7 +754,7 @@ function ToolLogoLoopSection() {
       }}
     >
       <Stack
-        spacing={{ xs: 4, md: 5 }}
+        spacing={{ xs: 3, md: 4 }}
         sx={{
           px: workCarouselGutter,
         }}
@@ -770,25 +770,25 @@ function ToolLogoLoopSection() {
           เครื่องมือที่เราเลือกใช้
         </Typography>
 
-        <Stack spacing={{ xs: 4, md: 4.75 }}>
+        <Stack spacing={{ xs: 2.5, md: 3 }}>
           {toolSections.map((section, index) => (
             <Box key={section.title}>
               <Typography
                 variant="h3"
                 sx={{
                   color: palette.text,
-                  fontSize: { xs: 30, sm: 36, md: 44 },
-                  lineHeight: 1.16,
+                  fontSize: { xs: 26, sm: 29, md: 32 },
+                  lineHeight: 1.14,
                   fontWeight: 600,
                   letterSpacing: 0,
                 }}
               >
-                {section.title.toUpperCase()}
+                {section.title}
               </Typography>
               <Box
                 sx={{
-                  mt: { xs: 1.5, md: 1.75 },
-                  height: { xs: 82, sm: 88, md: 96 },
+                  mt: { xs: 0.75, md: 1 },
+                  height: { xs: 58, sm: 62, md: 66 },
                   position: 'relative',
                   overflow: 'hidden',
                 }}
@@ -797,8 +797,8 @@ function ToolLogoLoopSection() {
                   logos={section.logos}
                   speed={index % 2 === 0 ? 72 : -72}
                   direction="left"
-                  logoHeight={34}
-                  gap={18}
+                  logoHeight={30}
+                  gap={14}
                   hoverSpeed={18}
                   fadeOut
                   fadeOutColor="#FFFFFF"
@@ -822,9 +822,9 @@ function ToolLogoLoopSection() {
                         sx={{
                           display: 'inline-flex',
                           alignItems: 'center',
-                          gap: { xs: 1.1, md: 1.25 },
-                          height: { xs: 58, md: 64 },
-                          px: { xs: 2, md: 2.25 },
+                          gap: { xs: 0.9, md: 1 },
+                          height: { xs: 44, md: 48 },
+                          px: { xs: 1.5, md: 1.75 },
                           borderRadius: '16px',
                           bgcolor: '#FFFFFF',
                           color: palette.text,
@@ -842,7 +842,7 @@ function ToolLogoLoopSection() {
                             display: 'inline-flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: { xs: 30, md: 34 },
+                            fontSize: { xs: 27, md: 30 },
                             lineHeight: 1,
                           }}
                         >
@@ -852,7 +852,7 @@ function ToolLogoLoopSection() {
                           component="span"
                           sx={{
                             color: 'inherit',
-                            fontSize: { xs: 15, md: 16 },
+                            fontSize: { xs: 14, md: 15 },
                             lineHeight: 1.25,
                             fontWeight: 600,
                             whiteSpace: 'nowrap',
