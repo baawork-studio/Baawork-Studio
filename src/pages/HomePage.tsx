@@ -4,6 +4,7 @@ import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette, typeScale } from '../theme';
 import carouselMobileImage from '../assets/carousel-mobile.png';
+import carouselMobileImageAlt from '../assets/carousel-mobile-2.png';
 
 type ShowcaseCard = {
   id: string;
@@ -11,7 +12,7 @@ type ShowcaseCard = {
   title: string;
   shortDescription: string;
   coverImageUrl: string;
-  presentation?: 'phoneAi';
+  presentation?: 'phoneAiLight' | 'phoneAiDark';
 };
 
 const aiShowcaseCards: ShowcaseCard[] = [
@@ -20,8 +21,8 @@ const aiShowcaseCards: ShowcaseCard[] = [
     slug: 'baawork-command-center',
     title: 'ศูนย์สั่งการ AI',
     shortDescription: 'ศูนย์วิเคราะห์งานแบบเรียลไทม์ที่สรุปสถานะ เคสเร่งด่วน และแนวโน้มความเสี่ยงให้ทีมตัดสินใจเร็วขึ้น',
-    coverImageUrl: carouselMobileImage,
-    presentation: 'phoneAi',
+    coverImageUrl: carouselMobileImageAlt,
+    presentation: 'phoneAiDark',
   },
   {
     id: 'ai-sales-forecast',
@@ -29,7 +30,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
     title: 'ระบบคาดการณ์ยอดขาย',
     shortDescription: 'แดชบอร์ดคาดการณ์ยอดขายและพฤติกรรมลูกค้าด้วยโมเดล Machine Learning สำหรับทีมบริหาร',
     coverImageUrl: carouselMobileImage,
-    presentation: 'phoneAi',
+    presentation: 'phoneAiLight',
   },
   {
     id: 'ai-document-review',
@@ -37,15 +38,15 @@ const aiShowcaseCards: ShowcaseCard[] = [
     title: 'ระบบอ่านเอกสาร AI',
     shortDescription: 'ระบบช่วยอ่านเอกสาร สกัดใจความสำคัญ และจัดหมวดหมู่คำขอจากหน้าจอเดียว',
     coverImageUrl: carouselMobileImage,
-    presentation: 'phoneAi',
+    presentation: 'phoneAiLight',
   },
   {
     id: 'ai-service-agent',
     slug: 'studio-booking-flow',
     title: 'ผู้ช่วยบริการอัตโนมัติ',
     shortDescription: 'ระบบผู้ช่วยตอบกลับอัตโนมัติที่ติดตามบทสนทนา งานค้าง และคุณภาพบริการของทีม',
-    coverImageUrl: carouselMobileImage,
-    presentation: 'phoneAi',
+    coverImageUrl: carouselMobileImageAlt,
+    presentation: 'phoneAiDark',
   },
   {
     id: 'ai-devops-monitor',
@@ -53,7 +54,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
     title: 'ระบบเฝ้าระวัง API',
     shortDescription: 'หน้าจอตรวจจับ anomaly ของระบบ API พร้อมแจ้งเตือนเหตุการณ์ผิดปกติก่อนกระทบผู้ใช้',
     coverImageUrl: carouselMobileImage,
-    presentation: 'phoneAi',
+    presentation: 'phoneAiLight',
   },
 ];
 
@@ -100,58 +101,64 @@ const workCarouselEdgeTolerance = 24;
 
 const aiPhoneScreens = [
   {
-    title: 'Command Center',
-    label: 'Risk score',
+    variant: 'command',
+    title: 'AI Command',
+    label: 'Risk Index',
     score: '87',
     delta: '+12%',
     items: [
-      ['Demand', 74],
-      ['Tickets', 52],
+      ['Critical', 74],
+      ['Queue', 52],
       ['Quality', 88],
     ],
   },
   {
-    title: 'Sales Forecast',
-    label: 'Revenue fit',
+    variant: 'forecast',
+    title: 'Forecast',
+    label: 'Revenue Fit',
     score: '92',
     delta: '+18%',
     items: [
-      ['Leads', 82],
+      ['Lead', 82],
       ['Pipeline', 69],
       ['Close', 91],
     ],
   },
   {
-    title: 'Document AI',
-    label: 'Review rate',
-    score: '78',
-    delta: '+24%',
-    items: [
-      ['Extract', 86],
-      ['Classify', 73],
-      ['Approve', 64],
+    variant: 'document',
+    title: 'Doc Reader',
+    label: 'Processed',
+    score: '128',
+    delta: 'docs',
+    documents: [
+      ['สัญญาเช่า', 'ผ่าน'],
+      ['ใบเสนอราคา', 'ตรวจ'],
+      ['คำขอใหม่', 'ด่วน'],
     ],
   },
   {
-    title: 'Service Agent',
-    label: 'Reply score',
+    variant: 'agent',
+    title: 'Service AI',
+    label: 'Reply Score',
     score: '95',
     delta: '+31%',
-    items: [
-      ['Queue', 58],
-      ['Answer', 94],
-      ['SLA', 89],
+    messages: [
+      ['ลูกค้ารอคำตอบ', 'AI สรุปประเด็นแล้ว'],
+      ['เคสเร่งด่วน', 'แนะนำขั้นตอนต่อไป'],
+      ['คุณภาพบริการ', 'อยู่ในเกณฑ์ดี'],
     ],
   },
   {
-    title: 'API Monitor',
-    label: 'Health score',
+    variant: 'monitor',
+    title: 'API Guard',
+    label: 'Health',
     score: '99',
     delta: '+7%',
-    items: [
-      ['Latency', 67],
-      ['Errors', 21],
-      ['Uptime', 99],
+    stats: [
+      ['Latency', '42ms'],
+      ['Error', '0.04%'],
+      ['Uptime', '99.9%'],
+      ['Load', '68%'],
     ],
   },
 ] as const;
@@ -243,8 +250,34 @@ function carouselControlSx(enabled: boolean) {
   };
 }
 
-function AiPhoneScreen({ index }: { index: number }) {
+function AiPhoneScreen({
+  index,
+  presentation,
+}: {
+  index: number;
+  presentation: NonNullable<ShowcaseCard['presentation']>;
+}) {
   const screen = aiPhoneScreens[index % aiPhoneScreens.length];
+  const isDarkPhone = presentation === 'phoneAiDark';
+  const screenFrame = isDarkPhone
+    ? {
+        left: '31.7%',
+        top: '38.6%',
+        width: '36.8%',
+        height: '43.6%',
+        borderRadius: '26px',
+      }
+    : {
+        left: '25.6%',
+        top: '33.3%',
+        width: '48.8%',
+        height: '56.9%',
+        borderRadius: '24px',
+      };
+  const textColor = isDarkPhone ? '#F9FAFB' : palette.text;
+  const mutedColor = isDarkPhone ? 'rgba(249,250,251,0.64)' : '#6B7280';
+  const panelColor = isDarkPhone ? 'rgba(255,255,255,0.08)' : '#FFFFFF';
+  const panelShadow = isDarkPhone ? 'none' : '0 8px 22px rgba(17,24,39,0.08)';
 
   return (
     <Box
@@ -252,15 +285,11 @@ function AiPhoneScreen({ index }: { index: number }) {
       data-phone-screen="true"
       sx={{
         position: 'absolute',
-        left: '25.6%',
-        top: '33.3%',
-        width: '48.8%',
-        height: '56.9%',
+        ...screenFrame,
         zIndex: 1,
         overflow: 'hidden',
-        borderRadius: '24px',
-        bgcolor: '#F7F8FA',
-        color: palette.text,
+        bgcolor: isDarkPhone ? '#161A22' : '#F7F8FA',
+        color: textColor,
         pointerEvents: 'none',
       }}
     >
@@ -268,14 +297,23 @@ function AiPhoneScreen({ index }: { index: number }) {
         sx={{
           height: '100%',
           p: '18px 14px',
-          background:
-            'linear-gradient(180deg, #FFFFFF 0%, #F7F8FA 48%, rgba(255,0,140,0.08) 100%)',
+          background: isDarkPhone
+            ? 'radial-gradient(circle at 22% 12%, rgba(255,0,140,0.28), transparent 34%), linear-gradient(180deg, #20242D 0%, #111827 100%)'
+            : 'linear-gradient(180deg, #FFFFFF 0%, #F7F8FA 48%, rgba(255,0,140,0.08) 100%)',
         }}
       >
-        <Stack spacing={1.2}>
+        <Stack spacing={1.2} sx={{ height: '100%' }}>
           <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: palette.primaryPink }} />
-            <Typography sx={{ fontSize: 10, lineHeight: 1, fontWeight: 600, color: '#6B7280' }}>
+            <Box
+              sx={{
+                width: 28,
+                height: 28,
+                borderRadius: '50%',
+                bgcolor: palette.primaryPink,
+                boxShadow: isDarkPhone ? '0 0 28px rgba(255,0,140,0.38)' : 'none',
+              }}
+            />
+            <Typography sx={{ fontSize: 10, lineHeight: 1, fontWeight: 600, color: mutedColor }}>
               AI LIVE
             </Typography>
           </Stack>
@@ -285,35 +323,122 @@ function AiPhoneScreen({ index }: { index: number }) {
               fontSize: 18,
               lineHeight: 1.08,
               fontWeight: 600,
-              color: palette.text,
+              color: textColor,
             }}
           >
             {screen.title}
           </Typography>
 
-          <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: '#111827', color: '#fff' }}>
-            <Typography sx={{ fontSize: 9, lineHeight: 1.2, color: 'rgba(255,255,255,0.64)' }}>{screen.label}</Typography>
-            <Stack direction="row" alignItems="flex-end" spacing={0.6}>
-              <Typography sx={{ fontSize: 30, lineHeight: 1, fontWeight: 600 }}>{screen.score}</Typography>
-              <Typography sx={{ pb: 0.35, fontSize: 10, color: palette.accentYellow }}>{screen.delta}</Typography>
-            </Stack>
-          </Box>
-
-          <Stack spacing={0.7}>
-            {screen.items.map(([label, width], itemIndex) => (
-              <Box key={label} sx={{ p: 1, borderRadius: '12px', bgcolor: '#FFFFFF', boxShadow: '0 8px 22px rgba(17,24,39,0.08)' }}>
-                <Stack direction="row" justifyContent="space-between" sx={{ mb: 0.7 }}>
-                  <Typography sx={{ fontSize: 8.5, fontWeight: 600, color: '#374151' }}>
-                    {label}
-                  </Typography>
-                  <Typography sx={{ fontSize: 8.5, color: '#6B7280' }}>{width}%</Typography>
+          {(screen.variant === 'command' || screen.variant === 'forecast') && (
+            <>
+              <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: isDarkPhone ? '#0B0F19' : '#111827', color: '#fff' }}>
+                <Typography sx={{ fontSize: 9, lineHeight: 1.2, color: 'rgba(255,255,255,0.64)' }}>{screen.label}</Typography>
+                <Stack direction="row" alignItems="flex-end" spacing={0.6}>
+                  <Typography sx={{ fontSize: 30, lineHeight: 1, fontWeight: 600 }}>{screen.score}</Typography>
+                  <Typography sx={{ pb: 0.35, fontSize: 10, color: palette.accentYellow }}>{screen.delta}</Typography>
                 </Stack>
-                <Box sx={{ height: 4, borderRadius: 999, bgcolor: '#E5E7EB', overflow: 'hidden' }}>
-                  <Box sx={{ width: `${width}%`, height: '100%', borderRadius: 999, bgcolor: itemIndex === 1 ? palette.primaryPink : '#111827' }} />
-                </Box>
               </Box>
-            ))}
-          </Stack>
+
+              <Stack spacing={0.7}>
+                {screen.items.map(([label, width], itemIndex) => (
+                  <Box key={label} sx={{ p: 1, borderRadius: '12px', bgcolor: panelColor, boxShadow: panelShadow }}>
+                    <Stack direction="row" justifyContent="space-between" sx={{ mb: 0.7 }}>
+                      <Typography sx={{ fontSize: 8.5, fontWeight: 600, color: textColor }}>
+                        {label}
+                      </Typography>
+                      <Typography sx={{ fontSize: 8.5, color: mutedColor }}>{width}%</Typography>
+                    </Stack>
+                    <Box sx={{ height: 4, borderRadius: 999, bgcolor: isDarkPhone ? 'rgba(255,255,255,0.14)' : '#E5E7EB', overflow: 'hidden' }}>
+                      <Box sx={{ width: `${width}%`, height: '100%', borderRadius: 999, bgcolor: itemIndex === 1 ? palette.primaryPink : isDarkPhone ? palette.accentYellow : '#111827' }} />
+                    </Box>
+                  </Box>
+                ))}
+              </Stack>
+            </>
+          )}
+
+          {screen.variant === 'document' && (
+            <Stack spacing={0.85}>
+              <Box sx={{ p: 1.2, borderRadius: '16px', bgcolor: '#111827', color: '#fff' }}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Typography sx={{ fontSize: 9, color: 'rgba(255,255,255,0.68)' }}>{screen.label}</Typography>
+                  <Typography sx={{ fontSize: 10, fontWeight: 600, color: palette.accentYellow }}>{screen.delta}</Typography>
+                </Stack>
+                <Typography sx={{ fontSize: 31, lineHeight: 1.05, fontWeight: 600 }}>{screen.score}</Typography>
+              </Box>
+              {screen.documents.map(([label, status], itemIndex) => (
+                <Stack key={label} direction="row" alignItems="center" spacing={0.9} sx={{ p: 1, borderRadius: '13px', bgcolor: panelColor, boxShadow: panelShadow }}>
+                  <Box sx={{ width: 20, height: 24, borderRadius: '6px', bgcolor: itemIndex === 2 ? palette.primaryPink : '#E5E7EB' }} />
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Typography sx={{ fontSize: 9, fontWeight: 600, color: textColor }}>{label}</Typography>
+                    <Typography sx={{ fontSize: 8, color: mutedColor }}>AI extract</Typography>
+                  </Box>
+                  <Typography sx={{ fontSize: 8.5, fontWeight: 600, color: itemIndex === 2 ? palette.primaryPink : mutedColor }}>{status}</Typography>
+                </Stack>
+              ))}
+            </Stack>
+          )}
+
+          {screen.variant === 'agent' && (
+            <Stack spacing={0.8}>
+              {screen.messages.map(([label, value], itemIndex) => (
+                <Box
+                  key={label}
+                  sx={{
+                    alignSelf: itemIndex % 2 === 0 ? 'flex-start' : 'flex-end',
+                    width: itemIndex % 2 === 0 ? '88%' : '78%',
+                    p: 1,
+                    borderRadius: itemIndex % 2 === 0 ? '14px 14px 14px 4px' : '14px 14px 4px 14px',
+                    bgcolor: itemIndex % 2 === 0 ? 'rgba(255,255,255,0.1)' : palette.primaryPink,
+                    color: '#fff',
+                  }}
+                >
+                  <Typography sx={{ fontSize: 8.5, fontWeight: 600 }}>{label}</Typography>
+                  <Typography sx={{ mt: 0.25, fontSize: 8, color: 'rgba(255,255,255,0.72)' }}>{value}</Typography>
+                </Box>
+              ))}
+              <Box sx={{ mt: 'auto', p: 1, borderRadius: 999, bgcolor: 'rgba(255,255,255,0.08)' }}>
+                <Typography sx={{ fontSize: 8.5, color: 'rgba(255,255,255,0.62)' }}>AI draft ready...</Typography>
+              </Box>
+            </Stack>
+          )}
+
+          {screen.variant === 'monitor' && (
+            <Stack spacing={0.9}>
+              <Box sx={{ p: 1.2, borderRadius: '16px', bgcolor: '#111827', color: '#fff' }}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Typography sx={{ fontSize: 9, color: 'rgba(255,255,255,0.68)' }}>{screen.label}</Typography>
+                  <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#4ADE80' }} />
+                </Stack>
+                <Typography sx={{ fontSize: 31, lineHeight: 1.05, fontWeight: 600 }}>{screen.score}</Typography>
+              </Box>
+              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0.8 }}>
+                {screen.stats.map(([label, value], itemIndex) => (
+                  <Box key={label} sx={{ p: 1, minHeight: 50, borderRadius: '12px', bgcolor: panelColor, boxShadow: panelShadow }}>
+                    <Typography sx={{ fontSize: 8, color: mutedColor }}>{label}</Typography>
+                    <Typography sx={{ mt: 0.4, fontSize: 13, lineHeight: 1, fontWeight: 600, color: itemIndex === 1 ? palette.primaryPink : textColor }}>{value}</Typography>
+                  </Box>
+                ))}
+              </Box>
+              <Box sx={{ height: 42, borderRadius: '14px', bgcolor: panelColor, boxShadow: panelShadow, overflow: 'hidden', position: 'relative' }}>
+                {[16, 48, 30, 66, 52, 82].map((height, barIndex) => (
+                  <Box
+                    key={barIndex}
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      left: `${10 + barIndex * 14}%`,
+                      width: 5,
+                      height,
+                      maxHeight: 28,
+                      borderRadius: 999,
+                      bgcolor: barIndex === 5 ? palette.primaryPink : isDarkPhone ? 'rgba(245,255,0,0.78)' : '#111827',
+                    }}
+                  />
+                ))}
+              </Box>
+            </Stack>
+          )}
         </Stack>
       </Box>
       <Box
@@ -326,6 +451,7 @@ function AiPhoneScreen({ index }: { index: number }) {
           borderRadius: 999,
           bgcolor: '#000',
           transform: 'translateX(-50%)',
+          boxShadow: isDarkPhone ? '0 0 0 1px rgba(255,255,255,0.04)' : 'none',
         }}
       />
     </Box>
@@ -363,7 +489,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
           }}
         />
         {cards.map((project, index) => {
-          const isPhoneAi = project.presentation === 'phoneAi';
+          const isPhoneAi = project.presentation === 'phoneAiLight' || project.presentation === 'phoneAiDark';
 
           return (
             <Box
@@ -397,7 +523,9 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                 },
               }}
             >
-              {isPhoneAi && <AiPhoneScreen index={index} />}
+              {isPhoneAi && project.presentation && (
+                <AiPhoneScreen index={index} presentation={project.presentation} />
+              )}
               <Box
                 component="img"
                 src={project.coverImageUrl}
