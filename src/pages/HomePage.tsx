@@ -796,16 +796,24 @@ function ToolStackSection() {
 
 const workflowPanels = [
   {
-    title: 'วางแผนและออกแบบ',
-    description: 'เริ่มจากเข้าใจเป้าหมาย ผู้ใช้จริง และ flow สำคัญ แล้วออกแบบหน้าจอให้ทีมเห็นภาพก่อนเริ่มพัฒนา',
-    imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1800&q=86',
-    links: ['ดูขั้นตอนวางแผน', 'ดูแนวทาง UX/UI'],
+    title: 'วิเคราะห์โจทย์',
+    description: 'เก็บเป้าหมาย ผู้ใช้จริง ข้อมูลที่ต้องใช้ และข้อจำกัดของระบบให้ชัดก่อนเริ่มงาน',
+    imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=86',
   },
   {
-    title: 'พัฒนาและส่งมอบ',
-    description: 'เชื่อมหน้าบ้าน หลังบ้าน ฐานข้อมูล และ API ให้เป็นระบบเดียว พร้อมตรวจงานก่อนส่งมอบใช้งานจริง',
-    imageUrl: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1800&q=86',
-    links: ['ดูขั้นตอนพัฒนา', 'ดูการส่งมอบระบบ'],
+    title: 'ออกแบบ UX/UI',
+    description: 'วางโครงหน้าจอ ลำดับการใช้งาน และรายละเอียดการโต้ตอบให้ทีมเห็นภาพเดียวกัน',
+    imageUrl: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=1400&q=86',
+  },
+  {
+    title: 'พัฒนาระบบ',
+    description: 'สร้างหน้าบ้าน หลังบ้าน ฐานข้อมูล และ API ให้เชื่อมต่อกันเป็นระบบที่ใช้งานได้จริง',
+    imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=86',
+  },
+  {
+    title: 'ทดสอบและส่งมอบ',
+    description: 'ตรวจการแสดงผลทุกหน้าจอ ความง่ายในการใช้งาน ความเร็ว และความพร้อมก่อนใช้งานจริง',
+    imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=86',
   },
 ];
 
@@ -816,7 +824,7 @@ function WorkflowSection() {
       id="workflow"
       sx={{
         bgcolor: palette.softGray,
-        py: { xs: 3.5, sm: 4, md: 5 },
+        py: { xs: 6, sm: 7, md: 8 },
       }}
     >
       <Box
@@ -824,11 +832,37 @@ function WorkflowSection() {
           px: workCarouselGutter,
         }}
       >
+        <Stack
+          spacing={1.25}
+          sx={{
+            maxWidth: { xs: '100%', md: 900, lg: 980 },
+            alignItems: 'flex-start',
+            textAlign: 'left',
+          }}
+        >
+          <Typography
+            variant="h2"
+            sx={{
+              color: palette.text,
+              ...typeScale.sectionTitle,
+              whiteSpace: { sm: 'nowrap' },
+            }}
+          >
+            กระบวนการทำงาน
+          </Typography>
+        </Stack>
+
         <Box
           sx={{
+            mt: workCarouselVerticalGap,
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
-            gap: { xs: 2, md: 2.4, lg: 3 },
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, minmax(0, 1fr))',
+              lg: 'repeat(2, minmax(0, 1fr))',
+            },
+            gap: { xs: 2, md: 2.5 },
+            pb: { xs: 1, md: 2 },
           }}
         >
           {workflowPanels.map((panel) => (
@@ -837,18 +871,28 @@ function WorkflowSection() {
               component="article"
               sx={{
                 position: 'relative',
-                minHeight: { xs: 520, sm: 600, md: 620, lg: 680 },
+                aspectRatio: '1 / 1',
                 overflow: 'hidden',
                 borderRadius: { xs: '24px', md: '28px' },
                 color: '#FFFFFF',
                 bgcolor: '#111827',
-                boxShadow: '0 24px 64px rgba(17,24,39,0.12)',
+                boxShadow: 'none',
+                transform: 'translate3d(0, 0, 0)',
+                transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
+                willChange: 'transform',
+                '&:hover': {
+                  transform: 'translate3d(0, -6px, 0)',
+                  boxShadow: '0 18px 40px rgba(17,24,39,0.14)',
+                },
+                '&:hover img': {
+                  transform: 'scale(1.035)',
+                },
               }}
             >
               <Box
                 component="img"
                 src={panel.imageUrl}
-                alt=""
+                alt={panel.title}
                 loading="lazy"
                 decoding="async"
                 sx={{
@@ -858,6 +902,9 @@ function WorkflowSection() {
                   height: '100%',
                   objectFit: 'cover',
                   filter: 'saturate(1.02) contrast(1.02)',
+                  transform: 'scale(1)',
+                  transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  willChange: 'transform',
                 }}
               />
               <Box
@@ -875,9 +922,9 @@ function WorkflowSection() {
                 sx={{
                   position: 'relative',
                   zIndex: 1,
-                  minHeight: { xs: 520, sm: 600, md: 620, lg: 680 },
-                  px: { xs: 3.5, sm: 5, md: 6, lg: 8 },
-                  py: { xs: 6, md: 8 },
+                  height: '100%',
+                  px: { xs: 3.25, sm: 3.5, md: 5, lg: 7 },
+                  py: { xs: 4.5, md: 6, lg: 8 },
                   textAlign: 'center',
                 }}
               >
@@ -885,7 +932,7 @@ function WorkflowSection() {
                   variant="h3"
                   sx={{
                     color: '#FFFFFF',
-                    fontSize: { xs: 40, sm: 48, md: 52, lg: 58 },
+                    fontSize: { xs: 34, sm: 34, md: 48, lg: 56 },
                     lineHeight: 1.08,
                     fontWeight: 600,
                     letterSpacing: 0,
@@ -896,9 +943,9 @@ function WorkflowSection() {
                 </Typography>
                 <Typography
                   sx={{
-                    maxWidth: 580,
+                    maxWidth: 560,
                     color: 'rgba(255,255,255,0.9)',
-                    fontSize: { xs: 20, sm: 22, md: 24, lg: 26 },
+                    fontSize: { xs: 17, sm: 17, md: 22, lg: 24 },
                     lineHeight: 1.38,
                     fontWeight: 400,
                     letterSpacing: 0,
@@ -907,31 +954,6 @@ function WorkflowSection() {
                 >
                   {panel.description}
                 </Typography>
-
-                <Stack spacing={{ xs: 0.75, md: 1 }} sx={{ pt: { xs: 1, md: 1.5 } }}>
-                  {panel.links.map((link) => (
-                    <Typography
-                      key={link}
-                      component="a"
-                      href="#contact"
-                      sx={{
-                        color: '#FFFFFF',
-                        textDecoration: 'none',
-                        fontSize: { xs: 18, sm: 20, md: 21 },
-                        lineHeight: 1.35,
-                        fontWeight: 400,
-                        letterSpacing: 0,
-                        textShadow: '0 2px 18px rgba(0,0,0,0.36)',
-                        transition: 'opacity 180ms ease',
-                        '&:hover': {
-                          opacity: 0.78,
-                        },
-                      }}
-                    >
-                      {link} ›
-                    </Typography>
-                  ))}
-                </Stack>
               </Stack>
             </Box>
           ))}
