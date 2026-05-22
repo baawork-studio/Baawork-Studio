@@ -101,24 +101,24 @@ const workCarouselVerticalGap = '24px';
 const workCarouselEdgeTolerance = 24;
 
 const toolLogos = [
-  { title: 'React', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/react.svg' },
-  { title: 'Vite', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/vite.svg' },
-  { title: 'TypeScript', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/typescript.svg' },
-  { title: 'MUI', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/mui.svg' },
-  { title: 'Axios', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/axios.svg' },
-  { title: 'Go', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/go.svg' },
-  { title: 'PostgreSQL', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/postgresql.svg' },
-  { title: 'Redis', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/redis.svg' },
-  { title: 'Docker', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/docker.svg' },
-  { title: 'GitHub', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/github.svg' },
-  { title: 'Vercel', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/vercel.svg' },
-  { title: 'Cloudflare', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/cloudflare.svg' },
-  { title: 'Google Cloud', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/google-cloud.svg' },
-  { title: 'Kubernetes', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/kubernetes.svg' },
-  { title: 'Node.js', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/nodejs.svg' },
-  { title: 'Git', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/git.svg' },
-  { title: 'Nginx', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/nginx.svg' },
-  { title: 'Figma', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/figma.svg' },
+  { title: 'React', src: 'https://thesvg.org/icons/react/default.svg' },
+  { title: 'Vite', src: 'https://thesvg.org/icons/vite/default.svg' },
+  { title: 'TypeScript', src: 'https://thesvg.org/icons/typescript/default.svg' },
+  { title: 'MUI', src: 'https://thesvg.org/icons/mui/default.svg' },
+  { title: 'Axios', src: 'https://thesvg.org/icons/axios/default.svg' },
+  { title: 'Go', src: 'https://thesvg.org/icons/go/dark.svg', invert: true },
+  { title: 'PostgreSQL', src: 'https://thesvg.org/icons/postgresql/default.svg' },
+  { title: 'Redis', src: 'https://thesvg.org/icons/redis/default.svg' },
+  { title: 'Docker', src: 'https://thesvg.org/icons/docker/default.svg' },
+  { title: 'GitHub', src: 'https://thesvg.org/icons/github/default.svg' },
+  { title: 'Vercel', src: 'https://thesvg.org/icons/vercel/dark.svg', invert: true },
+  { title: 'Cloudflare', src: 'https://thesvg.org/icons/cloudflare/default.svg' },
+  { title: 'Google Cloud', src: 'https://thesvg.org/icons/google-cloud/default.svg' },
+  { title: 'Kubernetes', src: 'https://thesvg.org/icons/kubernetes/default.svg' },
+  { title: 'GitHub Actions', src: 'https://thesvg.org/icons/github-actions/default.svg' },
+  { title: 'Git', src: 'https://thesvg.org/icons/git/default.svg' },
+  { title: 'Nginx', src: 'https://thesvg.org/icons/nginx/default.svg' },
+  { title: 'Figma', src: 'https://thesvg.org/icons/figma/default.svg' },
 ];
 
 const aiPhoneScreens = [
@@ -780,7 +780,9 @@ function ToolStackSection() {
                   width: { xs: 34, sm: 38, md: 44 },
                   height: { xs: 34, sm: 38, md: 44 },
                   objectFit: 'contain',
-                  filter: 'drop-shadow(0 10px 24px rgba(17,24,39,0.12))',
+                  filter: tool.invert
+                    ? 'invert(1) drop-shadow(0 10px 24px rgba(17,24,39,0.12))'
+                    : 'drop-shadow(0 10px 24px rgba(17,24,39,0.12))',
                   position: 'relative',
                   zIndex: 1,
                 }}
