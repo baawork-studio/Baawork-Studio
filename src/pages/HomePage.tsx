@@ -459,7 +459,7 @@ export function HomePage() {
                   textShadow: '0 12px 34px rgba(0,0,0,0.48)',
                 }}
               >
-                เราออกแบบและพัฒนาระบบสำหรับโชว์ผลงาน พร้อมหน้าตาที่ประณีต เครื่องมือหลังบ้านที่ใช้งานจริง และเวิร์กโฟลว์ที่เชื่อมต่อ API
+                สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ ประสบการณ์ใช้งาน และเทคโนโลยีให้พร้อมใช้งานในธุรกิจจริง
               </Typography>
               <Button
                 href="#work"
@@ -515,9 +515,10 @@ export function HomePage() {
                 sx={{
                   color: palette.text,
                   ...typeScale.sectionTitle,
+                  whiteSpace: { sm: 'nowrap' },
                 }}
               >
-                ระบบ AI ที่คิดทันงานจริง
+                ระบบ AI อัจฉริยะ
               </Typography>
             </Stack>
             <ShowcaseCarousel cards={aiShowcaseCards} label="ผลงานระบบ AI" />
@@ -538,9 +539,10 @@ export function HomePage() {
                 sx={{
                   color: palette.text,
                   ...typeScale.sectionTitle,
+                  whiteSpace: { sm: 'nowrap' },
                 }}
               >
-                ระบบ Web App สำหรับทีมที่ต้องทำงานเร็ว
+                ระบบ Web App
               </Typography>
             </Stack>
             <ShowcaseCarousel cards={webAppShowcaseCards} label="ผลงานระบบ Web App" />
