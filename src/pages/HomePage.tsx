@@ -3,6 +3,7 @@ import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette, typeScale } from '../theme';
+import carouselMobileImage from '../assets/carousel-mobile.png';
 
 type ShowcaseCard = {
   id: string;
@@ -10,6 +11,7 @@ type ShowcaseCard = {
   title: string;
   shortDescription: string;
   coverImageUrl: string;
+  presentation?: 'phoneAi';
 };
 
 const aiShowcaseCards: ShowcaseCard[] = [
@@ -18,7 +20,8 @@ const aiShowcaseCards: ShowcaseCard[] = [
     slug: 'baawork-command-center',
     title: 'ศูนย์สั่งการ AI',
     shortDescription: 'ศูนย์วิเคราะห์งานแบบเรียลไทม์ที่สรุปสถานะ เคสเร่งด่วน และแนวโน้มความเสี่ยงให้ทีมตัดสินใจเร็วขึ้น',
-    coverImageUrl: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=80',
+    coverImageUrl: carouselMobileImage,
+    presentation: 'phoneAi',
   },
   {
     id: 'ai-sales-forecast',
@@ -178,6 +181,93 @@ function carouselControlSx(enabled: boolean) {
   };
 }
 
+function AiPhoneScreen() {
+  return (
+    <Box
+      aria-hidden="true"
+      data-phone-screen="true"
+      sx={{
+        position: 'absolute',
+        left: '25.6%',
+        top: '33.3%',
+        width: '48.8%',
+        height: '56.9%',
+        zIndex: 1,
+        overflow: 'hidden',
+        borderRadius: '24px',
+        bgcolor: '#F7F8FA',
+        color: palette.text,
+        pointerEvents: 'none',
+      }}
+    >
+      <Box
+        sx={{
+          height: '100%',
+          p: '18px 14px',
+          background:
+            'linear-gradient(180deg, #FFFFFF 0%, #F7F8FA 48%, rgba(255,0,140,0.08) 100%)',
+        }}
+      >
+        <Stack spacing={1.2}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: palette.primaryPink }} />
+            <Typography sx={{ fontSize: 10, lineHeight: 1, fontWeight: 600, color: '#6B7280' }}>
+              AI LIVE
+            </Typography>
+          </Stack>
+
+          <Typography
+            sx={{
+              fontSize: 18,
+              lineHeight: 1.08,
+              fontWeight: 600,
+              color: palette.text,
+            }}
+          >
+            Command Center
+          </Typography>
+
+          <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: '#111827', color: '#fff' }}>
+            <Typography sx={{ fontSize: 9, lineHeight: 1.2, color: 'rgba(255,255,255,0.64)' }}>Risk score</Typography>
+            <Stack direction="row" alignItems="flex-end" spacing={0.6}>
+              <Typography sx={{ fontSize: 30, lineHeight: 1, fontWeight: 600 }}>87</Typography>
+              <Typography sx={{ pb: 0.35, fontSize: 10, color: palette.accentYellow }}>+12%</Typography>
+            </Stack>
+          </Box>
+
+          <Stack spacing={0.7}>
+            {[74, 52, 88].map((width, index) => (
+              <Box key={width} sx={{ p: 1, borderRadius: '12px', bgcolor: '#FFFFFF', boxShadow: '0 8px 22px rgba(17,24,39,0.08)' }}>
+                <Stack direction="row" justifyContent="space-between" sx={{ mb: 0.7 }}>
+                  <Typography sx={{ fontSize: 8.5, fontWeight: 600, color: '#374151' }}>
+                    {['Demand', 'Tickets', 'Quality'][index]}
+                  </Typography>
+                  <Typography sx={{ fontSize: 8.5, color: '#6B7280' }}>{width}%</Typography>
+                </Stack>
+                <Box sx={{ height: 4, borderRadius: 999, bgcolor: '#E5E7EB', overflow: 'hidden' }}>
+                  <Box sx={{ width: `${width}%`, height: '100%', borderRadius: 999, bgcolor: index === 1 ? palette.primaryPink : '#111827' }} />
+                </Box>
+              </Box>
+            ))}
+          </Stack>
+        </Stack>
+      </Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          left: '50%',
+          top: 10,
+          width: 54,
+          height: 17,
+          borderRadius: 999,
+          bgcolor: '#000',
+          transform: 'translateX(-50%)',
+        }}
+      />
+    </Box>
+  );
+}
+
 function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: string }) {
   const { carouselRef, carouselState, scrollCards } = useShowcaseCarousel();
 
@@ -209,6 +299,8 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
           }}
         />
         {cards.map((project) => {
+          const isPhoneAi = project.presentation === 'phoneAi';
+
           return (
             <Box
               key={project.id}
@@ -237,10 +329,11 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                   zIndex: 2,
                 },
                 '&:hover img': {
-                  transform: 'scale(1.035)',
+                  transform: isPhoneAi ? 'scale(1)' : 'scale(1.035)',
                 },
               }}
             >
+              {isPhoneAi && <AiPhoneScreen />}
               <Box
                 component="img"
                 src={project.coverImageUrl}
@@ -254,10 +347,12 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  filter: 'saturate(1.04) contrast(1.02)',
+                  filter: isPhoneAi ? 'saturate(1.02) contrast(1.02)' : 'saturate(1.04) contrast(1.02)',
                   transform: 'scale(1)',
                   transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
                   willChange: 'transform',
+                  zIndex: 0,
+                  pointerEvents: 'none',
                 }}
               />
               <Box
@@ -265,14 +360,17 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.42) 36%, rgba(0,0,0,0.10) 72%, rgba(0,0,0,0.18) 100%)',
+                    isPhoneAi
+                      ? 'linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.12) 42%, rgba(0,0,0,0.18) 100%)'
+                      : 'linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.42) 36%, rgba(0,0,0,0.10) 72%, rgba(0,0,0,0.18) 100%)',
+                  zIndex: 3,
                 }}
               />
               <Stack
                 spacing={{ xs: 1.7, md: 2.5 }}
                 sx={{
                   position: 'relative',
-                  zIndex: 1,
+                  zIndex: 4,
                   p: { xs: '28px', md: '32px' },
                   pr: { xs: '32px', md: '34px' },
                 }}
@@ -302,7 +400,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                   position: 'absolute',
                   right: { xs: 22, md: 28 },
                   bottom: { xs: 22, md: 28 },
-                  zIndex: 1,
+                  zIndex: 4,
                   display: 'grid',
                   placeItems: 'center',
                   width: { xs: 44, md: 52 },
