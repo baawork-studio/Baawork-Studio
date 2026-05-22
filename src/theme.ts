@@ -74,7 +74,7 @@ export const theme = createTheme({
   },
   typography: {
     fontFamily:
-      '"Noto Sans Thai", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      '"Roboto", "Noto Sans Thai", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     h1: {
       fontSize: '48px',
       lineHeight: 1.05,
