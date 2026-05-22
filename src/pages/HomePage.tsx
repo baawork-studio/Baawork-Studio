@@ -187,7 +187,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
         ref={carouselRef}
         aria-label={label}
         sx={{
-          mt: { xs: 3, md: 4 },
+          mt: { xs: 1, md: 1.5 },
           display: 'flex',
           gap: { xs: 2, md: '20px' },
           overflowX: 'auto',
