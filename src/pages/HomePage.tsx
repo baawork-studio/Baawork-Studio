@@ -28,28 +28,32 @@ const aiShowcaseCards: ShowcaseCard[] = [
     slug: 'studio-booking-flow',
     title: 'ระบบคาดการณ์ยอดขาย',
     shortDescription: 'แดชบอร์ดคาดการณ์ยอดขายและพฤติกรรมลูกค้าด้วยโมเดล Machine Learning สำหรับทีมบริหาร',
-    coverImageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+    coverImageUrl: carouselMobileImage,
+    presentation: 'phoneAi',
   },
   {
     id: 'ai-document-review',
     slug: 'baawork-command-center',
     title: 'ระบบอ่านเอกสาร AI',
     shortDescription: 'ระบบช่วยอ่านเอกสาร สกัดใจความสำคัญ และจัดหมวดหมู่คำขอจากหน้าจอเดียว',
-    coverImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+    coverImageUrl: carouselMobileImage,
+    presentation: 'phoneAi',
   },
   {
     id: 'ai-service-agent',
     slug: 'studio-booking-flow',
     title: 'ผู้ช่วยบริการอัตโนมัติ',
     shortDescription: 'ระบบผู้ช่วยตอบกลับอัตโนมัติที่ติดตามบทสนทนา งานค้าง และคุณภาพบริการของทีม',
-    coverImageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+    coverImageUrl: carouselMobileImage,
+    presentation: 'phoneAi',
   },
   {
     id: 'ai-devops-monitor',
     slug: 'baawork-command-center',
     title: 'ระบบเฝ้าระวัง API',
     shortDescription: 'หน้าจอตรวจจับ anomaly ของระบบ API พร้อมแจ้งเตือนเหตุการณ์ผิดปกติก่อนกระทบผู้ใช้',
-    coverImageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80',
+    coverImageUrl: carouselMobileImage,
+    presentation: 'phoneAi',
   },
 ];
 
@@ -93,6 +97,64 @@ const webAppShowcaseCards: ShowcaseCard[] = [
 
 const workCarouselGutter = 'clamp(24px, 6.27vw, 127.5px)';
 const workCarouselEdgeTolerance = 24;
+
+const aiPhoneScreens = [
+  {
+    title: 'Command Center',
+    label: 'Risk score',
+    score: '87',
+    delta: '+12%',
+    items: [
+      ['Demand', 74],
+      ['Tickets', 52],
+      ['Quality', 88],
+    ],
+  },
+  {
+    title: 'Sales Forecast',
+    label: 'Revenue fit',
+    score: '92',
+    delta: '+18%',
+    items: [
+      ['Leads', 82],
+      ['Pipeline', 69],
+      ['Close', 91],
+    ],
+  },
+  {
+    title: 'Document AI',
+    label: 'Review rate',
+    score: '78',
+    delta: '+24%',
+    items: [
+      ['Extract', 86],
+      ['Classify', 73],
+      ['Approve', 64],
+    ],
+  },
+  {
+    title: 'Service Agent',
+    label: 'Reply score',
+    score: '95',
+    delta: '+31%',
+    items: [
+      ['Queue', 58],
+      ['Answer', 94],
+      ['SLA', 89],
+    ],
+  },
+  {
+    title: 'API Monitor',
+    label: 'Health score',
+    score: '99',
+    delta: '+7%',
+    items: [
+      ['Latency', 67],
+      ['Errors', 21],
+      ['Uptime', 99],
+    ],
+  },
+] as const;
 
 function useShowcaseCarousel() {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -181,7 +243,9 @@ function carouselControlSx(enabled: boolean) {
   };
 }
 
-function AiPhoneScreen() {
+function AiPhoneScreen({ index }: { index: number }) {
+  const screen = aiPhoneScreens[index % aiPhoneScreens.length];
+
   return (
     <Box
       aria-hidden="true"
@@ -224,28 +288,28 @@ function AiPhoneScreen() {
               color: palette.text,
             }}
           >
-            Command Center
+            {screen.title}
           </Typography>
 
           <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: '#111827', color: '#fff' }}>
-            <Typography sx={{ fontSize: 9, lineHeight: 1.2, color: 'rgba(255,255,255,0.64)' }}>Risk score</Typography>
+            <Typography sx={{ fontSize: 9, lineHeight: 1.2, color: 'rgba(255,255,255,0.64)' }}>{screen.label}</Typography>
             <Stack direction="row" alignItems="flex-end" spacing={0.6}>
-              <Typography sx={{ fontSize: 30, lineHeight: 1, fontWeight: 600 }}>87</Typography>
-              <Typography sx={{ pb: 0.35, fontSize: 10, color: palette.accentYellow }}>+12%</Typography>
+              <Typography sx={{ fontSize: 30, lineHeight: 1, fontWeight: 600 }}>{screen.score}</Typography>
+              <Typography sx={{ pb: 0.35, fontSize: 10, color: palette.accentYellow }}>{screen.delta}</Typography>
             </Stack>
           </Box>
 
           <Stack spacing={0.7}>
-            {[74, 52, 88].map((width, index) => (
-              <Box key={width} sx={{ p: 1, borderRadius: '12px', bgcolor: '#FFFFFF', boxShadow: '0 8px 22px rgba(17,24,39,0.08)' }}>
+            {screen.items.map(([label, width], itemIndex) => (
+              <Box key={label} sx={{ p: 1, borderRadius: '12px', bgcolor: '#FFFFFF', boxShadow: '0 8px 22px rgba(17,24,39,0.08)' }}>
                 <Stack direction="row" justifyContent="space-between" sx={{ mb: 0.7 }}>
                   <Typography sx={{ fontSize: 8.5, fontWeight: 600, color: '#374151' }}>
-                    {['Demand', 'Tickets', 'Quality'][index]}
+                    {label}
                   </Typography>
                   <Typography sx={{ fontSize: 8.5, color: '#6B7280' }}>{width}%</Typography>
                 </Stack>
                 <Box sx={{ height: 4, borderRadius: 999, bgcolor: '#E5E7EB', overflow: 'hidden' }}>
-                  <Box sx={{ width: `${width}%`, height: '100%', borderRadius: 999, bgcolor: index === 1 ? palette.primaryPink : '#111827' }} />
+                  <Box sx={{ width: `${width}%`, height: '100%', borderRadius: 999, bgcolor: itemIndex === 1 ? palette.primaryPink : '#111827' }} />
                 </Box>
               </Box>
             ))}
@@ -298,7 +362,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
             width: workCarouselGutter,
           }}
         />
-        {cards.map((project) => {
+        {cards.map((project, index) => {
           const isPhoneAi = project.presentation === 'phoneAi';
 
           return (
@@ -333,7 +397,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
                 },
               }}
             >
-              {isPhoneAi && <AiPhoneScreen />}
+              {isPhoneAi && <AiPhoneScreen index={index} />}
               <Box
                 component="img"
                 src={project.coverImageUrl}
