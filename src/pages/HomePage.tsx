@@ -794,26 +794,18 @@ function ToolStackSection() {
   );
 }
 
-const workflowSteps = [
+const workflowPanels = [
   {
-    number: '01',
-    title: 'วิเคราะห์โจทย์',
-    description: 'เข้าใจเป้าหมาย ผู้ใช้จริง ข้อมูลที่ต้องใช้ และข้อจำกัดของระบบก่อนเริ่มออกแบบ',
+    title: 'วางแผนและออกแบบ',
+    description: 'เริ่มจากเข้าใจเป้าหมาย ผู้ใช้จริง และ flow สำคัญ แล้วออกแบบหน้าจอให้ทีมเห็นภาพก่อนเริ่มพัฒนา',
+    imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1800&q=86',
+    links: ['ดูขั้นตอนวางแผน', 'ดูแนวทาง UX/UI'],
   },
   {
-    number: '02',
-    title: 'ออกแบบประสบการณ์',
-    description: 'วางหน้าจอหลัก ลำดับการใช้งาน สถานะของระบบ และรายละเอียด UX/UI ที่ทีมใช้งานได้จริง',
-  },
-  {
-    number: '03',
-    title: 'พัฒนาระบบ',
-    description: 'สร้าง frontend, backend, database, API และ workflow ให้เชื่อมต่อกันเป็นระบบเดียว',
-  },
-  {
-    number: '04',
-    title: 'ทดสอบและส่งมอบ',
-    description: 'ตรวจ responsive, performance, usability และเตรียมระบบให้พร้อมใช้งานต่อใน production',
+    title: 'พัฒนาและส่งมอบ',
+    description: 'เชื่อมหน้าบ้าน หลังบ้าน ฐานข้อมูล และ API ให้เป็นระบบเดียว พร้อมตรวจงานก่อนส่งมอบใช้งานจริง',
+    imageUrl: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1800&q=86',
+    links: ['ดูขั้นตอนพัฒนา', 'ดูการส่งมอบระบบ'],
   },
 ];
 
@@ -821,105 +813,130 @@ function WorkflowSection() {
   return (
     <Box
       component="section"
+      id="workflow"
       sx={{
         bgcolor: palette.softGray,
-        py: { xs: 7, sm: 8, md: 10 },
+        py: { xs: 3.5, sm: 4, md: 5 },
       }}
     >
-      <Stack
-        spacing={{ xs: 4, md: 5.5 }}
+      <Box
         sx={{
           px: workCarouselGutter,
         }}
       >
-        <Stack
-          spacing={{ xs: 1.75, md: 2.25 }}
-          sx={{
-            maxWidth: 1080,
-          }}
-        >
-          <Typography
-            variant="h2"
-            sx={{
-              color: palette.primaryPink,
-              fontSize: { xs: 44, sm: 56, md: 72, lg: 84 },
-              lineHeight: 1.05,
-              fontWeight: 600,
-              letterSpacing: 0,
-            }}
-          >
-            ทำระบบจากไอเดียให้ใช้งานได้จริง
-          </Typography>
-          <Typography
-            sx={{
-              maxWidth: 780,
-              color: '#4B5563',
-              ...typeScale.bodyLarge,
-            }}
-          >
-            เราวางแผน ออกแบบ พัฒนา และตรวจงานเป็นขั้นตอน เพื่อให้ทุกหน้าจอ ทุก API และทุก workflow พร้อมใช้งานในธุรกิจจริง
-          </Typography>
-        </Stack>
-
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(4, minmax(0, 1fr))' },
-            gap: { xs: 1.5, md: 2 },
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
+            gap: { xs: 2, md: 2.4, lg: 3 },
           }}
         >
-          {workflowSteps.map((step) => (
+          {workflowPanels.map((panel) => (
             <Box
-              key={step.number}
+              key={panel.title}
+              component="article"
               sx={{
-                minHeight: { xs: 230, md: 300 },
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                p: { xs: 3, md: 3.5 },
-                borderRadius: '28px',
-                bgcolor: '#FFFFFF',
-                boxShadow: '0 16px 42px rgba(17,24,39,0.06)',
+                position: 'relative',
+                minHeight: { xs: 520, sm: 600, md: 620, lg: 680 },
+                overflow: 'hidden',
+                borderRadius: { xs: '24px', md: '28px' },
+                color: '#FFFFFF',
+                bgcolor: '#111827',
+                boxShadow: '0 24px 64px rgba(17,24,39,0.12)',
               }}
             >
-              <Typography
-                aria-hidden="true"
+              <Box
+                component="img"
+                src={panel.imageUrl}
+                alt=""
+                loading="lazy"
+                decoding="async"
                 sx={{
-                  color: 'rgba(255,0,140,0.18)',
-                  fontSize: { xs: 56, md: 70 },
-                  lineHeight: 0.95,
-                  fontWeight: 700,
-                  letterSpacing: 0,
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'saturate(1.02) contrast(1.02)',
+                }}
+              />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  background:
+                    'linear-gradient(180deg, rgba(0,0,0,0.24) 0%, rgba(0,0,0,0.40) 42%, rgba(0,0,0,0.62) 100%)',
+                }}
+              />
+              <Stack
+                spacing={{ xs: 1.9, md: 2.35 }}
+                alignItems="center"
+                justifyContent="center"
+                sx={{
+                  position: 'relative',
+                  zIndex: 1,
+                  minHeight: { xs: 520, sm: 600, md: 620, lg: 680 },
+                  px: { xs: 3.5, sm: 5, md: 6, lg: 8 },
+                  py: { xs: 6, md: 8 },
+                  textAlign: 'center',
                 }}
               >
-                {step.number}
-              </Typography>
-              <Stack spacing={1.25}>
                 <Typography
                   variant="h3"
                   sx={{
-                    color: palette.text,
-                    fontSize: { xs: 26, md: 30 },
-                    lineHeight: 1.16,
+                    color: '#FFFFFF',
+                    fontSize: { xs: 40, sm: 48, md: 52, lg: 58 },
+                    lineHeight: 1.08,
                     fontWeight: 600,
                     letterSpacing: 0,
+                    textShadow: '0 3px 22px rgba(0,0,0,0.34)',
                   }}
                 >
-                  {step.title}
+                  {panel.title}
                 </Typography>
                 <Typography
                   sx={{
-                    color: '#4B5563',
-                    ...typeScale.body,
+                    maxWidth: 580,
+                    color: 'rgba(255,255,255,0.9)',
+                    fontSize: { xs: 20, sm: 22, md: 24, lg: 26 },
+                    lineHeight: 1.38,
+                    fontWeight: 400,
+                    letterSpacing: 0,
+                    textShadow: '0 2px 18px rgba(0,0,0,0.34)',
                   }}
                 >
-                  {step.description}
+                  {panel.description}
                 </Typography>
+
+                <Stack spacing={{ xs: 0.75, md: 1 }} sx={{ pt: { xs: 1, md: 1.5 } }}>
+                  {panel.links.map((link) => (
+                    <Typography
+                      key={link}
+                      component="a"
+                      href="#contact"
+                      sx={{
+                        color: '#FFFFFF',
+                        textDecoration: 'none',
+                        fontSize: { xs: 18, sm: 20, md: 21 },
+                        lineHeight: 1.35,
+                        fontWeight: 400,
+                        letterSpacing: 0,
+                        textShadow: '0 2px 18px rgba(0,0,0,0.36)',
+                        transition: 'opacity 180ms ease',
+                        '&:hover': {
+                          opacity: 0.78,
+                        },
+                      }}
+                    >
+                      {link} ›
+                    </Typography>
+                  ))}
+                </Stack>
               </Stack>
             </Box>
           ))}
         </Box>
-      </Stack>
+      </Box>
     </Box>
   );
 }
