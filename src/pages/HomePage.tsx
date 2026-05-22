@@ -755,15 +755,14 @@ function ToolStackSection() {
                 placeItems: 'center',
                 position: 'relative',
                 borderRadius: { xs: '18px', md: '20px' },
-                border: `1px solid ${palette.border}`,
-                bgcolor: '#FFFFFF',
-                boxShadow: '0 14px 36px rgba(17,24,39,0.06)',
+                bgcolor: '#F7F8FA',
+                boxShadow: '0 16px 36px rgba(17,24,39,0.06)',
                 transition:
-                  'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color 260ms ease, background-color 260ms ease',
+                  'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), background-color 260ms ease, box-shadow 260ms ease',
                 '&:hover': {
                   transform: 'translate3d(0, -4px, 0)',
-                  borderColor: 'rgba(255,0,140,0.42)',
-                  bgcolor: '#FFFFFF',
+                  bgcolor: '#F3F4F6',
+                  boxShadow: '0 20px 42px rgba(17,24,39,0.1)',
                 },
               }}
             >
