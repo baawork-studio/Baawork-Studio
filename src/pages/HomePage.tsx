@@ -1,24 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
-import {
-  SiAxios,
-  SiCloudflare,
-  SiDocker,
-  SiGithubactions,
-  SiGo,
-  SiGooglecloud,
-  SiKubernetes,
-  SiMui,
-  SiPostgresql,
-  SiReact,
-  SiRedis,
-  SiTypescript,
-  SiVercel,
-  SiVite,
-} from 'react-icons/si';
 import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
-import LogoLoop, { type LogoItem } from '../components/LogoLoop';
 import { palette, typeScale } from '../theme';
 import carouselMobileImage from '../assets/carousel-mobile.png';
 import carouselMobileImageAlt from '../assets/carousel-mobile-2.png';
@@ -117,68 +100,25 @@ const workCarouselGutter = 'clamp(24px, 6.27vw, 127.5px)';
 const workCarouselVerticalGap = '24px';
 const workCarouselEdgeTolerance = 24;
 
-const textLogo = (label: string) => (
-  <Box
-    component="span"
-    sx={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: label.length > 1 ? `${Math.max(1.65, label.length * 0.58)}em` : '1em',
-      height: '1em',
-      borderRadius: '0.22em',
-      bgcolor: palette.text,
-      color: '#FFFFFF',
-      fontSize: '0.72em',
-      fontWeight: 700,
-      lineHeight: 1,
-    }}
-  >
-    {label}
-  </Box>
-);
-
-const toolSections: Array<{ title: string; logos: LogoItem[] }> = [
-  {
-    title: 'หน้าบ้าน',
-    logos: [
-      { node: <SiReact />, title: 'React' },
-      { node: <SiVite />, title: 'Vite' },
-      { node: <SiTypescript />, title: 'TypeScript' },
-      { node: <SiMui />, title: 'MUI' },
-      { node: <SiAxios />, title: 'Axios' },
-    ],
-  },
-  {
-    title: 'หลังบ้าน',
-    logos: [
-      { node: <SiGo />, title: 'Go' },
-      { node: textLogo('G'), title: 'Gin' },
-      { node: textLogo('API'), title: 'REST API' },
-      { node: textLogo('JWT'), title: 'JWT' },
-      { node: textLogo('SQL'), title: 'SQL' },
-    ],
-  },
-  {
-    title: 'ฐานข้อมูล',
-    logos: [
-      { node: <SiPostgresql />, title: 'PostgreSQL' },
-      { node: <SiRedis />, title: 'Redis' },
-      { node: textLogo('IDX'), title: 'Indexing' },
-      { node: textLogo('Q'), title: 'Query Design' },
-    ],
-  },
-  {
-    title: 'คลาวด์และเดฟออปส์',
-    logos: [
-      { node: <SiDocker />, title: 'Docker' },
-      { node: <SiGithubactions />, title: 'GitHub Actions' },
-      { node: <SiVercel />, title: 'Vercel' },
-      { node: <SiCloudflare />, title: 'Cloudflare' },
-      { node: <SiGooglecloud />, title: 'Google Cloud' },
-      { node: <SiKubernetes />, title: 'Kubernetes' },
-    ],
-  },
+const toolLogos = [
+  { title: 'React', fallback: 'R', src: 'https://svgl.app/library/react.svg' },
+  { title: 'Vite', fallback: 'V', src: 'https://svgl.app/library/vitejs.svg' },
+  { title: 'TypeScript', fallback: 'TS', src: 'https://svgl.app/library/typescript.svg' },
+  { title: 'MUI', fallback: 'M', src: 'https://svgl.app/library/material-ui.svg' },
+  { title: 'Axios', fallback: 'AX', src: 'https://svgl.app/library/axios.svg' },
+  { title: 'Go', fallback: 'GO', src: 'https://svgl.app/library/golang.svg', invert: true },
+  { title: 'PostgreSQL', fallback: 'PG', src: 'https://svgl.app/library/postgresql.svg' },
+  { title: 'Redis', fallback: 'RD', src: 'https://svgl.app/library/redis.svg' },
+  { title: 'Docker', fallback: 'DK', src: 'https://svgl.app/library/docker.svg' },
+  { title: 'GitHub', fallback: 'GH', src: 'https://svgl.app/library/github_dark.svg' },
+  { title: 'Vercel', fallback: 'VC', src: 'https://svgl.app/library/vercel_dark.svg' },
+  { title: 'Cloudflare', fallback: 'CF', src: 'https://svgl.app/library/cloudflare.svg' },
+  { title: 'Google Cloud', fallback: 'GC', src: 'https://svgl.app/library/google-cloud.svg' },
+  { title: 'Kubernetes', fallback: 'K8', src: 'https://svgl.app/library/kubernetes.svg' },
+  { title: 'Node.js', fallback: 'JS', src: 'https://svgl.app/library/nodejs.svg' },
+  { title: 'Git', fallback: 'GT', src: 'https://svgl.app/library/git.svg' },
+  { title: 'Nginx', fallback: 'NX', src: 'https://svgl.app/library/nginx.svg' },
+  { title: 'Figma', fallback: 'FG', src: 'https://svgl.app/library/figma.svg' },
 ];
 
 const aiPhoneScreens = [
@@ -744,131 +684,145 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
   );
 }
 
-function ToolLogoLoopSection() {
+function ToolStackSection() {
   return (
     <Box
       component="section"
       sx={{
-        bgcolor: '#FFFFFF',
+        bgcolor: '#050910',
+        color: '#FFFFFF',
         py: { xs: 7, sm: 8, md: 10 },
       }}
     >
-      <Stack
-        spacing={{ xs: 3, md: 4 }}
+      <Box
         sx={{
           px: workCarouselGutter,
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: 'minmax(360px, 0.85fr) minmax(420px, 1fr)' },
+          alignItems: 'center',
+          gap: { xs: 5, md: 7, lg: 9 },
         }}
       >
-        <Typography
-          variant="h2"
+        <Stack
+          spacing={{ xs: 2, md: 2.5 }}
           sx={{
-            color: palette.primaryPink,
-            ...typeScale.hero,
-            textAlign: 'center',
+            maxWidth: 620,
+            alignItems: 'flex-start',
+            textAlign: 'left',
           }}
         >
-          เครื่องมือที่เราเลือกใช้
-        </Typography>
+          <Typography
+            variant="h2"
+            sx={{
+              color: '#FFFFFF',
+              fontSize: { xs: 46, sm: 58, md: 70, lg: 76 },
+              lineHeight: 1.05,
+              fontWeight: 600,
+              letterSpacing: 0,
+            }}
+          >
+            เครื่องมือที่เราใช้
+          </Typography>
+          <Typography
+            sx={{
+              maxWidth: 560,
+              color: 'rgba(255,255,255,0.62)',
+              ...typeScale.bodyLarge,
+            }}
+          >
+            เราเลือกใช้เครื่องมือที่เสถียร เชื่อมต่อกันได้ดี และเหมาะกับงานจริง ตั้งแต่หน้าบ้าน หลังบ้าน ฐานข้อมูล ไปจนถึงระบบ deploy และดูแล production
+          </Typography>
+          <Box
+            sx={{
+              mt: { xs: 1, md: 1.5 },
+              width: 78,
+              height: 4,
+              borderRadius: 999,
+              bgcolor: palette.primaryPink,
+            }}
+          />
+        </Stack>
 
-        <Stack spacing={{ xs: 2.5, md: 3 }}>
-          {toolSections.map((section, index) => (
-            <Box key={section.title}>
-              <Typography
-                variant="h3"
-                sx={{
-                  color: palette.text,
-                  fontSize: { xs: 26, sm: 29, md: 32 },
-                  lineHeight: 1.14,
-                  fontWeight: 600,
-                  letterSpacing: 0,
-                }}
-              >
-                {section.title}
-              </Typography>
+        <Box
+          aria-label="เครื่องมือและเทคโนโลยีที่ใช้"
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: 'repeat(4, minmax(0, 1fr))', sm: 'repeat(6, minmax(0, 1fr))' },
+            gap: { xs: 1.25, sm: 1.5, md: 1.8 },
+            justifySelf: { xs: 'stretch', md: 'end' },
+            width: '100%',
+            maxWidth: { xs: '100%', md: 590 },
+          }}
+        >
+          {toolLogos.map((tool) => (
+            <Box
+              key={tool.title}
+              title={tool.title}
+              sx={{
+                aspectRatio: '1 / 1',
+                display: 'grid',
+                placeItems: 'center',
+                position: 'relative',
+                borderRadius: { xs: '18px', md: '20px' },
+                border: '1px solid rgba(255,255,255,0.09)',
+                bgcolor: 'rgba(255,255,255,0.025)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
+                transition:
+                  'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color 260ms ease, background-color 260ms ease',
+                '&:hover': {
+                  transform: 'translate3d(0, -4px, 0)',
+                  borderColor: 'rgba(255,0,140,0.42)',
+                  bgcolor: 'rgba(255,255,255,0.05)',
+                },
+              }}
+            >
               <Box
+                component="img"
+                src={tool.src}
+                alt={tool.title}
+                loading="lazy"
+                decoding="async"
+                onLoad={(event) => {
+                  const fallback = event.currentTarget.nextElementSibling as HTMLElement | null;
+                  if (fallback) fallback.style.display = 'none';
+                }}
+                onError={(event) => {
+                  const fallback = event.currentTarget.nextElementSibling as HTMLElement | null;
+                  event.currentTarget.style.display = 'none';
+                  if (fallback) fallback.style.display = 'grid';
+                }}
                 sx={{
-                  mt: { xs: 0.75, md: 1 },
-                  height: { xs: 58, sm: 62, md: 66 },
+                  width: { xs: 34, sm: 38, md: 44 },
+                  height: { xs: 34, sm: 38, md: 44 },
+                  objectFit: 'contain',
+                  filter: tool.invert
+                    ? 'invert(1) drop-shadow(0 10px 24px rgba(0,0,0,0.24))'
+                    : 'drop-shadow(0 10px 24px rgba(0,0,0,0.24))',
                   position: 'relative',
-                  overflow: 'hidden',
+                  zIndex: 1,
+                }}
+              />
+              <Typography
+                component="span"
+                sx={{
+                  color: '#FFFFFF',
+                  fontSize: { xs: 18, md: 20 },
+                  lineHeight: 1,
+                  fontWeight: 700,
+                  textAlign: 'center',
+                  px: 0.75,
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'grid',
+                  placeItems: 'center',
                 }}
               >
-                <LogoLoop
-                  logos={section.logos}
-                  speed={index % 2 === 0 ? 72 : -72}
-                  direction="left"
-                  logoHeight={30}
-                  gap={14}
-                  hoverSpeed={18}
-                  fadeOut
-                  fadeOutColor="#FFFFFF"
-                  ariaLabel={`${section.title} tools`}
-                  renderItem={(item, key) => {
-                    const title = 'node' in item ? item.title : (item.alt ?? item.title);
-                    const visual = 'node' in item ? (
-                      item.node
-                    ) : (
-                      <Box
-                        component="img"
-                        src={item.src}
-                        alt={item.alt ?? ''}
-                        sx={{ height: 34, width: 'auto', objectFit: 'contain' }}
-                      />
-                    );
-
-                    return (
-                      <Box
-                        key={key}
-                        sx={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: { xs: 0.9, md: 1 },
-                          height: { xs: 44, md: 48 },
-                          px: { xs: 1.5, md: 1.75 },
-                          borderRadius: '16px',
-                          bgcolor: '#FFFFFF',
-                          color: palette.text,
-                          transition:
-                            'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), color 260ms ease',
-                          '&:hover': {
-                            transform: 'translate3d(0, -3px, 0)',
-                            color: palette.primaryPink,
-                          },
-                        }}
-                      >
-                        <Box
-                          component="span"
-                          sx={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: { xs: 27, md: 30 },
-                            lineHeight: 1,
-                          }}
-                        >
-                          {visual}
-                        </Box>
-                        <Typography
-                          component="span"
-                          sx={{
-                            color: 'inherit',
-                            fontSize: { xs: 14, md: 15 },
-                            lineHeight: 1.25,
-                            fontWeight: 600,
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          {title}
-                        </Typography>
-                      </Box>
-                    );
-                  }}
-                />
-              </Box>
+                {tool.fallback}
+              </Typography>
             </Box>
           ))}
-        </Stack>
-      </Stack>
+        </Box>
+      </Box>
     </Box>
   );
 }
@@ -1050,7 +1004,7 @@ export function HomePage() {
           </Box>
         </Stack>
 
-        <ToolLogoLoopSection />
+        <ToolStackSection />
       </Box>
     </Box>
   );
