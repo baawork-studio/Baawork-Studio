@@ -519,15 +519,6 @@ export function HomePage() {
               >
                 ระบบ AI ที่คิดทันงานจริง
               </Typography>
-              <Typography
-                sx={{
-                  color: '#4B5563',
-                  ...typeScale.bodyLarge,
-                  maxWidth: 760,
-                }}
-              >
-                ออกแบบประสบการณ์ AI สำหรับอ่านข้อมูล วิเคราะห์สัญญาณสำคัญ และช่วยทีมตัดสินใจจากหน้าจอที่ใช้งานง่าย
-              </Typography>
             </Stack>
             <ShowcaseCarousel cards={aiShowcaseCards} label="ผลงานระบบ AI" />
           </Box>
@@ -550,15 +541,6 @@ export function HomePage() {
                 }}
               >
                 ระบบ Web App สำหรับทีมที่ต้องทำงานเร็ว
-              </Typography>
-              <Typography
-                sx={{
-                  color: '#4B5563',
-                  ...typeScale.bodyLarge,
-                  maxWidth: 760,
-                }}
-              >
-                เว็บแอปสำหรับงานหลังบ้าน แดชบอร์ด และเวิร์กโฟลว์ธุรกิจที่เชื่อมข้อมูลจริง ใช้งานง่าย และขยายต่อได้
               </Typography>
             </Stack>
             <ShowcaseCarousel cards={webAppShowcaseCards} label="ผลงานระบบ Web App" />
