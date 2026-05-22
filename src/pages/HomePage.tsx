@@ -817,6 +817,84 @@ const workflowPanels = [
   },
 ];
 
+const resultCards = [
+  {
+    title: 'ระบบพร้อมใช้งานจริง',
+    highlight: 'ตั้งแต่วันส่งมอบ',
+    color: palette.primaryPink,
+    icon: 'screen',
+    size: 'large',
+  },
+  {
+    title: 'หน้าจอใช้งานง่าย',
+    highlight: 'ลดเวลาทำงานของทีม',
+    color: '#6D5BFF',
+    icon: 'spark',
+    size: 'compact',
+  },
+  {
+    title: 'ข้อมูลเชื่อมต่อครบ',
+    highlight: 'ทั้ง API และฐานข้อมูล',
+    color: '#0F9DA8',
+    icon: 'data',
+    size: 'compact',
+  },
+  {
+    title: 'ต่อยอดได้ในอนาคต',
+    highlight: 'รองรับการขยายระบบ',
+    color: '#F15A24',
+    icon: 'growth',
+    size: 'large',
+  },
+] as const;
+
+function ResultIcon({ icon, color }: { icon: (typeof resultCards)[number]['icon']; color: string }) {
+  const common = {
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 2.2,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+  };
+
+  return (
+    <Box
+      component="svg"
+      viewBox="0 0 48 48"
+      aria-hidden="true"
+      sx={{
+        width: { xs: 42, md: 48 },
+        height: { xs: 42, md: 48 },
+        color,
+      }}
+    >
+      {icon === 'screen' && (
+        <>
+          <rect x="8" y="10" width="32" height="22" rx="4" {...common} />
+          <path d="M18 38h12M24 32v6M15 19h8M15 25h16" {...common} />
+        </>
+      )}
+      {icon === 'spark' && (
+        <>
+          <path d="M25 5 13 25h11l-2 18 13-24H24l1-14Z" {...common} />
+        </>
+      )}
+      {icon === 'data' && (
+        <>
+          <path d="M12 16c0-4 5.4-7 12-7s12 3 12 7-5.4 7-12 7-12-3-12-7Z" {...common} />
+          <path d="M12 16v16c0 4 5.4 7 12 7s12-3 12-7V16M12 24c0 4 5.4 7 12 7s12-3 12-7" {...common} />
+        </>
+      )}
+      {icon === 'growth' && (
+        <>
+          <path d="M9 34h30M14 30V19M24 30V12M34 30V21" {...common} />
+          <path d="M14 19l6 5 9-12 5 5" {...common} />
+        </>
+      )}
+    </Box>
+  );
+}
+
 function WorkflowSection() {
   return (
     <Box
@@ -956,6 +1034,182 @@ function WorkflowSection() {
                 </Typography>
               </Stack>
             </Box>
+          ))}
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
+function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
+  const isLarge = card.size === 'large';
+
+  return (
+    <Box
+      component="article"
+      sx={{
+        position: 'relative',
+        minHeight: isLarge
+          ? { xs: 430, sm: 520, md: 570, lg: 620 }
+          : { xs: 250, sm: 280, md: 310, lg: 340 },
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: isLarge ? 'flex-start' : 'center',
+        gap: { xs: 2.2, md: 2.8 },
+        p: isLarge
+          ? { xs: '34px 28px 0', sm: '42px 36px 0', md: '54px 54px 0' }
+          : { xs: 3.5, sm: 4, md: 5 },
+        overflow: 'hidden',
+        borderRadius: { xs: '28px', md: '34px' },
+        bgcolor: '#FFFFFF',
+        boxShadow: '0 18px 48px rgba(17,24,39,0.055)',
+        transform: 'translate3d(0, 0, 0)',
+        transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
+        willChange: 'transform',
+        '&:hover': {
+          transform: 'translate3d(0, -6px, 0)',
+          boxShadow: '0 24px 56px rgba(17,24,39,0.11)',
+        },
+      }}
+    >
+      <Box sx={{ transform: isLarge ? 'scale(1.06)' : 'scale(1)', transformOrigin: 'center' }}>
+        <ResultIcon icon={card.icon} color={card.color} />
+      </Box>
+
+      <Typography
+        variant="h3"
+        sx={{
+          maxWidth: isLarge ? 520 : 470,
+          color: '#6E6E73',
+          textAlign: 'center',
+          fontSize: isLarge
+            ? { xs: 30, sm: 36, md: 42, lg: 46 }
+            : { xs: 28, sm: 32, md: 37, lg: 40 },
+          lineHeight: 1.18,
+          fontWeight: 600,
+          letterSpacing: 0,
+        }}
+      >
+        {card.title}{' '}
+        <Box component="span" sx={{ color: card.color }}>
+          {card.highlight}
+        </Box>
+      </Typography>
+
+      {isLarge && (
+        <Box
+          aria-hidden="true"
+          sx={{
+            mt: 'auto',
+            width: '112%',
+            maxWidth: 720,
+            height: { xs: 170, sm: 230, md: 270, lg: 310 },
+            position: 'relative',
+          }}
+        >
+          {card.icon === 'screen' ? (
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: '0 6% -18px',
+                borderRadius: '24px 24px 0 0',
+                border: '10px solid #111827',
+                bgcolor: '#F7F8FA',
+                overflow: 'hidden',
+                boxShadow: '0 -16px 42px rgba(17,24,39,0.1)',
+              }}
+            >
+              <Box
+                sx={{
+                  height: '100%',
+                  background:
+                    'linear-gradient(135deg, rgba(255,0,140,0.18), transparent 38%), linear-gradient(180deg, #FFFFFF 0%, #F3F4F6 100%)',
+                }}
+              />
+              {[18, 36, 54].map((top, index) => (
+                <Box
+                  key={top}
+                  sx={{
+                    position: 'absolute',
+                    left: '12%',
+                    right: `${24 + index * 10}%`,
+                    top: `${top}%`,
+                    height: 10,
+                    borderRadius: 999,
+                    bgcolor: index === 1 ? card.color : '#D1D5DB',
+                  }}
+                />
+              ))}
+            </Box>
+          ) : (
+            <Stack spacing={{ xs: 2, md: 2.5 }} sx={{ pt: { xs: 2, md: 3 } }}>
+              {['#EEF7FA', '#E7ECEF', '#F3EFE7', '#111827'].map((barColor, index) => (
+                <Box
+                  key={barColor}
+                  sx={{
+                    height: { xs: 18, md: 22 },
+                    borderRadius: 999,
+                    bgcolor: barColor,
+                    boxShadow: '0 10px 24px rgba(17,24,39,0.08)',
+                    transform: `translateX(${index % 2 === 0 ? '-4%' : '4%'})`,
+                  }}
+                />
+              ))}
+            </Stack>
+          )}
+        </Box>
+      )}
+    </Box>
+  );
+}
+
+function ResultsSection() {
+  const leftCards = [resultCards[0], resultCards[2]];
+  const rightCards = [resultCards[1], resultCards[3]];
+
+  return (
+    <Box
+      component="section"
+      id="results"
+      sx={{
+        bgcolor: palette.softGray,
+        color: palette.text,
+        py: { xs: 7, sm: 8, md: 10, lg: 12 },
+      }}
+    >
+      <Box sx={{ px: workCarouselGutter }}>
+        <Typography
+          variant="h2"
+          sx={{
+            mx: 'auto',
+            maxWidth: 'none',
+            color: palette.text,
+            textAlign: 'center',
+            whiteSpace: 'nowrap',
+            fontSize: 'clamp(18px, 4.7vw, 72px)',
+            lineHeight: 1.12,
+            fontWeight: 600,
+            letterSpacing: 0,
+          }}
+        >
+          สิ่งที่ลูกค้าจะได้หลังจบโปรเจกต์
+        </Typography>
+
+        <Box
+          sx={{
+            mt: { xs: 5, md: 7 },
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
+            gap: { xs: 2, md: 3 },
+          }}
+        >
+          {[leftCards, rightCards].map((column, columnIndex) => (
+            <Stack key={columnIndex} spacing={{ xs: 2, md: 3 }}>
+              {column.map((card) => (
+                <ResultCard key={card.title} card={card} />
+              ))}
+            </Stack>
           ))}
         </Box>
       </Box>
@@ -1142,6 +1396,7 @@ export function HomePage() {
 
         <ToolStackSection />
         <WorkflowSection />
+        <ResultsSection />
       </Box>
     </Box>
   );
