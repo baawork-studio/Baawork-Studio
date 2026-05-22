@@ -101,24 +101,24 @@ const workCarouselVerticalGap = '24px';
 const workCarouselEdgeTolerance = 24;
 
 const toolLogos = [
-  { title: 'React', fallback: 'R', src: 'https://svgl.app/library/react.svg' },
-  { title: 'Vite', fallback: 'V', src: 'https://svgl.app/library/vitejs.svg' },
-  { title: 'TypeScript', fallback: 'TS', src: 'https://svgl.app/library/typescript.svg' },
-  { title: 'MUI', fallback: 'M', src: 'https://svgl.app/library/material-ui.svg' },
-  { title: 'Axios', fallback: 'AX', src: 'https://svgl.app/library/axios.svg' },
-  { title: 'Go', fallback: 'GO', src: 'https://svgl.app/library/golang.svg', invert: true },
-  { title: 'PostgreSQL', fallback: 'PG', src: 'https://svgl.app/library/postgresql.svg' },
-  { title: 'Redis', fallback: 'RD', src: 'https://svgl.app/library/redis.svg' },
-  { title: 'Docker', fallback: 'DK', src: 'https://svgl.app/library/docker.svg' },
-  { title: 'GitHub', fallback: 'GH', src: 'https://svgl.app/library/github_dark.svg' },
-  { title: 'Vercel', fallback: 'VC', src: 'https://svgl.app/library/vercel_dark.svg' },
-  { title: 'Cloudflare', fallback: 'CF', src: 'https://svgl.app/library/cloudflare.svg' },
-  { title: 'Google Cloud', fallback: 'GC', src: 'https://svgl.app/library/google-cloud.svg' },
-  { title: 'Kubernetes', fallback: 'K8', src: 'https://svgl.app/library/kubernetes.svg' },
-  { title: 'Node.js', fallback: 'JS', src: 'https://svgl.app/library/nodejs.svg' },
-  { title: 'Git', fallback: 'GT', src: 'https://svgl.app/library/git.svg' },
-  { title: 'Nginx', fallback: 'NX', src: 'https://svgl.app/library/nginx.svg' },
-  { title: 'Figma', fallback: 'FG', src: 'https://svgl.app/library/figma.svg' },
+  { title: 'React', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/react.svg' },
+  { title: 'Vite', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/vite.svg' },
+  { title: 'TypeScript', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/typescript.svg' },
+  { title: 'MUI', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/mui.svg' },
+  { title: 'Axios', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/axios.svg' },
+  { title: 'Go', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/go.svg' },
+  { title: 'PostgreSQL', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/postgresql.svg' },
+  { title: 'Redis', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/redis.svg' },
+  { title: 'Docker', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/docker.svg' },
+  { title: 'GitHub', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/github.svg' },
+  { title: 'Vercel', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/vercel.svg' },
+  { title: 'Cloudflare', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/cloudflare.svg' },
+  { title: 'Google Cloud', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/google-cloud.svg' },
+  { title: 'Kubernetes', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/kubernetes.svg' },
+  { title: 'Node.js', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/nodejs.svg' },
+  { title: 'Git', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/git.svg' },
+  { title: 'Nginx', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/nginx.svg' },
+  { title: 'Figma', src: 'https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/figma.svg' },
 ];
 
 const aiPhoneScreens = [
@@ -689,8 +689,8 @@ function ToolStackSection() {
     <Box
       component="section"
       sx={{
-        bgcolor: '#050910',
-        color: '#FFFFFF',
+        bgcolor: '#FFFFFF',
+        color: palette.text,
         py: { xs: 7, sm: 8, md: 10 },
       }}
     >
@@ -714,7 +714,7 @@ function ToolStackSection() {
           <Typography
             variant="h2"
             sx={{
-              color: '#FFFFFF',
+              color: palette.primaryPink,
               fontSize: { xs: 46, sm: 58, md: 70, lg: 76 },
               lineHeight: 1.05,
               fontWeight: 600,
@@ -726,21 +726,12 @@ function ToolStackSection() {
           <Typography
             sx={{
               maxWidth: 560,
-              color: 'rgba(255,255,255,0.62)',
+              color: '#4B5563',
               ...typeScale.bodyLarge,
             }}
           >
             เราเลือกใช้เครื่องมือที่เสถียร เชื่อมต่อกันได้ดี และเหมาะกับงานจริง ตั้งแต่หน้าบ้าน หลังบ้าน ฐานข้อมูล ไปจนถึงระบบ deploy และดูแล production
           </Typography>
-          <Box
-            sx={{
-              mt: { xs: 1, md: 1.5 },
-              width: 78,
-              height: 4,
-              borderRadius: 999,
-              bgcolor: palette.primaryPink,
-            }}
-          />
         </Stack>
 
         <Box
@@ -764,15 +755,15 @@ function ToolStackSection() {
                 placeItems: 'center',
                 position: 'relative',
                 borderRadius: { xs: '18px', md: '20px' },
-                border: '1px solid rgba(255,255,255,0.09)',
-                bgcolor: 'rgba(255,255,255,0.025)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
+                border: `1px solid ${palette.border}`,
+                bgcolor: '#FFFFFF',
+                boxShadow: '0 14px 36px rgba(17,24,39,0.06)',
                 transition:
                   'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), border-color 260ms ease, background-color 260ms ease',
                 '&:hover': {
                   transform: 'translate3d(0, -4px, 0)',
                   borderColor: 'rgba(255,0,140,0.42)',
-                  bgcolor: 'rgba(255,255,255,0.05)',
+                  bgcolor: '#FFFFFF',
                 },
               }}
             >
@@ -782,43 +773,18 @@ function ToolStackSection() {
                 alt={tool.title}
                 loading="lazy"
                 decoding="async"
-                onLoad={(event) => {
-                  const fallback = event.currentTarget.nextElementSibling as HTMLElement | null;
-                  if (fallback) fallback.style.display = 'none';
-                }}
                 onError={(event) => {
-                  const fallback = event.currentTarget.nextElementSibling as HTMLElement | null;
                   event.currentTarget.style.display = 'none';
-                  if (fallback) fallback.style.display = 'grid';
                 }}
                 sx={{
                   width: { xs: 34, sm: 38, md: 44 },
                   height: { xs: 34, sm: 38, md: 44 },
                   objectFit: 'contain',
-                  filter: tool.invert
-                    ? 'invert(1) drop-shadow(0 10px 24px rgba(0,0,0,0.24))'
-                    : 'drop-shadow(0 10px 24px rgba(0,0,0,0.24))',
+                  filter: 'drop-shadow(0 10px 24px rgba(17,24,39,0.12))',
                   position: 'relative',
                   zIndex: 1,
                 }}
               />
-              <Typography
-                component="span"
-                sx={{
-                  color: '#FFFFFF',
-                  fontSize: { xs: 18, md: 20 },
-                  lineHeight: 1,
-                  fontWeight: 700,
-                  textAlign: 'center',
-                  px: 0.75,
-                  position: 'absolute',
-                  inset: 0,
-                  display: 'grid',
-                  placeItems: 'center',
-                }}
-              >
-                {tool.fallback}
-              </Typography>
             </Box>
           ))}
         </Box>
