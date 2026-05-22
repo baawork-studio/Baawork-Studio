@@ -794,6 +794,136 @@ function ToolStackSection() {
   );
 }
 
+const workflowSteps = [
+  {
+    number: '01',
+    title: 'วิเคราะห์โจทย์',
+    description: 'เข้าใจเป้าหมาย ผู้ใช้จริง ข้อมูลที่ต้องใช้ และข้อจำกัดของระบบก่อนเริ่มออกแบบ',
+  },
+  {
+    number: '02',
+    title: 'ออกแบบประสบการณ์',
+    description: 'วางหน้าจอหลัก ลำดับการใช้งาน สถานะของระบบ และรายละเอียด UX/UI ที่ทีมใช้งานได้จริง',
+  },
+  {
+    number: '03',
+    title: 'พัฒนาระบบ',
+    description: 'สร้าง frontend, backend, database, API และ workflow ให้เชื่อมต่อกันเป็นระบบเดียว',
+  },
+  {
+    number: '04',
+    title: 'ทดสอบและส่งมอบ',
+    description: 'ตรวจ responsive, performance, usability และเตรียมระบบให้พร้อมใช้งานต่อใน production',
+  },
+];
+
+function WorkflowSection() {
+  return (
+    <Box
+      component="section"
+      sx={{
+        bgcolor: palette.softGray,
+        py: { xs: 7, sm: 8, md: 10 },
+      }}
+    >
+      <Stack
+        spacing={{ xs: 4, md: 5.5 }}
+        sx={{
+          px: workCarouselGutter,
+        }}
+      >
+        <Stack
+          spacing={{ xs: 1.75, md: 2.25 }}
+          sx={{
+            maxWidth: 1080,
+          }}
+        >
+          <Typography
+            variant="h2"
+            sx={{
+              color: palette.primaryPink,
+              fontSize: { xs: 44, sm: 56, md: 72, lg: 84 },
+              lineHeight: 1.05,
+              fontWeight: 600,
+              letterSpacing: 0,
+            }}
+          >
+            ทำระบบจากไอเดียให้ใช้งานได้จริง
+          </Typography>
+          <Typography
+            sx={{
+              maxWidth: 780,
+              color: '#4B5563',
+              ...typeScale.bodyLarge,
+            }}
+          >
+            เราวางแผน ออกแบบ พัฒนา และตรวจงานเป็นขั้นตอน เพื่อให้ทุกหน้าจอ ทุก API และทุก workflow พร้อมใช้งานในธุรกิจจริง
+          </Typography>
+        </Stack>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(4, minmax(0, 1fr))' },
+            gap: { xs: 1.5, md: 2 },
+          }}
+        >
+          {workflowSteps.map((step) => (
+            <Box
+              key={step.number}
+              sx={{
+                minHeight: { xs: 230, md: 300 },
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                p: { xs: 3, md: 3.5 },
+                borderRadius: '28px',
+                bgcolor: '#FFFFFF',
+                boxShadow: '0 16px 42px rgba(17,24,39,0.06)',
+              }}
+            >
+              <Typography
+                aria-hidden="true"
+                sx={{
+                  color: 'rgba(255,0,140,0.18)',
+                  fontSize: { xs: 56, md: 70 },
+                  lineHeight: 0.95,
+                  fontWeight: 700,
+                  letterSpacing: 0,
+                }}
+              >
+                {step.number}
+              </Typography>
+              <Stack spacing={1.25}>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    color: palette.text,
+                    fontSize: { xs: 26, md: 30 },
+                    lineHeight: 1.16,
+                    fontWeight: 600,
+                    letterSpacing: 0,
+                  }}
+                >
+                  {step.title}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: '#4B5563',
+                    ...typeScale.body,
+                  }}
+                >
+                  {step.description}
+                </Typography>
+              </Stack>
+            </Box>
+          ))}
+        </Box>
+      </Stack>
+    </Box>
+  );
+}
+
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
 
@@ -972,6 +1102,7 @@ export function HomePage() {
         </Stack>
 
         <ToolStackSection />
+        <WorkflowSection />
       </Box>
     </Box>
   );
