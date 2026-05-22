@@ -542,7 +542,7 @@ export function HomePage() {
                   whiteSpace: { sm: 'nowrap' },
                 }}
               >
-                ระบบ Web App
+                ระบบเว็บแอป
               </Typography>
             </Stack>
             <ShowcaseCarousel cards={webAppShowcaseCards} label="ผลงานระบบ Web App" />
