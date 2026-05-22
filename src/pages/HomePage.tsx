@@ -97,6 +97,7 @@ const webAppShowcaseCards: ShowcaseCard[] = [
 ];
 
 const workCarouselGutter = 'clamp(24px, 6.27vw, 127.5px)';
+const workCarouselVerticalGap = '24px';
 const workCarouselEdgeTolerance = 24;
 
 const aiPhoneScreens = [
@@ -467,7 +468,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
         ref={carouselRef}
         aria-label={label}
         sx={{
-          mt: { xs: 1, md: 1.5 },
+          mt: 0,
           display: 'flex',
           gap: { xs: 2, md: '20px' },
           overflowX: 'auto',
@@ -475,7 +476,7 @@ function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: stri
           scrollBehavior: 'smooth',
           overscrollBehaviorX: 'contain',
           pr: workCarouselGutter,
-          pt: { xs: 2.5, md: 3 },
+          pt: workCarouselVerticalGap,
           pb: { xs: 7, md: 8 },
           scrollbarWidth: 'none',
           '&::-webkit-scrollbar': { display: 'none' },
