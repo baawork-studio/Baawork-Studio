@@ -342,17 +342,21 @@ function carouselControlSx(enabled: boolean) {
   };
 }
 
-function HeroCta() {
+function HeroCta({ collapsed, intro }: { collapsed: boolean; intro: boolean }) {
   return (
     <Box
       component="a"
       href="#work"
       aria-label="ดูผลงานของพวกเรา"
+      data-collapsed={collapsed ? 'true' : 'false'}
+      data-intro={intro ? 'true' : 'false'}
       sx={{
         '--hero-cta-label-width': { xs: '218px', sm: '274px' },
+        '--hero-cta-circle-size': { xs: '56px', sm: '58px' },
+        '--hero-cta-arrow-offset': { xs: '-48px', sm: '-58px' },
         display: 'inline-flex',
         alignItems: 'center',
-        gap: { xs: 1, sm: 1.1 },
+        gap: { xs: 1.5, sm: 2 },
         color: '#FFFFFF',
         textDecoration: 'none',
         '&:focus': {
@@ -363,19 +367,21 @@ function HeroCta() {
           outlineOffset: 4,
         },
         '&:hover .hero-cta-label': {
-          bgcolor: '#FF2A9F',
-          boxShadow: '0 18px 48px rgba(0,0,0,0.34)',
+          bgcolor: '#FF1495',
+          boxShadow: '0 17px 44px rgba(0,0,0,0.31)',
           transform: 'translate3d(0, -1px, 0)',
         },
         '&:hover .hero-cta-arrow': {
-          bgcolor: '#FF5DB7',
-          transform: 'translate3d(0, -1px, 0) scale(1.02)',
+          bgcolor: '#F71C91',
+          transform: 'translate3d(0, -1px, 0) scale(1.01)',
+        },
+        '&[data-collapsed="true"]': {
+          pointerEvents: 'none',
         },
         '@media (prefers-reduced-motion: reduce)': {
           '& .hero-cta-label, & .hero-cta-text, & .hero-cta-arrow, & .hero-cta-arrow-motion': {
-            animation: 'none',
-            opacity: 1,
-            transform: 'none',
+            animation: 'none !important',
+            transition: 'none !important',
           },
         },
       }}
@@ -385,27 +391,31 @@ function HeroCta() {
         className="hero-cta-label"
         sx={{
           display: 'inline-flex',
+          flex: '0 0 auto',
           alignItems: 'center',
           justifyContent: 'center',
           width: 'var(--hero-cta-label-width)',
+          minWidth: 0,
           height: { xs: 56, sm: 58 },
+          boxSizing: 'border-box',
           px: { xs: 3, sm: 4 },
           borderRadius: 999,
           bgcolor: palette.primaryPink,
           boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
           overflow: 'hidden',
           transformOrigin: 'center',
-          transition: 'background-color 220ms ease, transform 220ms ease, box-shadow 220ms ease',
-          animation: 'heroCtaLabelReveal 1040ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both',
+          transition:
+            'width 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 340ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
+          transitionDelay: '120ms',
           '@keyframes heroCtaLabelReveal': {
             '0%': {
-              width: '56px',
+              width: 'var(--hero-cta-circle-size)',
               opacity: 0,
-              transform: 'translate3d(0, 14px, 0) scale(0.86)',
+              transform: 'translate3d(0, 14px, 0) scale(0.08)',
               boxShadow: '0 0 0 rgba(0,0,0,0)',
             },
-            '34%': {
-              width: '56px',
+            '38%': {
+              width: 'var(--hero-cta-circle-size)',
               opacity: 1,
               transform: 'translate3d(0, 0, 0) scale(1)',
             },
@@ -420,6 +430,21 @@ function HeroCta() {
             '0%': { opacity: 0, transform: 'translate3d(-10px, 0, 0)' },
             '100%': { opacity: 1, transform: 'translate3d(0, 0, 0)' },
           },
+          ...(intro && !collapsed
+            ? {
+                animation: 'heroCtaLabelReveal 1120ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both',
+              }
+            : {}),
+          ...(collapsed
+            ? {
+                width: 'var(--hero-cta-circle-size)',
+                opacity: 0,
+                transform: 'translate3d(0, 10px, 0) scale(0.08)',
+                boxShadow: '0 0 0 rgba(0,0,0,0)',
+                transitionDelay: '0ms',
+                animation: 'none',
+              }
+            : {}),
         }}
       >
         <Box
@@ -427,8 +452,24 @@ function HeroCta() {
           className="hero-cta-text"
           sx={{
             whiteSpace: 'nowrap',
-            opacity: 0,
-            animation: 'heroCtaTextReveal 420ms ease 860ms both',
+            flex: '0 0 auto',
+            opacity: 1,
+            transform: 'translate3d(0, 0, 0)',
+            transition: 'opacity 280ms ease, transform 340ms ease',
+            ...(intro && !collapsed
+              ? {
+                  opacity: 0,
+                  transform: 'translate3d(-10px, 0, 0)',
+                  animation: 'heroCtaTextReveal 420ms ease 860ms both',
+                }
+              : {}),
+            ...(collapsed
+              ? {
+                  opacity: 0,
+                  transform: 'translate3d(-8px, 0, 0)',
+                  animation: 'none',
+                }
+              : {}),
           }}
         >
           ดูผลงานของพวกเรา
@@ -448,17 +489,36 @@ function HeroCta() {
           bgcolor: 'rgba(255,0,140,0.84)',
           boxShadow: '0 16px 42px rgba(0,0,0,0.26)',
           color: '#FFFFFF',
-          opacity: 0,
-          transition: 'background-color 220ms ease, transform 220ms ease',
-          animation: 'heroCtaArrowReveal 360ms ease 980ms both',
+          opacity: 1,
+          transformOrigin: 'center',
+          transition:
+            'opacity 320ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
+          transitionDelay: '110ms',
           '@keyframes heroCtaArrowReveal': {
-            '0%': { opacity: 0, transform: 'scale(0.72)' },
-            '100%': { opacity: 1, transform: 'scale(1)' },
+            '0%': { opacity: 0, transform: 'translate3d(var(--hero-cta-arrow-offset), 0, 0) scale(0.08)' },
+            '42%': { opacity: 1, transform: 'translate3d(var(--hero-cta-arrow-offset), 0, 0) scale(1)' },
+            '100%': { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' },
           },
           '@keyframes heroArrowDown': {
             '0%, 100%': { transform: 'translate3d(0, -3px, 0)' },
             '50%': { transform: 'translate3d(0, 5px, 0)' },
           },
+          ...(intro && !collapsed
+            ? {
+                opacity: 0,
+                transform: 'translate3d(var(--hero-cta-arrow-offset), 0, 0) scale(0.08)',
+                animation: 'heroCtaArrowReveal 520ms cubic-bezier(0.22, 1, 0.36, 1) 900ms both',
+              }
+            : {}),
+          ...(collapsed
+            ? {
+                opacity: 0,
+                transform: 'translate3d(var(--hero-cta-arrow-offset), 10px, 0) scale(0.08)',
+                boxShadow: '0 0 0 rgba(0,0,0,0)',
+                transitionDelay: '0ms',
+                animation: 'none',
+              }
+            : {}),
         }}
       >
         <Box
@@ -1632,6 +1692,8 @@ function ResultsSection() {
 
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const [heroCtaCollapsed, setHeroCtaCollapsed] = useState(false);
+  const [heroCtaIntro, setHeroCtaIntro] = useState(true);
 
   useEffect(() => {
     let active = true;
@@ -1648,6 +1710,29 @@ export function HomePage() {
 
     return () => {
       active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateHeroCta = () => {
+      setHeroCtaCollapsed(window.scrollY > 42);
+    };
+
+    updateHeroCta();
+    window.addEventListener('scroll', updateHeroCta, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', updateHeroCta);
+    };
+  }, []);
+
+  useEffect(() => {
+    const introTimer = window.setTimeout(() => {
+      setHeroCtaIntro(false);
+    }, 1780);
+
+    return () => {
+      window.clearTimeout(introTimer);
     };
   }, []);
 
@@ -1719,7 +1804,7 @@ export function HomePage() {
               >
                 สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ ประสบการณ์ใช้งาน และเทคโนโลยีให้พร้อมใช้งานในธุรกิจจริง
               </Typography>
-              <HeroCta />
+              <HeroCta collapsed={heroCtaCollapsed} intro={heroCtaIntro} />
             </Stack>
           </Stack>
         </Container>
