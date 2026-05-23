@@ -180,7 +180,14 @@ export function AppShell({ children }: AppShellProps) {
               </Typography>
             </Stack>
 
-            <Stack spacing={3}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: 'minmax(0, 1fr) minmax(180px, 0.95fr)' },
+                gap: { xs: 3, sm: 4, md: 5 },
+                alignItems: 'stretch',
+              }}
+            >
               <Box>
                 <Typography
                   sx={{
@@ -234,7 +241,7 @@ export function AppShell({ children }: AppShellProps) {
                   justifyContent: 'space-between',
                   gap: 1.25,
                   width: '100%',
-                  minHeight: 64,
+                  minHeight: { xs: 64, sm: '100%' },
                   px: { xs: 2, md: 2.25 },
                   py: 1.25,
                   borderRadius: '22px',
@@ -299,7 +306,7 @@ export function AppShell({ children }: AppShellProps) {
                   </Box>
                 </Box>
               </Box>
-            </Stack>
+            </Box>
           </Box>
 
           <Box

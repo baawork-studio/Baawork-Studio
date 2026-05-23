@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Chip, Container, Grid, Stack, Typography } from '@mui/material';
+import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
 import { fetchProject, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette, typeScale } from '../theme';
@@ -7,6 +7,8 @@ import { palette, typeScale } from '../theme';
 type ProjectDetailPageProps = {
   slug: string;
 };
+
+const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 
 export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
   const fallback = useMemo(
@@ -38,31 +40,45 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
 
   return (
     <Box component="main">
-      <Container maxWidth="lg" sx={{ py: { xs: 7, md: 10 } }}>
-        <Stack spacing={5}>
-          <Button href="/" sx={{ alignSelf: 'flex-start' }}>
-            กลับไปหน้าผลงาน
-          </Button>
-          <Grid container spacing={5} alignItems="end">
-            <Grid size={{ xs: 12, md: 7 }}>
-              <Stack spacing={2}>
-                <Typography variant="overline" color="primary">
-                  รายละเอียดผลงาน
-                </Typography>
-                <Typography variant="h1" sx={typeScale.hero}>
-                  {project.title}
-                </Typography>
-                <Typography variant="h5" color="text.secondary">
-                  {project.subtitle}
-                </Typography>
-              </Stack>
-            </Grid>
-            <Grid size={{ xs: 12, md: 5 }}>
-              <Typography color="text.secondary" sx={typeScale.body}>
-                {project.description}
-              </Typography>
-            </Grid>
-          </Grid>
+      <Box sx={{ px: pageGutter, py: { xs: 8, sm: 9, md: 11, lg: 12 } }}>
+        <Stack spacing={{ xs: 4, md: 5 }}>
+          <Stack
+            spacing={{ xs: 2, sm: 2.25, md: 2.5 }}
+            alignItems="center"
+            textAlign="center"
+            sx={{ mx: 'auto', maxWidth: 1080 }}
+          >
+            <Typography
+              variant="h1"
+              sx={{
+                color: palette.text,
+                ...typeScale.hero,
+                fontSize: { xs: 42, sm: 58, md: 76, lg: 88 },
+                maxWidth: 1120,
+              }}
+            >
+              {project.title}
+            </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                color: '#4B5563',
+                ...typeScale.intro,
+                maxWidth: 860,
+              }}
+            >
+              {project.subtitle}
+            </Typography>
+            <Typography
+              sx={{
+                color: '#4B5563',
+                ...typeScale.bodyLarge,
+                maxWidth: 980,
+              }}
+            >
+              {project.description}
+            </Typography>
+          </Stack>
 
           {status === 'fallback' && (
             <Box sx={{ p: 2, borderRadius: 2, bgcolor: palette.accentYellow, fontWeight: 600 }}>
@@ -123,7 +139,7 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
             </Grid>
           </Grid>
         </Stack>
-      </Container>
+      </Box>
     </Box>
   );
 }
