@@ -982,14 +982,14 @@ function WorkflowSection() {
           px: workCarouselGutter,
         }}
       >
-        <Stack
+      <Stack
           spacing={1.25}
           sx={{
             maxWidth: { xs: '100%', md: 900, lg: 980 },
             alignItems: 'flex-start',
             textAlign: 'left',
           }}
-        >
+      >
           <Typography
             variant="h2"
             sx={{
@@ -1001,27 +1001,39 @@ function WorkflowSection() {
             กระบวนการทำงาน
           </Typography>
         </Stack>
+      </Box>
 
+      <Box
+        ref={carouselRef}
+        aria-label="กระบวนการทำงาน"
+        sx={{
+          mt: workCarouselVerticalGap,
+          display: { xs: 'flex', md: 'grid' },
+          gridTemplateColumns: {
+            md: 'repeat(2, minmax(0, 1fr))',
+          },
+          gap: { xs: 2, md: 2.5 },
+          px: { md: workCarouselGutter },
+          pr: { xs: workCarouselGutter, md: workCarouselGutter },
+          pt: { xs: 1.5, md: 0 },
+          pb: { xs: 8, md: 2 },
+          overflowX: { xs: 'auto', md: 'visible' },
+          scrollSnapType: { xs: 'x mandatory', md: 'none' },
+          scrollBehavior: 'smooth',
+          overscrollBehaviorX: 'contain',
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
+        }}
+      >
         <Box
-          ref={carouselRef}
-          aria-label="กระบวนการทำงาน"
+          aria-hidden="true"
           sx={{
-            mt: workCarouselVerticalGap,
-            display: { xs: 'flex', md: 'grid' },
-            gridTemplateColumns: {
-              md: 'repeat(2, minmax(0, 1fr))',
-            },
-            gap: { xs: 2, md: 2.5 },
-            overflowX: { xs: 'auto', md: 'visible' },
-            scrollSnapType: { xs: 'x mandatory', md: 'none' },
-            scrollBehavior: 'smooth',
-            overscrollBehaviorX: 'contain',
-            pb: { xs: 7, md: 2 },
-            scrollbarWidth: 'none',
-            '&::-webkit-scrollbar': { display: 'none' },
+            flex: '0 0 auto',
+            width: workCarouselGutter,
+            display: { xs: 'block', md: 'none' },
           }}
-        >
-          {workflowPanels.map((panel) => (
+        />
+        {workflowPanels.map((panel) => (
             <Box
               key={panel.title}
               component="article"
@@ -1039,13 +1051,16 @@ function WorkflowSection() {
                 color: '#FFFFFF',
                 bgcolor: '#111827',
                 scrollSnapAlign: 'start',
+                scrollMarginInline: workCarouselGutter,
                 boxShadow: 'none',
+                zIndex: 1,
                 transform: 'translate3d(0, 0, 0)',
                 transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
                 willChange: 'transform',
                 '&:hover': {
                   transform: 'translate3d(0, -6px, 0)',
                   boxShadow: '0 18px 40px rgba(17,24,39,0.14)',
+                  zIndex: 2,
                 },
                 '&:hover img': {
                   transform: 'scale(1.035)',
@@ -1120,20 +1135,29 @@ function WorkflowSection() {
               </Stack>
             </Box>
           ))}
-        </Box>
-
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          spacing={2}
+        <Box
+          aria-hidden="true"
           sx={{
-            display: { xs: 'flex', md: 'none' },
-            mt: -5,
-            position: 'relative',
-            zIndex: 2,
+            flex: '0 0 auto',
+            width: workCarouselGutter,
+            display: { xs: 'block', md: 'none' },
           }}
-        >
-          <Box
+        />
+      </Box>
+
+      <Stack
+        direction="row"
+        justifyContent="flex-end"
+        spacing={2}
+        sx={{
+          display: { xs: 'flex', md: 'none' },
+          mt: -5,
+          px: workCarouselGutter,
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        <Box
             component="button"
             type="button"
             aria-label="เลื่อนกระบวนการทำงานไปทางซ้าย"
@@ -1141,7 +1165,7 @@ function WorkflowSection() {
             onClick={() => scrollCards(-1)}
             sx={carouselControlSx(carouselState.canScrollPrev)}
           >
-            <Box
+          <Box
               component="span"
               sx={{
                 width: 12,
@@ -1152,8 +1176,8 @@ function WorkflowSection() {
                 transform: 'rotate(135deg)',
               }}
             />
-          </Box>
-          <Box
+        </Box>
+        <Box
             component="button"
             type="button"
             aria-label="เลื่อนกระบวนการทำงานไปทางขวา"
@@ -1161,7 +1185,7 @@ function WorkflowSection() {
             onClick={() => scrollCards(1)}
             sx={carouselControlSx(carouselState.canScrollNext)}
           >
-            <Box
+          <Box
               component="span"
               sx={{
                 width: 12,
@@ -1172,9 +1196,8 @@ function WorkflowSection() {
                 transform: 'rotate(-45deg)',
               }}
             />
-          </Box>
-        </Stack>
-      </Box>
+        </Box>
+      </Stack>
     </Box>
   );
 }
@@ -1317,26 +1340,29 @@ function ResultsSection() {
       }}
     >
       <Box sx={{ px: workCarouselGutter }}>
-        <Typography
-          variant="h2"
+        <Stack
+          spacing={1.25}
           sx={{
-            mx: 'auto',
-            maxWidth: 'none',
-            color: palette.text,
-            textAlign: 'center',
-            whiteSpace: 'nowrap',
-            fontSize: 'clamp(18px, 4.7vw, 72px)',
-            lineHeight: 1.12,
-            fontWeight: 600,
-            letterSpacing: 0,
+            maxWidth: { xs: '100%', md: 900, lg: 980 },
+            alignItems: 'flex-start',
+            textAlign: 'left',
           }}
         >
-          สิ่งที่ลูกค้าจะได้หลังจบโปรเจกต์
-        </Typography>
+          <Typography
+            variant="h2"
+            sx={{
+              color: palette.text,
+              ...typeScale.sectionTitle,
+              whiteSpace: { sm: 'nowrap' },
+            }}
+          >
+            สิ่งที่ลูกค้าจะได้หลังจบโปรเจกต์
+          </Typography>
+        </Stack>
 
         <Box
           sx={{
-            mt: { xs: 5, md: 7 },
+            mt: workCarouselVerticalGap,
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
             gap: { xs: 2, md: 3 },
