@@ -346,8 +346,9 @@ function carouselControlSx(enabled: boolean) {
 
 function HeroCta({ phase }: { phase: HeroCtaPhase }) {
   const isOpen = phase === 'open';
-  const isSeed = phase === 'seed';
   const isHidden = phase === 'hidden';
+  const isExpanded = isOpen;
+  const isArrowVisible = !isHidden;
 
   return (
     <Box
@@ -355,15 +356,28 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
       href="#work"
       aria-label="ดูผลงานของพวกเรา"
       data-phase={phase}
+      style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
       sx={{
         '--hero-cta-label-width': { xs: '218px', sm: '274px' },
         '--hero-cta-circle-size': { xs: '56px', sm: '58px' },
-        display: 'inline-flex',
+        '--hero-cta-gap': { xs: '12px', sm: '16px' },
+        display: 'inline-block',
+        width: isOpen
+          ? 'calc(var(--hero-cta-label-width) + var(--hero-cta-gap) + var(--hero-cta-circle-size))'
+          : isExpanded
+            ? 'var(--hero-cta-label-width)'
+            : 'var(--hero-cta-circle-size)',
+        height: 'var(--hero-cta-circle-size)',
+        position: 'relative',
         alignItems: 'center',
-        gap: { xs: 1.5, sm: 2 },
         color: '#FFFFFF',
         textDecoration: 'none',
         pointerEvents: isOpen ? 'auto' : 'none',
+        opacity: isHidden ? 0 : 1,
+        transform: isHidden ? 'translate3d(0, 14px, 0) scale(0.06)' : 'translate3d(0, 0, 0) scale(1)',
+        transformOrigin: 'center',
+        transition:
+          'width 430ms cubic-bezier(0.22, 1, 0.36, 1), opacity 170ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1)',
         '&:focus': {
           outline: 'none',
         },
@@ -376,18 +390,16 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
               '&:hover .hero-cta-label': {
                 bgcolor: '#FF1495',
                 boxShadow: '0 17px 44px rgba(0,0,0,0.31)',
-                transform: 'translate3d(0, -1px, 0)',
               },
               '&:hover .hero-cta-arrow': {
                 bgcolor: '#F71C91',
-                transform: 'translate3d(0, -1px, 0) scale(1.01)',
               },
             }
           : {}),
         '@media (prefers-reduced-motion: reduce)': {
           '& .hero-cta-label, & .hero-cta-text, & .hero-cta-arrow, & .hero-cta-arrow-motion': {
-            animation: 'none !important',
-            transition: 'none !important',
+            animation: 'none',
+            transition: 'none',
           },
         },
       }}
@@ -395,21 +407,27 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
       <Box
         component="span"
         className="hero-cta-label"
+        style={{
+          width: isExpanded ? 'var(--hero-cta-label-width)' : 'var(--hero-cta-circle-size)',
+        }}
         sx={{
           display: 'inline-flex',
           flex: '0 0 auto',
           alignItems: 'center',
           justifyContent: 'center',
-          width: isOpen ? 'var(--hero-cta-label-width)' : 'var(--hero-cta-circle-size)',
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          zIndex: 2,
+          width: 'var(--hero-cta-circle-size)',
           minWidth: 0,
           height: { xs: 56, sm: 58 },
           boxSizing: 'border-box',
           px: 0,
           borderRadius: 999,
           bgcolor: palette.primaryPink,
-          boxShadow: isHidden ? '0 0 0 rgba(0,0,0,0)' : '0 16px 42px rgba(0,0,0,0.28)',
+          boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
           overflow: 'hidden',
-          position: 'relative',
           opacity: isHidden ? 0 : 1,
           transform: isHidden ? 'translate3d(0, 14px, 0) scale(0.06)' : 'translate3d(0, 0, 0) scale(1)',
           transformOrigin: 'center',
@@ -420,6 +438,11 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
         <Box
           component="span"
           className="hero-cta-text"
+          style={{
+            opacity: isExpanded ? 1 : 0,
+            transform: isExpanded ? 'translate(-50%, -50%)' : 'translate(calc(-50% - 8px), -50%)',
+            transitionDelay: isExpanded ? '140ms' : '0ms',
+          }}
           sx={{
             whiteSpace: 'nowrap',
             flex: '0 0 auto',
@@ -427,11 +450,9 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
             top: '50%',
             left: '50%',
             width: 'max-content',
-            opacity: isOpen ? 1 : 0,
-            transform: isOpen ? 'translate(-50%, -50%)' : 'translate(calc(-50% - 8px), -50%)',
-            transition: `opacity 180ms ease ${isOpen ? '180ms' : '0ms'}, transform 220ms ease ${
-              isOpen ? '180ms' : '0ms'
-            }`,
+            opacity: 0,
+            transform: 'translate(calc(-50% - 8px), -50%)',
+            transition: 'opacity 180ms ease, transform 220ms ease',
           }}
         >
           ดูผลงานของพวกเรา
@@ -441,21 +462,34 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
         component="span"
         className="hero-cta-arrow"
         aria-hidden="true"
+        style={{
+          opacity: isArrowVisible ? 1 : 0,
+          transform: isHidden
+            ? 'translate3d(0, 14px, 0) scale(0.06)'
+            : isOpen
+              ? 'translate3d(calc(var(--hero-cta-label-width) + var(--hero-cta-gap)), 0, 0) scale(1)'
+              : 'translate3d(0, 0, 0) scale(1)',
+          boxShadow: isArrowVisible ? '0 16px 42px rgba(0,0,0,0.26)' : '0 0 0 rgba(0,0,0,0)',
+        }}
         sx={{
           flex: '0 0 auto',
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          zIndex: 1,
           display: 'grid',
           placeItems: 'center',
           width: { xs: 56, sm: 58 },
           height: { xs: 56, sm: 58 },
           borderRadius: '50%',
           bgcolor: 'rgba(255,0,140,0.84)',
-          boxShadow: isHidden ? '0 0 0 rgba(0,0,0,0)' : '0 16px 42px rgba(0,0,0,0.26)',
+          boxShadow: '0 16px 42px rgba(0,0,0,0.26)',
           color: '#FFFFFF',
-          opacity: isHidden ? 0 : 1,
-          transform: isHidden ? 'translate3d(-10px, 14px, 0) scale(0.06)' : 'translate3d(0, 0, 0) scale(1)',
+          opacity: 1,
+          transform: 'translate3d(0, 0, 0) scale(1)',
           transformOrigin: 'center',
           transition:
-            'opacity 170ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
+            'opacity 160ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
           '@keyframes heroArrowDown': {
             '0%, 100%': { transform: 'translate3d(0, -3px, 0)' },
             '50%': { transform: 'translate3d(0, 5px, 0)' },
@@ -468,7 +502,7 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           sx={{
             display: 'grid',
             placeItems: 'center',
-            animation: isOpen || isSeed ? 'heroArrowDown 1180ms ease-in-out 360ms infinite' : 'none',
+            animation: isOpen ? 'heroArrowDown 1180ms ease-in-out 360ms infinite' : 'none',
           }}
         >
           <Box component="svg" viewBox="0 0 24 24" sx={{ width: 25, height: 25 }}>
@@ -1634,7 +1668,8 @@ function ResultsSection() {
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
   const [heroCtaPhase, setHeroCtaPhase] = useState<HeroCtaPhase>('hidden');
-  const heroCtaIntroDoneRef = useRef(false);
+  const heroCtaModeRef = useRef<'closed' | 'open' | null>(null);
+  const heroCtaTimersRef = useRef<number[]>([]);
 
   useEffect(() => {
     let active = true;
@@ -1655,31 +1690,45 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
-    const updateHeroCta = () => {
-      if (!heroCtaIntroDoneRef.current) return;
-      setHeroCtaPhase(window.scrollY > 42 ? 'seed' : 'open');
+    heroCtaModeRef.current = null;
+
+    const clearHeroCtaTimers = () => {
+      heroCtaTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+      heroCtaTimersRef.current = [];
     };
 
-    updateHeroCta();
+    const scheduleHeroCta = (mode: 'closed' | 'open') => {
+      if (heroCtaModeRef.current === mode) return;
+
+      clearHeroCtaTimers();
+      heroCtaModeRef.current = mode;
+
+      if (mode === 'open') {
+        setHeroCtaPhase('hidden');
+        heroCtaTimersRef.current = [
+          window.setTimeout(() => setHeroCtaPhase('seed'), 70),
+          window.setTimeout(() => setHeroCtaPhase('open'), 180),
+        ];
+        return;
+      }
+
+      setHeroCtaPhase('seed');
+      heroCtaTimersRef.current = [window.setTimeout(() => setHeroCtaPhase('hidden'), 300)];
+    };
+
+    const updateHeroCta = () => {
+      scheduleHeroCta(window.scrollY > 42 ? 'closed' : 'open');
+    };
+
+    scheduleHeroCta('open');
+    const initialScrollCheck = window.setTimeout(updateHeroCta, 760);
     window.addEventListener('scroll', updateHeroCta, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', updateHeroCta);
-    };
-  }, []);
-
-  useEffect(() => {
-    const seedTimer = window.setTimeout(() => {
-      setHeroCtaPhase('seed');
-    }, 80);
-    const openTimer = window.setTimeout(() => {
-      heroCtaIntroDoneRef.current = true;
-      setHeroCtaPhase(window.scrollY > 42 ? 'seed' : 'open');
-    }, 310);
-
-    return () => {
-      window.clearTimeout(seedTimer);
-      window.clearTimeout(openTimer);
+      window.clearTimeout(initialScrollCheck);
+      clearHeroCtaTimers();
+      heroCtaModeRef.current = null;
     };
   }, []);
 
