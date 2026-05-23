@@ -146,7 +146,6 @@ export function AppShell({ children }: AppShellProps) {
                     height: { xs: 48, md: 56 },
                     borderRadius: '50%',
                     objectFit: 'contain',
-                    boxShadow: '0 12px 30px rgba(255,0,140,0.18)',
                   }}
                 />
                 <Typography
