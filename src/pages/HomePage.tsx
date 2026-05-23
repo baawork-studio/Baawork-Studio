@@ -247,6 +247,70 @@ function useShowcaseCarousel() {
   return { carouselRef, carouselState, scrollCards };
 }
 
+function useWorkflowCarousel() {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [carouselState, setCarouselState] = useState({ canScrollPrev: false, canScrollNext: false });
+
+  const updateCarouselState = useCallback(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+    const nextState = {
+      canScrollPrev: carousel.scrollLeft > workCarouselEdgeTolerance,
+      canScrollNext: carousel.scrollLeft < maxScrollLeft - workCarouselEdgeTolerance,
+    };
+
+    setCarouselState((current) => {
+      if (
+        current.canScrollPrev === nextState.canScrollPrev &&
+        current.canScrollNext === nextState.canScrollNext
+      ) {
+        return current;
+      }
+
+      return nextState;
+    });
+  }, []);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return undefined;
+
+    carousel.scrollLeft = 0;
+    updateCarouselState();
+
+    const handleScroll = () => updateCarouselState();
+    carousel.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+
+    const resizeObserver = new ResizeObserver(handleScroll);
+    resizeObserver.observe(carousel);
+
+    return () => {
+      carousel.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      resizeObserver.disconnect();
+    };
+  }, [updateCarouselState]);
+
+  const scrollCards = (direction: -1 | 1) => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    if (direction === -1 && !carouselState.canScrollPrev) return;
+    if (direction === 1 && !carouselState.canScrollNext) return;
+
+    const firstCard = carousel.querySelector('[data-workflow-card="true"]') as HTMLElement | null;
+    const styles = window.getComputedStyle(carousel);
+    const gap = Number.parseFloat(styles.columnGap || styles.gap || '0') || 0;
+    const distance = firstCard ? firstCard.offsetWidth + gap : carousel.clientWidth * 0.86;
+
+    carousel.scrollBy({ left: direction * distance, behavior: 'smooth' });
+  };
+
+  return { carouselRef, carouselState, scrollCards };
+}
+
 function carouselControlSx(enabled: boolean) {
   return {
     display: 'grid',
@@ -268,6 +332,12 @@ function carouselControlSx(enabled: boolean) {
     },
     '&:disabled': {
       pointerEvents: 'none',
+    },
+    '&:focus': {
+      outline: 'none',
+    },
+    '&:focus-visible': {
+      outline: 'none',
     },
   };
 }
@@ -896,6 +966,8 @@ function ResultIcon({ icon, color }: { icon: (typeof resultCards)[number]['icon'
 }
 
 function WorkflowSection() {
+  const { carouselRef, carouselState, scrollCards } = useWorkflowCarousel();
+
   return (
     <Box
       component="section"
@@ -931,29 +1003,42 @@ function WorkflowSection() {
         </Stack>
 
         <Box
+          ref={carouselRef}
+          aria-label="กระบวนการทำงาน"
           sx={{
             mt: workCarouselVerticalGap,
-            display: 'grid',
+            display: { xs: 'flex', md: 'grid' },
             gridTemplateColumns: {
-              xs: '1fr',
-              sm: 'repeat(2, minmax(0, 1fr))',
-              lg: 'repeat(2, minmax(0, 1fr))',
+              md: 'repeat(2, minmax(0, 1fr))',
             },
             gap: { xs: 2, md: 2.5 },
-            pb: { xs: 1, md: 2 },
+            overflowX: { xs: 'auto', md: 'visible' },
+            scrollSnapType: { xs: 'x mandatory', md: 'none' },
+            scrollBehavior: 'smooth',
+            overscrollBehaviorX: 'contain',
+            pb: { xs: 7, md: 2 },
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
           }}
         >
           {workflowPanels.map((panel) => (
             <Box
               key={panel.title}
               component="article"
+              data-workflow-card="true"
               sx={{
                 position: 'relative',
+                flex: {
+                  xs: '0 0 calc(100vw - 64px)',
+                  sm: '0 0 min(560px, calc(100vw - 96px))',
+                  md: 'initial',
+                },
                 aspectRatio: '1 / 1',
                 overflow: 'hidden',
                 borderRadius: { xs: '24px', md: '28px' },
                 color: '#FFFFFF',
                 bgcolor: '#111827',
+                scrollSnapAlign: 'start',
                 boxShadow: 'none',
                 transform: 'translate3d(0, 0, 0)',
                 transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
@@ -1036,6 +1121,59 @@ function WorkflowSection() {
             </Box>
           ))}
         </Box>
+
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          spacing={2}
+          sx={{
+            display: { xs: 'flex', md: 'none' },
+            mt: -5,
+            position: 'relative',
+            zIndex: 2,
+          }}
+        >
+          <Box
+            component="button"
+            type="button"
+            aria-label="เลื่อนกระบวนการทำงานไปทางซ้าย"
+            disabled={!carouselState.canScrollPrev}
+            onClick={() => scrollCards(-1)}
+            sx={carouselControlSx(carouselState.canScrollPrev)}
+          >
+            <Box
+              component="span"
+              sx={{
+                width: 12,
+                height: 12,
+                ml: 0.5,
+                borderRight: '3px solid currentColor',
+                borderBottom: '3px solid currentColor',
+                transform: 'rotate(135deg)',
+              }}
+            />
+          </Box>
+          <Box
+            component="button"
+            type="button"
+            aria-label="เลื่อนกระบวนการทำงานไปทางขวา"
+            disabled={!carouselState.canScrollNext}
+            onClick={() => scrollCards(1)}
+            sx={carouselControlSx(carouselState.canScrollNext)}
+          >
+            <Box
+              component="span"
+              sx={{
+                width: 12,
+                height: 12,
+                mr: 0.5,
+                borderRight: '3px solid currentColor',
+                borderBottom: '3px solid currentColor',
+                transform: 'rotate(-45deg)',
+              }}
+            />
+          </Box>
+        </Stack>
       </Box>
     </Box>
   );
