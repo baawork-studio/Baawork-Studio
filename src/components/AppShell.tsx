@@ -11,6 +11,16 @@ export function AppShell({ children }: AppShellProps) {
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
+    const handleWheel = (event: WheelEvent) => {
+      const currentScrollY = Math.max(window.scrollY, document.documentElement.scrollTop, 0);
+
+      if (event.deltaY < -2 || currentScrollY <= 40) {
+        setHeaderHidden(false);
+      } else if (event.deltaY > 2 && currentScrollY > 40) {
+        setHeaderHidden(true);
+      }
+    };
+
     const handleScroll = () => {
       const currentScrollY = Math.max(window.scrollY, document.documentElement.scrollTop, 0);
       const lastScrollY = lastScrollYRef.current;
@@ -27,12 +37,12 @@ export function AppShell({ children }: AppShellProps) {
     };
 
     lastScrollYRef.current = Math.max(window.scrollY, document.documentElement.scrollTop, 0);
+    window.addEventListener('wheel', handleWheel, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
-    document.addEventListener('scroll', handleScroll, { passive: true, capture: true });
 
     return () => {
+      window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('scroll', handleScroll, { capture: true });
     };
   }, []);
 
@@ -41,11 +51,12 @@ export function AppShell({ children }: AppShellProps) {
       <Box
         component="header"
         sx={{
-          position: 'sticky',
+          position: 'fixed',
           top: 0,
+          left: 0,
+          right: 0,
           zIndex: 10,
-          backdropFilter: 'blur(18px)',
-          bgcolor: 'rgba(22,22,23,0.92)',
+          bgcolor: 'rgb(22,22,23)',
           height: 44,
           transform: headerHidden ? 'translate3d(0, -100%, 0)' : 'translate3d(0, 0, 0)',
           transition: 'transform 360ms cubic-bezier(0.22, 1, 0.36, 1)',

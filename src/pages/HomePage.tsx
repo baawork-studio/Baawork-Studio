@@ -1661,7 +1661,7 @@ export function HomePage() {
           overflow: 'hidden',
           display: 'grid',
           alignItems: 'end',
-          minHeight: { xs: 620, md: 'calc(100svh - 44px)' },
+          minHeight: { xs: 620, md: '100svh' },
           pb: { xs: 5, md: 7 },
           pt: { xs: 6, md: 5 },
           bgcolor: palette.text,
