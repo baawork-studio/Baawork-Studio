@@ -1665,6 +1665,128 @@ function ResultsSection() {
   );
 }
 
+function StartProjectSection() {
+  return (
+    <Box
+      component="section"
+      id="start-project"
+      sx={{
+        bgcolor: palette.background,
+        color: palette.text,
+        px: workCarouselGutter,
+        py: { xs: 8, sm: 10, md: 13, lg: 15 },
+        textAlign: 'center',
+      }}
+    >
+      <Stack
+        spacing={{ xs: 2.5, md: 3 }}
+        alignItems="center"
+        sx={{
+          mx: 'auto',
+          maxWidth: 1040,
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            color: palette.primaryPink,
+            ...typeScale.hero,
+            maxWidth: 1120,
+          }}
+        >
+          พร้อมเริ่มโปรเจกต์กับ Baawork
+        </Typography>
+        <Typography
+          variant="h5"
+          sx={{
+            color: '#4B5563',
+            ...typeScale.intro,
+            maxWidth: 920,
+          }}
+        >
+          เล่าไอเดียหรือปัญหาของระบบที่อยากสร้าง แล้วเราช่วยวางแนวทางให้พร้อมเริ่มพัฒนาได้จริง
+        </Typography>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1.5}
+          alignItems="center"
+          justifyContent="center"
+          sx={{ pt: { xs: 1, md: 1.5 } }}
+        >
+          <Box
+            component="a"
+            href="#contact"
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minWidth: { xs: 190, sm: 210 },
+              height: { xs: 54, sm: 58 },
+              px: { xs: 3.5, sm: 4.5 },
+              borderRadius: 999,
+              bgcolor: palette.primaryPink,
+              color: '#FFFFFF',
+              textDecoration: 'none',
+              fontSize: { xs: 18, sm: 20 },
+              fontWeight: 700,
+              lineHeight: 1,
+              boxShadow: '0 18px 44px rgba(255,0,140,0.24)',
+              transition: 'transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease',
+              '&:hover': {
+                bgcolor: '#FF1495',
+                transform: 'translate3d(0, -1px, 0)',
+                boxShadow: '0 22px 54px rgba(255,0,140,0.3)',
+              },
+              '&:focus': {
+                outline: 'none',
+              },
+              '&:focus-visible': {
+                outline: `3px solid ${palette.accentYellow}`,
+                outlineOffset: 4,
+              },
+            }}
+          >
+            คุยกับเรา
+          </Box>
+          <Box
+            component="a"
+            href="#work"
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minWidth: { xs: 190, sm: 210 },
+              height: { xs: 54, sm: 58 },
+              px: { xs: 3.5, sm: 4.5 },
+              borderRadius: 999,
+              bgcolor: '#F5F5F7',
+              color: palette.text,
+              textDecoration: 'none',
+              fontSize: { xs: 18, sm: 20 },
+              fontWeight: 700,
+              lineHeight: 1,
+              transition: 'transform 220ms ease, background-color 220ms ease',
+              '&:hover': {
+                bgcolor: '#E8E8ED',
+                transform: 'translate3d(0, -1px, 0)',
+              },
+              '&:focus': {
+                outline: 'none',
+              },
+              '&:focus-visible': {
+                outline: `3px solid ${palette.primaryPink}`,
+                outlineOffset: 4,
+              },
+            }}
+          >
+            ดูผลงานอีกครั้ง
+          </Box>
+        </Stack>
+      </Stack>
+    </Box>
+  );
+}
+
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
   const [heroCtaPhase, setHeroCtaPhase] = useState<HeroCtaPhase>('hidden');
@@ -1879,6 +2001,7 @@ export function HomePage() {
         <ToolStackSection />
         <WorkflowSection />
         <ResultsSection />
+        <StartProjectSection />
       </Box>
     </Box>
   );
