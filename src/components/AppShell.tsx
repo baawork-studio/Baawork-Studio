@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Box, Container, Stack, Typography } from '@mui/material';
-import { palette } from '../theme';
+import { palette, typeScale } from '../theme';
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -106,20 +106,148 @@ export function AppShell({ children }: AppShellProps) {
         component="footer"
         id="contact"
         sx={{
-          py: 8,
-          borderTop: `1px solid ${palette.border}`,
+          bgcolor: '#111827',
+          color: '#FFFFFF',
+          py: { xs: 7, sm: 8, md: 10 },
           px: { xs: 3, sm: 4, md: 'max(24px, calc((100vw - 1628px) / 2))' },
         }}
       >
-        <Box>
-          <Stack spacing={2}>
-            <Typography variant="h4">
-              สร้างระบบถัดไปกับ Baawork Studio
+        <Box sx={{ mx: 'auto', maxWidth: 1628 }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1.25fr) minmax(280px, 0.75fr)' },
+              gap: { xs: 5, md: 8 },
+              alignItems: 'start',
+            }}
+          >
+            <Stack spacing={{ xs: 2.5, md: 3 }} sx={{ maxWidth: 760 }}>
+              <Stack direction="row" alignItems="center" spacing={1.5}>
+                <Box sx={{ width: 18, height: 18, borderRadius: '50%', bgcolor: palette.primaryPink }} />
+                <Typography
+                  sx={{
+                    fontSize: { xs: 20, md: 22 },
+                    lineHeight: 1,
+                    fontWeight: 700,
+                    letterSpacing: 0,
+                  }}
+                >
+                  Baawork Studio
+                </Typography>
+              </Stack>
+              <Typography
+                variant="h2"
+                sx={{
+                  ...typeScale.sectionTitle,
+                  color: '#FFFFFF',
+                  maxWidth: 720,
+                }}
+              >
+                สร้างระบบที่พร้อมใช้งานจริงกับทีมที่เข้าใจทั้งดีไซน์และเทคโนโลยี
+              </Typography>
+              <Typography
+                sx={{
+                  ...typeScale.bodyLarge,
+                  color: 'rgba(255,255,255,0.72)',
+                  maxWidth: 680,
+                }}
+              >
+                คุยโจทย์ วางแนวทาง และต่อยอดเป็นระบบเว็บแอป ระบบ AI หรือเครื่องมือหลังบ้านที่เชื่อมต่อข้อมูลจริงได้อย่างเป็นระบบ
+              </Typography>
+            </Stack>
+
+            <Stack spacing={3}>
+              <Box>
+                <Typography
+                  sx={{
+                    mb: 1.5,
+                    color: palette.primaryPink,
+                    fontSize: 15,
+                    lineHeight: 1.2,
+                    fontWeight: 700,
+                  }}
+                >
+                  ไปยังส่วนต่างๆ
+                </Typography>
+                <Stack spacing={1.2}>
+                  {[
+                    { label: 'ผลงาน', href: '#work' },
+                    { label: 'กระบวนการทำงาน', href: '#workflow' },
+                    { label: 'คำถามที่พบบ่อย', href: '#faq' },
+                    { label: 'เริ่มโปรเจกต์', href: '#start-project' },
+                  ].map((link) => (
+                    <Typography
+                      key={link.href}
+                      component="a"
+                      href={link.href}
+                      sx={{
+                        color: 'rgba(255,255,255,0.76)',
+                        textDecoration: 'none',
+                        fontSize: { xs: 18, md: 19 },
+                        lineHeight: 1.45,
+                        fontWeight: 500,
+                        transition: 'color 180ms ease',
+                        '&:hover': {
+                          color: '#FFFFFF',
+                        },
+                      }}
+                    >
+                      {link.label}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Box>
+
+              <Box
+                component="a"
+                href="#start-project"
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  alignSelf: 'flex-start',
+                  minWidth: 190,
+                  height: 56,
+                  px: 4,
+                  borderRadius: 999,
+                  bgcolor: palette.primaryPink,
+                  color: '#FFFFFF',
+                  textDecoration: 'none',
+                  fontSize: 19,
+                  lineHeight: 1,
+                  fontWeight: 700,
+                  boxShadow: '0 18px 46px rgba(255,0,140,0.24)',
+                  transition: 'background-color 220ms ease, transform 220ms ease',
+                  '&:hover': {
+                    bgcolor: '#FF1495',
+                    transform: 'translate3d(0, -1px, 0)',
+                  },
+                }}
+              >
+                เริ่มคุยโปรเจกต์
+              </Box>
+            </Stack>
+          </Box>
+
+          <Box
+            sx={{
+              mt: { xs: 6, md: 8 },
+              pt: { xs: 3, md: 4 },
+              borderTop: '1px solid rgba(255,255,255,0.12)',
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: 1.5,
+              alignItems: { xs: 'flex-start', sm: 'center' },
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography sx={{ color: 'rgba(255,255,255,0.56)', fontSize: 14, lineHeight: 1.5 }}>
+              Baawork Studio
             </Typography>
-            <Typography color="text.secondary">
-              ระบบโชว์ผลงาน เครื่องมือหลังบ้าน และประสบการณ์ใช้งานที่เชื่อมต่อ API
+            <Typography sx={{ color: 'rgba(255,255,255,0.56)', fontSize: 14, lineHeight: 1.5 }}>
+              ออกแบบ พัฒนา และส่งมอบระบบดิจิทัลสำหรับใช้งานจริง
             </Typography>
-          </Stack>
+          </Box>
         </Box>
       </Box>
     </Box>

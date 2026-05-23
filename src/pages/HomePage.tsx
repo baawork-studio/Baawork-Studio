@@ -1097,6 +1097,34 @@ const resultCards = [
   },
 ] as const;
 
+const faqItems = [
+  {
+    question: 'เริ่มโปรเจกต์ต้องเตรียมอะไรบ้าง',
+    answer:
+      'เตรียมเป้าหมายของระบบ ผู้ใช้งานหลัก ตัวอย่างหน้าจอหรือระบบที่ชอบ และข้อมูลที่อยากให้ระบบเชื่อมต่อ ถ้ายังไม่ครบเราช่วยเรียบเรียงโจทย์ให้ชัดก่อนเริ่มได้',
+  },
+  {
+    question: 'ใช้เวลาพัฒนานานแค่ไหน',
+    answer:
+      'ระยะเวลาขึ้นอยู่กับจำนวนหน้าจอ ความซับซ้อนของ workflow และการเชื่อมต่อ API โดยเริ่มจากการวาง scope ให้ชัด เพื่อให้รู้กรอบเวลาและสิ่งที่จะส่งมอบตั้งแต่ต้น',
+  },
+  {
+    question: 'ทำระบบหลังบ้านให้ด้วยไหม',
+    answer:
+      'ทำได้ทั้งหน้าบ้าน หลังบ้าน ฐานข้อมูล API และหน้า admin สำหรับจัดการข้อมูลหรือ workflow ที่ทีมต้องใช้งานจริง',
+  },
+  {
+    question: 'เชื่อมต่อ API หรือฐานข้อมูลเดิมได้ไหม',
+    answer:
+      'เชื่อมต่อได้ทั้ง API เดิม ฐานข้อมูล PostgreSQL และระบบ cache อย่าง Redis รวมถึงออกแบบ API ใหม่ให้รองรับการใช้งานต่อในอนาคต',
+  },
+  {
+    question: 'หลังส่งมอบดูแลต่อได้ไหม',
+    answer:
+      'ดูแลต่อได้ตามขอบเขตที่ตกลงกัน เช่น ปรับแก้หน้าจอ เพิ่ม feature ตรวจปัญหา production และช่วยวางแผนการต่อยอดระบบรอบถัดไป',
+  },
+] as const;
+
 function ResultIcon({ icon, color }: { icon: (typeof resultCards)[number]['icon']; color: string }) {
   const common = {
     fill: 'none',
@@ -1787,6 +1815,133 @@ function StartProjectSection() {
   );
 }
 
+function FaqSection() {
+  return (
+    <Box
+      component="section"
+      id="faq"
+      sx={{
+        bgcolor: palette.softGray,
+        color: palette.text,
+        px: workCarouselGutter,
+        py: { xs: 7, sm: 8, md: 10, lg: 12 },
+      }}
+    >
+      <Stack
+        spacing={{ xs: 3, md: 4 }}
+        sx={{
+          mx: 'auto',
+          maxWidth: 1120,
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            color: palette.primaryPink,
+            ...typeScale.sectionTitle,
+            textAlign: 'center',
+          }}
+        >
+          คำถามที่พบบ่อย
+        </Typography>
+
+        <Stack spacing={1.5}>
+          {faqItems.map((item) => (
+            <Box
+              key={item.question}
+              component="details"
+              sx={{
+                bgcolor: '#FFFFFF',
+                borderRadius: { xs: '24px', md: '30px' },
+                boxShadow: '0 16px 48px rgba(17,24,39,0.06)',
+                overflow: 'hidden',
+                transition: 'box-shadow 220ms ease, transform 220ms ease',
+                '&:hover': {
+                  transform: 'translate3d(0, -1px, 0)',
+                  boxShadow: '0 20px 58px rgba(17,24,39,0.08)',
+                },
+                '&[open] .faq-plus': {
+                  transform: 'rotate(45deg)',
+                  bgcolor: palette.primaryPink,
+                  color: '#FFFFFF',
+                },
+                '& summary:focus': {
+                  outline: 'none',
+                },
+                '& summary:focus-visible': {
+                  outline: 'none',
+                },
+                '& summary::-webkit-details-marker': {
+                  display: 'none',
+                },
+              }}
+            >
+              <Box
+                component="summary"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: { xs: 2, md: 4 },
+                  cursor: 'pointer',
+                  px: { xs: 3, sm: 4, md: 5 },
+                  py: { xs: 2.5, sm: 3, md: 3.5 },
+                  listStyle: 'none',
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  sx={{
+                    color: palette.text,
+                    fontSize: { xs: 22, sm: 25, md: 30 },
+                    lineHeight: 1.22,
+                    fontWeight: 600,
+                    letterSpacing: 0,
+                  }}
+                >
+                  {item.question}
+                </Typography>
+                <Box
+                  component="span"
+                  className="faq-plus"
+                  aria-hidden="true"
+                  sx={{
+                    display: 'grid',
+                    placeItems: 'center',
+                    flex: '0 0 auto',
+                    width: { xs: 38, sm: 42 },
+                    height: { xs: 38, sm: 42 },
+                    borderRadius: '50%',
+                    bgcolor: '#F5F5F7',
+                    color: palette.text,
+                    fontSize: { xs: 28, sm: 30 },
+                    lineHeight: 1,
+                    fontWeight: 500,
+                    transition: 'transform 220ms ease, background-color 220ms ease, color 220ms ease',
+                  }}
+                >
+                  +
+                </Box>
+              </Box>
+              <Typography
+                sx={{
+                  color: '#4B5563',
+                  ...typeScale.body,
+                  px: { xs: 3, sm: 4, md: 5 },
+                  pb: { xs: 3, sm: 3.5, md: 4 },
+                  maxWidth: 920,
+                }}
+              >
+                {item.answer}
+              </Typography>
+            </Box>
+          ))}
+        </Stack>
+      </Stack>
+    </Box>
+  );
+}
+
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
   const [heroCtaPhase, setHeroCtaPhase] = useState<HeroCtaPhase>('hidden');
@@ -2002,6 +2157,7 @@ export function HomePage() {
         <WorkflowSection />
         <ResultsSection />
         <StartProjectSection />
+        <FaqSection />
       </Box>
     </Box>
   );
