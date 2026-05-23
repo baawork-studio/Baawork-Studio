@@ -306,6 +306,20 @@ export function AppShell({ children }: AppShellProps) {
                     </Typography>
                   ))}
                 </Stack>
+                <Box
+                  component="img"
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=https%3A%2F%2Fline.me%2FR%2Fti%2Fp%2F%40baawork"
+                  alt="QR code สำหรับติดต่อ LINE Baawork"
+                  loading="lazy"
+                  decoding="async"
+                  sx={{
+                    display: 'block',
+                    width: { xs: 132, sm: 148, md: 156 },
+                    height: { xs: 132, sm: 148, md: 156 },
+                    mt: { xs: 2.25, md: 2.5 },
+                    objectFit: 'contain',
+                  }}
+                />
               </Box>
             </Box>
           </Box>
