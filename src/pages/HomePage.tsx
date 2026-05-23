@@ -1474,14 +1474,134 @@ export function HomePage() {
                 href="#work"
                 variant="contained"
                 size="large"
+                disableElevation
+                disableRipple
                 sx={{
+                  '--hero-cta-width': { xs: '238px', sm: '274px' },
+                  position: 'relative',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: 'var(--hero-cta-width)',
+                  minWidth: 0,
+                  height: { xs: 56, sm: 58 },
                   borderRadius: 999,
-                  px: 3.5,
-                  py: 1.15,
+                  px: { xs: 0.85, sm: 0.9 },
+                  pl: { xs: 2.8, sm: 3.1 },
+                  py: 0,
+                  overflow: 'hidden',
+                  color: '#FFFFFF',
+                  bgcolor: palette.primaryPink,
                   boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
+                  transformOrigin: 'center',
+                  animation: 'heroCtaReveal 1040ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both',
+                  '&:hover': {
+                    bgcolor: '#FF2A9F',
+                    boxShadow: '0 18px 48px rgba(0,0,0,0.34)',
+                    transform: 'translate3d(0, -1px, 0)',
+                  },
+                  '&:focus': {
+                    outline: 'none',
+                  },
+                  '&:focus-visible': {
+                    outline: '2px solid rgba(255,255,255,0.86)',
+                    outlineOffset: 4,
+                  },
+                  '@keyframes heroCtaReveal': {
+                    '0%': {
+                      width: '56px',
+                      opacity: 0,
+                      transform: 'translate3d(0, 14px, 0) scale(0.86)',
+                      boxShadow: '0 0 0 rgba(0,0,0,0)',
+                    },
+                    '34%': {
+                      width: '56px',
+                      opacity: 1,
+                      transform: 'translate3d(0, 0, 0) scale(1)',
+                    },
+                    '100%': {
+                      width: 'var(--hero-cta-width)',
+                      opacity: 1,
+                      transform: 'translate3d(0, 0, 0) scale(1)',
+                      boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
+                    },
+                  },
+                  '@keyframes heroCtaTextReveal': {
+                    '0%': { opacity: 0, transform: 'translate3d(-10px, 0, 0)' },
+                    '100%': { opacity: 1, transform: 'translate3d(0, 0, 0)' },
+                  },
+                  '@keyframes heroCtaIconReveal': {
+                    '0%': { opacity: 0, transform: 'scale(0.72)' },
+                    '100%': { opacity: 1, transform: 'scale(1)' },
+                  },
+                  '@keyframes heroArrowDown': {
+                    '0%, 100%': { transform: 'translate3d(0, -2px, 0)' },
+                    '50%': { transform: 'translate3d(0, 4px, 0)' },
+                  },
+                  '@media (prefers-reduced-motion: reduce)': {
+                    animation: 'none',
+                    '& .hero-cta-label, & .hero-cta-icon': {
+                      animation: 'none',
+                      opacity: 1,
+                      transform: 'none',
+                    },
+                  },
                 }}
               >
-                ดูผลงาน
+                <Box
+                  component="span"
+                  className="hero-cta-label"
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    whiteSpace: 'nowrap',
+                    opacity: 0,
+                    animation: 'heroCtaTextReveal 420ms ease 860ms both',
+                  }}
+                >
+                  ดูผลงานของพวกเรา
+                </Box>
+                <Box
+                  component="span"
+                  className="hero-cta-icon"
+                  aria-hidden="true"
+                  sx={{
+                    flex: '0 0 auto',
+                    display: 'grid',
+                    placeItems: 'center',
+                    width: { xs: 42, sm: 44 },
+                    height: { xs: 42, sm: 44 },
+                    borderRadius: '50%',
+                    bgcolor: 'rgba(255,255,255,0.18)',
+                    color: '#FFFFFF',
+                    opacity: 0,
+                    animation: 'heroCtaIconReveal 360ms ease 960ms both',
+                  }}
+                >
+                  <Box
+                    component="span"
+                    sx={{
+                      display: 'grid',
+                      placeItems: 'center',
+                      animation: 'heroArrowDown 1180ms ease-in-out 1260ms infinite',
+                    }}
+                  >
+                    <Box
+                      component="svg"
+                      viewBox="0 0 24 24"
+                      sx={{ width: 22, height: 22 }}
+                    >
+                      <path
+                        d="M12 5v13m0 0 6-6m-6 6-6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Box>
+                  </Box>
+                </Box>
               </Button>
             </Stack>
           </Stack>

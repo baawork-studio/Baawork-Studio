@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { palette } from '../theme';
 
@@ -6,6 +7,35 @@ type AppShellProps = {
 };
 
 export function AppShell({ children }: AppShellProps) {
+  const [headerHidden, setHeaderHidden] = useState(false);
+  const lastScrollYRef = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = Math.max(window.scrollY, document.documentElement.scrollTop, 0);
+      const lastScrollY = lastScrollYRef.current;
+      const scrollingDown = currentScrollY > lastScrollY + 6;
+      const scrollingUp = currentScrollY < lastScrollY - 4;
+
+      if (currentScrollY <= 40 || scrollingUp) {
+        setHeaderHidden(false);
+      } else if (currentScrollY > 80 && scrollingDown) {
+        setHeaderHidden(true);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    lastScrollYRef.current = Math.max(window.scrollY, document.documentElement.scrollTop, 0);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('scroll', handleScroll, { capture: true });
+    };
+  }, []);
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: palette.background, color: palette.text }}>
       <Box
@@ -17,6 +47,12 @@ export function AppShell({ children }: AppShellProps) {
           backdropFilter: 'blur(18px)',
           bgcolor: 'rgba(22,22,23,0.92)',
           height: 44,
+          transform: headerHidden ? 'translate3d(0, -100%, 0)' : 'translate3d(0, 0, 0)',
+          transition: 'transform 360ms cubic-bezier(0.22, 1, 0.36, 1)',
+          willChange: 'transform',
+          '@media (prefers-reduced-motion: reduce)': {
+            transition: 'none',
+          },
         }}
       >
         <Container maxWidth="lg" sx={{ height: '100%' }}>
