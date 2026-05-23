@@ -77,14 +77,14 @@ export function AppShell({ children }: AppShellProps) {
             >
               <Box
                 component="img"
-                src="/baawork-logo.svg"
+                src="/baawork-logo.png"
                 alt="คนบ้างงาน"
                 sx={{
                   display: 'block',
                   width: 28,
                   height: 28,
                   borderRadius: '50%',
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                 }}
               />
             </Stack>
@@ -138,14 +138,14 @@ export function AppShell({ children }: AppShellProps) {
               <Stack direction="row" alignItems="center" spacing={1.5}>
                 <Box
                   component="img"
-                  src="/baawork-logo.svg"
+                  src="/baawork-logo.png"
                   alt="คนบ้างงาน"
                   sx={{
                     display: 'block',
                     width: { xs: 48, md: 56 },
                     height: { xs: 48, md: 56 },
                     borderRadius: '50%',
-                    objectFit: 'cover',
+                    objectFit: 'contain',
                     boxShadow: '0 12px 30px rgba(255,0,140,0.18)',
                   }}
                 />

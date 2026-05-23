@@ -20,7 +20,7 @@ type HeroCtaPhase = 'hidden' | 'seed' | 'open';
 const aiShowcaseCards: ShowcaseCard[] = [
   {
     id: 'ai-command-center',
-    slug: 'baawork-command-center',
+    slug: 'ai-command-center',
     title: 'ศูนย์สั่งการ AI',
     shortDescription: 'ศูนย์วิเคราะห์งานแบบเรียลไทม์ที่สรุปสถานะ เคสเร่งด่วน และแนวโน้มความเสี่ยงให้ทีมตัดสินใจเร็วขึ้น',
     coverImageUrl: carouselMobileImageAlt,
@@ -28,7 +28,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
   },
   {
     id: 'ai-sales-forecast',
-    slug: 'studio-booking-flow',
+    slug: 'ai-sales-forecast',
     title: 'ระบบคาดการณ์ยอดขาย',
     shortDescription: 'แดชบอร์ดคาดการณ์ยอดขายและพฤติกรรมลูกค้าด้วยโมเดล Machine Learning สำหรับทีมบริหาร',
     coverImageUrl: carouselMobileImage,
@@ -36,7 +36,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
   },
   {
     id: 'ai-document-review',
-    slug: 'baawork-command-center',
+    slug: 'ai-document-review',
     title: 'ระบบอ่านเอกสาร AI',
     shortDescription: 'ระบบช่วยอ่านเอกสาร สกัดใจความสำคัญ และจัดหมวดหมู่คำขอจากหน้าจอเดียว',
     coverImageUrl: carouselMobileImage,
@@ -44,7 +44,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
   },
   {
     id: 'ai-service-agent',
-    slug: 'studio-booking-flow',
+    slug: 'ai-service-agent',
     title: 'ผู้ช่วยบริการอัตโนมัติ',
     shortDescription: 'ระบบผู้ช่วยตอบกลับอัตโนมัติที่ติดตามบทสนทนา งานค้าง และคุณภาพบริการของทีม',
     coverImageUrl: carouselMobileImageAlt,
@@ -52,7 +52,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
   },
   {
     id: 'ai-devops-monitor',
-    slug: 'baawork-command-center',
+    slug: 'ai-api-monitor',
     title: 'ระบบเฝ้าระวัง API',
     shortDescription: 'หน้าจอตรวจจับ anomaly ของระบบ API พร้อมแจ้งเตือนเหตุการณ์ผิดปกติก่อนกระทบผู้ใช้',
     coverImageUrl: carouselMobileImage,
@@ -63,35 +63,35 @@ const aiShowcaseCards: ShowcaseCard[] = [
 const webAppShowcaseCards: ShowcaseCard[] = [
   {
     id: 'operations-dashboard',
-    slug: 'baawork-command-center',
+    slug: 'operations-dashboard',
     title: 'แดชบอร์ดควบคุมงาน',
     shortDescription: 'ระบบติดตามคำขอ สถานะงาน และการส่งมอบสำหรับทีมปฏิบัติการที่ต้องดูข้อมูลหลายมุมพร้อมกัน',
     coverImageUrl: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'booking-platform',
-    slug: 'studio-booking-flow',
+    slug: 'booking-platform',
     title: 'ระบบจองบริการออนไลน์',
     shortDescription: 'เว็บแอปสำหรับเลือกบริการ ตรวจสอบเวลาว่าง และยืนยันการจองได้ทันทีจากทุกอุปกรณ์',
     coverImageUrl: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'crm-workspace',
-    slug: 'baawork-command-center',
+    slug: 'crm-workspace',
     title: 'พื้นที่ทำงาน CRM',
     shortDescription: 'ระบบจัดการลูกค้า งานขาย และประวัติการติดต่อในหน้าเดียวเพื่อให้ทีมทำงานต่อเนื่อง',
     coverImageUrl: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'inventory-control',
-    slug: 'studio-booking-flow',
+    slug: 'inventory-control',
     title: 'ระบบจัดการสต็อก',
     shortDescription: 'เว็บแอปสำหรับตรวจนับสินค้า อัปเดตสถานะ และดูคำเตือนเมื่อจำนวนคงเหลือต่ำกว่ากำหนด',
     coverImageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'analytics-portal',
-    slug: 'baawork-command-center',
+    slug: 'analytics-portal',
     title: 'พอร์ทัลวิเคราะห์ธุรกิจ',
     shortDescription: 'หน้ารายงานผู้บริหารที่รวมตัวเลขสำคัญ กราฟเปรียบเทียบ และ insight เพื่อใช้ตัดสินใจเร็วขึ้น',
     coverImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
@@ -2009,7 +2009,7 @@ export function HomePage() {
     };
   }, []);
 
-  const featured = projects[0];
+  const featured = projects.find((project) => project.slug === 'operations-dashboard') ?? projects[0];
 
   return (
     <Box component="main">
