@@ -75,7 +75,18 @@ export function AppShell({ children }: AppShellProps) {
               alignItems="center"
               sx={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}
             >
-              <Box sx={{ width: 16, height: 16, borderRadius: '50%', bgcolor: palette.primaryPink }} />
+              <Box
+                component="img"
+                src="/baawork-logo.svg"
+                alt="คนบ้างงาน"
+                sx={{
+                  display: 'block',
+                  width: 28,
+                  height: 28,
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                }}
+              />
             </Stack>
           </Box>
         </Container>
@@ -125,7 +136,19 @@ export function AppShell({ children }: AppShellProps) {
           >
             <Stack spacing={{ xs: 2.5, md: 3 }} sx={{ maxWidth: 760 }}>
               <Stack direction="row" alignItems="center" spacing={1.5}>
-                <Box sx={{ width: 18, height: 18, borderRadius: '50%', bgcolor: palette.primaryPink }} />
+                <Box
+                  component="img"
+                  src="/baawork-logo.svg"
+                  alt="คนบ้างงาน"
+                  sx={{
+                    display: 'block',
+                    width: { xs: 48, md: 56 },
+                    height: { xs: 48, md: 56 },
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    boxShadow: '0 12px 30px rgba(255,0,140,0.18)',
+                  }}
+                />
                 <Typography
                   sx={{
                     fontSize: { xs: 20, md: 22 },

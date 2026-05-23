@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">คนบ้างงาน</title>
+  <desc id="desc">โลโก้วงกลมสีชมพู ตัวอักษรสีเหลือง พร้อมข้อความ บ้านคลั่ง ทุ่มเท สร้างระบบ</desc>
+  <defs>
+    <filter id="textShadow" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#9a0053" flood-opacity="0.42" />
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" rx="120" fill="#fff" />
+  <circle cx="600" cy="600" r="514" fill="#ff008c" />
+  <g
+    filter="url(#textShadow)"
+    fill="#f5ff00"
+    font-family="'Noto Sans Thai', 'Arial Black', sans-serif"
+    font-weight="900"
+    text-anchor="middle"
+  >
+    <text x="600" y="494" font-size="246" letter-spacing="-8">คน/</text>
+    <text x="600" y="684" font-size="186" letter-spacing="-7">บ้างงาน!</text>
+    <text x="600" y="843" font-size="86" letter-spacing="-1">สูตรเดือดสายเทค</text>
+    <text x="600" y="962" font-size="82" letter-spacing="-1">บ้านคลั่ง • ทุ่มเท • สร้างระบบ</text>
+  </g>
+</svg>
