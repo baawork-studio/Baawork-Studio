@@ -224,35 +224,6 @@ export function AppShell({ children }: AppShellProps) {
 
               <Box
                 component="a"
-                href="#start-project"
-                sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  alignSelf: 'flex-start',
-                  minWidth: 190,
-                  height: 56,
-                  px: 4,
-                  borderRadius: 999,
-                  bgcolor: palette.primaryPink,
-                  color: '#FFFFFF',
-                  textDecoration: 'none',
-                  fontSize: 19,
-                  lineHeight: 1,
-                  fontWeight: 700,
-                  boxShadow: '0 18px 46px rgba(255,0,140,0.24)',
-                  transition: 'background-color 220ms ease, transform 220ms ease',
-                  '&:hover': {
-                    bgcolor: '#FF1495',
-                    transform: 'translate3d(0, -1px, 0)',
-                  },
-                }}
-              >
-                เริ่มคุยโปรเจกต์
-              </Box>
-
-              <Box
-                component="a"
                 href="https://www.facebook.com/BAAWORK"
                 target="_blank"
                 rel="noreferrer noopener"
@@ -260,15 +231,22 @@ export function AppShell({ children }: AppShellProps) {
                 sx={{
                   display: 'inline-flex',
                   alignItems: 'center',
+                  justifyContent: 'space-between',
                   gap: 1.25,
-                  alignSelf: 'flex-start',
+                  width: '100%',
+                  minHeight: 64,
+                  px: { xs: 2, md: 2.25 },
+                  py: 1.25,
+                  borderRadius: '22px',
+                  bgcolor: '#F3F4F6',
                   color: palette.text,
                   textDecoration: 'none',
                   fontSize: { xs: 17, md: 18 },
                   lineHeight: 1.35,
                   fontWeight: 700,
-                  transition: 'color 180ms ease, transform 220ms ease',
+                  transition: 'background-color 220ms ease, color 180ms ease, transform 220ms ease',
                   '&:hover': {
+                    bgcolor: '#ECEEF2',
                     color: palette.primaryPink,
                     transform: 'translate3d(0, -1px, 0)',
                   },
@@ -288,6 +266,7 @@ export function AppShell({ children }: AppShellProps) {
                   },
                 }}
               >
+                <Box component="span">Facebook</Box>
                 <Box
                   component="span"
                   className="facebook-icon-ring"
@@ -298,7 +277,7 @@ export function AppShell({ children }: AppShellProps) {
                     width: 44,
                     height: 44,
                     borderRadius: '50%',
-                    bgcolor: '#F3F4F6',
+                    bgcolor: '#FFFFFF',
                     color: palette.primaryPink,
                     transition: 'background-color 220ms ease, color 220ms ease, box-shadow 220ms ease',
                   }}
@@ -319,7 +298,6 @@ export function AppShell({ children }: AppShellProps) {
                     />
                   </Box>
                 </Box>
-                Facebook
               </Box>
             </Stack>
           </Box>
