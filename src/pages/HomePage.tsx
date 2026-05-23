@@ -374,10 +374,10 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
         textDecoration: 'none',
         pointerEvents: isOpen ? 'auto' : 'none',
         opacity: isHidden ? 0 : 1,
-        transform: isHidden ? 'translate3d(0, 14px, 0) scale(0.06)' : 'translate3d(0, 0, 0) scale(1)',
+        transform: isHidden ? 'translate3d(0, 64px, 0)' : 'translate3d(0, 0, 0)',
         transformOrigin: 'center',
         transition:
-          'width 430ms cubic-bezier(0.22, 1, 0.36, 1), opacity 170ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1)',
+          'width 560ms cubic-bezier(0.25, 0.1, 0.25, 1), opacity 260ms linear, transform 620ms cubic-bezier(0.25, 0.1, 0.25, 1)',
         '&:focus': {
           outline: 'none',
         },
@@ -428,11 +428,11 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           bgcolor: palette.primaryPink,
           boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
           overflow: 'hidden',
-          opacity: isHidden ? 0 : 1,
-          transform: isHidden ? 'translate3d(0, 14px, 0) scale(0.06)' : 'translate3d(0, 0, 0) scale(1)',
+          opacity: 1,
+          transform: 'translate3d(0, 0, 0)',
           transformOrigin: 'center',
           transition:
-            'width 430ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
+            'width 560ms cubic-bezier(0.25, 0.1, 0.25, 1), opacity 260ms linear, transform 620ms cubic-bezier(0.25, 0.1, 0.25, 1), background-color 220ms ease, box-shadow 220ms ease',
         }}
       >
         <Box
@@ -441,7 +441,7 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           style={{
             opacity: isExpanded ? 1 : 0,
             transform: isExpanded ? 'translate(-50%, -50%)' : 'translate(calc(-50% - 8px), -50%)',
-            transitionDelay: isExpanded ? '140ms' : '0ms',
+            transitionDelay: isExpanded ? '220ms' : '0ms',
           }}
           sx={{
             whiteSpace: 'nowrap',
@@ -452,7 +452,7 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
             width: 'max-content',
             opacity: 0,
             transform: 'translate(calc(-50% - 8px), -50%)',
-            transition: 'opacity 180ms ease, transform 220ms ease',
+            transition: 'opacity 220ms linear, transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
           }}
         >
           ดูผลงานของพวกเรา
@@ -465,10 +465,10 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
         style={{
           opacity: isArrowVisible ? 1 : 0,
           transform: isHidden
-            ? 'translate3d(0, 14px, 0) scale(0.06)'
+            ? 'translate3d(0, 0, 0)'
             : isOpen
-              ? 'translate3d(calc(var(--hero-cta-label-width) + var(--hero-cta-gap)), 0, 0) scale(1)'
-              : 'translate3d(0, 0, 0) scale(1)',
+              ? 'translate3d(calc(var(--hero-cta-label-width) + var(--hero-cta-gap)), 0, 0)'
+              : 'translate3d(0, 0, 0)',
           boxShadow: isArrowVisible ? '0 16px 42px rgba(0,0,0,0.26)' : '0 0 0 rgba(0,0,0,0)',
         }}
         sx={{
@@ -489,10 +489,10 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           transform: 'translate3d(0, 0, 0) scale(1)',
           transformOrigin: 'center',
           transition:
-            'opacity 160ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
+            'opacity 260ms linear, transform 560ms cubic-bezier(0.25, 0.1, 0.25, 1), background-color 220ms ease, box-shadow 220ms ease',
           '@keyframes heroArrowDown': {
-            '0%, 100%': { transform: 'translate3d(0, -3px, 0)' },
-            '50%': { transform: 'translate3d(0, 5px, 0)' },
+            '0%, 100%': { transform: 'translate3d(0, -1px, 0)' },
+            '50%': { transform: 'translate3d(0, 2px, 0)' },
           },
         }}
       >
@@ -502,7 +502,7 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           sx={{
             display: 'grid',
             placeItems: 'center',
-            animation: isOpen ? 'heroArrowDown 1180ms ease-in-out 360ms infinite' : 'none',
+            animation: isOpen ? 'heroArrowDown 1800ms ease-in-out 520ms infinite' : 'none',
           }}
         >
           <Box component="svg" viewBox="0 0 24 24" sx={{ width: 25, height: 25 }}>
@@ -1706,14 +1706,14 @@ export function HomePage() {
       if (mode === 'open') {
         setHeroCtaPhase('hidden');
         heroCtaTimersRef.current = [
-          window.setTimeout(() => setHeroCtaPhase('seed'), 70),
-          window.setTimeout(() => setHeroCtaPhase('open'), 180),
+          window.setTimeout(() => setHeroCtaPhase('seed'), 80),
+          window.setTimeout(() => setHeroCtaPhase('open'), 260),
         ];
         return;
       }
 
       setHeroCtaPhase('seed');
-      heroCtaTimersRef.current = [window.setTimeout(() => setHeroCtaPhase('hidden'), 300)];
+      heroCtaTimersRef.current = [window.setTimeout(() => setHeroCtaPhase('hidden'), 360)];
     };
 
     const updateHeroCta = () => {
