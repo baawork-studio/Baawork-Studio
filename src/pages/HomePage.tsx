@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import { fetchProjects, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette, typeScale } from '../theme';
@@ -340,6 +340,150 @@ function carouselControlSx(enabled: boolean) {
       outline: 'none',
     },
   };
+}
+
+function HeroCta() {
+  return (
+    <Box
+      component="a"
+      href="#work"
+      aria-label="ดูผลงานของพวกเรา"
+      sx={{
+        '--hero-cta-label-width': { xs: '218px', sm: '274px' },
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: { xs: 1, sm: 1.1 },
+        color: '#FFFFFF',
+        textDecoration: 'none',
+        '&:focus': {
+          outline: 'none',
+        },
+        '&:focus-visible .hero-cta-label, &:focus-visible .hero-cta-arrow': {
+          outline: '2px solid rgba(255,255,255,0.86)',
+          outlineOffset: 4,
+        },
+        '&:hover .hero-cta-label': {
+          bgcolor: '#FF2A9F',
+          boxShadow: '0 18px 48px rgba(0,0,0,0.34)',
+          transform: 'translate3d(0, -1px, 0)',
+        },
+        '&:hover .hero-cta-arrow': {
+          bgcolor: '#FF5DB7',
+          transform: 'translate3d(0, -1px, 0) scale(1.02)',
+        },
+        '@media (prefers-reduced-motion: reduce)': {
+          '& .hero-cta-label, & .hero-cta-text, & .hero-cta-arrow, & .hero-cta-arrow-motion': {
+            animation: 'none',
+            opacity: 1,
+            transform: 'none',
+          },
+        },
+      }}
+    >
+      <Box
+        component="span"
+        className="hero-cta-label"
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 'var(--hero-cta-label-width)',
+          height: { xs: 56, sm: 58 },
+          px: { xs: 3, sm: 4 },
+          borderRadius: 999,
+          bgcolor: palette.primaryPink,
+          boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
+          overflow: 'hidden',
+          transformOrigin: 'center',
+          transition: 'background-color 220ms ease, transform 220ms ease, box-shadow 220ms ease',
+          animation: 'heroCtaLabelReveal 1040ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both',
+          '@keyframes heroCtaLabelReveal': {
+            '0%': {
+              width: '56px',
+              opacity: 0,
+              transform: 'translate3d(0, 14px, 0) scale(0.86)',
+              boxShadow: '0 0 0 rgba(0,0,0,0)',
+            },
+            '34%': {
+              width: '56px',
+              opacity: 1,
+              transform: 'translate3d(0, 0, 0) scale(1)',
+            },
+            '100%': {
+              width: 'var(--hero-cta-label-width)',
+              opacity: 1,
+              transform: 'translate3d(0, 0, 0) scale(1)',
+              boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
+            },
+          },
+          '@keyframes heroCtaTextReveal': {
+            '0%': { opacity: 0, transform: 'translate3d(-10px, 0, 0)' },
+            '100%': { opacity: 1, transform: 'translate3d(0, 0, 0)' },
+          },
+        }}
+      >
+        <Box
+          component="span"
+          className="hero-cta-text"
+          sx={{
+            whiteSpace: 'nowrap',
+            opacity: 0,
+            animation: 'heroCtaTextReveal 420ms ease 860ms both',
+          }}
+        >
+          ดูผลงานของพวกเรา
+        </Box>
+      </Box>
+      <Box
+        component="span"
+        className="hero-cta-arrow"
+        aria-hidden="true"
+        sx={{
+          flex: '0 0 auto',
+          display: 'grid',
+          placeItems: 'center',
+          width: { xs: 56, sm: 58 },
+          height: { xs: 56, sm: 58 },
+          borderRadius: '50%',
+          bgcolor: 'rgba(255,0,140,0.84)',
+          boxShadow: '0 16px 42px rgba(0,0,0,0.26)',
+          color: '#FFFFFF',
+          opacity: 0,
+          transition: 'background-color 220ms ease, transform 220ms ease',
+          animation: 'heroCtaArrowReveal 360ms ease 980ms both',
+          '@keyframes heroCtaArrowReveal': {
+            '0%': { opacity: 0, transform: 'scale(0.72)' },
+            '100%': { opacity: 1, transform: 'scale(1)' },
+          },
+          '@keyframes heroArrowDown': {
+            '0%, 100%': { transform: 'translate3d(0, -3px, 0)' },
+            '50%': { transform: 'translate3d(0, 5px, 0)' },
+          },
+        }}
+      >
+        <Box
+          component="span"
+          className="hero-cta-arrow-motion"
+          sx={{
+            display: 'grid',
+            placeItems: 'center',
+            animation: 'heroArrowDown 1180ms ease-in-out 1260ms infinite',
+          }}
+        >
+          <Box component="svg" viewBox="0 0 24 24" sx={{ width: 25, height: 25 }}>
+            <path
+              d="M12 5v13m0 0 6-6m-6 6-6-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
 }
 
 function AiPhoneScreen({
@@ -1276,48 +1420,153 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                 inset: '0 6% -18px',
                 borderRadius: '24px 24px 0 0',
                 border: '10px solid #111827',
-                bgcolor: '#F7F8FA',
+                bgcolor: '#FFFFFF',
                 overflow: 'hidden',
                 boxShadow: '0 -16px 42px rgba(17,24,39,0.1)',
               }}
             >
               <Box
                 sx={{
-                  height: '100%',
-                  background:
-                    'linear-gradient(135deg, rgba(255,0,140,0.18), transparent 38%), linear-gradient(180deg, #FFFFFF 0%, #F3F4F6 100%)',
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(135deg, rgba(255,0,140,0.14), transparent 46%)',
                 }}
               />
-              {[18, 36, 54].map((top, index) => (
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  position: 'absolute',
+                  top: '11%',
+                  left: '10%',
+                  right: '10%',
+                  alignItems: 'center',
+                }}
+              >
+                <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: card.color }} />
+                <Box sx={{ flex: 1, height: 9, borderRadius: 999, bgcolor: '#D1D5DB' }} />
+                <Box
+                  sx={{
+                    px: 1.3,
+                    py: 0.45,
+                    borderRadius: 999,
+                    bgcolor: 'rgba(255,0,140,0.12)',
+                    color: card.color,
+                    fontSize: 10,
+                    fontWeight: 700,
+                    lineHeight: 1,
+                  }}
+                >
+                  READY
+                </Box>
+              </Stack>
+              {[29, 47, 65].map((top, index) => (
                 <Box
                   key={top}
                   sx={{
                     position: 'absolute',
-                    left: '12%',
-                    right: `${24 + index * 10}%`,
+                    left: '10%',
+                    right: '10%',
                     top: `${top}%`,
-                    height: 10,
-                    borderRadius: 999,
-                    bgcolor: index === 1 ? card.color : '#D1D5DB',
+                    display: 'grid',
+                    gridTemplateColumns: '20px 1fr 58px',
+                    alignItems: 'center',
+                    gap: 1.25,
                   }}
-                />
+                >
+                  <Box
+                    sx={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: '50%',
+                      bgcolor: index === 0 ? card.color : '#E5E7EB',
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      height: 9,
+                      borderRadius: 999,
+                      bgcolor: index === 0 ? card.color : '#D1D5DB',
+                      opacity: index === 0 ? 1 : 0.75,
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      height: 20,
+                      borderRadius: 999,
+                      bgcolor: index === 0 ? 'rgba(255,0,140,0.14)' : '#F3F4F6',
+                    }}
+                  />
+                </Box>
               ))}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: '10%',
+                  right: '10%',
+                  bottom: '12%',
+                  height: 36,
+                  borderRadius: 999,
+                  bgcolor: card.color,
+                  boxShadow: '0 14px 30px rgba(255,0,140,0.22)',
+                }}
+              />
             </Box>
           ) : (
-            <Stack spacing={{ xs: 2, md: 2.5 }} sx={{ pt: { xs: 2, md: 3 } }}>
-              {['#EEF7FA', '#E7ECEF', '#F3EFE7', '#111827'].map((barColor, index) => (
+            <Box sx={{ position: 'absolute', inset: { xs: '6px 0 0', md: '12px 0 0' } }}>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '18%',
+                  bottom: '16%',
+                  width: 4,
+                  borderRadius: 999,
+                  bgcolor: '#F3D7CC',
+                  transform: 'translateX(-50%)',
+                }}
+              />
+              {[
+                { label: 'API', x: '18%', y: '24%', color: '#F15A24' },
+                { label: 'AI', x: '61%', y: '20%', color: '#6D5BFF' },
+                { label: 'DB', x: '27%', y: '58%', color: '#0F9DA8' },
+                { label: '+', x: '69%', y: '58%', color: '#111827' },
+              ].map((node) => (
                 <Box
-                  key={barColor}
+                  key={node.label}
                   sx={{
-                    height: { xs: 18, md: 22 },
-                    borderRadius: 999,
-                    bgcolor: barColor,
-                    boxShadow: '0 10px 24px rgba(17,24,39,0.08)',
-                    transform: `translateX(${index % 2 === 0 ? '-4%' : '4%'})`,
+                    position: 'absolute',
+                    left: node.x,
+                    top: node.y,
+                    display: 'grid',
+                    placeItems: 'center',
+                    width: { xs: 58, md: 74 },
+                    height: { xs: 58, md: 74 },
+                    borderRadius: '22px',
+                    bgcolor: '#FFFFFF',
+                    color: node.color,
+                    fontSize: { xs: 18, md: 22 },
+                    fontWeight: 800,
+                    boxShadow: '0 18px 42px rgba(17,24,39,0.12)',
+                    transform: 'translate(-50%, -50%)',
                   }}
-                />
+                >
+                  {node.label}
+                </Box>
               ))}
-            </Stack>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: '12%',
+                  right: '12%',
+                  bottom: '8%',
+                  height: { xs: 44, md: 54 },
+                  borderRadius: 999,
+                  bgcolor: '#111827',
+                  boxShadow: '0 18px 38px rgba(17,24,39,0.16)',
+                }}
+              />
+            </Box>
           )}
         </Box>
       )}
@@ -1416,21 +1665,21 @@ export function HomePage() {
           pb: { xs: 5, md: 7 },
           pt: { xs: 6, md: 5 },
           bgcolor: palette.text,
+          backgroundImage: `url(${featured.coverImageUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: { xs: 'scroll', md: 'fixed' },
         }}
       >
         <Box
-          component="img"
-          src={featured.coverImageUrl}
-          alt=""
           aria-hidden="true"
           sx={{
             position: 'absolute',
             inset: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
-            opacity: 1,
-            filter: 'saturate(0.95) contrast(1.02)',
+            bgcolor: 'transparent',
           }}
         />
         <Box
@@ -1470,139 +1719,7 @@ export function HomePage() {
               >
                 สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ ประสบการณ์ใช้งาน และเทคโนโลยีให้พร้อมใช้งานในธุรกิจจริง
               </Typography>
-              <Button
-                href="#work"
-                variant="contained"
-                size="large"
-                disableElevation
-                disableRipple
-                sx={{
-                  '--hero-cta-width': { xs: '238px', sm: '274px' },
-                  position: 'relative',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: 'var(--hero-cta-width)',
-                  minWidth: 0,
-                  height: { xs: 56, sm: 58 },
-                  borderRadius: 999,
-                  px: { xs: 0.85, sm: 0.9 },
-                  pl: { xs: 2.8, sm: 3.1 },
-                  py: 0,
-                  overflow: 'hidden',
-                  color: '#FFFFFF',
-                  bgcolor: palette.primaryPink,
-                  boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
-                  transformOrigin: 'center',
-                  animation: 'heroCtaReveal 1040ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both',
-                  '&:hover': {
-                    bgcolor: '#FF2A9F',
-                    boxShadow: '0 18px 48px rgba(0,0,0,0.34)',
-                    transform: 'translate3d(0, -1px, 0)',
-                  },
-                  '&:focus': {
-                    outline: 'none',
-                  },
-                  '&:focus-visible': {
-                    outline: '2px solid rgba(255,255,255,0.86)',
-                    outlineOffset: 4,
-                  },
-                  '@keyframes heroCtaReveal': {
-                    '0%': {
-                      width: '56px',
-                      opacity: 0,
-                      transform: 'translate3d(0, 14px, 0) scale(0.86)',
-                      boxShadow: '0 0 0 rgba(0,0,0,0)',
-                    },
-                    '34%': {
-                      width: '56px',
-                      opacity: 1,
-                      transform: 'translate3d(0, 0, 0) scale(1)',
-                    },
-                    '100%': {
-                      width: 'var(--hero-cta-width)',
-                      opacity: 1,
-                      transform: 'translate3d(0, 0, 0) scale(1)',
-                      boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
-                    },
-                  },
-                  '@keyframes heroCtaTextReveal': {
-                    '0%': { opacity: 0, transform: 'translate3d(-10px, 0, 0)' },
-                    '100%': { opacity: 1, transform: 'translate3d(0, 0, 0)' },
-                  },
-                  '@keyframes heroCtaIconReveal': {
-                    '0%': { opacity: 0, transform: 'scale(0.72)' },
-                    '100%': { opacity: 1, transform: 'scale(1)' },
-                  },
-                  '@keyframes heroArrowDown': {
-                    '0%, 100%': { transform: 'translate3d(0, -2px, 0)' },
-                    '50%': { transform: 'translate3d(0, 4px, 0)' },
-                  },
-                  '@media (prefers-reduced-motion: reduce)': {
-                    animation: 'none',
-                    '& .hero-cta-label, & .hero-cta-icon': {
-                      animation: 'none',
-                      opacity: 1,
-                      transform: 'none',
-                    },
-                  },
-                }}
-              >
-                <Box
-                  component="span"
-                  className="hero-cta-label"
-                  sx={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    whiteSpace: 'nowrap',
-                    opacity: 0,
-                    animation: 'heroCtaTextReveal 420ms ease 860ms both',
-                  }}
-                >
-                  ดูผลงานของพวกเรา
-                </Box>
-                <Box
-                  component="span"
-                  className="hero-cta-icon"
-                  aria-hidden="true"
-                  sx={{
-                    flex: '0 0 auto',
-                    display: 'grid',
-                    placeItems: 'center',
-                    width: { xs: 42, sm: 44 },
-                    height: { xs: 42, sm: 44 },
-                    borderRadius: '50%',
-                    bgcolor: 'rgba(255,255,255,0.18)',
-                    color: '#FFFFFF',
-                    opacity: 0,
-                    animation: 'heroCtaIconReveal 360ms ease 960ms both',
-                  }}
-                >
-                  <Box
-                    component="span"
-                    sx={{
-                      display: 'grid',
-                      placeItems: 'center',
-                      animation: 'heroArrowDown 1180ms ease-in-out 1260ms infinite',
-                    }}
-                  >
-                    <Box
-                      component="svg"
-                      viewBox="0 0 24 24"
-                      sx={{ width: 22, height: 22 }}
-                    >
-                      <path
-                        d="M12 5v13m0 0 6-6m-6 6-6-6"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-              </Button>
+              <HeroCta />
             </Stack>
           </Stack>
         </Container>
