@@ -229,82 +229,83 @@ export function AppShell({ children }: AppShellProps) {
                 </Stack>
               </Box>
 
-              <Box
-                component="a"
-                href="https://www.facebook.com/BAAWORK"
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Facebook Baawork"
-                sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 1.25,
-                  width: '100%',
-                  minHeight: { xs: 64, sm: '100%' },
-                  px: { xs: 2, md: 2.25 },
-                  py: 1.25,
-                  borderRadius: '22px',
-                  bgcolor: '#F3F4F6',
-                  color: palette.text,
-                  textDecoration: 'none',
-                  fontSize: { xs: 17, md: 18 },
-                  lineHeight: 1.35,
-                  fontWeight: 700,
-                  transition: 'background-color 220ms ease, color 180ms ease, transform 220ms ease',
-                  '&:hover': {
-                    bgcolor: '#ECEEF2',
-                    color: palette.primaryPink,
-                    transform: 'translate3d(0, -1px, 0)',
-                  },
-                  '&:hover .facebook-icon-ring': {
-                    bgcolor: palette.primaryPink,
-                    color: '#FFFFFF',
-                    boxShadow: '0 16px 36px rgba(255,0,140,0.24)',
-                  },
-                  '&:hover .facebook-icon': {
-                    animation: 'facebookIconPulse 620ms ease both',
-                  },
-                  '@keyframes facebookIconPulse': {
-                    '0%': { transform: 'scale(1)' },
-                    '38%': { transform: 'scale(0.86)' },
-                    '72%': { transform: 'scale(1.08)' },
-                    '100%': { transform: 'scale(1)' },
-                  },
-                }}
-              >
-                <Box component="span">Facebook</Box>
-                <Box
-                  component="span"
-                  className="facebook-icon-ring"
-                  aria-hidden="true"
+              <Box>
+                <Typography
                   sx={{
-                    display: 'grid',
-                    placeItems: 'center',
-                    width: 44,
-                    height: 44,
-                    borderRadius: '50%',
-                    bgcolor: '#FFFFFF',
+                    mb: 1.5,
                     color: palette.primaryPink,
-                    transition: 'background-color 220ms ease, color 220ms ease, box-shadow 220ms ease',
+                    fontSize: 15,
+                    lineHeight: 1.2,
+                    fontWeight: 700,
                   }}
                 >
-                  <Box
-                    component="svg"
-                    className="facebook-icon"
-                    viewBox="0 0 24 24"
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      transformOrigin: 'center',
-                    }}
-                  >
-                    <path
-                      d="M14.2 8.3V6.9c0-.7.5-1.1 1.2-1.1h1.7V3.1c-.8-.1-1.7-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.2v1.1H7.8v3h2.6V21h3.2v-9.7h2.7l.4-3h-3.1Z"
-                      fill="currentColor"
-                    />
-                  </Box>
-                </Box>
+                  สนใจร่วมงานติดต่อได้ที่
+                </Typography>
+                <Stack spacing={1.2}>
+                  {[
+                    {
+                      label: 'Facebook',
+                      href: 'https://www.facebook.com/BAAWORK',
+                      color: palette.primaryPink,
+                      icon: (
+                        <path
+                          d="M14.2 8.3V6.9c0-.7.5-1.1 1.2-1.1h1.7V3.1c-.8-.1-1.7-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.2v1.1H7.8v3h2.6V21h3.2v-9.7h2.7l.4-3h-3.1Z"
+                          fill="currentColor"
+                        />
+                      ),
+                    },
+                    {
+                      label: 'LINE',
+                      href: 'https://line.me/R/ti/p/@baawork',
+                      color: '#06C755',
+                      icon: (
+                        <path
+                          d="M12 4.2c-4.8 0-8.7 3.1-8.7 7 0 3.5 3.1 6.4 7.2 6.9.3.1.6.2.7.5.1.2.1.5 0 .8l-.2 1c-.1.3.2.6.5.4 3.6-1.7 9.2-5.5 9.2-9.6 0-3.9-3.9-7-8.7-7Zm-3.1 8.9H6.8V9.3h.9v3h1.2v.8Zm2.1 0h-.9V9.3h.9v3.8Zm4.1 0h-.8l-1.7-2.2v2.2h-.9V9.3h.8l1.7 2.2V9.3h.9v3.8Zm3.1-3h-1.4v.7H18v.8h-1.2v.7h1.4v.8h-2.3V9.3h2.3v.8Z"
+                          fill="currentColor"
+                        />
+                      ),
+                    },
+                  ].map((social) => (
+                    <Typography
+                      key={social.label}
+                      component="a"
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label={`${social.label} Baawork`}
+                      sx={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 1.25,
+                        color: '#4B5563',
+                        textDecoration: 'none',
+                        fontSize: { xs: 18, md: 19 },
+                        lineHeight: 1.45,
+                        fontWeight: 500,
+                        transition: 'color 180ms ease, transform 220ms ease',
+                        '&:hover': {
+                          color: social.color,
+                          transform: 'translate3d(0, -1px, 0)',
+                        },
+                      }}
+                    >
+                      <Box
+                        component="svg"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        sx={{
+                          width: 24,
+                          height: 24,
+                          color: social.color,
+                          flex: '0 0 auto',
+                        }}
+                      >
+                        {social.icon}
+                      </Box>
+                      {social.label}
+                    </Typography>
+                  ))}
+                </Stack>
               </Box>
             </Box>
           </Box>
