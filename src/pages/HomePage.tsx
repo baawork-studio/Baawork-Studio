@@ -15,6 +15,8 @@ type ShowcaseCard = {
   presentation?: 'phoneAiLight' | 'phoneAiDark';
 };
 
+type HeroCtaPhase = 'hidden' | 'seed' | 'open';
+
 const aiShowcaseCards: ShowcaseCard[] = [
   {
     id: 'ai-command-center',
@@ -342,23 +344,26 @@ function carouselControlSx(enabled: boolean) {
   };
 }
 
-function HeroCta({ collapsed, intro }: { collapsed: boolean; intro: boolean }) {
+function HeroCta({ phase }: { phase: HeroCtaPhase }) {
+  const isOpen = phase === 'open';
+  const isSeed = phase === 'seed';
+  const isHidden = phase === 'hidden';
+
   return (
     <Box
       component="a"
       href="#work"
       aria-label="ดูผลงานของพวกเรา"
-      data-collapsed={collapsed ? 'true' : 'false'}
-      data-intro={intro ? 'true' : 'false'}
+      data-phase={phase}
       sx={{
         '--hero-cta-label-width': { xs: '218px', sm: '274px' },
         '--hero-cta-circle-size': { xs: '56px', sm: '58px' },
-        '--hero-cta-arrow-offset': { xs: '-48px', sm: '-58px' },
         display: 'inline-flex',
         alignItems: 'center',
         gap: { xs: 1.5, sm: 2 },
         color: '#FFFFFF',
         textDecoration: 'none',
+        pointerEvents: isOpen ? 'auto' : 'none',
         '&:focus': {
           outline: 'none',
         },
@@ -366,18 +371,19 @@ function HeroCta({ collapsed, intro }: { collapsed: boolean; intro: boolean }) {
           outline: '2px solid rgba(255,255,255,0.86)',
           outlineOffset: 4,
         },
-        '&:hover .hero-cta-label': {
-          bgcolor: '#FF1495',
-          boxShadow: '0 17px 44px rgba(0,0,0,0.31)',
-          transform: 'translate3d(0, -1px, 0)',
-        },
-        '&:hover .hero-cta-arrow': {
-          bgcolor: '#F71C91',
-          transform: 'translate3d(0, -1px, 0) scale(1.01)',
-        },
-        '&[data-collapsed="true"]': {
-          pointerEvents: 'none',
-        },
+        ...(isOpen
+          ? {
+              '&:hover .hero-cta-label': {
+                bgcolor: '#FF1495',
+                boxShadow: '0 17px 44px rgba(0,0,0,0.31)',
+                transform: 'translate3d(0, -1px, 0)',
+              },
+              '&:hover .hero-cta-arrow': {
+                bgcolor: '#F71C91',
+                transform: 'translate3d(0, -1px, 0) scale(1.01)',
+              },
+            }
+          : {}),
         '@media (prefers-reduced-motion: reduce)': {
           '& .hero-cta-label, & .hero-cta-text, & .hero-cta-arrow, & .hero-cta-arrow-motion': {
             animation: 'none !important',
@@ -394,57 +400,21 @@ function HeroCta({ collapsed, intro }: { collapsed: boolean; intro: boolean }) {
           flex: '0 0 auto',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 'var(--hero-cta-label-width)',
+          width: isOpen ? 'var(--hero-cta-label-width)' : 'var(--hero-cta-circle-size)',
           minWidth: 0,
           height: { xs: 56, sm: 58 },
           boxSizing: 'border-box',
-          px: { xs: 3, sm: 4 },
+          px: 0,
           borderRadius: 999,
           bgcolor: palette.primaryPink,
-          boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
+          boxShadow: isHidden ? '0 0 0 rgba(0,0,0,0)' : '0 16px 42px rgba(0,0,0,0.28)',
           overflow: 'hidden',
+          position: 'relative',
+          opacity: isHidden ? 0 : 1,
+          transform: isHidden ? 'translate3d(0, 14px, 0) scale(0.06)' : 'translate3d(0, 0, 0) scale(1)',
           transformOrigin: 'center',
           transition:
-            'width 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 340ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
-          transitionDelay: '120ms',
-          '@keyframes heroCtaLabelReveal': {
-            '0%': {
-              width: 'var(--hero-cta-circle-size)',
-              opacity: 0,
-              transform: 'translate3d(0, 14px, 0) scale(0.08)',
-              boxShadow: '0 0 0 rgba(0,0,0,0)',
-            },
-            '38%': {
-              width: 'var(--hero-cta-circle-size)',
-              opacity: 1,
-              transform: 'translate3d(0, 0, 0) scale(1)',
-            },
-            '100%': {
-              width: 'var(--hero-cta-label-width)',
-              opacity: 1,
-              transform: 'translate3d(0, 0, 0) scale(1)',
-              boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
-            },
-          },
-          '@keyframes heroCtaTextReveal': {
-            '0%': { opacity: 0, transform: 'translate3d(-10px, 0, 0)' },
-            '100%': { opacity: 1, transform: 'translate3d(0, 0, 0)' },
-          },
-          ...(intro && !collapsed
-            ? {
-                animation: 'heroCtaLabelReveal 1120ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both',
-              }
-            : {}),
-          ...(collapsed
-            ? {
-                width: 'var(--hero-cta-circle-size)',
-                opacity: 0,
-                transform: 'translate3d(0, 10px, 0) scale(0.08)',
-                boxShadow: '0 0 0 rgba(0,0,0,0)',
-                transitionDelay: '0ms',
-                animation: 'none',
-              }
-            : {}),
+            'width 430ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
         }}
       >
         <Box
@@ -453,23 +423,15 @@ function HeroCta({ collapsed, intro }: { collapsed: boolean; intro: boolean }) {
           sx={{
             whiteSpace: 'nowrap',
             flex: '0 0 auto',
-            opacity: 1,
-            transform: 'translate3d(0, 0, 0)',
-            transition: 'opacity 280ms ease, transform 340ms ease',
-            ...(intro && !collapsed
-              ? {
-                  opacity: 0,
-                  transform: 'translate3d(-10px, 0, 0)',
-                  animation: 'heroCtaTextReveal 420ms ease 860ms both',
-                }
-              : {}),
-            ...(collapsed
-              ? {
-                  opacity: 0,
-                  transform: 'translate3d(-8px, 0, 0)',
-                  animation: 'none',
-                }
-              : {}),
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: 'max-content',
+            opacity: isOpen ? 1 : 0,
+            transform: isOpen ? 'translate(-50%, -50%)' : 'translate(calc(-50% - 8px), -50%)',
+            transition: `opacity 180ms ease ${isOpen ? '180ms' : '0ms'}, transform 220ms ease ${
+              isOpen ? '180ms' : '0ms'
+            }`,
           }}
         >
           ดูผลงานของพวกเรา
@@ -487,38 +449,17 @@ function HeroCta({ collapsed, intro }: { collapsed: boolean; intro: boolean }) {
           height: { xs: 56, sm: 58 },
           borderRadius: '50%',
           bgcolor: 'rgba(255,0,140,0.84)',
-          boxShadow: '0 16px 42px rgba(0,0,0,0.26)',
+          boxShadow: isHidden ? '0 0 0 rgba(0,0,0,0)' : '0 16px 42px rgba(0,0,0,0.26)',
           color: '#FFFFFF',
-          opacity: 1,
+          opacity: isHidden ? 0 : 1,
+          transform: isHidden ? 'translate3d(-10px, 14px, 0) scale(0.06)' : 'translate3d(0, 0, 0) scale(1)',
           transformOrigin: 'center',
           transition:
-            'opacity 320ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
-          transitionDelay: '110ms',
-          '@keyframes heroCtaArrowReveal': {
-            '0%': { opacity: 0, transform: 'translate3d(var(--hero-cta-arrow-offset), 0, 0) scale(0.08)' },
-            '42%': { opacity: 1, transform: 'translate3d(var(--hero-cta-arrow-offset), 0, 0) scale(1)' },
-            '100%': { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' },
-          },
+            'opacity 170ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
           '@keyframes heroArrowDown': {
             '0%, 100%': { transform: 'translate3d(0, -3px, 0)' },
             '50%': { transform: 'translate3d(0, 5px, 0)' },
           },
-          ...(intro && !collapsed
-            ? {
-                opacity: 0,
-                transform: 'translate3d(var(--hero-cta-arrow-offset), 0, 0) scale(0.08)',
-                animation: 'heroCtaArrowReveal 520ms cubic-bezier(0.22, 1, 0.36, 1) 900ms both',
-              }
-            : {}),
-          ...(collapsed
-            ? {
-                opacity: 0,
-                transform: 'translate3d(var(--hero-cta-arrow-offset), 10px, 0) scale(0.08)',
-                boxShadow: '0 0 0 rgba(0,0,0,0)',
-                transitionDelay: '0ms',
-                animation: 'none',
-              }
-            : {}),
         }}
       >
         <Box
@@ -527,7 +468,7 @@ function HeroCta({ collapsed, intro }: { collapsed: boolean; intro: boolean }) {
           sx={{
             display: 'grid',
             placeItems: 'center',
-            animation: 'heroArrowDown 1180ms ease-in-out 1260ms infinite',
+            animation: isOpen || isSeed ? 'heroArrowDown 1180ms ease-in-out 360ms infinite' : 'none',
           }}
         >
           <Box component="svg" viewBox="0 0 24 24" sx={{ width: 25, height: 25 }}>
@@ -1692,8 +1633,8 @@ function ResultsSection() {
 
 export function HomePage() {
   const [projects, setProjects] = useState<Project[]>(fallbackProjects);
-  const [heroCtaCollapsed, setHeroCtaCollapsed] = useState(false);
-  const [heroCtaIntro, setHeroCtaIntro] = useState(true);
+  const [heroCtaPhase, setHeroCtaPhase] = useState<HeroCtaPhase>('hidden');
+  const heroCtaIntroDoneRef = useRef(false);
 
   useEffect(() => {
     let active = true;
@@ -1715,7 +1656,8 @@ export function HomePage() {
 
   useEffect(() => {
     const updateHeroCta = () => {
-      setHeroCtaCollapsed(window.scrollY > 42);
+      if (!heroCtaIntroDoneRef.current) return;
+      setHeroCtaPhase(window.scrollY > 42 ? 'seed' : 'open');
     };
 
     updateHeroCta();
@@ -1727,12 +1669,17 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
-    const introTimer = window.setTimeout(() => {
-      setHeroCtaIntro(false);
-    }, 1780);
+    const seedTimer = window.setTimeout(() => {
+      setHeroCtaPhase('seed');
+    }, 80);
+    const openTimer = window.setTimeout(() => {
+      heroCtaIntroDoneRef.current = true;
+      setHeroCtaPhase(window.scrollY > 42 ? 'seed' : 'open');
+    }, 310);
 
     return () => {
-      window.clearTimeout(introTimer);
+      window.clearTimeout(seedTimer);
+      window.clearTimeout(openTimer);
     };
   }, []);
 
@@ -1804,7 +1751,7 @@ export function HomePage() {
               >
                 สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ ประสบการณ์ใช้งาน และเทคโนโลยีให้พร้อมใช้งานในธุรกิจจริง
               </Typography>
-              <HeroCta collapsed={heroCtaCollapsed} intro={heroCtaIntro} />
+              <HeroCta phase={heroCtaPhase} />
             </Stack>
           </Stack>
         </Container>
