@@ -6,6 +6,8 @@ type AppShellProps = {
   children: React.ReactNode;
 };
 
+const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
+
 export function AppShell({ children }: AppShellProps) {
   const [headerHidden, setHeaderHidden] = useState(false);
   const lastScrollYRef = useRef(0);
@@ -106,18 +108,18 @@ export function AppShell({ children }: AppShellProps) {
         component="footer"
         id="contact"
         sx={{
-          bgcolor: '#111827',
-          color: '#FFFFFF',
+          bgcolor: palette.background,
+          color: palette.text,
           py: { xs: 7, sm: 8, md: 10 },
-          px: { xs: 3, sm: 4, md: 'max(24px, calc((100vw - 1628px) / 2))' },
+          px: pageGutter,
         }}
       >
-        <Box sx={{ mx: 'auto', maxWidth: 1628 }}>
+        <Box>
           <Box
             sx={{
               display: 'grid',
               gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1.25fr) minmax(280px, 0.75fr)' },
-              gap: { xs: 5, md: 8 },
+              gap: { xs: 5, md: 7, lg: 8 },
               alignItems: 'start',
             }}
           >
@@ -139,7 +141,7 @@ export function AppShell({ children }: AppShellProps) {
                 variant="h2"
                 sx={{
                   ...typeScale.sectionTitle,
-                  color: '#FFFFFF',
+                  color: palette.text,
                   maxWidth: 720,
                 }}
               >
@@ -148,7 +150,7 @@ export function AppShell({ children }: AppShellProps) {
               <Typography
                 sx={{
                   ...typeScale.bodyLarge,
-                  color: 'rgba(255,255,255,0.72)',
+                  color: '#4B5563',
                   maxWidth: 680,
                 }}
               >
@@ -181,14 +183,14 @@ export function AppShell({ children }: AppShellProps) {
                       component="a"
                       href={link.href}
                       sx={{
-                        color: 'rgba(255,255,255,0.76)',
+                        color: '#4B5563',
                         textDecoration: 'none',
                         fontSize: { xs: 18, md: 19 },
                         lineHeight: 1.45,
                         fontWeight: 500,
                         transition: 'color 180ms ease',
                         '&:hover': {
-                          color: '#FFFFFF',
+                          color: palette.text,
                         },
                       }}
                     >
@@ -226,6 +228,77 @@ export function AppShell({ children }: AppShellProps) {
               >
                 เริ่มคุยโปรเจกต์
               </Box>
+
+              <Box
+                component="a"
+                href="https://www.facebook.com/BAAWORK"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Facebook Baawork"
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 1.25,
+                  alignSelf: 'flex-start',
+                  color: palette.text,
+                  textDecoration: 'none',
+                  fontSize: { xs: 17, md: 18 },
+                  lineHeight: 1.35,
+                  fontWeight: 700,
+                  transition: 'color 180ms ease, transform 220ms ease',
+                  '&:hover': {
+                    color: palette.primaryPink,
+                    transform: 'translate3d(0, -1px, 0)',
+                  },
+                  '&:hover .facebook-icon-ring': {
+                    bgcolor: palette.primaryPink,
+                    color: '#FFFFFF',
+                    boxShadow: '0 16px 36px rgba(255,0,140,0.24)',
+                  },
+                  '&:hover .facebook-icon': {
+                    animation: 'facebookIconPulse 620ms ease both',
+                  },
+                  '@keyframes facebookIconPulse': {
+                    '0%': { transform: 'scale(1)' },
+                    '38%': { transform: 'scale(0.86)' },
+                    '72%': { transform: 'scale(1.08)' },
+                    '100%': { transform: 'scale(1)' },
+                  },
+                }}
+              >
+                <Box
+                  component="span"
+                  className="facebook-icon-ring"
+                  aria-hidden="true"
+                  sx={{
+                    display: 'grid',
+                    placeItems: 'center',
+                    width: 44,
+                    height: 44,
+                    borderRadius: '50%',
+                    bgcolor: '#F3F4F6',
+                    color: palette.primaryPink,
+                    transition: 'background-color 220ms ease, color 220ms ease, box-shadow 220ms ease',
+                  }}
+                >
+                  <Box
+                    component="svg"
+                    className="facebook-icon"
+                    viewBox="0 0 24 24"
+                    sx={{
+                      width: 24,
+                      height: 24,
+                      transformOrigin: 'center',
+                    }}
+                  >
+                    <path
+                      d="M14.2 8.3V6.9c0-.7.5-1.1 1.2-1.1h1.7V3.1c-.8-.1-1.7-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.2v1.1H7.8v3h2.6V21h3.2v-9.7h2.7l.4-3h-3.1Z"
+                      fill="currentColor"
+                    />
+                  </Box>
+                </Box>
+                Facebook
+              </Box>
             </Stack>
           </Box>
 
@@ -233,7 +306,7 @@ export function AppShell({ children }: AppShellProps) {
             sx={{
               mt: { xs: 6, md: 8 },
               pt: { xs: 3, md: 4 },
-              borderTop: '1px solid rgba(255,255,255,0.12)',
+              borderTop: `1px solid ${palette.border}`,
               display: 'flex',
               flexDirection: { xs: 'column', sm: 'row' },
               gap: 1.5,
@@ -241,10 +314,10 @@ export function AppShell({ children }: AppShellProps) {
               justifyContent: 'space-between',
             }}
           >
-            <Typography sx={{ color: 'rgba(255,255,255,0.56)', fontSize: 14, lineHeight: 1.5 }}>
+            <Typography sx={{ color: '#6B7280', fontSize: 14, lineHeight: 1.5 }}>
               Baawork Studio
             </Typography>
-            <Typography sx={{ color: 'rgba(255,255,255,0.56)', fontSize: 14, lineHeight: 1.5 }}>
+            <Typography sx={{ color: '#6B7280', fontSize: 14, lineHeight: 1.5 }}>
               ออกแบบ พัฒนา และส่งมอบระบบดิจิทัลสำหรับใช้งานจริง
             </Typography>
           </Box>
