@@ -247,23 +247,13 @@ export function AppShell({ children }: AppShellProps) {
                       label: 'Facebook',
                       href: 'https://www.facebook.com/BAAWORK',
                       color: palette.primaryPink,
-                      icon: (
-                        <path
-                          d="M14.2 8.3V6.9c0-.7.5-1.1 1.2-1.1h1.7V3.1c-.8-.1-1.7-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.2v1.1H7.8v3h2.6V21h3.2v-9.7h2.7l.4-3h-3.1Z"
-                          fill="currentColor"
-                        />
-                      ),
+                      iconSrc: 'https://thesvg.org/icons/facebook/default.svg',
                     },
                     {
                       label: 'LINE',
                       href: 'https://line.me/R/ti/p/@baawork',
                       color: '#06C755',
-                      icon: (
-                        <path
-                          d="M12 4.2c-4.8 0-8.7 3.1-8.7 7 0 3.5 3.1 6.4 7.2 6.9.3.1.6.2.7.5.1.2.1.5 0 .8l-.2 1c-.1.3.2.6.5.4 3.6-1.7 9.2-5.5 9.2-9.6 0-3.9-3.9-7-8.7-7Zm-3.1 8.9H6.8V9.3h.9v3h1.2v.8Zm2.1 0h-.9V9.3h.9v3.8Zm4.1 0h-.8l-1.7-2.2v2.2h-.9V9.3h.8l1.7 2.2V9.3h.9v3.8Zm3.1-3h-1.4v.7H18v.8h-1.2v.7h1.4v.8h-2.3V9.3h2.3v.8Z"
-                          fill="currentColor"
-                        />
-                      ),
+                      iconSrc: 'https://thesvg.org/icons/line/default.svg',
                     },
                   ].map((social) => (
                     <Typography
@@ -290,18 +280,19 @@ export function AppShell({ children }: AppShellProps) {
                       }}
                     >
                       <Box
-                        component="svg"
-                        viewBox="0 0 24 24"
+                        component="img"
+                        src={social.iconSrc}
+                        alt=""
                         aria-hidden="true"
+                        loading="lazy"
+                        decoding="async"
                         sx={{
                           width: 24,
                           height: 24,
-                          color: social.color,
+                          objectFit: 'contain',
                           flex: '0 0 auto',
                         }}
-                      >
-                        {social.icon}
-                      </Box>
+                      />
                       {social.label}
                     </Typography>
                   ))}
