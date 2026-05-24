@@ -136,6 +136,80 @@ function getTechReason(project: Project) {
   return `โปรเจกต์นี้ใช้ ${project.stack.join(', ')} เพื่อสร้างเว็บแอปที่ดูแลง่าย เชื่อมต่อข้อมูลจริงได้ครบ และรองรับ workflow หลังบ้านที่ทีมต้องใช้งานต่อเนื่องทุกวัน`;
 }
 
+const descriptionHighlightTerms = [
+  'หน้าจอเดียว',
+  'ความเสี่ยง',
+  'เคสเร่งด่วน',
+  'สัญญาณ',
+  'การตัดสินใจเร็วและแม่นยำขึ้น',
+  'คาดการณ์ยอดขาย',
+  'พฤติกรรมลูกค้า',
+  'โอกาสปิดการขาย',
+  'สกัดข้อมูลสำคัญ',
+  'จัดหมวดหมู่คำขอ',
+  'แนะนำคำตอบ',
+  'ติดตามงานค้าง',
+  'error rate',
+  'เหตุการณ์ผิดปกติ',
+  'คำขอ',
+  'สถานะส่งมอบ',
+  'ตรวจสอบช่วงเวลาว่าง',
+  'ยืนยันรายการ',
+  'ประวัติการติดต่อ',
+  'follow-up',
+  'จำนวนสินค้า',
+  'รายการที่ต้องเติม',
+  'ตัวเลขสำคัญ',
+  'insight',
+];
+
+function getDescriptionHighlightTerms(project: Project) {
+  return Array.from(new Set([...project.highlights, ...descriptionHighlightTerms]))
+    .filter((term) => project.description.includes(term))
+    .sort((a, b) => b.length - a.length);
+}
+
+function renderHighlightedDescription(project: Project, accent: string) {
+  const terms = getDescriptionHighlightTerms(project);
+  const nodes = [];
+  let remaining = project.description;
+  let key = 0;
+
+  while (remaining.length > 0) {
+    const nextMatch = terms
+      .map((term) => ({ term, index: remaining.indexOf(term) }))
+      .filter((match) => match.index >= 0)
+      .sort((a, b) => a.index - b.index || b.term.length - a.term.length)[0];
+
+    if (!nextMatch) {
+      nodes.push(remaining);
+      break;
+    }
+
+    if (nextMatch.index > 0) {
+      nodes.push(remaining.slice(0, nextMatch.index));
+    }
+
+    nodes.push(
+      <Box
+        key={`${nextMatch.term}-${key}`}
+        component="span"
+        sx={{
+          color: accent,
+          fontWeight: 700,
+        }}
+      >
+        {nextMatch.term}
+      </Box>,
+    );
+
+    remaining = remaining.slice(nextMatch.index + nextMatch.term.length);
+    key += 1;
+  }
+
+  return nodes;
+}
+
 function getScreenImage(project: Project, key: ScreenImageKey, index: number) {
   const explicitImage = project.screenImageUrls?.[key];
   if (explicitImage) return explicitImage;
@@ -225,6 +299,46 @@ function ProjectDeviceShowcase({ project }: { project: Project }) {
         );
       })}
     </Box>
+  );
+}
+
+function ProjectPurposeSection({ project }: { project: Project }) {
+  const visual = getProjectVisual(project);
+
+  return (
+    <Stack
+      spacing={{ xs: 2.25, sm: 2.75, md: 3.25 }}
+      alignItems="center"
+      textAlign="center"
+      sx={{
+        width: '100%',
+        maxWidth: 1180,
+        mx: 'auto',
+        py: { xs: 2, md: 3 },
+      }}
+    >
+      <Typography
+        variant="h2"
+        sx={{
+          color: visual.accent,
+          ...typeScale.display,
+        }}
+      >
+        สร้างมาเพื่ออะไร
+      </Typography>
+      <Typography
+        sx={{
+          color: '#86868B',
+          ...typeScale.intro,
+          maxWidth: 1080,
+          mx: 'auto',
+          fontWeight: 600,
+          textAlign: 'center',
+        }}
+      >
+        {renderHighlightedDescription(project, visual.accent)}
+      </Typography>
+    </Stack>
   );
 }
 
@@ -405,22 +519,8 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
 
           <ProjectDeviceShowcase project={project} />
 
-          <Stack
-            spacing={{ xs: 4, md: 5 }}
-            sx={{ width: '100%' }}
-          >
-            <Typography
-              sx={{
-                color: '#4B5563',
-                ...typeScale.bodyLarge,
-                width: '100%',
-                maxWidth: 1420,
-                mx: 'auto',
-                textAlign: 'left',
-              }}
-            >
-              {project.description}
-            </Typography>
+          <Stack spacing={{ xs: 4, md: 5 }} sx={{ width: '100%' }}>
+            <ProjectPurposeSection project={project} />
             <ProjectTechSection project={project} />
           </Stack>
 
