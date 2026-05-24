@@ -183,8 +183,11 @@ export function AppShell({ children }: AppShellProps) {
             <Box
               sx={{
                 display: 'grid',
-                gridTemplateColumns: { xs: '1fr', sm: 'minmax(0, 1fr) minmax(180px, 0.95fr)' },
-                gap: { xs: 3, sm: 4, md: 5 },
+                gridTemplateColumns: {
+                  xs: 'minmax(0, 0.94fr) minmax(150px, 1.06fr)',
+                  sm: 'minmax(0, 1fr) minmax(180px, 0.95fr)',
+                },
+                gap: { xs: 2.5, sm: 4, md: 5 },
                 alignItems: 'stretch',
               }}
             >
@@ -214,7 +217,7 @@ export function AppShell({ children }: AppShellProps) {
                       sx={{
                         color: '#4B5563',
                         textDecoration: 'none',
-                        fontSize: { xs: 18, md: 19 },
+                        fontSize: { xs: 16, sm: 18, md: 19 },
                         lineHeight: 1.45,
                         fontWeight: 500,
                         transition: 'color 180ms ease',
@@ -275,7 +278,7 @@ export function AppShell({ children }: AppShellProps) {
                         gap: 1.25,
                         color: '#4B5563',
                         textDecoration: 'none',
-                        fontSize: { xs: 18, md: 19 },
+                        fontSize: { xs: 16, sm: 18, md: 19 },
                         lineHeight: 1.45,
                         fontWeight: 500,
                         transition: 'color 180ms ease, transform 220ms ease',
@@ -295,6 +298,7 @@ export function AppShell({ children }: AppShellProps) {
                         sx={{
                           width: 24,
                           height: 24,
+                          minWidth: 24,
                           objectFit: 'contain',
                           flex: '0 0 auto',
                         }}
@@ -311,8 +315,8 @@ export function AppShell({ children }: AppShellProps) {
                   decoding="async"
                   sx={{
                     display: 'block',
-                    width: { xs: 132, sm: 148, md: 156 },
-                    height: { xs: 132, sm: 148, md: 156 },
+                    width: { xs: 112, sm: 148, md: 156 },
+                    height: { xs: 112, sm: 148, md: 156 },
                     mt: { xs: 2.25, md: 2.5 },
                     objectFit: 'contain',
                   }}
