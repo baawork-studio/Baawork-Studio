@@ -46,7 +46,7 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
             spacing={{ xs: 2, sm: 2.25, md: 2.5 }}
             alignItems="center"
             textAlign="center"
-            sx={{ mx: 'auto', maxWidth: 1080 }}
+            sx={{ mx: 'auto', width: '100%', maxWidth: 1080 }}
           >
             <Typography
               variant="h1"
@@ -54,7 +54,10 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
                 color: palette.text,
                 ...typeScale.hero,
                 fontSize: { xs: 42, sm: 58, md: 76, lg: 88 },
+                width: '100%',
                 maxWidth: 1120,
+                mx: 'auto',
+                textAlign: 'center',
               }}
             >
               {project.title}
@@ -64,7 +67,10 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
               sx={{
                 color: '#4B5563',
                 ...typeScale.intro,
+                width: '100%',
                 maxWidth: 860,
+                mx: 'auto',
+                textAlign: 'center',
               }}
             >
               {project.subtitle}
@@ -73,7 +79,10 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
               sx={{
                 color: '#4B5563',
                 ...typeScale.bodyLarge,
+                width: '100%',
                 maxWidth: 980,
+                mx: 'auto',
+                textAlign: 'center',
               }}
             >
               {project.description}

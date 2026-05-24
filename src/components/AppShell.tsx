@@ -70,10 +70,24 @@ export function AppShell({ children }: AppShellProps) {
       >
         <Container maxWidth="lg" sx={{ height: '100%' }}>
           <Box sx={{ position: 'relative', height: '100%' }}>
-            <Stack
-              direction="row"
-              alignItems="center"
-              sx={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}
+            <Box
+              component="a"
+              href="/"
+              aria-label="กลับไปหน้าแรก"
+              sx={{
+                position: 'absolute',
+                left: 0,
+                top: '50%',
+                display: 'inline-flex',
+                alignItems: 'center',
+                transform: 'translateY(-50%)',
+                borderRadius: '50%',
+                outlineOffset: 4,
+                transition: 'opacity 180ms ease',
+                '&:hover': {
+                  opacity: 0.82,
+                },
+              }}
             >
               <Box
                 component="img"
@@ -87,7 +101,7 @@ export function AppShell({ children }: AppShellProps) {
                   objectFit: 'contain',
                 }}
               />
-            </Stack>
+            </Box>
           </Box>
         </Container>
         <Stack
@@ -167,7 +181,7 @@ export function AppShell({ children }: AppShellProps) {
                   maxWidth: 720,
                 }}
               >
-                สร้างระบบที่พร้อมใช้งานจริงกับทีมที่เข้าใจทั้งดีไซน์และเทคโนโลยี
+                สร้างระบบจริงกับทีมที่เข้าใจงาน
               </Typography>
               <Typography
                 sx={{
