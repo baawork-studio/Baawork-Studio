@@ -805,17 +805,23 @@ function ProjectCapabilitySection({ project }: { project: Project }) {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(180deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.48) 42%, rgba(0,0,0,0.14) 72%, rgba(0,0,0,0.22) 100%)',
+                    'linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.78) 30%, rgba(0,0,0,0.58) 58%, rgba(0,0,0,0.18) 78%, rgba(0,0,0,0.24) 100%)',
                   zIndex: 1,
                 }}
               />
               <Stack
-                spacing={{ xs: 1.7, md: 2.5 }}
+                spacing={{ xs: 1.45, md: 2 }}
                 sx={{
                   position: 'relative',
                   zIndex: 2,
                   p: { xs: '28px', md: '32px' },
                   pr: { xs: '32px', md: '34px' },
+                  m: { xs: '18px', md: '20px' },
+                  borderRadius: '22px',
+                  bgcolor: 'rgba(0,0,0,0.2)',
+                  backdropFilter: 'blur(6px)',
+                  WebkitBackdropFilter: 'blur(6px)',
+                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.04)',
                 }}
               >
                 <Typography
