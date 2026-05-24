@@ -964,10 +964,7 @@ function ToolStackSection() {
             variant="h2"
             sx={{
               color: palette.primaryPink,
-              fontSize: { xs: 46, sm: 58, md: 70, lg: 76 },
-              lineHeight: 1.05,
-              fontWeight: 600,
-              letterSpacing: 0,
+              ...typeScale.display,
             }}
           >
             เครื่องมือที่เราใช้
@@ -1317,10 +1314,7 @@ function WorkflowSection() {
                   variant="h3"
                   sx={{
                     color: '#FFFFFF',
-                    fontSize: { xs: 34, sm: 34, md: 48, lg: 56 },
-                    lineHeight: 1.08,
-                    fontWeight: 600,
-                    letterSpacing: 0,
+                    ...typeScale.cardTitle,
                     textShadow: '0 3px 22px rgba(0,0,0,0.34)',
                   }}
                 >
@@ -1330,10 +1324,7 @@ function WorkflowSection() {
                   sx={{
                     maxWidth: 560,
                     color: 'rgba(255,255,255,0.9)',
-                    fontSize: { xs: 17, sm: 17, md: 22, lg: 24 },
-                    lineHeight: 1.38,
-                    fontWeight: 400,
-                    letterSpacing: 0,
+                    ...typeScale.bodyLarge,
                     textShadow: '0 2px 18px rgba(0,0,0,0.34)',
                   }}
                 >
@@ -1451,12 +1442,7 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
           maxWidth: isLarge ? 520 : 470,
           color: '#6E6E73',
           textAlign: 'center',
-          fontSize: isLarge
-            ? { xs: 30, sm: 36, md: 42, lg: 46 }
-            : { xs: 28, sm: 32, md: 37, lg: 40 },
-          lineHeight: 1.18,
-          fontWeight: 600,
-          letterSpacing: 0,
+          ...typeScale.cardTitle,
         }}
       >
         {card.title}{' '}
@@ -1755,9 +1741,9 @@ function StartProjectSection() {
               bgcolor: palette.primaryPink,
               color: '#FFFFFF',
               textDecoration: 'none',
-              fontSize: { xs: 18, sm: 20 },
-              fontWeight: 700,
-              lineHeight: 1,
+              fontSize: { xs: 14, sm: 17 },
+              fontWeight: 600,
+              lineHeight: 1.2,
               boxShadow: '0 18px 44px rgba(255,0,140,0.24)',
               transition: 'transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease',
               '&:hover': {
@@ -1790,9 +1776,9 @@ function StartProjectSection() {
               bgcolor: '#F5F5F7',
               color: palette.text,
               textDecoration: 'none',
-              fontSize: { xs: 18, sm: 20 },
-              fontWeight: 700,
-              lineHeight: 1,
+              fontSize: { xs: 14, sm: 17 },
+              fontWeight: 600,
+              lineHeight: 1.2,
               transition: 'transform 220ms ease, background-color 220ms ease',
               '&:hover': {
                 bgcolor: '#E8E8ED',
@@ -1893,8 +1879,8 @@ function FaqSection() {
                   variant="h3"
                   sx={{
                     color: palette.text,
-                    fontSize: { xs: 22, sm: 25, md: 30 },
-                    lineHeight: 1.22,
+                    fontSize: { xs: 19, sm: 21, md: 24 },
+                    lineHeight: 1.25,
                     fontWeight: 600,
                     letterSpacing: 0,
                   }}

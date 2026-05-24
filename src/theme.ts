@@ -11,44 +11,44 @@ export const palette = {
 
 export const typeScale = {
   hero: {
-    fontSize: { xs: 48, sm: 64, md: 80, lg: 96 },
-    lineHeight: 1.05,
+    fontSize: { xs: 32, sm: 44, md: 56, lg: 56 },
+    lineHeight: { xs: 1.125, md: 1.1 },
     fontWeight: 600,
     letterSpacing: 0,
   },
   display: {
-    fontSize: { xs: 48, sm: 56, md: 72, lg: 80 },
-    lineHeight: 1.05,
+    fontSize: { xs: 32, sm: 44, md: 56, lg: 56 },
+    lineHeight: { xs: 1.125, md: 1.1 },
     fontWeight: 600,
     letterSpacing: 0,
   },
   sectionTitle: {
-    fontSize: { xs: 32, sm: 40, md: 48, lg: 56 },
-    lineHeight: 1.08,
+    fontSize: { xs: 32, sm: 44, md: 56, lg: 56 },
+    lineHeight: { xs: 1.125, md: 1.1 },
     fontWeight: 600,
     letterSpacing: 0,
   },
   cardTitle: {
-    fontSize: { xs: 28, sm: 30, md: 32 },
-    lineHeight: 1.14,
+    fontSize: { xs: 32, sm: 32, md: 40 },
+    lineHeight: { xs: 1.125, md: 1.1 },
     fontWeight: 600,
     letterSpacing: 0,
   },
   intro: {
-    fontSize: { xs: 21, sm: 24, md: 28, lg: 32 },
-    lineHeight: 1.25,
+    fontSize: { xs: 19, sm: 21, md: 28, lg: 28 },
+    lineHeight: { xs: 1.368, md: 1.393 },
     fontWeight: 400,
     letterSpacing: 0,
   },
   bodyLarge: {
-    fontSize: { xs: 19, sm: 21, md: 24 },
-    lineHeight: 1.38,
+    fontSize: { xs: 19, sm: 19, md: 21 },
+    lineHeight: { xs: 1.368, md: 1.381 },
     fontWeight: 400,
     letterSpacing: 0,
   },
   body: {
-    fontSize: { xs: 17, md: 19 },
-    lineHeight: 1.47,
+    fontSize: { xs: 17, md: 17 },
+    lineHeight: { xs: 1.353, md: 1.353 },
     fontWeight: 400,
     letterSpacing: 0,
   },
@@ -76,53 +76,56 @@ export const theme = createTheme({
     fontFamily:
       '"Roboto", "Noto Sans Thai", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     h1: {
-      fontSize: '48px',
-      lineHeight: 1.05,
+      fontSize: '32px',
+      lineHeight: 1.125,
       fontWeight: 600,
       letterSpacing: 0,
       '@media (min-width:600px)': {
-        fontSize: '64px',
+        fontSize: '44px',
       },
       '@media (min-width:900px)': {
-        fontSize: '80px',
+        fontSize: '56px',
+        lineHeight: 1.1,
       },
       '@media (min-width:1200px)': {
-        fontSize: '96px',
+        fontSize: '56px',
       },
     },
     h2: {
-      fontSize: '48px',
-      lineHeight: 1.05,
+      fontSize: '32px',
+      lineHeight: 1.125,
       fontWeight: 600,
       letterSpacing: 0,
       '@media (min-width:600px)': {
-        fontSize: '56px',
+        fontSize: '44px',
       },
       '@media (min-width:900px)': {
-        fontSize: '72px',
+        fontSize: '56px',
+        lineHeight: 1.1,
       },
       '@media (min-width:1200px)': {
-        fontSize: '80px',
+        fontSize: '56px',
       },
     },
     h3: {
       fontSize: '32px',
-      lineHeight: 1.08,
+      lineHeight: 1.125,
       fontWeight: 600,
       letterSpacing: 0,
       '@media (min-width:600px)': {
-        fontSize: '40px',
+        fontSize: '32px',
       },
       '@media (min-width:900px)': {
-        fontSize: '48px',
+        fontSize: '40px',
+        lineHeight: 1.1,
       },
       '@media (min-width:1200px)': {
-        fontSize: '56px',
+        fontSize: '40px',
       },
     },
     h4: {
       fontSize: '32px',
-      lineHeight: 1.15,
+      lineHeight: 1.125,
       fontWeight: 600,
       letterSpacing: 0,
     },
@@ -132,10 +135,10 @@ export const theme = createTheme({
       fontWeight: 400,
       letterSpacing: 0,
       '@media (min-width:600px)': {
-        fontSize: '21px',
+        fontSize: '19px',
       },
       '@media (min-width:900px)': {
-        fontSize: '24px',
+        fontSize: '21px',
       },
     },
     body1: {

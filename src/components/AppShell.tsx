@@ -164,9 +164,9 @@ export function AppShell({ children }: AppShellProps) {
                 />
                 <Typography
                   sx={{
-                    fontSize: { xs: 20, md: 22 },
-                    lineHeight: 1,
-                    fontWeight: 700,
+                    fontSize: { xs: 19, md: 21 },
+                    lineHeight: 1.2,
+                    fontWeight: 600,
                     letterSpacing: 0,
                   }}
                 >
@@ -210,8 +210,8 @@ export function AppShell({ children }: AppShellProps) {
                   sx={{
                     mb: 1.5,
                     color: palette.primaryPink,
-                    fontSize: 15,
-                    lineHeight: 1.2,
+                    fontSize: 14,
+                    lineHeight: 1.35,
                     fontWeight: 700,
                   }}
                 >
@@ -231,8 +231,8 @@ export function AppShell({ children }: AppShellProps) {
                       sx={{
                         color: '#4B5563',
                         textDecoration: 'none',
-                        fontSize: { xs: 16, sm: 18, md: 19 },
-                        lineHeight: 1.45,
+                        fontSize: 17,
+                        lineHeight: 1.353,
                         fontWeight: 500,
                         transition: 'color 180ms ease',
                         '&:hover': {
@@ -251,8 +251,8 @@ export function AppShell({ children }: AppShellProps) {
                   sx={{
                     mb: 1.5,
                     color: palette.primaryPink,
-                    fontSize: 15,
-                    lineHeight: 1.2,
+                    fontSize: 14,
+                    lineHeight: 1.35,
                     fontWeight: 700,
                   }}
                 >
@@ -292,8 +292,8 @@ export function AppShell({ children }: AppShellProps) {
                         gap: 1.25,
                         color: '#4B5563',
                         textDecoration: 'none',
-                        fontSize: { xs: 16, sm: 18, md: 19 },
-                        lineHeight: 1.45,
+                        fontSize: 17,
+                        lineHeight: 1.353,
                         fontWeight: 500,
                         transition: 'color 180ms ease, transform 220ms ease',
                         '&:hover': {

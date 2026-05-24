@@ -210,10 +210,8 @@ function ProjectTechSection({ project }: { project: Project }) {
           variant="h2"
           sx={{
             color: visual.accent,
-            fontSize: { xs: 42, sm: 54, md: 66, lg: 72 },
-            lineHeight: 1.05,
+            ...typeScale.display,
             fontWeight: 600,
-            letterSpacing: 0,
           }}
         >
           เทคโนโลยีที่ใช้
@@ -348,9 +346,7 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
               sx={{
                 color: palette.text,
                 ...typeScale.hero,
-                fontSize: { xs: 48, sm: 64, md: 88, lg: 108 },
                 width: '100%',
-                lineHeight: 1,
                 textAlign: 'center',
               }}
             >
