@@ -250,6 +250,12 @@ export function AppShell({ children }: AppShellProps) {
                       iconSrc: 'https://thesvg.org/icons/facebook/default.svg',
                     },
                     {
+                      label: 'YouTube',
+                      href: 'https://www.youtube.com/@baawork',
+                      color: '#FF0033',
+                      iconSrc: 'https://thesvg.org/icons/youtube/default.svg',
+                    },
+                    {
                       label: 'LINE',
                       href: 'https://line.me/R/ti/p/@baawork',
                       color: '#06C755',
