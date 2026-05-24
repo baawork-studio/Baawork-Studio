@@ -246,7 +246,7 @@ export function AppShell({ children }: AppShellProps) {
                     {
                       label: 'Facebook',
                       href: 'https://www.facebook.com/BAAWORK',
-                      color: palette.primaryPink,
+                      color: '#1877F2',
                       iconSrc: 'https://thesvg.org/icons/facebook/default.svg',
                     },
                     {
