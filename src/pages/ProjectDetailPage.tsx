@@ -349,13 +349,35 @@ function carouselControlSx(enabled: boolean) {
 }
 
 function getCapabilityCards(project: Project) {
-  const cards = capabilityCardsBySlug[project.slug];
-  if (cards) return cards;
-
-  return project.highlights.map((highlight) => ({
+  const cards = capabilityCardsBySlug[project.slug] ?? project.highlights.map((highlight) => ({
     title: highlight,
     description: `ออกแบบให้ทีมใช้ ${highlight} ได้จากระบบเดียว พร้อมเชื่อมข้อมูลจริงและต่อยอด workflow ได้ในระยะยาว`,
   }));
+
+  const supportCards: CapabilityCard[] = [
+    {
+      title: 'เชื่อมต่อข้อมูลจริง',
+      description: 'ต่อข้อมูลจาก API ฐานข้อมูล และระบบหลังบ้าน เพื่อให้สิ่งที่แสดงในหน้าใช้งานตรงกับข้อมูลจริง',
+    },
+    {
+      title: 'ใช้งานได้ทุกอุปกรณ์',
+      description: 'วาง responsive layout ให้เหมาะกับ desktop, tablet และ mobile เพื่อให้ทีมเข้าถึงงานได้สะดวก',
+    },
+    {
+      title: 'ต่อยอดระบบได้',
+      description: 'จัดโครงสร้างหน้าบ้าน หลังบ้าน และข้อมูลให้เพิ่มฟีเจอร์ใหม่ได้ง่ายเมื่อ workflow เติบโต',
+    },
+  ];
+
+  const nextCards = [...cards];
+  for (const supportCard of supportCards) {
+    if (nextCards.length >= 5) break;
+    if (!nextCards.some((card) => card.title === supportCard.title)) {
+      nextCards.push(supportCard);
+    }
+  }
+
+  return nextCards;
 }
 
 const techIcons: Record<string, { src?: string; label?: string; invert?: boolean }> = {
@@ -605,15 +627,18 @@ function ProjectCapabilitySection({ project }: { project: Project }) {
     <Box
       sx={{
         bgcolor: '#F7F8FA',
-        mx: `calc(${pageGutter} * -1)`,
-        px: pageGutter,
+        position: 'relative',
+        left: `calc(${pageGutter} * -1)`,
+        width: `calc(100% + (${pageGutter} * 2))`,
+        alignSelf: 'stretch',
         py: { xs: 6, sm: 7, md: 8 },
-        overflow: 'hidden',
+        overflow: 'visible',
       }}
     >
       <Stack
         spacing={1.25}
         sx={{
+          px: pageGutter,
           maxWidth: { xs: '100%', md: 900, lg: 980 },
           alignItems: 'flex-start',
           textAlign: 'left',
@@ -642,12 +667,20 @@ function ProjectCapabilitySection({ project }: { project: Project }) {
           scrollSnapType: 'x mandatory',
           scrollBehavior: 'smooth',
           overscrollBehaviorX: 'contain',
+          pr: pageGutter,
           pt: detailCarouselVerticalGap,
           pb: { xs: 7, md: 8 },
           scrollbarWidth: 'none',
           '&::-webkit-scrollbar': { display: 'none' },
         }}
       >
+        <Box
+          aria-hidden="true"
+          sx={{
+            flex: '0 0 auto',
+            width: pageGutter,
+          }}
+        />
         {cards.map((card, index) => {
           const imageUrl = fallbackImages[index % fallbackImages.length] ?? project.coverImageUrl;
 
@@ -664,6 +697,7 @@ function ProjectCapabilitySection({ project }: { project: Project }) {
                 bgcolor: '#000',
                 color: '#fff',
                 scrollSnapAlign: 'start',
+                scrollMarginInline: pageGutter,
                 display: 'block',
                 boxShadow: 'none',
                 zIndex: 1,
@@ -771,7 +805,12 @@ function ProjectCapabilitySection({ project }: { project: Project }) {
         })}
       </Box>
 
-      <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mt: { xs: -4, md: -5 } }}>
+      <Stack
+        direction="row"
+        justifyContent="flex-end"
+        spacing={2}
+        sx={{ mt: { xs: -4, md: -5 }, px: pageGutter, position: 'relative', zIndex: 2 }}
+      >
         <Box
           component="button"
           type="button"
