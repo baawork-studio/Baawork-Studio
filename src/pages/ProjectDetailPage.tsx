@@ -26,6 +26,10 @@ type CapabilityCard = {
   title: string;
   description: string;
 };
+type CapabilityDetailRow = {
+  label: string;
+  text: string;
+};
 
 const mockupAssets: Record<MockupTemplate, string> = {
   macbook: '/project-detail-macbook.png',
@@ -380,6 +384,69 @@ function getCapabilityCards(project: Project) {
   return nextCards;
 }
 
+function getCapabilityDetailRows(project: Project, card: CapabilityCard): CapabilityDetailRow[] {
+  const title = card.title;
+
+  const patterns = [
+    {
+      test: /(รวม|ติดตาม|ดูสถานะ|KPI|performance)/i,
+      problem: 'ข้อมูลสำคัญกระจายอยู่หลายจุด ทำให้ทีมเห็นภาพรวมช้า',
+      outcome: 'เห็นสถานะล่าสุดในหน้าเดียว และรู้ทันทีว่าควรจัดการอะไรต่อ',
+    },
+    {
+      test: /(วิเคราะห์|ตรวจจับ|ความเสี่ยง|anomaly|แนวโน้ม|พยากรณ์|เปรียบเทียบ)/i,
+      problem: 'ทีมต้องอ่านข้อมูลจำนวนมากก่อนจะเห็นสัญญาณที่ควรระวัง',
+      outcome: 'มองเห็นโอกาส ปัญหา และความเสี่ยงได้เร็วขึ้นก่อนกระทบงานจริง',
+    },
+    {
+      test: /(จัดลำดับ|เร่งด่วน|แจ้งเตือน|follow-up|สต็อกต่ำ)/i,
+      problem: 'งานสำคัญปะปนกับงานทั่วไป ทำให้ทีมเลือกงานก่อนหลังได้ยาก',
+      outcome: 'ลดเวลาคัดกรองงาน และช่วยให้ทีมลงมือกับเรื่องสำคัญก่อน',
+    },
+    {
+      test: /(เอกสาร|อ่าน|หมวดหมู่|คำขอ|OCR)/i,
+      problem: 'เอกสารและคำขอต้องใช้เวลาคัดแยก อ่านซ้ำ และส่งต่อหลายรอบ',
+      outcome: 'อ่านใจความสำคัญเร็วขึ้น ส่งต่องานถูกทีม และลดงานซ้ำของคนทำงาน',
+    },
+    {
+      test: /(บริการ|คำตอบ|สนทนา|คุณภาพ)/i,
+      problem: 'ทีมบริการต้องตอบให้เร็ว แต่ยังต้องรักษาคุณภาพและบริบทของแต่ละเคส',
+      outcome: 'ตอบกลับได้เร็วขึ้น ติดตามเคสค้างได้ครบ และรักษามาตรฐานบริการ',
+    },
+    {
+      test: /(จอง|เวลา|ตาราง|หลังบ้าน)/i,
+      problem: 'การจองและการจัดตารางผิดพลาดง่ายเมื่อข้อมูลไม่ได้เชื่อมกัน',
+      outcome: 'ลูกค้าจองง่ายขึ้น ทีมหลังบ้านเห็นข้อมูลตรงกัน และลดงานประสานซ้ำ',
+    },
+    {
+      test: /(ลูกค้า|pipeline|ขาย|กลุ่ม)/i,
+      problem: 'ข้อมูลลูกค้าและงานขายแยกกัน ทำให้ทีมเห็นบริบทไม่ครบก่อนติดต่อ',
+      outcome: 'ทีมขายโฟกัสลูกค้าที่สำคัญ ติดตามงานต่อได้แม่น และปิดงานเป็นระบบ',
+    },
+    {
+      test: /(สินค้า|คลัง|Barcode|ตรวจนับ)/i,
+      problem: 'ข้อมูลสต็อกคลาดเคลื่อนง่ายเมื่อการตรวจนับและการอัปเดตไม่อยู่ในระบบเดียว',
+      outcome: 'เห็นจำนวนล่าสุด ลดสินค้าขาด และทำงานคลังได้เป็นขั้นตอนมากขึ้น',
+    },
+    {
+      test: /(API|ข้อมูลจริง|ต่อยอด|อุปกรณ์)/i,
+      problem: 'ระบบต้องเชื่อมข้อมูลจริงและรองรับการใช้งานหลายรูปแบบตั้งแต่วันแรก',
+      outcome: 'ใช้งานได้ต่อเนื่องบนอุปกรณ์หลัก และขยายฟีเจอร์เพิ่มได้ง่าย',
+    },
+  ];
+
+  const matched = patterns.find((pattern) => pattern.test.test(title)) ?? {
+    problem: `${project.title} ต้องทำให้ ${title} เข้าใจง่ายและใช้ได้จริง`,
+    outcome: 'ทีมเห็นสิ่งที่ต้องทำต่อชัดเจนขึ้น และทำงานได้เร็วกว่าเดิม',
+  };
+
+  return [
+    { label: 'โจทย์', text: matched.problem },
+    { label: 'ระบบช่วย', text: card.description },
+    { label: 'ผลลัพธ์', text: matched.outcome },
+  ];
+}
+
 const techIcons: Record<string, { src?: string; label?: string; invert?: boolean }> = {
   React: { src: 'https://thesvg.org/icons/react/default.svg' },
   Vite: { src: 'https://thesvg.org/icons/vite/default.svg' },
@@ -683,6 +750,7 @@ function ProjectCapabilitySection({ project }: { project: Project }) {
         />
         {cards.map((card, index) => {
           const imageUrl = fallbackImages[index % fallbackImages.length] ?? project.coverImageUrl;
+          const detailRows = getCapabilityDetailRows(project, card);
 
           return (
             <Box
@@ -770,14 +838,38 @@ function ProjectCapabilitySection({ project }: { project: Project }) {
                 >
                   {card.title}
                 </Typography>
-                <Typography
+                <Stack
+                  spacing={{ xs: 1.15, md: 1.25 }}
                   sx={{
-                    color: 'rgba(255,255,255,0.78)',
-                    ...typeScale.body,
+                    pt: { xs: 0.35, md: 0.5 },
                   }}
                 >
-                  {card.description}
-                </Typography>
+                  {detailRows.map((row) => (
+                    <Box key={`${card.title}-${row.label}`}>
+                      <Typography
+                        sx={{
+                          color: visual.accent,
+                          fontSize: 13,
+                          lineHeight: 1.231,
+                          fontWeight: 700,
+                          mb: 0.35,
+                        }}
+                      >
+                        {row.label}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: 'rgba(255,255,255,0.78)',
+                          fontSize: { xs: 15, md: 16 },
+                          lineHeight: 1.38,
+                          fontWeight: 500,
+                        }}
+                      >
+                        {row.text}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Stack>
               </Stack>
               <Box
                 aria-hidden="true"
