@@ -70,21 +70,6 @@ function getTechReason(project: Project) {
   return `โปรเจกต์นี้ใช้ ${project.stack.join(', ')} เพื่อสร้างเว็บแอปที่ดูแลง่าย เชื่อมต่อข้อมูลจริงได้ครบ และรองรับ workflow หลังบ้านที่ทีมต้องใช้งานต่อเนื่องทุกวัน`;
 }
 
-function BlankScreen({ project }: { project: Project }) {
-  const visual = getProjectVisual(project);
-
-  return (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100%',
-        bgcolor: '#FFFFFF',
-        background: `linear-gradient(135deg, #FFFFFF 0%, ${visual.tint} 100%)`,
-      }}
-    />
-  );
-}
-
 function ProjectDeviceShowcase({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
 
@@ -113,81 +98,6 @@ function ProjectDeviceShowcase({ project }: { project: Project }) {
           pointerEvents: 'none',
         }}
       />
-
-      {(visual.template === 'macbook' || visual.template === 'macbookMobile') && (
-        <Box
-          sx={{
-            position: 'absolute',
-            left: '34.65%',
-            top: '19.65%',
-            width: '47.72%',
-            height: '47.05%',
-            overflow: 'hidden',
-          }}
-        >
-          <BlankScreen project={project} />
-        </Box>
-      )}
-
-      {visual.template === 'macbookMobile' && (
-        <Box
-          sx={{
-            position: 'absolute',
-            left: '79.6%',
-            top: '38.9%',
-            width: '13.25%',
-            height: '43.1%',
-            borderRadius: '8% / 4.5%',
-            overflow: 'hidden',
-          }}
-        >
-          <BlankScreen project={project} />
-        </Box>
-      )}
-
-      {visual.template === 'mobiles' && (
-        <>
-          <Box
-            sx={{
-              position: 'absolute',
-              left: '31.55%',
-              top: '31.2%',
-              width: '14.8%',
-              height: '50.05%',
-              borderRadius: '9% / 4.5%',
-              overflow: 'hidden',
-            }}
-          >
-            <BlankScreen project={project} />
-          </Box>
-          <Box
-            sx={{
-              position: 'absolute',
-              left: '45.95%',
-              top: '23.35%',
-              width: '18.05%',
-              height: '57.85%',
-              borderRadius: '8% / 4%',
-              overflow: 'hidden',
-            }}
-          >
-            <BlankScreen project={project} />
-          </Box>
-          <Box
-            sx={{
-              position: 'absolute',
-              left: '63.55%',
-              top: '31.2%',
-              width: '14.8%',
-              height: '50.05%',
-              borderRadius: '9% / 4.5%',
-              overflow: 'hidden',
-            }}
-          >
-            <BlankScreen project={project} />
-          </Box>
-        </>
-      )}
     </Box>
   );
 }
