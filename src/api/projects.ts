@@ -9,6 +9,7 @@ export type Project = {
   description: string;
   coverImageUrl: string;
   galleryImageUrls: string[];
+  screenImageUrls?: Partial<Record<'desktop' | 'mobile' | 'mobile1' | 'mobile2' | 'mobile3', string>>;
   stack: string[];
   highlights: string[];
   published: boolean;

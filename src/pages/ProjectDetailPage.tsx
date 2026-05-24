@@ -11,11 +11,77 @@ type ProjectDetailPageProps = {
 const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 
 type MockupTemplate = 'macbook' | 'macbookMobile' | 'mobiles';
+type ScreenImageKey = 'desktop' | 'mobile' | 'mobile1' | 'mobile2' | 'mobile3';
+type ScreenSlot = {
+  key: ScreenImageKey;
+  left: string;
+  top: string;
+  width: string;
+  height: string;
+  mask: string;
+};
 
 const mockupAssets: Record<MockupTemplate, string> = {
   macbook: '/project-detail-macbook.png',
   macbookMobile: '/project-detail-macbook-mobile.png',
   mobiles: '/project-detail-mobiles.png',
+};
+
+const screenSlots: Record<MockupTemplate, ScreenSlot[]> = {
+  macbook: [
+    {
+      key: 'desktop',
+      left: '31.0417%',
+      top: '19.4444%',
+      width: '41.4062%',
+      height: '46.8519%',
+      mask: '/project-screen-masks/macbook-screen.png',
+    },
+  ],
+  macbookMobile: [
+    {
+      key: 'desktop',
+      left: '31.0417%',
+      top: '19.4444%',
+      width: '41.4062%',
+      height: '46.8519%',
+      mask: '/project-screen-masks/macbook-mobile-desktop.png',
+    },
+    {
+      key: 'mobile',
+      left: '70.4167%',
+      top: '37.8704%',
+      width: '11.3542%',
+      height: '43.6111%',
+      mask: '/project-screen-masks/macbook-mobile-phone.png',
+    },
+  ],
+  mobiles: [
+    {
+      key: 'mobile1',
+      left: '28.8021%',
+      top: '26.7593%',
+      width: '13.2812%',
+      height: '53.6111%',
+      mask: '/project-screen-masks/mobiles-left.png',
+    },
+    {
+      key: 'mobile2',
+      left: '42.0833%',
+      top: '19.6296%',
+      width: '15.8333%',
+      height: '60.6481%',
+      mask: '/project-screen-masks/mobiles-center.png',
+    },
+    {
+      key: 'mobile3',
+      left: '57.8646%',
+      top: '26.7593%',
+      width: '13.3333%',
+      height: '53.6111%',
+      mask: '/project-screen-masks/mobiles-right.png',
+    },
+  ],
 };
 
 const projectVisuals: Record<string, { accent: string; tint: string; template: MockupTemplate }> = {
@@ -70,8 +136,25 @@ function getTechReason(project: Project) {
   return `โปรเจกต์นี้ใช้ ${project.stack.join(', ')} เพื่อสร้างเว็บแอปที่ดูแลง่าย เชื่อมต่อข้อมูลจริงได้ครบ และรองรับ workflow หลังบ้านที่ทีมต้องใช้งานต่อเนื่องทุกวัน`;
 }
 
+function getScreenImage(project: Project, key: ScreenImageKey, index: number) {
+  const explicitImage = project.screenImageUrls?.[key];
+  if (explicitImage) return explicitImage;
+
+  if (key === 'mobile') {
+    return project.screenImageUrls?.mobile1 ?? project.galleryImageUrls[1] ?? project.coverImageUrl;
+  }
+
+  const fallbackImages = Array.from(new Set([
+    project.coverImageUrl,
+    ...project.galleryImageUrls,
+  ].filter(Boolean)));
+
+  return fallbackImages[index % fallbackImages.length] ?? project.coverImageUrl;
+}
+
 function ProjectDeviceShowcase({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
+  const slots = screenSlots[visual.template];
 
   return (
     <Box
@@ -98,6 +181,49 @@ function ProjectDeviceShowcase({ project }: { project: Project }) {
           pointerEvents: 'none',
         }}
       />
+
+      {slots.map((slot, index) => {
+        const imageUrl = getScreenImage(project, slot.key, index);
+
+        return (
+          <Box
+            key={`${slot.key}-${slot.mask}`}
+            sx={{
+              position: 'absolute',
+              left: slot.left,
+              top: slot.top,
+              width: slot.width,
+              height: slot.height,
+              overflow: 'hidden',
+              WebkitMaskImage: `url(${slot.mask})`,
+              maskImage: `url(${slot.mask})`,
+              WebkitMaskRepeat: 'no-repeat',
+              maskRepeat: 'no-repeat',
+              WebkitMaskSize: '100% 100%',
+              maskSize: '100% 100%',
+              WebkitMaskPosition: 'center',
+              maskPosition: 'center',
+            }}
+          >
+            <Box
+              component="img"
+              src={imageUrl}
+              alt={`${project.title} ${slot.key}`}
+              loading="lazy"
+              decoding="async"
+              sx={{
+                display: 'block',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                userSelect: 'none',
+                pointerEvents: 'none',
+              }}
+            />
+          </Box>
+        );
+      })}
     </Box>
   );
 }
