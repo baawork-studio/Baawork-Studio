@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { fetchProject, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
@@ -9,6 +9,8 @@ type ProjectDetailPageProps = {
 };
 
 const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
+const detailCarouselVerticalGap = '24px';
+const detailCarouselEdgeTolerance = 24;
 
 type MockupTemplate = 'macbook' | 'macbookMobile' | 'mobiles';
 type ScreenImageKey = 'desktop' | 'mobile' | 'mobile1' | 'mobile2' | 'mobile3';
@@ -19,6 +21,10 @@ type ScreenSlot = {
   width: string;
   height: string;
   mask: string;
+};
+type CapabilityCard = {
+  title: string;
+  description: string;
 };
 
 const mockupAssets: Record<MockupTemplate, string> = {
@@ -97,12 +103,259 @@ const projectVisuals: Record<string, { accent: string; tint: string; template: M
   'analytics-portal': { accent: '#DC2626', tint: '#FEF2F2', template: 'macbook' },
 };
 
+const capabilityCardsBySlug: Record<string, CapabilityCard[]> = {
+  'ai-command-center': [
+    {
+      title: 'รวมสถานะงาน',
+      description: 'ดึงข้อมูลจากหลายทีมมาไว้ในหน้าจอเดียว เพื่อให้เห็นภาพรวมงานที่กำลังเดินอยู่แบบเรียลไทม์',
+    },
+    {
+      title: 'วิเคราะห์ความเสี่ยง',
+      description: 'สรุปเคสที่มีแนวโน้มล่าช้า ผิดปกติ หรือควรได้รับการดูแลก่อนจากสัญญาณสำคัญของระบบ',
+    },
+    {
+      title: 'จัดลำดับเคสเร่งด่วน',
+      description: 'ช่วยทีมเลือกงานที่ควรลงมือก่อน ลดเวลาค้นหาข้อมูล และทำให้การตัดสินใจแม่นยำขึ้น',
+    },
+    {
+      title: 'สรุปสำหรับผู้บริหาร',
+      description: 'เปลี่ยนข้อมูลปฏิบัติการให้เป็น insight ที่อ่านง่าย พร้อมนำไปใช้ประชุมหรือวางแผนต่อได้ทันที',
+    },
+  ],
+  'ai-sales-forecast': [
+    {
+      title: 'พยากรณ์ยอดขาย',
+      description: 'ประเมินแนวโน้มยอดขายจากข้อมูล pipeline และประวัติลูกค้า เพื่อช่วยวางแผนเป้าหมายล่วงหน้า',
+    },
+    {
+      title: 'แยกกลุ่มลูกค้า',
+      description: 'ช่วยระบุลูกค้าที่มีโอกาสปิดการขายสูง เพื่อให้ทีมขายโฟกัสกับงานที่มีผลต่อรายได้มากที่สุด',
+    },
+    {
+      title: 'ติดตาม performance',
+      description: 'แสดงตัวเลขสำคัญของทีมขายในหน้าเดียว พร้อมเทียบผลลัพธ์กับเป้าหมายของแต่ละช่วงเวลา',
+    },
+  ],
+  'ai-document-review': [
+    {
+      title: 'อ่านเอกสารอัตโนมัติ',
+      description: 'ช่วยสกัดข้อมูลสำคัญจากเอกสาร ลดงานอ่านซ้ำ และทำให้ทีมเห็นใจความสำคัญได้เร็วขึ้น',
+    },
+    {
+      title: 'จัดหมวดหมู่คำขอ',
+      description: 'แยกประเภทเอกสารและคำขอตามเงื่อนไขงานจริง เพื่อส่งต่อให้ทีมที่เกี่ยวข้องได้เป็นระบบ',
+    },
+    {
+      title: 'ตรวจสถานะงานเอกสาร',
+      description: 'ติดตามว่างานไหนอ่านแล้ว รอตรวจ หรือควรส่งต่อให้คนตรวจละเอียดต่อจากหน้าเดียว',
+    },
+  ],
+  'ai-service-agent': [
+    {
+      title: 'แนะนำคำตอบ',
+      description: 'อ่านบริบทบทสนทนาแล้วช่วยเสนอคำตอบที่เหมาะกับเคส เพื่อให้ทีมตอบกลับได้เร็วขึ้น',
+    },
+    {
+      title: 'ติดตามงานค้าง',
+      description: 'แสดงเคสที่ยังไม่ปิด งานที่รอการตอบกลับ และรายการที่ควรติดตามต่ออย่างชัดเจน',
+    },
+    {
+      title: 'ควบคุมคุณภาพบริการ',
+      description: 'สรุปคุณภาพการสื่อสารและจุดที่ควรปรับปรุง เพื่อรักษามาตรฐานของทีมบริการ',
+    },
+  ],
+  'ai-api-monitor': [
+    {
+      title: 'ดูสุขภาพ API',
+      description: 'ติดตาม latency, error rate และสถานะ service เพื่อให้ทีมเห็นปัญหาได้ก่อนกระทบผู้ใช้',
+    },
+    {
+      title: 'ตรวจจับ anomaly',
+      description: 'ระบุเหตุการณ์ผิดปกติจากข้อมูลระบบ และช่วยแยกเคสที่ควรตรวจสอบเร่งด่วน',
+    },
+    {
+      title: 'แจ้งเตือนทีมดูแลระบบ',
+      description: 'ส่งสัญญาณเตือนเมื่อ service มีแนวโน้มผิดปกติ เพื่อให้แก้ไขได้จากข้อมูลที่ชัดเจน',
+    },
+  ],
+  'operations-dashboard': [
+    {
+      title: 'ติดตามคำขอ',
+      description: 'รวมคำขอและสถานะงานจากทีมปฏิบัติการไว้ในที่เดียว เพื่อให้จัดลำดับงานประจำวันง่ายขึ้น',
+    },
+    {
+      title: 'ดูสถานะส่งมอบ',
+      description: 'แสดงงานที่กำลังดำเนินการ งานที่ติดขัด และงานที่พร้อมส่งมอบให้ตรวจสอบได้รวดเร็ว',
+    },
+    {
+      title: 'กรองข้อมูลตามทีม',
+      description: 'ช่วยให้ผู้ดูแลเลือกดูข้อมูลตามทีม ประเภทงาน หรือสถานะ เพื่อแก้ปัญหาได้ตรงจุด',
+    },
+  ],
+  'booking-platform': [
+    {
+      title: 'เลือกบริการ',
+      description: 'ให้ลูกค้าเลือกบริการและรายละเอียดที่ต้องการผ่านขั้นตอนที่สั้นและเข้าใจง่าย',
+    },
+    {
+      title: 'ตรวจสอบเวลาว่าง',
+      description: 'เชื่อมข้อมูลตารางจริงเพื่อให้เห็นช่วงเวลาที่จองได้ และลดการจองซ้ำหรือชนกัน',
+    },
+    {
+      title: 'จัดการหลังบ้าน',
+      description: 'ให้ทีมดูรายการจอง ปรับสถานะ และจัดการตารางบริการได้จากระบบเดียว',
+    },
+  ],
+  'crm-workspace': [
+    {
+      title: 'รวมข้อมูลลูกค้า',
+      description: 'รวมประวัติลูกค้า บทสนทนา และงานขายไว้ในหน้าเดียว เพื่อให้ทีมเห็นบริบทครบก่อนติดต่อ',
+    },
+    {
+      title: 'ติดตาม follow-up',
+      description: 'แจ้งเตือนงานติดตามและกิจกรรมถัดไป เพื่อให้ทีมขายไม่พลาดจังหวะสำคัญ',
+    },
+    {
+      title: 'ดู pipeline งานขาย',
+      description: 'แสดงสถานะดีลและขั้นตอนการขาย ช่วยให้ทีมวางแผนปิดงานได้เป็นระบบมากขึ้น',
+    },
+  ],
+  'inventory-control': [
+    {
+      title: 'ตรวจนับสินค้า',
+      description: 'ช่วยทีมตรวจนับและอัปเดตจำนวนสินค้าให้เป็นปัจจุบันจาก workflow ที่ใช้งานง่าย',
+    },
+    {
+      title: 'แจ้งเตือนสต็อกต่ำ',
+      description: 'แสดงรายการที่ควรเติมหรือควรตรวจสอบก่อน เพื่อป้องกันสินค้าขาดหรือข้อมูลคลาดเคลื่อน',
+    },
+    {
+      title: 'เชื่อม Barcode Workflow',
+      description: 'รองรับการทำงานกับรหัสสินค้าและกระบวนการตรวจนับที่ต้องใช้ข้อมูลจริงในคลัง',
+    },
+  ],
+  'analytics-portal': [
+    {
+      title: 'รวม KPI สำคัญ',
+      description: 'รวมตัวเลขหลักของธุรกิจไว้ในหน้ารายงานเดียว เพื่อให้ผู้บริหารเห็นภาพรวมได้เร็ว',
+    },
+    {
+      title: 'เปรียบเทียบแนวโน้ม',
+      description: 'แสดงกราฟและข้อมูลเปรียบเทียบตามช่วงเวลา เพื่อช่วยมองเห็นการเปลี่ยนแปลงที่สำคัญ',
+    },
+    {
+      title: 'ต่อยอดรายงานใหม่',
+      description: 'ออกแบบโครงสร้างข้อมูลให้เพิ่มรายงานหรือมุมมองใหม่ได้ง่ายเมื่อธุรกิจขยายต่อ',
+    },
+  ],
+};
+
 function getProjectVisual(project: Project) {
   return projectVisuals[project.slug] ?? {
     accent: palette.primaryPink,
     tint: '#FFF0F8',
     template: 'macbookMobile' as const,
   };
+}
+
+function useDetailCarousel() {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [carouselState, setCarouselState] = useState({ canScrollPrev: false, canScrollNext: false });
+
+  const updateCarouselState = useCallback(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+    const nextState = {
+      canScrollPrev: carousel.scrollLeft > detailCarouselEdgeTolerance,
+      canScrollNext: carousel.scrollLeft < maxScrollLeft - detailCarouselEdgeTolerance,
+    };
+
+    setCarouselState((current) => {
+      if (
+        current.canScrollPrev === nextState.canScrollPrev &&
+        current.canScrollNext === nextState.canScrollNext
+      ) {
+        return current;
+      }
+
+      return nextState;
+    });
+  }, []);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return undefined;
+
+    carousel.scrollLeft = 0;
+    updateCarouselState();
+
+    const handleScroll = () => updateCarouselState();
+    carousel.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+
+    const resizeObserver = new ResizeObserver(handleScroll);
+    resizeObserver.observe(carousel);
+
+    return () => {
+      carousel.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      resizeObserver.disconnect();
+    };
+  }, [updateCarouselState]);
+
+  const scrollCards = (direction: -1 | 1) => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    if (direction === -1 && !carouselState.canScrollPrev) return;
+    if (direction === 1 && !carouselState.canScrollNext) return;
+
+    carousel.scrollBy({ left: direction * 392, behavior: 'smooth' });
+  };
+
+  return { carouselRef, carouselState, scrollCards };
+}
+
+function carouselControlSx(enabled: boolean) {
+  return {
+    display: 'grid',
+    placeItems: 'center',
+    width: 48,
+    height: 48,
+    p: 0,
+    border: 0,
+    boxSizing: 'border-box',
+    borderRadius: '50%',
+    appearance: 'none',
+    bgcolor: enabled ? '#E8E8ED' : '#F5F5F7',
+    color: enabled ? '#6E6E73' : '#C7C7CC',
+    cursor: enabled ? 'pointer' : 'default',
+    transition: 'background-color 180ms ease, color 180ms ease',
+    '&:hover': {
+      bgcolor: enabled ? '#D2D2D7' : '#F5F5F7',
+      color: enabled ? '#1D1D1F' : '#C7C7CC',
+    },
+    '&:disabled': {
+      pointerEvents: 'none',
+    },
+    '&:focus': {
+      outline: 'none',
+    },
+    '&:focus-visible': {
+      outline: 'none',
+    },
+  };
+}
+
+function getCapabilityCards(project: Project) {
+  const cards = capabilityCardsBySlug[project.slug];
+  if (cards) return cards;
+
+  return project.highlights.map((highlight) => ({
+    title: highlight,
+    description: `ออกแบบให้ทีมใช้ ${highlight} ได้จากระบบเดียว พร้อมเชื่อมข้อมูลจริงและต่อยอด workflow ได้ในระยะยาว`,
+  }));
 }
 
 const techIcons: Record<string, { src?: string; label?: string; invert?: boolean }> = {
@@ -342,6 +595,228 @@ function ProjectPurposeSection({ project }: { project: Project }) {
   );
 }
 
+function ProjectCapabilitySection({ project }: { project: Project }) {
+  const visual = getProjectVisual(project);
+  const cards = getCapabilityCards(project);
+  const { carouselRef, carouselState, scrollCards } = useDetailCarousel();
+  const fallbackImages = Array.from(new Set([project.coverImageUrl, ...project.galleryImageUrls].filter(Boolean)));
+
+  return (
+    <Box
+      sx={{
+        bgcolor: '#F7F8FA',
+        mx: `calc(${pageGutter} * -1)`,
+        px: pageGutter,
+        py: { xs: 6, sm: 7, md: 8 },
+        overflow: 'hidden',
+      }}
+    >
+      <Stack
+        spacing={1.25}
+        sx={{
+          maxWidth: { xs: '100%', md: 900, lg: 980 },
+          alignItems: 'flex-start',
+          textAlign: 'left',
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            color: palette.text,
+            ...typeScale.sectionTitle,
+            whiteSpace: { sm: 'nowrap' },
+          }}
+        >
+          ระบบทำอะไรได้บ้าง
+        </Typography>
+      </Stack>
+
+      <Box
+        ref={carouselRef}
+        aria-label={`รายละเอียดการทำงานของ ${project.title}`}
+        sx={{
+          mt: 0,
+          display: 'flex',
+          gap: { xs: 2, md: '20px' },
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          scrollBehavior: 'smooth',
+          overscrollBehaviorX: 'contain',
+          pt: detailCarouselVerticalGap,
+          pb: { xs: 7, md: 8 },
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
+        }}
+      >
+        {cards.map((card, index) => {
+          const imageUrl = fallbackImages[index % fallbackImages.length] ?? project.coverImageUrl;
+
+          return (
+            <Box
+              key={card.title}
+              sx={{
+                position: 'relative',
+                flex: '0 0 auto',
+                width: { xs: 'calc(100vw - 64px)', sm: 372, md: 372 },
+                height: { xs: 620, md: 680 },
+                overflow: 'hidden',
+                borderRadius: '28px',
+                bgcolor: '#000',
+                color: '#fff',
+                scrollSnapAlign: 'start',
+                display: 'block',
+                boxShadow: 'none',
+                zIndex: 1,
+                transform: 'translate3d(0, 0, 0)',
+                transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
+                willChange: 'transform',
+                '&:hover': {
+                  transform: 'translate3d(0, -6px, 0)',
+                  boxShadow: '0 18px 40px rgba(17,24,39,0.14)',
+                  zIndex: 2,
+                },
+                '&:hover img': {
+                  transform: 'scale(1.035)',
+                },
+              }}
+            >
+              <Box
+                component="img"
+                src={imageUrl}
+                alt={card.title}
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'saturate(1.04) contrast(1.02)',
+                  transform: 'scale(1)',
+                  transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  willChange: 'transform',
+                  zIndex: 0,
+                  pointerEvents: 'none',
+                }}
+              />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  background:
+                    'linear-gradient(180deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.48) 42%, rgba(0,0,0,0.14) 72%, rgba(0,0,0,0.22) 100%)',
+                  zIndex: 1,
+                }}
+              />
+              <Stack
+                spacing={{ xs: 1.7, md: 2.5 }}
+                sx={{
+                  position: 'relative',
+                  zIndex: 2,
+                  p: { xs: '28px', md: '32px' },
+                  pr: { xs: '32px', md: '34px' },
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: 'rgba(255,255,255,0.68)',
+                    fontSize: 17,
+                    lineHeight: 1.353,
+                    fontWeight: 700,
+                  }}
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </Typography>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    color: '#fff',
+                    ...typeScale.cardTitle,
+                    maxWidth: 430,
+                  }}
+                >
+                  {card.title}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: 'rgba(255,255,255,0.78)',
+                    ...typeScale.body,
+                  }}
+                >
+                  {card.description}
+                </Typography>
+              </Stack>
+              <Box
+                aria-hidden="true"
+                sx={{
+                  position: 'absolute',
+                  right: { xs: 22, md: 28 },
+                  bottom: { xs: 22, md: 28 },
+                  zIndex: 2,
+                  display: 'grid',
+                  placeItems: 'center',
+                  width: { xs: 44, md: 52 },
+                  height: { xs: 44, md: 52 },
+                  borderRadius: '50%',
+                  bgcolor: 'rgba(255,255,255,0.94)',
+                  color: visual.accent,
+                  fontSize: { xs: 30, md: 36 },
+                  fontWeight: 600,
+                  lineHeight: 1,
+                }}
+              >
+                +
+              </Box>
+            </Box>
+          );
+        })}
+      </Box>
+
+      <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mt: { xs: -4, md: -5 } }}>
+        <Box
+          component="button"
+          type="button"
+          aria-label="เลื่อนรายละเอียดการทำงานไปทางซ้าย"
+          disabled={!carouselState.canScrollPrev}
+          onClick={() => scrollCards(-1)}
+          sx={carouselControlSx(carouselState.canScrollPrev)}
+        >
+          <Box
+            component="span"
+            sx={{
+              width: 12,
+              height: 12,
+              ml: 0.5,
+              borderRight: '3px solid currentColor',
+              borderBottom: '3px solid currentColor',
+              transform: 'rotate(135deg)',
+            }}
+          />
+        </Box>
+        <Box
+          component="button"
+          type="button"
+          aria-label="เลื่อนรายละเอียดการทำงานไปทางขวา"
+          disabled={!carouselState.canScrollNext}
+          onClick={() => scrollCards(1)}
+          sx={carouselControlSx(carouselState.canScrollNext)}
+        >
+          <Box
+            component="span"
+            sx={{
+              width: 12,
+              height: 12,
+              mr: 0.5,
+              borderRight: '3px solid currentColor',
+              borderBottom: '3px solid currentColor',
+              transform: 'rotate(-45deg)',
+            }}
+          />
+        </Box>
+      </Stack>
+    </Box>
+  );
+}
+
 function ProjectTechSection({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
 
@@ -521,6 +996,7 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
 
           <Stack spacing={{ xs: 4, md: 5 }} sx={{ width: '100%' }}>
             <ProjectPurposeSection project={project} />
+            <ProjectCapabilitySection project={project} />
             <ProjectTechSection project={project} />
           </Stack>
 
