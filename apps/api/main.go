@@ -24,7 +24,7 @@ func main() {
 		log.Fatalf("ensure schema: %v", err)
 	}
 
-	redisClient, err := cache.Connect(ctx, cfg.RedisAddr, cfg.RedisPassword)
+	redisClient, err := cache.Connect(ctx, cfg.RedisURL, cfg.RedisAddr, cfg.RedisPassword)
 	if err != nil {
 		log.Fatalf("connect redis: %v", err)
 	}

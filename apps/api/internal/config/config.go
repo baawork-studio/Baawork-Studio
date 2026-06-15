@@ -3,22 +3,26 @@ package config
 import "os"
 
 type Config struct {
-	Port          string
-	DatabaseURL   string
-	RedisAddr     string
-	RedisPassword string
-	UploadDir     string
-	PublicBaseURL string
+	Port           string
+	DatabaseURL    string
+	RedisURL       string
+	RedisAddr      string
+	RedisPassword  string
+	UploadDir      string
+	PublicBaseURL  string
+	AllowedOrigins string
 }
 
 func Load() Config {
 	return Config{
-		Port:          getEnv("PORT", "8080"),
-		DatabaseURL:   getEnv("DATABASE_URL", "postgres://baawork:baawork@localhost:55432/baawork_studio?sslmode=disable"),
-		RedisAddr:     getEnv("REDIS_ADDR", "localhost:6379"),
-		RedisPassword: getEnv("REDIS_PASSWORD", ""),
-		UploadDir:     getEnv("UPLOAD_DIR", "uploads"),
-		PublicBaseURL: getEnv("PUBLIC_BASE_URL", "http://localhost:8080"),
+		Port:           getEnv("PORT", "8080"),
+		DatabaseURL:    getEnv("DATABASE_URL", "postgres://baawork:baawork@localhost:55432/baawork_studio?sslmode=disable"),
+		RedisURL:       getEnv("REDIS_URL", ""),
+		RedisAddr:      getEnv("REDIS_ADDR", "localhost:6379"),
+		RedisPassword:  getEnv("REDIS_PASSWORD", ""),
+		UploadDir:      getEnv("UPLOAD_DIR", "uploads"),
+		PublicBaseURL:  getEnv("PUBLIC_BASE_URL", "http://localhost:8080"),
+		AllowedOrigins: getEnv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:5174"),
 	}
 }
 

@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 	"os"
+	"strings"
 
 	"baawork-studio-api/internal/config"
 	"baawork-studio-api/internal/projects"
@@ -18,7 +19,7 @@ func NewRouter(cfg config.Config, db *pgxpool.Pool, redisClient *redis.Client) *
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:5174"},
+		AllowOrigins:     parseAllowedOrigins(cfg.AllowedOrigins),
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		AllowCredentials: false,
@@ -42,4 +43,15 @@ func NewRouter(cfg config.Config, db *pgxpool.Pool, redisClient *redis.Client) *
 	}
 
 	return router
+}
+
+func parseAllowedOrigins(value string) []string {
+	origins := []string{}
+	for _, origin := range strings.Split(value, ",") {
+		origin = strings.TrimSpace(origin)
+		if origin != "" {
+			origins = append(origins, origin)
+		}
+	}
+	return origins
 }
