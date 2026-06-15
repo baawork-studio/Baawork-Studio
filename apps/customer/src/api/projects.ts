@@ -17,8 +17,14 @@ export type Project = {
   updatedAt: string;
 };
 
+const apiBaseUrl =
+  process.env.NEXT_PUBLIC_API_URL ??
+  process.env.API_URL ??
+  process.env.VITE_API_URL ??
+  'http://localhost:8080';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:8080',
+  baseURL: apiBaseUrl,
   timeout: 8000,
 });
 

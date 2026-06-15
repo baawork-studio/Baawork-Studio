@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { fetchProject, type Project } from '../api/projects';
@@ -6,6 +8,7 @@ import { palette, typeScale } from '../theme';
 
 type ProjectDetailPageProps = {
   slug: string;
+  initialProject?: Project;
 };
 
 const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
@@ -1065,13 +1068,14 @@ function ProjectTechSection({ project }: { project: Project }) {
   );
 }
 
-export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
+export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPageProps) {
   const fallback = useMemo(
     () => fallbackProjects.find((project) => project.slug === slug) ?? fallbackProjects[0],
     [slug],
   );
-  const [project, setProject] = useState<Project>(fallback);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'fallback'>('loading');
+  const initial = initialProject ?? fallback;
+  const [project, setProject] = useState<Project>(initial);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'fallback'>(initialProject ? 'ready' : 'loading');
 
   useEffect(() => {
     let active = true;
@@ -1084,14 +1088,14 @@ export function ProjectDetailPage({ slug }: ProjectDetailPageProps) {
       })
       .catch(() => {
         if (!active) return;
-        setProject(fallback);
-        setStatus('fallback');
+        setProject(initialProject ?? fallback);
+        setStatus(initialProject ? 'ready' : 'fallback');
       });
 
     return () => {
       active = false;
     };
-  }, [fallback, slug]);
+  }, [fallback, initialProject, slug]);
 
   return (
     <Box component="main">

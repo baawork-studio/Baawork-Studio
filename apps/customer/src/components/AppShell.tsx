@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { palette, typeScale } from '../theme';

@@ -1,6 +1,7 @@
 .env
 .env.local
 .env.*.local
+.DS_Store
 
 node_modules/
 dist/
@@ -14,4 +15,3 @@ vite.config.d.ts
 
 apps/api/uploads/*
 !apps/api/uploads/.gitkeep
-

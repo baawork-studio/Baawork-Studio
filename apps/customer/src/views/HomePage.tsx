@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import { fetchProjects, type Project } from '../api/projects';
@@ -17,13 +19,17 @@ type ShowcaseCard = {
 
 type HeroCtaPhase = 'hidden' | 'seed' | 'open';
 
+type HomePageProps = {
+  initialProjects?: Project[];
+};
+
 const aiShowcaseCards: ShowcaseCard[] = [
   {
     id: 'ai-command-center',
     slug: 'ai-command-center',
     title: 'ศูนย์สั่งการ AI',
     shortDescription: 'ศูนย์วิเคราะห์งานแบบเรียลไทม์ที่สรุปสถานะ เคสเร่งด่วน และแนวโน้มความเสี่ยงให้ทีมตัดสินใจเร็วขึ้น',
-    coverImageUrl: carouselMobileImageAlt,
+    coverImageUrl: carouselMobileImageAlt.src,
     presentation: 'phoneAiDark',
   },
   {
@@ -31,7 +37,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
     slug: 'ai-sales-forecast',
     title: 'ระบบคาดการณ์ยอดขาย',
     shortDescription: 'แดชบอร์ดคาดการณ์ยอดขายและพฤติกรรมลูกค้าด้วยโมเดล Machine Learning สำหรับทีมบริหาร',
-    coverImageUrl: carouselMobileImage,
+    coverImageUrl: carouselMobileImage.src,
     presentation: 'phoneAiLight',
   },
   {
@@ -39,7 +45,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
     slug: 'ai-document-review',
     title: 'ระบบอ่านเอกสาร AI',
     shortDescription: 'ระบบช่วยอ่านเอกสาร สกัดใจความสำคัญ และจัดหมวดหมู่คำขอจากหน้าจอเดียว',
-    coverImageUrl: carouselMobileImage,
+    coverImageUrl: carouselMobileImage.src,
     presentation: 'phoneAiLight',
   },
   {
@@ -47,7 +53,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
     slug: 'ai-service-agent',
     title: 'ผู้ช่วยบริการอัตโนมัติ',
     shortDescription: 'ระบบผู้ช่วยตอบกลับอัตโนมัติที่ติดตามบทสนทนา งานค้าง และคุณภาพบริการของทีม',
-    coverImageUrl: carouselMobileImageAlt,
+    coverImageUrl: carouselMobileImageAlt.src,
     presentation: 'phoneAiDark',
   },
   {
@@ -55,7 +61,7 @@ const aiShowcaseCards: ShowcaseCard[] = [
     slug: 'ai-api-monitor',
     title: 'ระบบเฝ้าระวัง API',
     shortDescription: 'หน้าจอตรวจจับ anomaly ของระบบ API พร้อมแจ้งเตือนเหตุการณ์ผิดปกติก่อนกระทบผู้ใช้',
-    coverImageUrl: carouselMobileImage,
+    coverImageUrl: carouselMobileImage.src,
     presentation: 'phoneAiLight',
   },
 ];
@@ -1928,8 +1934,8 @@ function FaqSection() {
   );
 }
 
-export function HomePage() {
-  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+export function HomePage({ initialProjects = fallbackProjects }: HomePageProps) {
+  const [projects, setProjects] = useState<Project[]>(initialProjects.length > 0 ? initialProjects : fallbackProjects);
   const [heroCtaPhase, setHeroCtaPhase] = useState<HeroCtaPhase>('hidden');
   const heroCtaModeRef = useRef<'closed' | 'open' | null>(null);
   const heroCtaTimersRef = useRef<number[]>([]);
@@ -1944,13 +1950,13 @@ export function HomePage() {
       })
       .catch(() => {
         if (!active) return;
-        setProjects(fallbackProjects);
+        setProjects(initialProjects.length > 0 ? initialProjects : fallbackProjects);
       });
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [initialProjects]);
 
   useEffect(() => {
     heroCtaModeRef.current = null;
