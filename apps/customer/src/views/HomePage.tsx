@@ -456,6 +456,7 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
             top: '50%',
             left: '50%',
             width: 'max-content',
+            color: '#FFFFFF',
             opacity: 0,
             transform: 'translate(calc(-50% - 8px), -50%)',
             transition: 'opacity 220ms linear, transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
