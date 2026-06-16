@@ -9,6 +9,9 @@ export const palette = {
   border: '#E5E7EB',
 };
 
+export const appFontFamily =
+  'var(--font-roboto, "Roboto"), var(--font-noto-sans-thai, "Noto Sans Thai"), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+
 export const typeScale = {
   hero: {
     fontSize: { xs: 32, sm: 44, md: 56, lg: 56 },
@@ -73,8 +76,7 @@ export const theme = createTheme({
     divider: palette.border,
   },
   typography: {
-    fontFamily:
-      '"Roboto", "Noto Sans Thai", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    fontFamily: appFontFamily,
     h1: {
       fontSize: '32px',
       lineHeight: 1.125,

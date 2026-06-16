@@ -1,7 +1,23 @@
 import type { Metadata, Viewport } from 'next';
+import { Noto_Sans_Thai, Roboto } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { Providers } from './providers';
 import '../src/styles.css';
+
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-roboto',
+  display: 'swap',
+});
+
+const notoSansThai = Noto_Sans_Thai({
+  subsets: ['thai'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-noto-sans-thai',
+  display: 'swap',
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://baawork-studio.up.railway.app';
 const siteDescription =
@@ -63,7 +79,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="th">
-      <body>
+      <body className={`${roboto.variable} ${notoSansThai.variable}`}>
         <Providers>{children}</Providers>
       </body>
     </html>
