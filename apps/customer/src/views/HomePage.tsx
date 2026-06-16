@@ -432,6 +432,7 @@ function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           px: 0,
           borderRadius: 999,
           bgcolor: palette.primaryPink,
+          color: '#FFFFFF !important',
           boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
           overflow: 'hidden',
           opacity: 1,
@@ -1746,15 +1747,19 @@ function StartProjectSection() {
               px: { xs: 3.5, sm: 4.5 },
               borderRadius: 999,
               bgcolor: palette.primaryPink,
-              color: '#FFFFFF',
+              color: '#FFFFFF !important',
               textDecoration: 'none',
               fontSize: { xs: 14, sm: 17 },
               fontWeight: 600,
               lineHeight: 1.2,
               boxShadow: '0 18px 44px rgba(255,0,140,0.24)',
               transition: 'transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease',
+              '&:visited, &:active': {
+                color: '#FFFFFF !important',
+              },
               '&:hover': {
                 bgcolor: '#FF1495',
+                color: '#FFFFFF !important',
                 transform: 'translate3d(0, -1px, 0)',
                 boxShadow: '0 22px 54px rgba(255,0,140,0.3)',
               },
@@ -1762,6 +1767,7 @@ function StartProjectSection() {
                 outline: 'none',
               },
               '&:focus-visible': {
+                color: '#FFFFFF !important',
                 outline: `3px solid ${palette.accentYellow}`,
                 outlineOffset: 4,
               },
@@ -1856,7 +1862,7 @@ function FaqSection() {
                 '&[open] .faq-plus': {
                   transform: 'rotate(45deg)',
                   bgcolor: palette.primaryPink,
-                  color: '#FFFFFF',
+                  color: '#FFFFFF !important',
                 },
                 '& summary:focus': {
                   outline: 'none',
