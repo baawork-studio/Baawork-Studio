@@ -35,6 +35,20 @@ const initialForm: FormState = {
   published: true,
 };
 
+type LoginState = {
+  username: string;
+  password: string;
+};
+
+const initialLogin: LoginState = {
+  username: '',
+  password: '',
+};
+
+const adminUsername = import.meta.env.VITE_ADMIN_USERNAME ?? '';
+const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD ?? '';
+const adminSessionKey = 'baawork-admin-authenticated';
+
 function toSlug(value: string) {
   return value
     .toLowerCase()
@@ -51,6 +65,12 @@ function splitLines(value: string) {
 }
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.sessionStorage.getItem(adminSessionKey) === 'true';
+  });
+  const [login, setLogin] = useState<LoginState>(initialLogin);
+  const [loginError, setLoginError] = useState('');
   const [form, setForm] = useState<FormState>(initialForm);
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [galleryImages, setGalleryImages] = useState<File[]>([]);
@@ -74,6 +94,36 @@ export default function App() {
       URL.revokeObjectURL(objectUrl);
     };
   }, [coverImage]);
+
+  function updateLoginField(field: keyof LoginState, value: string) {
+    setLogin((current) => ({ ...current, [field]: value }));
+    setLoginError('');
+  }
+
+  function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!adminUsername || !adminPassword) {
+      setLoginError('ยังไม่ได้ตั้งค่า VITE_ADMIN_USERNAME และ VITE_ADMIN_PASSWORD ใน env');
+      return;
+    }
+
+    if (login.username.trim() !== adminUsername || login.password !== adminPassword) {
+      setLoginError('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      return;
+    }
+
+    window.sessionStorage.setItem(adminSessionKey, 'true');
+    setIsAuthenticated(true);
+    setLogin(initialLogin);
+    setLoginError('');
+  }
+
+  function handleLogout() {
+    window.sessionStorage.removeItem(adminSessionKey);
+    setIsAuthenticated(false);
+    setLogin(initialLogin);
+  }
 
   function updateField(field: keyof FormState, value: string | boolean) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -133,6 +183,100 @@ export default function App() {
     }
   }
 
+  if (!isAuthenticated) {
+    return (
+      <Box
+        sx={{
+          minHeight: '100vh',
+          bgcolor: palette.softGray,
+          color: palette.text,
+          display: 'grid',
+          placeItems: 'center',
+          px: 2,
+          py: 6,
+        }}
+      >
+        <Paper
+          component="form"
+          onSubmit={handleLogin}
+          sx={{
+            width: '100%',
+            maxWidth: 460,
+            p: { xs: 3, sm: 4 },
+            borderRadius: 4,
+            boxShadow: '0 24px 80px rgba(17,24,39,0.1)',
+          }}
+        >
+          <Stack spacing={3}>
+            <Stack spacing={1.5} alignItems="center" textAlign="center">
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: '50%',
+                  bgcolor: palette.primaryPink,
+                  color: '#FFFFFF',
+                  display: 'grid',
+                  placeItems: 'center',
+                  fontWeight: 900,
+                  fontSize: 24,
+                  lineHeight: 1,
+                }}
+              >
+                B
+              </Box>
+              <Box>
+                <Typography variant="h4" fontWeight={900}>
+                  เข้าสู่ระบบหลังบ้าน
+                </Typography>
+                <Typography color="text.secondary">สำหรับจัดการผลงาน Baawork Studio</Typography>
+              </Box>
+            </Stack>
+
+            {loginError && <Alert severity="error">{loginError}</Alert>}
+
+            <Stack spacing={2}>
+              <TextField
+                fullWidth
+                autoFocus
+                label="ชื่อผู้ใช้"
+                autoComplete="username"
+                value={login.username}
+                onChange={(event) => updateLoginField('username', event.target.value)}
+              />
+              <TextField
+                fullWidth
+                label="รหัสผ่าน"
+                type="password"
+                autoComplete="current-password"
+                value={login.password}
+                onChange={(event) => updateLoginField('password', event.target.value)}
+              />
+            </Stack>
+
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              sx={{
+                minHeight: 52,
+                borderRadius: 999,
+                bgcolor: palette.primaryPink,
+                color: '#FFFFFF',
+                '&:hover': {
+                  bgcolor: '#FF1495',
+                  color: '#FFFFFF',
+                },
+              }}
+            >
+              เข้าสู่ระบบ
+            </Button>
+          </Stack>
+        </Paper>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: palette.softGray }}>
       <Box sx={{ bgcolor: '#111827', color: '#fff', py: 2 }}>
@@ -142,7 +286,23 @@ export default function App() {
               <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: palette.primaryPink }} />
               <Typography fontWeight={800}>หลังบ้าน Baawork Studio</Typography>
             </Stack>
-            <Chip label="เพิ่มผลงาน" sx={{ bgcolor: palette.accentYellow, fontWeight: 800 }} />
+            <Stack direction="row" alignItems="center" spacing={1.5}>
+              <Chip label="เพิ่มผลงาน" sx={{ bgcolor: palette.accentYellow, fontWeight: 800 }} />
+              <Button
+                variant="outlined"
+                onClick={handleLogout}
+                sx={{
+                  borderColor: 'rgba(255,255,255,0.28)',
+                  color: '#FFFFFF',
+                  '&:hover': {
+                    borderColor: '#FFFFFF',
+                    bgcolor: 'rgba(255,255,255,0.08)',
+                  },
+                }}
+              >
+                ออกจากระบบ
+              </Button>
+            </Stack>
           </Stack>
         </Container>
       </Box>
