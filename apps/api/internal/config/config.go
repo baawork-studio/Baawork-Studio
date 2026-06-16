@@ -11,6 +11,8 @@ type Config struct {
 	UploadDir      string
 	PublicBaseURL  string
 	AllowedOrigins string
+	AdminUsername  string
+	AdminPassword  string
 }
 
 func Load() Config {
@@ -23,6 +25,8 @@ func Load() Config {
 		UploadDir:      getEnv("UPLOAD_DIR", "uploads"),
 		PublicBaseURL:  getEnv("PUBLIC_BASE_URL", "http://localhost:8080"),
 		AllowedOrigins: getEnv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:5174"),
+		AdminUsername:  getEnv("ADMIN_USERNAME", ""),
+		AdminPassword:  getEnv("ADMIN_PASSWORD", ""),
 	}
 }
 

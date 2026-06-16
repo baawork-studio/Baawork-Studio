@@ -1,6 +1,7 @@
 package server
 
 import (
+	"crypto/subtle"
 	"net/http"
 	"os"
 	"strings"
@@ -21,7 +22,7 @@ func NewRouter(cfg config.Config, db *pgxpool.Pool, redisClient *redis.Client) *
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     parseAllowedOrigins(cfg.AllowedOrigins),
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		AllowCredentials: false,
 	}))
 
@@ -38,11 +39,32 @@ func NewRouter(cfg config.Config, db *pgxpool.Pool, redisClient *redis.Client) *
 	{
 		v1.GET("/projects", handler.List)
 		v1.GET("/projects/:slug", handler.Detail)
-		v1.POST("/projects", handler.Create)
-		v1.POST("/projects/:id/images", handler.UploadImage)
+
+		admin := v1.Group("", adminAuth(cfg.AdminUsername, cfg.AdminPassword))
+		admin.POST("/projects", handler.Create)
+		admin.POST("/projects/:id/images", handler.UploadImage)
 	}
 
 	return router
+}
+
+func adminAuth(username string, password string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if username == "" || password == "" {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "admin auth is not configured"})
+			return
+		}
+
+		requestUsername, requestPassword, ok := c.Request.BasicAuth()
+		if !ok || subtle.ConstantTimeCompare([]byte(requestUsername), []byte(username)) != 1 ||
+			subtle.ConstantTimeCompare([]byte(requestPassword), []byte(password)) != 1 {
+			c.Header("WWW-Authenticate", `Basic realm="Baawork Admin"`)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+			return
+		}
+
+		c.Next()
+	}
 }
 
 func parseAllowedOrigins(value string) []string {

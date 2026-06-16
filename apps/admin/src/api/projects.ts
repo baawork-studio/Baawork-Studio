@@ -24,6 +24,17 @@ const api = axios.create({
   timeout: 12000,
 });
 
+api.interceptors.request.use((config) => {
+  const username = import.meta.env.VITE_ADMIN_USERNAME ?? '';
+  const password = import.meta.env.VITE_ADMIN_PASSWORD ?? '';
+
+  if (username && password) {
+    config.headers.Authorization = `Basic ${window.btoa(`${username}:${password}`)}`;
+  }
+
+  return config;
+});
+
 export async function createProject(payload: CreateProjectPayload): Promise<Project> {
   const response = await api.post<Project>('/api/v1/projects', payload);
   return response.data;
