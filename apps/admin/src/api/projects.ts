@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+export const adminTokenKey = 'baawork-admin-token';
+
+export type AdminLoginResponse = {
+  token: string;
+  expiresAt: number;
+};
+
 export type CreateProjectPayload = {
   slug: string;
   title: string;
@@ -25,15 +32,19 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const username = import.meta.env.VITE_ADMIN_USERNAME ?? '';
-  const password = import.meta.env.VITE_ADMIN_PASSWORD ?? '';
+  const token = window.sessionStorage.getItem(adminTokenKey);
 
-  if (username && password) {
-    config.headers.Authorization = `Basic ${window.btoa(`${username}:${password}`)}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;
 });
+
+export async function loginAdmin(username: string, password: string): Promise<AdminLoginResponse> {
+  const response = await api.post<AdminLoginResponse>('/api/v1/admin/login', { username, password });
+  return response.data;
+}
 
 export async function createProject(payload: CreateProjectPayload): Promise<Project> {
   const response = await api.post<Project>('/api/v1/projects', payload);

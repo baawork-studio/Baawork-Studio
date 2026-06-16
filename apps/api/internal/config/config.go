@@ -13,6 +13,7 @@ type Config struct {
 	AllowedOrigins string
 	AdminUsername  string
 	AdminPassword  string
+	SessionSecret  string
 }
 
 func Load() Config {
@@ -27,6 +28,7 @@ func Load() Config {
 		AllowedOrigins: getEnv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:5174"),
 		AdminUsername:  getEnv("ADMIN_USERNAME", ""),
 		AdminPassword:  getEnv("ADMIN_PASSWORD", ""),
+		SessionSecret:  getEnv("ADMIN_SESSION_SECRET", ""),
 	}
 }
 

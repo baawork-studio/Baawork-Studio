@@ -12,7 +12,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { createProject, uploadProjectImage, type Project } from './api/projects';
+import { adminTokenKey, createProject, loginAdmin, uploadProjectImage, type Project } from './api/projects';
 import { palette } from './theme';
 
 type FormState = {
@@ -45,10 +45,6 @@ const initialLogin: LoginState = {
   password: '',
 };
 
-const adminUsername = import.meta.env.VITE_ADMIN_USERNAME ?? '';
-const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD ?? '';
-const adminSessionKey = 'baawork-admin-authenticated';
-
 function toSlug(value: string) {
   return value
     .toLowerCase()
@@ -67,9 +63,10 @@ function splitLines(value: string) {
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     if (typeof window === 'undefined') return false;
-    return window.sessionStorage.getItem(adminSessionKey) === 'true';
+    return Boolean(window.sessionStorage.getItem(adminTokenKey));
   });
   const [login, setLogin] = useState<LoginState>(initialLogin);
+  const [loginStatus, setLoginStatus] = useState<'idle' | 'checking'>('idle');
   const [loginError, setLoginError] = useState('');
   const [form, setForm] = useState<FormState>(initialForm);
   const [coverImage, setCoverImage] = useState<File | null>(null);
@@ -100,27 +97,25 @@ export default function App() {
     setLoginError('');
   }
 
-  function handleLogin(event: FormEvent<HTMLFormElement>) {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    if (!adminUsername || !adminPassword) {
-      setLoginError('ยังไม่ได้ตั้งค่า VITE_ADMIN_USERNAME และ VITE_ADMIN_PASSWORD ใน env');
-      return;
-    }
-
-    if (login.username.trim() !== adminUsername || login.password !== adminPassword) {
-      setLoginError('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-      return;
-    }
-
-    window.sessionStorage.setItem(adminSessionKey, 'true');
-    setIsAuthenticated(true);
-    setLogin(initialLogin);
+    setLoginStatus('checking');
     setLoginError('');
+
+    try {
+      const session = await loginAdmin(login.username.trim(), login.password);
+      window.sessionStorage.setItem(adminTokenKey, session.token);
+      setIsAuthenticated(true);
+      setLogin(initialLogin);
+    } catch {
+      setLoginError('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+    } finally {
+      setLoginStatus('idle');
+    }
   }
 
   function handleLogout() {
-    window.sessionStorage.removeItem(adminSessionKey);
+    window.sessionStorage.removeItem(adminTokenKey);
     setIsAuthenticated(false);
     setLogin(initialLogin);
   }
@@ -258,6 +253,7 @@ export default function App() {
               type="submit"
               variant="contained"
               size="large"
+              disabled={loginStatus === 'checking'}
               sx={{
                 minHeight: 52,
                 borderRadius: 999,
@@ -269,7 +265,7 @@ export default function App() {
                 },
               }}
             >
-              เข้าสู่ระบบ
+              {loginStatus === 'checking' ? 'กำลังตรวจสอบ...' : 'เข้าสู่ระบบ'}
             </Button>
           </Stack>
         </Paper>
