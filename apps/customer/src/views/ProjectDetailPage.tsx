@@ -1986,14 +1986,6 @@ function ProjectTechSection({ project }: { project: Project }) {
         >
           {getTechReason(project)}
         </Typography>
-        <Box
-          sx={{
-            width: { xs: 72, md: 92 },
-            height: 5,
-            borderRadius: 999,
-            bgcolor: visual.accent,
-          }}
-        />
       </Stack>
 
       <Box

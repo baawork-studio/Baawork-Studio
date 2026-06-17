@@ -627,9 +627,6 @@ function AiPhoneScreen({
                       </Typography>
                       <Typography sx={{ fontSize: 8.5, color: mutedColor }}>{width}%</Typography>
                     </Stack>
-                    <Box sx={{ height: 4, borderRadius: 999, bgcolor: isDarkPhone ? 'rgba(255,255,255,0.14)' : '#E5E7EB', overflow: 'hidden' }}>
-                      <Box sx={{ width: `${width}%`, height: '100%', borderRadius: 999, bgcolor: itemIndex === 1 ? palette.primaryPink : isDarkPhone ? palette.accentYellow : '#111827' }} />
-                    </Box>
                   </Box>
                 ))}
               </Stack>
@@ -1501,7 +1498,6 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                 }}
               >
                 <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: card.color }} />
-                <Box sx={{ flex: 1, height: 9, borderRadius: 999, bgcolor: '#D1D5DB' }} />
                 <Box
                   sx={{
                     px: 1.3,
@@ -1526,7 +1522,7 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                     right: '10%',
                     top: `${top}%`,
                     display: 'grid',
-                    gridTemplateColumns: '20px 1fr 58px',
+                    gridTemplateColumns: '20px 58px',
                     alignItems: 'center',
                     gap: 1.25,
                   }}
@@ -1541,14 +1537,6 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                   />
                   <Box
                     sx={{
-                      height: 9,
-                      borderRadius: 999,
-                      bgcolor: index === 0 ? card.color : '#D1D5DB',
-                      opacity: index === 0 ? 1 : 0.75,
-                    }}
-                  />
-                  <Box
-                    sx={{
                       height: 20,
                       borderRadius: 999,
                       bgcolor: index === 0 ? 'rgba(255,0,140,0.14)' : '#F3F4F6',
@@ -1556,18 +1544,6 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                   />
                 </Box>
               ))}
-              <Box
-                sx={{
-                  position: 'absolute',
-                  left: '10%',
-                  right: '10%',
-                  bottom: '12%',
-                  height: 36,
-                  borderRadius: 999,
-                  bgcolor: card.color,
-                  boxShadow: '0 14px 30px rgba(255,0,140,0.22)',
-                }}
-              />
             </Box>
           ) : (
             <Box sx={{ position: 'absolute', inset: { xs: '6px 0 0', md: '12px 0 0' } }}>
@@ -1611,18 +1587,6 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                   {node.label}
                 </Box>
               ))}
-              <Box
-                sx={{
-                  position: 'absolute',
-                  left: '12%',
-                  right: '12%',
-                  bottom: '8%',
-                  height: { xs: 44, md: 54 },
-                  borderRadius: 999,
-                  bgcolor: '#111827',
-                  boxShadow: '0 18px 38px rgba(17,24,39,0.16)',
-                }}
-              />
             </Box>
           )}
         </Box>
