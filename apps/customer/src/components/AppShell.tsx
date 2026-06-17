@@ -10,6 +10,13 @@ type AppShellProps = {
 
 const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 
+const navLinks = [
+  { label: 'ผลงาน', href: '/#work' },
+  { label: 'ทำไมต้องเรา', href: '/why-us' },
+  { label: 'สตูดิโอ', href: '/#workflow' },
+  { label: 'ติดต่อ', href: '#contact' },
+];
+
 export function AppShell({ children }: AppShellProps) {
   const [headerHidden, setHeaderHidden] = useState(false);
   const lastScrollYRef = useRef(0);
@@ -110,7 +117,7 @@ export function AppShell({ children }: AppShellProps) {
           component="nav"
           aria-label="เมนูหลัก"
           direction="row"
-          spacing={{ sm: 4.5, md: 6 }}
+          spacing={{ sm: 3.5, md: 5 }}
           sx={{
             display: { xs: 'none', sm: 'flex' },
             position: 'absolute',
@@ -119,15 +126,28 @@ export function AppShell({ children }: AppShellProps) {
             transform: 'translate(-50%, -50%)',
           }}
         >
-          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px', fontWeight: 400 }}>
-            ผลงาน
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px', fontWeight: 400 }}>
-            สตูดิโอ
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', fontSize: 12, lineHeight: '44px', fontWeight: 400 }}>
-            ติดต่อ
-          </Typography>
+          {navLinks.map((link) => (
+            <Typography
+              key={link.href}
+              component="a"
+              href={link.href}
+              variant="body2"
+              sx={{
+                color: 'rgba(255,255,255,0.78)',
+                textDecoration: 'none',
+                fontSize: 12,
+                lineHeight: '44px',
+                fontWeight: 400,
+                whiteSpace: 'nowrap',
+                transition: 'color 180ms ease',
+                '&:hover': {
+                  color: '#fff',
+                },
+              }}
+            >
+              {link.label}
+            </Typography>
+          ))}
         </Stack>
       </Box>
       {children}
@@ -221,10 +241,11 @@ export function AppShell({ children }: AppShellProps) {
                 </Typography>
                 <Stack spacing={1.2}>
                   {[
-                    { label: 'ผลงาน', href: '#work' },
-                    { label: 'กระบวนการทำงาน', href: '#workflow' },
-                    { label: 'คำถามที่พบบ่อย', href: '#faq' },
-                    { label: 'เริ่มโปรเจกต์', href: '#start-project' },
+                    { label: 'ผลงาน', href: '/#work' },
+                    { label: 'ทำไมต้องเรา', href: '/why-us' },
+                    { label: 'กระบวนการทำงาน', href: '/#workflow' },
+                    { label: 'คำถามที่พบบ่อย', href: '/#faq' },
+                    { label: 'เริ่มโปรเจกต์', href: '/#start-project' },
                   ].map((link) => (
                     <Typography
                       key={link.href}
