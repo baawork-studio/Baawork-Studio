@@ -124,6 +124,9 @@ export function AppShell({ children }: AppShellProps) {
             left: '50%',
             top: '50%',
             transform: 'translate(-50%, -50%)',
+            '& a, & a:visited, & a:active': {
+              color: '#FFFFFF',
+            },
           }}
         >
           {navLinks.map((link) => (
@@ -133,15 +136,20 @@ export function AppShell({ children }: AppShellProps) {
               href={link.href}
               variant="body2"
               sx={{
-                color: 'rgba(255,255,255,0.78)',
+                color: '#FFFFFF',
                 textDecoration: 'none',
                 fontSize: 12,
                 lineHeight: '44px',
                 fontWeight: 400,
                 whiteSpace: 'nowrap',
-                transition: 'color 180ms ease',
-                '&:hover': {
-                  color: '#fff',
+                opacity: 1,
+                transition: 'opacity 180ms ease',
+                '&:visited, &:active, &:focus': {
+                  color: '#FFFFFF',
+                },
+                '&:hover, &:focus-visible': {
+                  color: '#FFFFFF',
+                  opacity: 0.82,
                 },
               }}
             >
