@@ -125,19 +125,20 @@ export function AppShell({ children }: AppShellProps) {
             top: '50%',
             transform: 'translate(-50%, -50%)',
             '& a, & a:visited, & a:active': {
-              color: '#FFFFFF',
+              color: '#FFFFFF !important',
             },
           }}
         >
           {navLinks.map((link) => (
-            <Typography
+            <Box
               key={link.href}
               component="a"
               href={link.href}
-              variant="body2"
+              style={{ color: '#FFFFFF' }}
               sx={{
-                color: '#FFFFFF',
+                color: '#FFFFFF !important',
                 textDecoration: 'none',
+                fontFamily: 'inherit',
                 fontSize: 12,
                 lineHeight: '44px',
                 fontWeight: 400,
@@ -145,16 +146,16 @@ export function AppShell({ children }: AppShellProps) {
                 opacity: 1,
                 transition: 'opacity 180ms ease',
                 '&:visited, &:active, &:focus': {
-                  color: '#FFFFFF',
+                  color: '#FFFFFF !important',
                 },
                 '&:hover, &:focus-visible': {
-                  color: '#FFFFFF',
+                  color: '#FFFFFF !important',
                   opacity: 0.82,
                 },
               }}
             >
               {link.label}
-            </Typography>
+            </Box>
           ))}
         </Stack>
       </Box>
