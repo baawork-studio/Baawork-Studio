@@ -41,6 +41,13 @@ type SystemPreviewCopy = {
 type SystemPreviewItem = SystemPreviewCopy & {
   imageUrl: string;
 };
+type DetailInfoCard = {
+  title: string;
+  description: string;
+};
+type DetailFlowStep = DetailInfoCard & {
+  label: string;
+};
 
 const mockupAssets: Record<MockupTemplate, string> = {
   macbook: '/project-detail-macbook.png',
@@ -788,6 +795,155 @@ function getSystemPreviewItems(project: Project): SystemPreviewItem[] {
   }));
 }
 
+function isAiProject(project: Project) {
+  return project.slug.startsWith('ai-') || project.stack.some((item) => /AI|ML|OCR|Forecast|Document/i.test(item));
+}
+
+function getAudienceCards(project: Project): DetailInfoCard[] {
+  if (isAiProject(project)) {
+    return [
+      {
+        title: 'เจ้าของธุรกิจ',
+        description: 'เห็นภาพรวมงาน ความเสี่ยง และสิ่งที่ควรตัดสินใจก่อนโดยไม่ต้องไล่อ่านข้อมูลหลายหน้า',
+      },
+      {
+        title: 'หัวหน้าทีม',
+        description: 'ติดตามงานค้าง เคสสำคัญ และผลลัพธ์ของทีมได้ชัดขึ้น ทำให้จัดลำดับงานได้เร็ว',
+      },
+      {
+        title: 'ทีมปฏิบัติการ',
+        description: 'รู้ว่าต้องทำอะไรต่อจากหน้าจอเดียว ลดการค้นหาข้อมูลและลดงานประสานซ้ำ',
+      },
+      {
+        title: 'ทีมดูแลลูกค้า',
+        description: 'เข้าใจบริบทของแต่ละเคสเร็วขึ้น พร้อมข้อมูลช่วยตอบกลับและติดตามงานต่อได้ครบ',
+      },
+    ];
+  }
+
+  return [
+    {
+      title: 'เจ้าของธุรกิจ',
+      description: 'ดูภาพรวมงานและสถานะระบบหลังบ้านได้ง่ายขึ้น เห็นจุดที่ต้องปรับปรุงหรือเร่งจัดการ',
+    },
+    {
+      title: 'ทีมแอดมิน',
+      description: 'จัดการข้อมูล คำขอ รายการ และสถานะงานจากระบบเดียว ลดการทำงานข้ามหลายเครื่องมือ',
+    },
+    {
+      title: 'ทีมขายและบริการ',
+      description: 'เห็นข้อมูลลูกค้าหรือรายการงานที่เกี่ยวข้องครบขึ้น ทำให้ติดตามและให้บริการได้ต่อเนื่อง',
+    },
+    {
+      title: 'ทีมปฏิบัติการ',
+      description: 'ทำงานตาม workflow ได้ชัดเจน ตั้งแต่รับเรื่อง ตรวจสอบ อัปเดตสถานะ ไปจนถึงส่งมอบ',
+    },
+  ];
+}
+
+function getWorkflowSteps(project: Project): DetailFlowStep[] {
+  if (isAiProject(project)) {
+    return [
+      {
+        label: '01',
+        title: 'รับข้อมูล',
+        description: 'ดึงข้อมูลจาก API ฐานข้อมูล เอกสาร หรือระบบที่ทีมใช้อยู่เข้ามารวมใน workflow เดียว',
+      },
+      {
+        label: '02',
+        title: 'วิเคราะห์',
+        description: 'ประมวลผลข้อมูลด้วยเงื่อนไขงานจริงและ logic ของระบบ เพื่อหาสัญญาณที่ควรให้ความสำคัญ',
+      },
+      {
+        label: '03',
+        title: 'แจ้งเตือน',
+        description: 'แยกเคสเร่งด่วน ความผิดปกติ หรือโอกาสสำคัญให้ทีมเห็นก่อนงานทั่วไป',
+      },
+      {
+        label: '04',
+        title: 'สรุปผล',
+        description: 'แสดงผลเป็นหน้าจอ รายงาน หรือรายการ action ที่ทีมสามารถนำไปใช้ตัดสินใจต่อได้ทันที',
+      },
+    ];
+  }
+
+  return [
+    {
+      label: '01',
+      title: 'รับรายการ',
+      description: 'เก็บข้อมูลจากผู้ใช้ ระบบหลังบ้าน หรือช่องทางที่เชื่อมต่อเข้ามาให้เป็นโครงสร้างเดียวกัน',
+    },
+    {
+      label: '02',
+      title: 'จัดการงาน',
+      description: 'ให้ทีมตรวจสอบ แก้ไข อัปเดตสถานะ และมอบหมายงานผ่านหน้าจอที่ออกแบบตาม workflow จริง',
+    },
+    {
+      label: '03',
+      title: 'เชื่อมข้อมูล',
+      description: 'ส่งต่อข้อมูลผ่าน API ฐานข้อมูล หรือบริการภายนอก เพื่อให้ระบบทำงานต่อกันได้ครบ',
+    },
+    {
+      label: '04',
+      title: 'ส่งมอบผลลัพธ์',
+      description: 'แสดงสถานะ รายงาน และข้อมูลล่าสุดให้ทีมกับลูกค้าเห็นตรงกัน ลดการประสานงานซ้ำ',
+    },
+  ];
+}
+
+function getConnectionItems(project: Project) {
+  const defaults = isAiProject(project)
+    ? ['API', 'Database', 'เอกสาร', 'แดชบอร์ด', 'LINE', 'ระบบหลังบ้านเดิม']
+    : ['API', 'Database', 'Admin', 'CRM', 'POS', 'ระบบหลังบ้านเดิม'];
+
+  return Array.from(new Set([...defaults, ...project.stack])).slice(0, 10);
+}
+
+function getOutcomeCards(project: Project): DetailInfoCard[] {
+  const baseOutcomes = isAiProject(project)
+    ? [
+        {
+          title: 'เห็นปัญหาเร็วขึ้น',
+          description: 'ระบบช่วยชี้สัญญาณสำคัญ ความเสี่ยง หรือเคสเร่งด่วนก่อนที่งานจะสะสมเป็นปัญหาใหญ่',
+        },
+        {
+          title: 'ลดเวลาวิเคราะห์ข้อมูล',
+          description: 'ข้อมูลที่เคยต้องเปิดหลายแหล่งถูกสรุปให้อ่านง่ายขึ้น ทำให้ทีมใช้เวลากับการตัดสินใจมากกว่าไล่หาไฟล์',
+        },
+        {
+          title: 'ตัดสินใจจากข้อมูลจริง',
+          description: 'ทุกหน้าจอออกแบบให้เชื่อมข้อมูลจริงและแสดงผลตาม workflow ที่ธุรกิจใช้งานอยู่',
+        },
+        {
+          title: 'ต่อยอดระบบได้',
+          description: 'โครงสร้างรองรับการเพิ่มโมเดล รายงาน หรือการเชื่อมต่อใหม่เมื่อธุรกิจต้องการขยายต่อ',
+        },
+      ]
+    : [
+        {
+          title: 'ลดงานซ้ำของทีม',
+          description: 'รวมงานและข้อมูลไว้ในระบบเดียว ทำให้ทีมไม่ต้องกรอกซ้ำหรือค้นหาสถานะจากหลายช่องทาง',
+        },
+        {
+          title: 'ทำงานเร็วขึ้น',
+          description: 'หน้าจอถูกออกแบบให้เข้าถึง action สำคัญได้เร็ว เหมาะกับงานที่ต้องใช้ซ้ำทุกวัน',
+        },
+        {
+          title: 'ข้อมูลตรงกันทั้งทีม',
+          description: 'สถานะ รายการ และประวัติการอัปเดตอยู่บนฐานข้อมูลเดียว ลดความคลาดเคลื่อนในการประสานงาน',
+        },
+        {
+          title: 'พร้อมขยายต่อ',
+          description: 'วางโครงสร้าง frontend, backend และ API ให้เพิ่มฟีเจอร์ใหม่ได้โดยไม่ต้องเริ่มระบบใหม่',
+        },
+      ];
+
+  return baseOutcomes.map((outcome, index) => ({
+    ...outcome,
+    title: project.highlights[index] ?? outcome.title,
+  }));
+}
+
 function ProjectDeviceShowcase({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
   const slots = screenSlots[visual.template];
@@ -1078,6 +1234,281 @@ function ProjectSystemPreviewSection({ project }: { project: Project }) {
         </Box>
       </Box>
     </Box>
+  );
+}
+
+function DetailSectionHeading({
+  title,
+  description,
+  accent,
+}: {
+  title: string;
+  description?: string;
+  accent: string;
+}) {
+  return (
+    <Stack spacing={{ xs: 1, md: 1.25 }} sx={{ maxWidth: 860 }}>
+      <Typography
+        variant="h2"
+        sx={{
+          color: accent,
+          ...typeScale.sectionTitle,
+        }}
+      >
+        {title}
+      </Typography>
+      {description && (
+        <Typography
+          sx={{
+            color: '#4B5563',
+            ...typeScale.bodyLarge,
+            maxWidth: 760,
+          }}
+        >
+          {description}
+        </Typography>
+      )}
+    </Stack>
+  );
+}
+
+function ProjectUsageGuideSection({ project }: { project: Project }) {
+  const visual = getProjectVisual(project);
+  const audienceCards = getAudienceCards(project);
+  const workflowSteps = getWorkflowSteps(project);
+  const connectionItems = getConnectionItems(project);
+  const outcomeCards = getOutcomeCards(project);
+
+  return (
+    <Stack component="section" spacing={{ xs: 6, md: 8 }} sx={{ py: { xs: 2, md: 3 } }}>
+      <Stack spacing={{ xs: 3, md: 4 }}>
+        <DetailSectionHeading
+          title="ระบบนี้ช่วยงานใครบ้าง"
+          description="แยกให้เห็นชัดว่าระบบนี้เกี่ยวกับบทบาทไหนในทีม และแต่ละคนจะได้ประโยชน์จากหน้าจอไหน"
+          accent={visual.accent}
+        />
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(4, minmax(0, 1fr))' },
+            gap: { xs: 1.5, md: 2 },
+          }}
+        >
+          {audienceCards.map((card) => (
+            <Stack
+              key={card.title}
+              spacing={1.25}
+              sx={{
+                minHeight: { xs: 180, md: 214 },
+                p: { xs: 2.5, md: 3 },
+                borderRadius: { xs: '24px', md: '30px' },
+                bgcolor: '#FFFFFF',
+                boxShadow: '0 18px 42px rgba(17,24,39,0.07)',
+                transition: 'transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease',
+                '&:hover': {
+                  transform: 'translate3d(0, -5px, 0)',
+                  boxShadow: '0 24px 58px rgba(17,24,39,0.1)',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  width: 42,
+                  height: 4,
+                  borderRadius: 999,
+                  bgcolor: visual.accent,
+                }}
+              />
+              <Typography
+                variant="h3"
+                sx={{
+                  color: palette.text,
+                  fontSize: { xs: 25, md: 28 },
+                  lineHeight: 1.1,
+                  fontWeight: 700,
+                }}
+              >
+                {card.title}
+              </Typography>
+              <Typography sx={{ color: '#4B5563', ...typeScale.body }}>
+                {card.description}
+              </Typography>
+            </Stack>
+          ))}
+        </Box>
+      </Stack>
+
+      <Box
+        sx={{
+          bgcolor: visual.tint,
+          borderRadius: { xs: '30px', md: '42px' },
+          p: { xs: 2.5, sm: 3, md: 4 },
+          overflow: 'hidden',
+        }}
+      >
+        <Stack spacing={{ xs: 3, md: 4 }}>
+          <DetailSectionHeading
+            title="Flow การใช้งานจริง"
+            description="เรียงให้เห็นตั้งแต่ข้อมูลเข้าระบบ ไปจนถึงผลลัพธ์ที่ทีมเอาไปใช้งานต่อได้"
+            accent={palette.text}
+          />
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: 'repeat(4, minmax(0, 1fr))' },
+              gap: { xs: 1.5, md: 2 },
+            }}
+          >
+            {workflowSteps.map((step) => (
+              <Stack
+                key={step.label}
+                spacing={1.5}
+                sx={{
+                  p: { xs: 2.5, md: 3 },
+                  borderRadius: { xs: '24px', md: '30px' },
+                  bgcolor: 'rgba(255,255,255,0.78)',
+                  boxShadow: '0 18px 44px rgba(17,24,39,0.06)',
+                  backdropFilter: 'blur(14px)',
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: visual.accent,
+                    fontSize: { xs: 15, md: 16 },
+                    lineHeight: 1,
+                    fontWeight: 800,
+                  }}
+                >
+                  {step.label}
+                </Typography>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    color: palette.text,
+                    fontSize: { xs: 27, md: 31 },
+                    lineHeight: 1.08,
+                    fontWeight: 700,
+                  }}
+                >
+                  {step.title}
+                </Typography>
+                <Typography sx={{ color: '#4B5563', ...typeScale.body }}>
+                  {step.description}
+                </Typography>
+              </Stack>
+            ))}
+          </Box>
+        </Stack>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', lg: 'minmax(320px, 0.78fr) minmax(0, 1.22fr)' },
+          gap: { xs: 3, md: 5 },
+          alignItems: 'center',
+        }}
+      >
+        <DetailSectionHeading
+          title="ข้อมูลที่ระบบเชื่อมต่อได้"
+          description="ระบบไม่ได้เป็นแค่หน้าเว็บสวยๆ แต่ถูกออกแบบให้ต่อกับข้อมูลจริง เครื่องมือเดิม และ workflow ที่ธุรกิจใช้อยู่"
+          accent={visual.accent}
+        />
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', sm: 'repeat(3, minmax(0, 1fr))' },
+            gap: { xs: 1.25, md: 1.5 },
+          }}
+        >
+          {connectionItems.map((item) => (
+            <Box
+              key={item}
+              sx={{
+                minHeight: { xs: 92, md: 108 },
+                display: 'grid',
+                placeItems: 'center',
+                px: 2,
+                borderRadius: { xs: '22px', md: '28px' },
+                bgcolor: '#F7F8FA',
+                color: palette.text,
+                fontSize: { xs: 20, md: 24 },
+                lineHeight: 1.1,
+                fontWeight: 700,
+                textAlign: 'center',
+                boxShadow: '0 18px 42px rgba(17,24,39,0.05)',
+              }}
+            >
+              {item}
+            </Box>
+          ))}
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          bgcolor: '#F7F8FA',
+          position: 'relative',
+          left: `calc(${pageGutter} * -1)`,
+          width: `calc(100% + (${pageGutter} * 2))`,
+          alignSelf: 'stretch',
+          py: { xs: 6, md: 8 },
+          px: pageGutter,
+        }}
+      >
+        <Stack spacing={{ xs: 3, md: 4 }}>
+          <DetailSectionHeading
+            title="ผลลัพธ์ที่ลูกค้าจะได้"
+            description="สรุปเป็นภาษาง่ายๆ ว่าหลังใช้งานแล้วทีมควรเห็นความเปลี่ยนแปลงตรงไหน"
+            accent={palette.text}
+          />
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
+              gap: { xs: 1.5, md: 2 },
+            }}
+          >
+            {outcomeCards.map((card, index) => (
+              <Stack
+                key={`${card.title}-${index}`}
+                spacing={1.25}
+                sx={{
+                  minHeight: { xs: 220, md: 260 },
+                  justifyContent: 'center',
+                  p: { xs: 3, md: 4 },
+                  borderRadius: { xs: '28px', md: '36px' },
+                  bgcolor: '#FFFFFF',
+                  boxShadow: '0 20px 52px rgba(17,24,39,0.07)',
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  sx={{
+                    color: index === 0 ? visual.accent : palette.text,
+                    fontSize: { xs: 32, sm: 38, md: 46, lg: 52 },
+                    lineHeight: 1.05,
+                    fontWeight: 700,
+                    letterSpacing: 0,
+                  }}
+                >
+                  {card.title}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: '#4B5563',
+                    ...typeScale.bodyLarge,
+                    maxWidth: 720,
+                  }}
+                >
+                  {card.description}
+                </Typography>
+              </Stack>
+            ))}
+          </Box>
+        </Stack>
+      </Box>
+    </Stack>
   );
 }
 
@@ -1534,6 +1965,7 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
             <ProjectCapabilitySection project={project} />
             <ProjectTechSection project={project} />
             <ProjectSystemPreviewSection project={project} />
+            <ProjectUsageGuideSection project={project} />
           </Stack>
 
           {status === 'fallback' && (
