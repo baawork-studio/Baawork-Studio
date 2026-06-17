@@ -777,17 +777,26 @@ function getScreenImage(project: Project, key: ScreenImageKey, index: number) {
   return fallbackImages[index % fallbackImages.length] ?? project.coverImageUrl;
 }
 
-function getSystemPreviewItems(project: Project): SystemPreviewItem[] {
-  const copy = systemPreviewCopyBySlug[project.slug] ?? defaultSystemPreviewCopy;
-  const previewImages = Array.from(new Set([
+function getProjectVisualImages(project: Project) {
+  return Array.from(new Set([
+    project.coverImageUrl,
     ...(project.galleryImageUrls ?? []),
     getScreenImage(project, 'desktop', 0),
     getScreenImage(project, 'mobile', 1),
     getScreenImage(project, 'mobile1', 2),
     getScreenImage(project, 'mobile2', 3),
     getScreenImage(project, 'mobile3', 4),
-    project.coverImageUrl,
   ].filter(Boolean)));
+}
+
+function getProjectVisualImage(project: Project, index: number) {
+  const images = getProjectVisualImages(project);
+  return images[index % images.length] ?? project.coverImageUrl;
+}
+
+function getSystemPreviewItems(project: Project): SystemPreviewItem[] {
+  const copy = systemPreviewCopyBySlug[project.slug] ?? defaultSystemPreviewCopy;
+  const previewImages = getProjectVisualImages(project);
 
   return copy.map((item, index) => ({
     ...item,
@@ -1024,39 +1033,117 @@ function ProjectPurposeSection({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
 
   return (
-    <Stack
-      spacing={{ xs: 2.25, sm: 2.75, md: 3.25 }}
-      alignItems="center"
-      textAlign="center"
+    <Box
+      component="section"
       sx={{
         width: '100%',
-        maxWidth: 1180,
         mx: 'auto',
-        py: { xs: 2, md: 3 },
+        py: { xs: 2, md: 3.5 },
       }}
     >
-      <Typography
-        variant="h2"
+      <Box
         sx={{
-          color: visual.accent,
-          ...typeScale.display,
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1.08fr) minmax(360px, 0.92fr)' },
+          gap: { xs: 2.5, md: 3.5, lg: 5 },
+          alignItems: 'center',
         }}
       >
-        สร้างมาเพื่ออะไร
-      </Typography>
-      <Typography
-        sx={{
-          color: '#86868B',
-          ...typeScale.intro,
-          maxWidth: 1080,
-          mx: 'auto',
-          fontWeight: 600,
-          textAlign: 'center',
-        }}
-      >
-        {renderHighlightedDescription(project, visual.accent)}
-      </Typography>
-    </Stack>
+        <Box
+          sx={{
+            position: 'relative',
+            minHeight: { xs: 360, sm: 460, md: 540, lg: 620 },
+            overflow: 'hidden',
+            borderRadius: { xs: '30px', md: '44px' },
+            bgcolor: visual.tint,
+            boxShadow: '0 28px 80px rgba(17,24,39,0.1)',
+          }}
+        >
+          <Box
+            component="img"
+            src={getProjectVisualImage(project, 1)}
+            alt={`${project.title} ภาพรวมการใช้งาน`}
+            loading="lazy"
+            decoding="async"
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              filter: 'saturate(1.02) contrast(1.02)',
+            }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              background:
+                'linear-gradient(180deg, rgba(17,24,39,0.12) 0%, rgba(17,24,39,0.08) 42%, rgba(17,24,39,0.56) 100%)',
+            }}
+          />
+          <Stack
+            spacing={{ xs: 1, md: 1.25 }}
+            sx={{
+              position: 'absolute',
+              left: { xs: 24, md: 42 },
+              right: { xs: 24, md: 42 },
+              bottom: { xs: 24, md: 40 },
+            }}
+          >
+            <Typography
+              sx={{
+                color: '#FFFFFF',
+                fontSize: { xs: 18, md: 21 },
+                lineHeight: 1.25,
+                fontWeight: 700,
+              }}
+            >
+              เห็นภาพงานจริงก่อนลงรายละเอียด
+            </Typography>
+            <Typography
+              variant="h2"
+              sx={{
+                color: '#FFFFFF',
+                ...typeScale.sectionTitle,
+                maxWidth: 780,
+              }}
+            >
+              {project.title}
+            </Typography>
+          </Stack>
+        </Box>
+
+        <Stack
+          spacing={{ xs: 2, md: 2.5 }}
+          sx={{
+            maxWidth: 660,
+            mx: { xs: 'auto', lg: 0 },
+            textAlign: { xs: 'center', lg: 'left' },
+          }}
+        >
+          <Typography
+            variant="h2"
+            sx={{
+              color: visual.accent,
+              ...typeScale.display,
+            }}
+          >
+            สร้างมาเพื่ออะไร
+          </Typography>
+          <Typography
+            sx={{
+              color: '#6E6E73',
+              ...typeScale.intro,
+              fontWeight: 600,
+            }}
+          >
+            {renderHighlightedDescription(project, visual.accent)}
+          </Typography>
+        </Stack>
+      </Box>
+    </Box>
   );
 }
 
@@ -1272,6 +1359,125 @@ function DetailSectionHeading({
   );
 }
 
+function VisualInfoCard({
+  title,
+  description,
+  imageUrl,
+  accent,
+  label,
+  tall = false,
+  dark = true,
+}: {
+  title: string;
+  description: string;
+  imageUrl: string;
+  accent: string;
+  label?: string;
+  tall?: boolean;
+  dark?: boolean;
+}) {
+  return (
+    <Stack
+      component="article"
+      sx={{
+        position: 'relative',
+        minHeight: tall ? { xs: 360, md: 460 } : { xs: 300, md: 360 },
+        overflow: 'hidden',
+        borderRadius: { xs: '28px', md: '36px' },
+        bgcolor: dark ? '#05060A' : '#FFFFFF',
+        color: dark ? '#FFFFFF' : palette.text,
+        boxShadow: '0 24px 64px rgba(17,24,39,0.09)',
+        transition: 'transform 300ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease',
+        '&:hover': {
+          transform: 'translate3d(0, -6px, 0)',
+          boxShadow: '0 32px 82px rgba(17,24,39,0.13)',
+        },
+        '&:hover img': {
+          transform: 'scale(1.045)',
+        },
+      }}
+    >
+      <Box
+        component="img"
+        src={imageUrl}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
+          opacity: dark ? 0.86 : 0.2,
+          transform: 'scale(1.01)',
+          transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
+          pointerEvents: 'none',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          background: dark
+            ? 'linear-gradient(180deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.38) 42%, rgba(0,0,0,0.78) 100%)'
+            : `linear-gradient(180deg, rgba(255,255,255,0.82) 0%, ${visualTintFromAccent(accent)} 100%)`,
+        }}
+      />
+      <Stack
+        spacing={{ xs: 1.35, md: 1.6 }}
+        sx={{
+          position: 'relative',
+          zIndex: 1,
+          height: '100%',
+          minHeight: 'inherit',
+          justifyContent: 'flex-end',
+          p: { xs: 3, md: 3.75 },
+        }}
+      >
+        {label && (
+          <Typography
+            sx={{
+              color: dark ? 'rgba(255,255,255,0.72)' : accent,
+              fontSize: { xs: 15, md: 16 },
+              lineHeight: 1,
+              fontWeight: 800,
+            }}
+          >
+            {label}
+          </Typography>
+        )}
+        <Typography
+          variant="h3"
+          sx={{
+            color: 'currentColor',
+            fontSize: { xs: 31, sm: 35, md: 42 },
+            lineHeight: 1.08,
+            fontWeight: 700,
+            letterSpacing: 0,
+          }}
+        >
+          {title}
+        </Typography>
+        <Typography
+          sx={{
+            color: dark ? 'rgba(255,255,255,0.78)' : '#4B5563',
+            ...typeScale.bodyLarge,
+            maxWidth: 560,
+          }}
+        >
+          {description}
+        </Typography>
+      </Stack>
+    </Stack>
+  );
+}
+
+function visualTintFromAccent(accent: string) {
+  return accent === '#FF008C' ? 'rgba(255,240,248,0.92)' : 'rgba(247,248,250,0.92)';
+}
+
 function ProjectUsageGuideSection({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
   const audienceCards = getAudienceCards(project);
@@ -1280,122 +1486,68 @@ function ProjectUsageGuideSection({ project }: { project: Project }) {
   const outcomeCards = getOutcomeCards(project);
 
   return (
-    <Stack component="section" spacing={{ xs: 6, md: 8 }} sx={{ py: { xs: 2, md: 3 } }}>
+    <Stack component="section" spacing={{ xs: 6, md: 8 }} sx={{ py: { xs: 2, md: 3 }, overflow: 'visible' }}>
       <Stack spacing={{ xs: 3, md: 4 }}>
         <DetailSectionHeading
           title="ระบบนี้ช่วยงานใครบ้าง"
-          description="แยกให้เห็นชัดว่าระบบนี้เกี่ยวกับบทบาทไหนในทีม และแต่ละคนจะได้ประโยชน์จากหน้าจอไหน"
+          description="ดูจากบทบาทจริงในทีมก่อน แล้วค่อยลงรายละเอียดว่าหน้าจอไหนช่วยงานส่วนไหน"
           accent={visual.accent}
         />
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(4, minmax(0, 1fr))' },
-            gap: { xs: 1.5, md: 2 },
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
+            gap: { xs: 1.5, md: 2.25 },
           }}
         >
-          {audienceCards.map((card) => (
-            <Stack
+          {audienceCards.map((card, index) => (
+            <VisualInfoCard
               key={card.title}
-              spacing={1.25}
-              sx={{
-                minHeight: { xs: 180, md: 214 },
-                p: { xs: 2.5, md: 3 },
-                borderRadius: { xs: '24px', md: '30px' },
-                bgcolor: '#FFFFFF',
-                boxShadow: '0 18px 42px rgba(17,24,39,0.07)',
-                transition: 'transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease',
-                '&:hover': {
-                  transform: 'translate3d(0, -5px, 0)',
-                  boxShadow: '0 24px 58px rgba(17,24,39,0.1)',
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  width: 42,
-                  height: 4,
-                  borderRadius: 999,
-                  bgcolor: visual.accent,
-                }}
-              />
-              <Typography
-                variant="h3"
-                sx={{
-                  color: palette.text,
-                  fontSize: { xs: 25, md: 28 },
-                  lineHeight: 1.1,
-                  fontWeight: 700,
-                }}
-              >
-                {card.title}
-              </Typography>
-              <Typography sx={{ color: '#4B5563', ...typeScale.body }}>
-                {card.description}
-              </Typography>
-            </Stack>
+              title={card.title}
+              description={card.description}
+              imageUrl={getProjectVisualImage(project, index)}
+              accent={visual.accent}
+              label={`บทบาท ${String(index + 1).padStart(2, '0')}`}
+              tall={index === 0}
+            />
           ))}
         </Box>
       </Stack>
 
       <Box
         sx={{
-          bgcolor: visual.tint,
-          borderRadius: { xs: '30px', md: '42px' },
-          p: { xs: 2.5, sm: 3, md: 4 },
-          overflow: 'hidden',
+          bgcolor: '#F7F8FA',
+          position: 'relative',
+          left: `calc(${pageGutter} * -1)`,
+          width: `calc(100% + (${pageGutter} * 2))`,
+          alignSelf: 'stretch',
+          py: { xs: 6, md: 8 },
+          overflow: 'visible',
         }}
       >
-        <Stack spacing={{ xs: 3, md: 4 }}>
+        <Stack spacing={{ xs: 3, md: 4 }} sx={{ px: pageGutter }}>
           <DetailSectionHeading
             title="Flow การใช้งานจริง"
-            description="เรียงให้เห็นตั้งแต่ข้อมูลเข้าระบบ ไปจนถึงผลลัพธ์ที่ทีมเอาไปใช้งานต่อได้"
+            description="ภาพรวมการไหลของงานจริง ตั้งแต่รับข้อมูล ไปจนถึงทีมเห็นผลลัพธ์พร้อมใช้งาน"
             accent={palette.text}
           />
           <Box
             sx={{
               display: 'grid',
               gridTemplateColumns: { xs: '1fr', md: 'repeat(4, minmax(0, 1fr))' },
-              gap: { xs: 1.5, md: 2 },
+              gap: { xs: 1.5, md: 2.25 },
             }}
           >
-            {workflowSteps.map((step) => (
-              <Stack
+            {workflowSteps.map((step, index) => (
+              <VisualInfoCard
                 key={step.label}
-                spacing={1.5}
-                sx={{
-                  p: { xs: 2.5, md: 3 },
-                  borderRadius: { xs: '24px', md: '30px' },
-                  bgcolor: 'rgba(255,255,255,0.78)',
-                  boxShadow: '0 18px 44px rgba(17,24,39,0.06)',
-                  backdropFilter: 'blur(14px)',
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: visual.accent,
-                    fontSize: { xs: 15, md: 16 },
-                    lineHeight: 1,
-                    fontWeight: 800,
-                  }}
-                >
-                  {step.label}
-                </Typography>
-                <Typography
-                  variant="h3"
-                  sx={{
-                    color: palette.text,
-                    fontSize: { xs: 27, md: 31 },
-                    lineHeight: 1.08,
-                    fontWeight: 700,
-                  }}
-                >
-                  {step.title}
-                </Typography>
-                <Typography sx={{ color: '#4B5563', ...typeScale.body }}>
-                  {step.description}
-                </Typography>
-              </Stack>
+                title={step.title}
+                description={step.description}
+                imageUrl={getProjectVisualImage(project, index + 2)}
+                accent={visual.accent}
+                label={step.label}
+                dark={index !== 1}
+              />
             ))}
           </Box>
         </Stack>
@@ -1404,14 +1556,14 @@ function ProjectUsageGuideSection({ project }: { project: Project }) {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', lg: 'minmax(320px, 0.78fr) minmax(0, 1.22fr)' },
-          gap: { xs: 3, md: 5 },
+          gridTemplateColumns: { xs: '1fr', lg: 'minmax(320px, 0.72fr) minmax(0, 1.28fr)' },
+          gap: { xs: 3, md: 5, lg: 7 },
           alignItems: 'center',
         }}
       >
         <DetailSectionHeading
           title="ข้อมูลที่ระบบเชื่อมต่อได้"
-          description="ระบบไม่ได้เป็นแค่หน้าเว็บสวยๆ แต่ถูกออกแบบให้ต่อกับข้อมูลจริง เครื่องมือเดิม และ workflow ที่ธุรกิจใช้อยู่"
+          description="ทำให้ลูกค้าเห็นทันทีว่าระบบไม่ได้เป็นแค่หน้าจอสวย แต่ต่อกับข้อมูลจริงและเครื่องมือที่ใช้อยู่ได้"
           accent={visual.accent}
         />
         <Box
@@ -1421,25 +1573,45 @@ function ProjectUsageGuideSection({ project }: { project: Project }) {
             gap: { xs: 1.25, md: 1.5 },
           }}
         >
-          {connectionItems.map((item) => (
+          {connectionItems.map((item, index) => (
             <Box
               key={item}
               sx={{
-                minHeight: { xs: 92, md: 108 },
-                display: 'grid',
-                placeItems: 'center',
-                px: 2,
+                minHeight: { xs: 126, md: 148 },
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                p: { xs: 2, md: 2.35 },
                 borderRadius: { xs: '22px', md: '28px' },
-                bgcolor: '#F7F8FA',
+                bgcolor: index === 0 ? visual.accent : '#F7F8FA',
                 color: palette.text,
-                fontSize: { xs: 20, md: 24 },
-                lineHeight: 1.1,
-                fontWeight: 700,
-                textAlign: 'center',
                 boxShadow: '0 18px 42px rgba(17,24,39,0.05)',
+                transition: 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease',
+                '&:hover': {
+                  transform: 'translate3d(0, -4px, 0)',
+                  boxShadow: '0 22px 54px rgba(17,24,39,0.09)',
+                },
               }}
             >
-              {item}
+              <Box
+                sx={{
+                  width: { xs: 34, md: 42 },
+                  height: { xs: 34, md: 42 },
+                  borderRadius: '50%',
+                  bgcolor: index === 0 ? 'rgba(255,255,255,0.24)' : visual.tint,
+                }}
+              />
+              <Typography
+                sx={{
+                  color: index === 0 ? '#FFFFFF' : palette.text,
+                  fontSize: { xs: 21, md: 25 },
+                  lineHeight: 1.08,
+                  fontWeight: 700,
+                  letterSpacing: 0,
+                }}
+              >
+                {item}
+              </Typography>
             </Box>
           ))}
         </Box>
@@ -1470,40 +1642,16 @@ function ProjectUsageGuideSection({ project }: { project: Project }) {
             }}
           >
             {outcomeCards.map((card, index) => (
-              <Stack
+              <VisualInfoCard
                 key={`${card.title}-${index}`}
-                spacing={1.25}
-                sx={{
-                  minHeight: { xs: 220, md: 260 },
-                  justifyContent: 'center',
-                  p: { xs: 3, md: 4 },
-                  borderRadius: { xs: '28px', md: '36px' },
-                  bgcolor: '#FFFFFF',
-                  boxShadow: '0 20px 52px rgba(17,24,39,0.07)',
-                }}
-              >
-                <Typography
-                  variant="h3"
-                  sx={{
-                    color: index === 0 ? visual.accent : palette.text,
-                    fontSize: { xs: 32, sm: 38, md: 46, lg: 52 },
-                    lineHeight: 1.05,
-                    fontWeight: 700,
-                    letterSpacing: 0,
-                  }}
-                >
-                  {card.title}
-                </Typography>
-                <Typography
-                  sx={{
-                    color: '#4B5563',
-                    ...typeScale.bodyLarge,
-                    maxWidth: 720,
-                  }}
-                >
-                  {card.description}
-                </Typography>
-              </Stack>
+                title={card.title}
+                description={card.description}
+                imageUrl={getProjectVisualImage(project, index + 4)}
+                accent={visual.accent}
+                label={`ผลลัพธ์ ${String(index + 1).padStart(2, '0')}`}
+                tall={index === 0}
+                dark={index !== 1}
+              />
             ))}
           </Box>
         </Stack>
@@ -1521,12 +1669,13 @@ function ProjectHighlightsSection({ project }: { project: Project }) {
       sx={{
         bgcolor: '#FFFFFF',
         py: { xs: 2, md: 3 },
+        overflow: 'visible',
       }}
     >
       <Stack spacing={{ xs: 3, md: 4 }}>
         <DetailSectionHeading
           title="จุดเด่นของระบบ"
-          description="สรุปสิ่งสำคัญที่ทำให้โปรเจกต์นี้ใช้งานได้จริง เข้าใจง่าย และต่อยอดกับธุรกิจได้"
+          description="เล่าเป็นภาพให้เห็นว่าสิ่งที่เด่นจริงของระบบนี้ช่วยให้งานง่ายขึ้นตรงไหน"
           accent={visual.accent}
         />
 
@@ -1534,56 +1683,19 @@ function ProjectHighlightsSection({ project }: { project: Project }) {
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', md: 'repeat(3, minmax(0, 1fr))' },
-            gap: { xs: 1.5, md: 2 },
+            gap: { xs: 1.5, md: 2.25 },
           }}
         >
           {project.highlights.map((highlight, index) => (
-            <Stack
+            <VisualInfoCard
               key={highlight}
-              spacing={{ xs: 1.75, md: 2 }}
-              sx={{
-                minHeight: { xs: 210, md: 260 },
-                justifyContent: 'space-between',
-                p: { xs: 3, md: 3.5 },
-                borderRadius: { xs: '28px', md: '36px' },
-                bgcolor: index === 0 ? visual.accent : '#F7F8FA',
-                color: index === 0 ? '#FFFFFF' : palette.text,
-                boxShadow: index === 0
-                  ? `0 24px 64px ${visual.accent}33`
-                  : '0 18px 46px rgba(17,24,39,0.06)',
-                transition: 'transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease',
-                '&:hover': {
-                  transform: 'translate3d(0, -5px, 0)',
-                  boxShadow: index === 0
-                    ? `0 30px 76px ${visual.accent}40`
-                    : '0 24px 60px rgba(17,24,39,0.1)',
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  color: index === 0 ? 'rgba(255,255,255,0.72)' : visual.accent,
-                  fontSize: { xs: 16, md: 17 },
-                  lineHeight: 1,
-                  fontWeight: 800,
-                }}
-              >
-                {String(index + 1).padStart(2, '0')}
-              </Typography>
-              <Typography
-                variant="h3"
-                sx={{
-                  maxWidth: 420,
-                  color: 'currentColor',
-                  fontSize: { xs: 32, sm: 36, md: 42, lg: 46 },
-                  lineHeight: 1.06,
-                  fontWeight: 700,
-                  letterSpacing: 0,
-                }}
-              >
-                {highlight}
-              </Typography>
-            </Stack>
+              title={highlight}
+              description={getOutcomeCards(project)[index]?.description ?? 'ออกแบบให้ทีมเข้าใจง่าย ใช้ซ้ำได้จริง และต่อยอดกับระบบเดิมของธุรกิจได้'}
+              imageUrl={getProjectVisualImage(project, index + 6)}
+              accent={visual.accent}
+              label={String(index + 1).padStart(2, '0')}
+              dark={index !== 1}
+            />
           ))}
         </Box>
       </Stack>
@@ -1872,6 +1984,7 @@ function ProjectTechSection({ project }: { project: Project }) {
         alignItems: 'center',
         gap: { xs: 4, md: 7, lg: 9 },
         mt: { xs: 1, md: 2 },
+        py: { xs: 3, md: 4 },
       }}
     >
       <Stack spacing={{ xs: 1.75, md: 2.25 }} sx={{ maxWidth: 620, alignItems: 'flex-start', textAlign: 'left' }}>
@@ -1879,7 +1992,7 @@ function ProjectTechSection({ project }: { project: Project }) {
           variant="h2"
           sx={{
             color: visual.accent,
-            ...typeScale.display,
+            ...typeScale.sectionTitle,
             fontWeight: 600,
           }}
         >
@@ -1894,6 +2007,14 @@ function ProjectTechSection({ project }: { project: Project }) {
         >
           {getTechReason(project)}
         </Typography>
+        <Box
+          sx={{
+            width: { xs: 72, md: 92 },
+            height: 5,
+            borderRadius: 999,
+            bgcolor: visual.accent,
+          }}
+        />
       </Stack>
 
       <Box
@@ -2042,10 +2163,10 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
           <Stack spacing={{ xs: 4, md: 5 }} sx={{ width: '100%' }}>
             <ProjectPurposeSection project={project} />
             <ProjectCapabilitySection project={project} />
-            <ProjectTechSection project={project} />
             <ProjectSystemPreviewSection project={project} />
             <ProjectUsageGuideSection project={project} />
             <ProjectHighlightsSection project={project} />
+            <ProjectTechSection project={project} />
           </Stack>
 
           {status === 'fallback' && (
