@@ -33,6 +33,14 @@ type CapabilityDetailRow = {
   label: string;
   text: string;
 };
+type SystemPreviewCopy = {
+  title: string;
+  description: string;
+  focus: string;
+};
+type SystemPreviewItem = SystemPreviewCopy & {
+  imageUrl: string;
+};
 
 const mockupAssets: Record<MockupTemplate, string> = {
   macbook: '/project-detail-macbook.png',
@@ -256,6 +264,197 @@ const capabilityCardsBySlug: Record<string, CapabilityCard[]> = {
     },
   ],
 };
+
+const systemPreviewCopyBySlug: Record<string, SystemPreviewCopy[]> = {
+  'ai-command-center': [
+    {
+      title: 'หน้ารวมสถานะงาน',
+      description: 'รวมเคส งานค้าง สถานะล่าสุด และสัญญาณสำคัญไว้ในมุมมองเดียว เพื่อให้ทีมเห็นภาพรวมก่อนลงรายละเอียด',
+      focus: 'ภาพรวมแบบเรียลไทม์',
+    },
+    {
+      title: 'มุมมองเคสเร่งด่วน',
+      description: 'แยกงานที่มีความเสี่ยงหรือควรจัดการก่อน พร้อมข้อมูลประกอบที่ช่วยให้ตัดสินใจได้เร็วขึ้น',
+      focus: 'จัดลำดับงานสำคัญ',
+    },
+    {
+      title: 'สรุปสำหรับหัวหน้าทีม',
+      description: 'เปลี่ยนข้อมูลปฏิบัติการให้เป็น insight ที่อ่านง่าย เหมาะกับการประชุม ติดตามงาน และวางแผนต่อ',
+      focus: 'อ่านง่ายสำหรับผู้บริหาร',
+    },
+  ],
+  'ai-sales-forecast': [
+    {
+      title: 'แดชบอร์ดยอดขาย',
+      description: 'แสดงยอดขาย เป้าหมาย และแนวโน้มสำคัญให้ทีมเห็นสถานะของ pipeline ได้เร็วจากหน้าจอเดียว',
+      focus: 'มองเห็นแนวโน้มยอดขาย',
+    },
+    {
+      title: 'คะแนนโอกาสปิดการขาย',
+      description: 'ช่วยจัดลำดับลูกค้าที่ควรติดตามก่อนจากพฤติกรรมและข้อมูลย้อนหลัง เพื่อให้ทีมขายใช้เวลาได้คุ้มขึ้น',
+      focus: 'โฟกัสลูกค้าที่มีโอกาสสูง',
+    },
+    {
+      title: 'รายงานเปรียบเทียบทีม',
+      description: 'ดูผลลัพธ์ตามช่วงเวลา ทีม หรือแคมเปญ เพื่อให้ผู้จัดการประเมินภาพรวมและปรับแผนได้ทัน',
+      focus: 'รายงานพร้อมตัดสินใจ',
+    },
+  ],
+  'ai-document-review': [
+    {
+      title: 'หน้าจออ่านเอกสาร',
+      description: 'สกัดใจความสำคัญจากเอกสารและแสดงผลเป็นข้อมูลที่ตรวจทานต่อได้ง่าย ลดเวลาการอ่านซ้ำ',
+      focus: 'อ่านเอกสารเร็วขึ้น',
+    },
+    {
+      title: 'รายการเอกสารรอตรวจ',
+      description: 'แสดงสถานะเอกสารแต่ละรายการว่าอ่านแล้ว รอตรวจ หรือควรส่งต่อให้ทีมที่เกี่ยวข้อง',
+      focus: 'คุมสถานะเอกสาร',
+    },
+    {
+      title: 'สรุปข้อมูลสำคัญ',
+      description: 'รวมฟิลด์สำคัญ เงื่อนไข และประเด็นที่ควรตรวจสอบ เพื่อให้คนทำงานตัดสินใจต่อได้ทันที',
+      focus: 'ลดงานคัดข้อมูล',
+    },
+  ],
+  'ai-service-agent': [
+    {
+      title: 'กล่องข้อความบริการ',
+      description: 'รวมบทสนทนา เคสค้าง และบริบทลูกค้าไว้ในหน้าจอเดียว เพื่อให้ทีมตอบกลับได้ต่อเนื่อง',
+      focus: 'เห็นบริบทก่อนตอบ',
+    },
+    {
+      title: 'คำตอบแนะนำจาก AI',
+      description: 'เสนอคำตอบที่เหมาะกับสถานการณ์ พร้อมให้ทีมปรับแก้ก่อนส่งจริง เพื่อรักษาคุณภาพบริการ',
+      focus: 'ตอบเร็วแต่ยังคุมคุณภาพ',
+    },
+    {
+      title: 'มุมมองคุณภาพงานบริการ',
+      description: 'สรุปเคสที่ควรติดตาม ระยะเวลาตอบกลับ และจุดที่ต้องดูแลต่อ เพื่อให้บริการไม่หลุดมาตรฐาน',
+      focus: 'ติดตามงานบริการครบ',
+    },
+  ],
+  'ai-api-monitor': [
+    {
+      title: 'สถานะ API แบบเรียลไทม์',
+      description: 'ติดตาม latency, error rate และสุขภาพ service เพื่อให้ทีมเห็นปัญหาก่อนกระทบผู้ใช้จริง',
+      focus: 'เฝ้าระวังระบบสำคัญ',
+    },
+    {
+      title: 'เหตุการณ์ผิดปกติ',
+      description: 'แยกเหตุการณ์ที่ควรตรวจสอบก่อน พร้อมระดับความรุนแรงและบริบทที่ช่วยให้แก้ไขได้เร็ว',
+      focus: 'จับ anomaly ได้ไว',
+    },
+    {
+      title: 'บันทึกการแจ้งเตือน',
+      description: 'เก็บประวัติการแจ้งเตือนและการตอบสนองของทีม เพื่อใช้ติดตามคุณภาพการดูแล production',
+      focus: 'ตรวจสอบย้อนหลังได้',
+    },
+  ],
+  'operations-dashboard': [
+    {
+      title: 'ภาพรวมงานหลังบ้าน',
+      description: 'รวมคำขอ งานที่กำลังทำ และสถานะส่งมอบไว้ในหน้าจอเดียว เพื่อให้ทีมจัดงานประจำวันได้ง่าย',
+      focus: 'คุม workflow หลังบ้าน',
+    },
+    {
+      title: 'สถานะคำขอ',
+      description: 'แยกงานตามสถานะ ผู้รับผิดชอบ และความเร่งด่วน เพื่อให้เห็นงานที่ควรจัดการต่อทันที',
+      focus: 'ติดตามคำขอชัดเจน',
+    },
+    {
+      title: 'มุมมองส่งมอบงาน',
+      description: 'ดูรายการที่พร้อมส่งมอบ งานที่ติดขัด และประวัติการอัปเดต เพื่อให้ประสานงานได้เป็นระบบ',
+      focus: 'ลดงานตามข้อมูลซ้ำ',
+    },
+  ],
+  'booking-platform': [
+    {
+      title: 'เลือกบริการและเวลา',
+      description: 'ทำให้ลูกค้าเลือกบริการ กรอกรายละเอียด และตรวจสอบเวลาว่างได้จากขั้นตอนที่สั้นและชัดเจน',
+      focus: 'จองง่ายบนทุกอุปกรณ์',
+    },
+    {
+      title: 'รายการจองของทีม',
+      description: 'ทีมหลังบ้านเห็นรายการจอง สถานะ และรายละเอียดลูกค้าในที่เดียว ลดการตรวจสอบหลายช่องทาง',
+      focus: 'จัดการตารางบริการ',
+    },
+    {
+      title: 'สถานะการยืนยัน',
+      description: 'ติดตามรายการที่รอยืนยัน ยืนยันแล้ว หรือยกเลิก เพื่อให้ทีมตอบกลับลูกค้าได้รวดเร็ว',
+      focus: 'ลดการจองซ้ำ',
+    },
+  ],
+  'crm-workspace': [
+    {
+      title: 'โปรไฟล์ลูกค้า',
+      description: 'รวมข้อมูลลูกค้า ประวัติการติดต่อ และบันทึกสำคัญ เพื่อให้ทีมเห็นบริบทก่อนเริ่มคุย',
+      focus: 'เข้าใจลูกค้าเร็วขึ้น',
+    },
+    {
+      title: 'Pipeline งานขาย',
+      description: 'แสดงสถานะดีล ขั้นตอนถัดไป และความคืบหน้าของทีมขาย เพื่อช่วยวางแผนปิดงานได้ดีขึ้น',
+      focus: 'คุมงานขายเป็นระบบ',
+    },
+    {
+      title: 'งานติดตามถัดไป',
+      description: 'จัดลำดับ follow-up และแจ้งเตือนจังหวะสำคัญ เพื่อให้ทีมไม่พลาดโอกาสในการดูแลลูกค้า',
+      focus: 'ไม่พลาดงานสำคัญ',
+    },
+  ],
+  'inventory-control': [
+    {
+      title: 'ภาพรวมสต็อก',
+      description: 'แสดงจำนวนสินค้า สถานะคลัง และรายการเคลื่อนไหวล่าสุด เพื่อให้ทีมเห็นข้อมูลที่ต้องใช้ทันที',
+      focus: 'เห็นจำนวนล่าสุด',
+    },
+    {
+      title: 'รายการต้องเติมสินค้า',
+      description: 'แยกสินค้าที่ใกล้หมดหรือควรตรวจสอบก่อน ช่วยลดความเสี่ยงของสินค้าขาดและข้อมูลคลาดเคลื่อน',
+      focus: 'ป้องกันสต็อกขาด',
+    },
+    {
+      title: 'สแกนและตรวจนับ',
+      description: 'รองรับ workflow ตรวจนับด้วยรหัสสินค้า ให้ทีมอัปเดตข้อมูลได้เร็วและลดงานกรอกซ้ำ',
+      focus: 'ทำงานคลังเร็วขึ้น',
+    },
+  ],
+  'analytics-portal': [
+    {
+      title: 'ภาพรวมตัวชี้วัด',
+      description: 'รวม KPI สำคัญของธุรกิจไว้ในแดชบอร์ดเดียว เพื่อให้ทีมผู้บริหารอ่านผลลัพธ์ได้เร็ว',
+      focus: 'ดูภาพรวมธุรกิจ',
+    },
+    {
+      title: 'รายงานเปรียบเทียบ',
+      description: 'เปรียบเทียบข้อมูลตามช่วงเวลา ทีม หรือแหล่งข้อมูล เพื่อช่วยมองเห็นแนวโน้มที่ควรสนใจ',
+      focus: 'เห็นแนวโน้มชัดขึ้น',
+    },
+    {
+      title: 'Insight สำหรับตัดสินใจ',
+      description: 'สรุปประเด็นสำคัญจากข้อมูลจำนวนมากให้เป็นข้อความและกราฟที่นำไปวางแผนต่อได้ง่าย',
+      focus: 'เปลี่ยนข้อมูลเป็น insight',
+    },
+  ],
+};
+
+const defaultSystemPreviewCopy: SystemPreviewCopy[] = [
+  {
+    title: 'ภาพรวมระบบ',
+    description: 'จัดหน้าจอหลักให้เห็นข้อมูลสำคัญก่อน เพื่อให้ทีมเข้าใจสถานะงานและตัดสินใจต่อได้เร็ว',
+    focus: 'อ่านภาพรวมได้ทันที',
+  },
+  {
+    title: 'รายละเอียดงาน',
+    description: 'แสดงข้อมูลเชิงลึกของแต่ละรายการอย่างเป็นระบบ ลดการค้นหาข้อมูลจากหลายแหล่ง',
+    focus: 'ลงรายละเอียดได้ง่าย',
+  },
+  {
+    title: 'มุมมองสำหรับทีม',
+    description: 'ออกแบบ workflow ให้ทีมใช้ร่วมกันได้จริง ตั้งแต่ตรวจสอบ ติดตาม ไปจนถึงส่งมอบงาน',
+    focus: 'ทำงานร่วมกันได้ดีขึ้น',
+  },
+];
 
 function getProjectVisual(project: Project) {
   return projectVisuals[project.slug] ?? {
@@ -571,6 +770,24 @@ function getScreenImage(project: Project, key: ScreenImageKey, index: number) {
   return fallbackImages[index % fallbackImages.length] ?? project.coverImageUrl;
 }
 
+function getSystemPreviewItems(project: Project): SystemPreviewItem[] {
+  const copy = systemPreviewCopyBySlug[project.slug] ?? defaultSystemPreviewCopy;
+  const previewImages = Array.from(new Set([
+    ...(project.galleryImageUrls ?? []),
+    getScreenImage(project, 'desktop', 0),
+    getScreenImage(project, 'mobile', 1),
+    getScreenImage(project, 'mobile1', 2),
+    getScreenImage(project, 'mobile2', 3),
+    getScreenImage(project, 'mobile3', 4),
+    project.coverImageUrl,
+  ].filter(Boolean)));
+
+  return copy.map((item, index) => ({
+    ...item,
+    imageUrl: previewImages[index % previewImages.length] ?? project.coverImageUrl,
+  }));
+}
+
 function ProjectDeviceShowcase({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
   const slots = screenSlots[visual.template];
@@ -684,6 +901,183 @@ function ProjectPurposeSection({ project }: { project: Project }) {
         {renderHighlightedDescription(project, visual.accent)}
       </Typography>
     </Stack>
+  );
+}
+
+function SystemPreviewCard({
+  item,
+  accent,
+  featured = false,
+}: {
+  item: SystemPreviewItem;
+  accent: string;
+  featured?: boolean;
+}) {
+  return (
+    <Box
+      component="article"
+      sx={{
+        minHeight: 0,
+        overflow: 'hidden',
+        borderRadius: { xs: '28px', md: '34px' },
+        bgcolor: '#FFFFFF',
+        boxShadow: '0 20px 54px rgba(17,24,39,0.08)',
+        transition:
+          'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1)',
+        '&:hover': {
+          transform: 'translate3d(0, -6px, 0)',
+          boxShadow: '0 28px 72px rgba(17,24,39,0.12)',
+        },
+      }}
+    >
+      <Box
+        sx={{
+          position: 'relative',
+          aspectRatio: featured ? { xs: '16 / 11', md: '16 / 10' } : '16 / 9',
+          overflow: 'hidden',
+          bgcolor: '#EEF0F4',
+        }}
+      >
+        <Box
+          component="img"
+          src={item.imageUrl}
+          alt={item.title}
+          loading="lazy"
+          decoding="async"
+          sx={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+            transform: 'scale(1.01)',
+          }}
+        />
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(180deg, rgba(17,24,39,0.12) 0%, rgba(17,24,39,0) 48%)',
+            pointerEvents: 'none',
+          }}
+        />
+      </Box>
+
+      <Stack
+        spacing={{ xs: 1, md: 1.25 }}
+        sx={{
+          p: { xs: 2.5, sm: 3, md: featured ? 4 : 3.25 },
+        }}
+      >
+        <Typography
+          sx={{
+            color: accent,
+            fontSize: { xs: 15, md: 16 },
+            lineHeight: 1.35,
+            fontWeight: 700,
+          }}
+        >
+          {item.focus}
+        </Typography>
+        <Typography
+          variant="h3"
+          sx={{
+            color: palette.text,
+            fontSize: featured
+              ? { xs: 31, sm: 36, md: 44, lg: 48 }
+              : { xs: 26, sm: 28, md: 31 },
+            lineHeight: 1.08,
+            letterSpacing: 0,
+            fontWeight: 700,
+          }}
+        >
+          {item.title}
+        </Typography>
+        <Typography
+          sx={{
+            color: '#4B5563',
+            ...typeScale.bodyLarge,
+            maxWidth: featured ? 760 : '100%',
+          }}
+        >
+          {item.description}
+        </Typography>
+      </Stack>
+    </Box>
+  );
+}
+
+function ProjectSystemPreviewSection({ project }: { project: Project }) {
+  const visual = getProjectVisual(project);
+  const items = getSystemPreviewItems(project);
+  const [featured, ...supportItems] = items;
+
+  if (!featured) return null;
+
+  return (
+    <Box
+      component="section"
+      sx={{
+        bgcolor: '#F7F8FA',
+        position: 'relative',
+        left: `calc(${pageGutter} * -1)`,
+        width: `calc(100% + (${pageGutter} * 2))`,
+        alignSelf: 'stretch',
+        py: { xs: 6, sm: 7, md: 8 },
+        overflow: 'visible',
+      }}
+    >
+      <Stack
+        spacing={{ xs: 1.25, md: 1.5 }}
+        sx={{
+          px: pageGutter,
+          mb: { xs: 3, md: 4 },
+          maxWidth: { xs: '100%', md: 960 },
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            color: palette.text,
+            ...typeScale.sectionTitle,
+          }}
+        >
+          พรีวิวหน้าจอระบบจริง
+        </Typography>
+        <Typography
+          sx={{
+            color: '#4B5563',
+            ...typeScale.bodyLarge,
+            maxWidth: 760,
+          }}
+        >
+          ตัวอย่างหน้าจอสำคัญที่ลูกค้าจะได้เห็นในระบบจริง ตั้งแต่ภาพรวม รายละเอียดงาน ไปจนถึง workflow ที่ทีมใช้ต่อได้ทันที
+        </Typography>
+      </Stack>
+
+      <Box
+        sx={{
+          px: pageGutter,
+          overflow: 'visible',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1.15fr) minmax(320px, 0.85fr)' },
+            gap: { xs: 2, md: 2.5, lg: 3 },
+            alignItems: 'stretch',
+          }}
+        >
+          <SystemPreviewCard item={featured} accent={visual.accent} featured />
+          <Stack spacing={{ xs: 2, md: 2.5, lg: 3 }}>
+            {supportItems.map((item) => (
+              <SystemPreviewCard key={item.title} item={item} accent={visual.accent} />
+            ))}
+          </Stack>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
@@ -1139,6 +1533,7 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
             <ProjectPurposeSection project={project} />
             <ProjectCapabilitySection project={project} />
             <ProjectTechSection project={project} />
+            <ProjectSystemPreviewSection project={project} />
           </Stack>
 
           {status === 'fallback' && (
@@ -1146,19 +1541,6 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
               กำลังแสดงเนื้อหาตัวอย่างในเครื่อง เพราะ API ยังไม่พร้อมใช้งาน
             </Box>
           )}
-
-          <Grid container spacing={2}>
-            {project.galleryImageUrls.map((imageUrl) => (
-              <Grid key={imageUrl} size={{ xs: 12, md: 6 }}>
-                <Box
-                  component="img"
-                  src={imageUrl}
-                  alt={project.title}
-                  sx={{ width: '100%', height: 330, objectFit: 'cover', borderRadius: 2 }}
-                />
-              </Grid>
-            ))}
-          </Grid>
 
           <Grid container spacing={4}>
             <Grid size={{ xs: 12 }}>
