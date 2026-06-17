@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { fetchProject, type Project } from '../api/projects';
 import { fallbackProjects } from '../data/fallbackProjects';
 import { palette, typeScale } from '../theme';
@@ -1512,6 +1512,85 @@ function ProjectUsageGuideSection({ project }: { project: Project }) {
   );
 }
 
+function ProjectHighlightsSection({ project }: { project: Project }) {
+  const visual = getProjectVisual(project);
+
+  return (
+    <Box
+      component="section"
+      sx={{
+        bgcolor: '#FFFFFF',
+        py: { xs: 2, md: 3 },
+      }}
+    >
+      <Stack spacing={{ xs: 3, md: 4 }}>
+        <DetailSectionHeading
+          title="จุดเด่นของระบบ"
+          description="สรุปสิ่งสำคัญที่ทำให้โปรเจกต์นี้ใช้งานได้จริง เข้าใจง่าย และต่อยอดกับธุรกิจได้"
+          accent={visual.accent}
+        />
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(3, minmax(0, 1fr))' },
+            gap: { xs: 1.5, md: 2 },
+          }}
+        >
+          {project.highlights.map((highlight, index) => (
+            <Stack
+              key={highlight}
+              spacing={{ xs: 1.75, md: 2 }}
+              sx={{
+                minHeight: { xs: 210, md: 260 },
+                justifyContent: 'space-between',
+                p: { xs: 3, md: 3.5 },
+                borderRadius: { xs: '28px', md: '36px' },
+                bgcolor: index === 0 ? visual.accent : '#F7F8FA',
+                color: index === 0 ? '#FFFFFF' : palette.text,
+                boxShadow: index === 0
+                  ? `0 24px 64px ${visual.accent}33`
+                  : '0 18px 46px rgba(17,24,39,0.06)',
+                transition: 'transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease',
+                '&:hover': {
+                  transform: 'translate3d(0, -5px, 0)',
+                  boxShadow: index === 0
+                    ? `0 30px 76px ${visual.accent}40`
+                    : '0 24px 60px rgba(17,24,39,0.1)',
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  color: index === 0 ? 'rgba(255,255,255,0.72)' : visual.accent,
+                  fontSize: { xs: 16, md: 17 },
+                  lineHeight: 1,
+                  fontWeight: 800,
+                }}
+              >
+                {String(index + 1).padStart(2, '0')}
+              </Typography>
+              <Typography
+                variant="h3"
+                sx={{
+                  maxWidth: 420,
+                  color: 'currentColor',
+                  fontSize: { xs: 32, sm: 36, md: 42, lg: 46 },
+                  lineHeight: 1.06,
+                  fontWeight: 700,
+                  letterSpacing: 0,
+                }}
+              >
+                {highlight}
+              </Typography>
+            </Stack>
+          ))}
+        </Box>
+      </Stack>
+    </Box>
+  );
+}
+
 function ProjectCapabilitySection({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
   const cards = getCapabilityCards(project);
@@ -1966,6 +2045,7 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
             <ProjectTechSection project={project} />
             <ProjectSystemPreviewSection project={project} />
             <ProjectUsageGuideSection project={project} />
+            <ProjectHighlightsSection project={project} />
           </Stack>
 
           {status === 'fallback' && (
@@ -1974,28 +2054,6 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
             </Box>
           )}
 
-          <Grid container spacing={4}>
-            <Grid size={{ xs: 12 }}>
-              <Stack spacing={2}>
-                <Typography variant="h4">
-                  จุดเด่น
-                </Typography>
-                <Stack
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', md: 'repeat(3, minmax(0, 1fr))' },
-                    gap: 2,
-                  }}
-                >
-                  {project.highlights.map((highlight) => (
-                    <Box key={highlight} sx={{ p: 2.5, borderLeft: `4px solid ${palette.primaryPink}`, bgcolor: palette.softGray }}>
-                      <Typography>{highlight}</Typography>
-                    </Box>
-                  ))}
-                </Stack>
-              </Stack>
-            </Grid>
-          </Grid>
         </Stack>
       </Box>
     </Box>
