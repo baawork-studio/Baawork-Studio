@@ -12,9 +12,11 @@ const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 
 const navLinks = [
   { label: 'ผลงาน', href: '/#work' },
+  { label: 'บริการ', href: '/services' },
   { label: 'ทำไมต้องเรา', href: '/why-us' },
-  { label: 'สตูดิโอ', href: '/#workflow' },
-  { label: 'ติดต่อ', href: '#contact' },
+  { label: 'เริ่มโปรเจกต์', href: '/start-project' },
+  { label: 'คำถาม', href: '/faq' },
+  { label: 'ติดต่อ', href: '/contact' },
 ];
 
 export function AppShell({ children }: AppShellProps) {
@@ -117,7 +119,7 @@ export function AppShell({ children }: AppShellProps) {
           component="nav"
           aria-label="เมนูหลัก"
           direction="row"
-          spacing={{ sm: 3.5, md: 5 }}
+          spacing={{ sm: 2.25, md: 3.5, lg: 5 }}
           sx={{
             display: { xs: 'none', sm: 'flex' },
             position: 'absolute',
@@ -251,10 +253,12 @@ export function AppShell({ children }: AppShellProps) {
                 <Stack spacing={1.2}>
                   {[
                     { label: 'ผลงาน', href: '/#work' },
+                    { label: 'บริการ', href: '/services' },
                     { label: 'ทำไมต้องเรา', href: '/why-us' },
+                    { label: 'วิธีเริ่มโปรเจกต์', href: '/start-project' },
                     { label: 'กระบวนการทำงาน', href: '/#workflow' },
-                    { label: 'คำถามที่พบบ่อย', href: '/#faq' },
-                    { label: 'เริ่มโปรเจกต์', href: '/#start-project' },
+                    { label: 'คำถามที่พบบ่อย', href: '/faq' },
+                    { label: 'ติดต่อเรา', href: '/contact' },
                   ].map((link) => (
                     <Typography
                       key={link.href}
