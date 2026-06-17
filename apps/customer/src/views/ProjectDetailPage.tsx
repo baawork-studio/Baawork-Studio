@@ -1896,27 +1896,6 @@ function ProjectCapabilitySection({ project }: { project: Project }) {
                   ))}
                 </Stack>
               </Stack>
-              <Box
-                aria-hidden="true"
-                sx={{
-                  position: 'absolute',
-                  right: { xs: 22, md: 28 },
-                  bottom: { xs: 22, md: 28 },
-                  zIndex: 2,
-                  display: 'grid',
-                  placeItems: 'center',
-                  width: { xs: 44, md: 52 },
-                  height: { xs: 44, md: 52 },
-                  borderRadius: '50%',
-                  bgcolor: 'rgba(255,255,255,0.94)',
-                  color: visual.accent,
-                  fontSize: { xs: 30, md: 36 },
-                  fontWeight: 600,
-                  lineHeight: 1,
-                }}
-              >
-                +
-              </Box>
             </Box>
           );
         })}
