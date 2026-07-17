@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Box, Container, Typography } from '@mui/material';
+import { PageMotion } from './motion/PageMotion';
+import { Reveal } from './motion/Reveal';
 import { Stack } from './Stack';
 import { palette, typeScale } from '../theme';
+import { navigateToHomeSection } from '../utils/sectionNavigation';
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -12,7 +15,7 @@ type AppShellProps = {
 const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 
 const navLinks = [
-  { label: 'ผลงาน', href: '/#work' },
+  { label: 'ผลงาน', href: '/', sectionId: 'work' },
   { label: 'บริการ', href: '/services' },
   { label: 'ทำไมต้องเรา', href: '/why-us' },
   { label: 'เริ่มโปรเจกต์', href: '/start-project' },
@@ -23,40 +26,38 @@ const navLinks = [
 export function AppShell({ children }: AppShellProps) {
   const [headerHidden, setHeaderHidden] = useState(false);
   const lastScrollYRef = useRef(0);
+  const headerHiddenRef = useRef(false);
 
   useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      const currentScrollY = Math.max(window.scrollY, document.documentElement.scrollTop, 0);
+    let frameId: number | null = null;
 
-      if (event.deltaY < -2 || currentScrollY <= 40) {
-        setHeaderHidden(false);
-      } else if (event.deltaY > 2 && currentScrollY > 40) {
-        setHeaderHidden(true);
-      }
-    };
-
-    const handleScroll = () => {
+    const updateHeader = () => {
+      frameId = null;
       const currentScrollY = Math.max(window.scrollY, document.documentElement.scrollTop, 0);
       const lastScrollY = lastScrollYRef.current;
       const scrollingDown = currentScrollY > lastScrollY + 6;
       const scrollingUp = currentScrollY < lastScrollY - 4;
+      const nextHidden = currentScrollY > 80 && scrollingDown ? true : currentScrollY <= 40 || scrollingUp ? false : headerHiddenRef.current;
 
-      if (currentScrollY <= 40 || scrollingUp) {
-        setHeaderHidden(false);
-      } else if (currentScrollY > 80 && scrollingDown) {
-        setHeaderHidden(true);
+      if (nextHidden !== headerHiddenRef.current) {
+        headerHiddenRef.current = nextHidden;
+        setHeaderHidden(nextHidden);
       }
 
       lastScrollYRef.current = currentScrollY;
     };
 
+    const handleScroll = () => {
+      if (frameId === null) frameId = window.requestAnimationFrame(updateHeader);
+    };
+
     lastScrollYRef.current = Math.max(window.scrollY, document.documentElement.scrollTop, 0);
-    window.addEventListener('wheel', handleWheel, { passive: true });
+    headerHiddenRef.current = false;
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('scroll', handleScroll);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
     };
   }, []);
 
@@ -137,6 +138,7 @@ export function AppShell({ children }: AppShellProps) {
               key={link.href}
               component="a"
               href={link.href}
+              onClick={link.sectionId ? (event) => navigateToHomeSection(event, link.sectionId) : undefined}
               style={{ color: '#FFFFFF' }}
               sx={{
                 color: '#FFFFFF !important',
@@ -162,17 +164,18 @@ export function AppShell({ children }: AppShellProps) {
           ))}
         </Stack>
       </Box>
-      {children}
-      <Box
-        component="footer"
-        id="contact"
-        sx={{
-          bgcolor: palette.background,
-          color: palette.text,
-          py: { xs: 7, sm: 8, md: 10 },
-          px: pageGutter,
-        }}
-      >
+      <PageMotion>{children}</PageMotion>
+      <Reveal>
+        <Box
+          component="footer"
+          id="contact"
+          sx={{
+            bgcolor: palette.background,
+            color: palette.text,
+            py: { xs: 7, sm: 8, md: 10 },
+            px: pageGutter,
+          }}
+        >
         <Box>
           <Box
             sx={{
@@ -253,18 +256,19 @@ export function AppShell({ children }: AppShellProps) {
                 </Typography>
                 <Stack spacing={1.2}>
                   {[
-                    { label: 'ผลงาน', href: '/#work' },
+                    { label: 'ผลงาน', href: '/', sectionId: 'work' },
                     { label: 'บริการ', href: '/services' },
                     { label: 'ทำไมต้องเรา', href: '/why-us' },
                     { label: 'วิธีเริ่มโปรเจกต์', href: '/start-project' },
-                    { label: 'กระบวนการทำงาน', href: '/#workflow' },
+                    { label: 'กระบวนการทำงาน', href: '/', sectionId: 'workflow' },
                     { label: 'คำถามที่พบบ่อย', href: '/faq' },
                     { label: 'ติดต่อเรา', href: '/contact' },
                   ].map((link) => (
                     <Typography
-                      key={link.href}
+                      key={link.label}
                       component="a"
                       href={link.href}
+                      onClick={link.sectionId ? (event) => navigateToHomeSection(event, link.sectionId) : undefined}
                       sx={{
                         color: '#4B5563',
                         textDecoration: 'none',
@@ -388,15 +392,24 @@ export function AppShell({ children }: AppShellProps) {
               justifyContent: 'space-between',
             }}
           >
-            <Typography sx={{ color: '#6B7280', fontSize: 14, lineHeight: 1.5 }}>
-              Baawork Studio
+            <Typography
+              sx={{
+                color: '#4B5563',
+                fontSize: { xs: 13, sm: 14 },
+                lineHeight: 1.5,
+                fontWeight: 600,
+                letterSpacing: 0,
+              }}
+            >
+              บริษัท คนบ้างาน จำกัด
             </Typography>
-            <Typography sx={{ color: '#6B7280', fontSize: 14, lineHeight: 1.5 }}>
+            <Typography sx={{ color: '#6B7280', fontSize: { xs: 13, sm: 14 }, lineHeight: 1.5 }}>
               ออกแบบ พัฒนา และส่งมอบระบบดิจิทัลสำหรับใช้งานจริง
             </Typography>
           </Box>
         </Box>
-      </Box>
+        </Box>
+      </Reveal>
     </Box>
   );
 }

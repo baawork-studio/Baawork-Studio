@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
+import { Reveal } from '../components/motion/Reveal';
 import { Stack } from '../components/Stack';
 import { palette, typeScale } from '../theme';
 
@@ -124,6 +125,7 @@ function PageHero({
         textAlign: 'center',
       }}
     >
+      <Reveal>
       <Stack spacing={{ xs: 2.5, md: 3 }} sx={{ maxWidth: 980, mx: 'auto', alignItems: 'center' }}>
         <Typography sx={{ color: palette.primaryPink, fontSize: 17, lineHeight: 1.35, fontWeight: 700 }}>
           {eyebrow}
@@ -140,6 +142,7 @@ function PageHero({
         </Typography>
         <Typography sx={{ ...typeScale.intro, maxWidth: 820, color: '#4B5563' }}>{description}</Typography>
       </Stack>
+      </Reveal>
     </Box>
   );
 }

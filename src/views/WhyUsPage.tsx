@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
+import { Reveal } from '../components/motion/Reveal';
 import { Stack } from '../components/Stack';
 import { palette, typeScale } from '../theme';
 
@@ -68,6 +69,7 @@ export function WhyUsPage() {
           alignItems: 'center',
         }}
       >
+        <Reveal>
         <Stack spacing={{ xs: 3, md: 4 }} sx={{ maxWidth: 980, mx: 'auto', textAlign: 'center' }}>
           <Typography
             component="h1"
@@ -90,6 +92,7 @@ export function WhyUsPage() {
             เพราะระบบที่ดีต้องเข้าใจทั้งงานออกแบบ ประสบการณ์ใช้งาน และเทคโนโลยีที่ต่อกับธุรกิจจริง
           </Typography>
         </Stack>
+        </Reveal>
 
         <Box
           sx={{

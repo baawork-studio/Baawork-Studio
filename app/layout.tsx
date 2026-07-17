@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans_Thai, Roboto } from 'next/font/google';
+import Script from 'next/script';
 import type { ReactNode } from 'react';
 import { Providers } from './providers';
 import '../src/styles.css';
@@ -84,6 +85,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="th">
       <body className={`${roboto.variable} ${notoSansThai.variable}`}>
+        <Script id="reset-initial-scroll" strategy="beforeInteractive">
+          {`if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; if (!window.location.hash) window.scrollTo(0, 0);`}
+        </Script>
         <Providers>{children}</Providers>
       </body>
     </html>
