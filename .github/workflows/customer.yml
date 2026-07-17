@@ -1,36 +1,26 @@
 name: Customer
 
-on:
-  push:
-    paths:
-      - "apps/customer/**"
-      - ".github/workflows/customer.yml"
-  pull_request:
-    paths:
-      - "apps/customer/**"
-      - ".github/workflows/customer.yml"
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/customer
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
-          cache-dependency-path: apps/customer/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Type check
+        run: npm run typecheck
+
       - name: Build
         run: npm run build
-
