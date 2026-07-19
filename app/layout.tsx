@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   applicationName: 'Baawork Studio',
   authors: [{ name: 'Baawork Studio' }],
   icons: {
-    icon: [{ url: '/baawork-logo.png', type: 'image/png' }],
-    apple: [{ url: '/baawork-logo.png', type: 'image/png' }],
+    icon: [{ url: '/homepage/baawork-logo.png', type: 'image/png' }],
+    apple: [{ url: '/homepage/baawork-logo.png', type: 'image/png' }],
   },
   alternates: {
     canonical: '/',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: '/baawork-logo.png',
+        url: '/homepage/baawork-logo.png',
         width: 1200,
         height: 1200,
         alt: 'Baawork Studio',
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Baawork Studio - รับออกแบบและพัฒนาระบบเว็บแอป ระบบ AI',
     description: siteDescription,
-    images: ['/baawork-logo.png'],
+    images: ['/homepage/baawork-logo.png'],
   },
   robots: {
     index: true,

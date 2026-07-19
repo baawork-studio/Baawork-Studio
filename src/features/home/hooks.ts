@@ -3,7 +3,11 @@ import { workCarouselEdgeTolerance } from "./data";
 
 export function useShowcaseCarousel() {
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [carouselState, setCarouselState] = useState({ canScrollPrev: false, canScrollNext: false });
+  const [carouselState, setCarouselState] = useState({
+    canScrollPrev: false,
+    canScrollNext: false,
+    isScrollable: false,
+  });
 
   const updateWorkCarouselState = useCallback(() => {
     const carousel = carouselRef.current;
@@ -13,12 +17,14 @@ export function useShowcaseCarousel() {
     const nextState = {
       canScrollPrev: carousel.scrollLeft > workCarouselEdgeTolerance,
       canScrollNext: carousel.scrollLeft < maxScrollLeft - workCarouselEdgeTolerance,
+      isScrollable: maxScrollLeft > workCarouselEdgeTolerance,
     };
 
     setCarouselState((current) => {
       if (
         current.canScrollPrev === nextState.canScrollPrev &&
-        current.canScrollNext === nextState.canScrollNext
+        current.canScrollNext === nextState.canScrollNext &&
+        current.isScrollable === nextState.isScrollable
       ) {
         return current;
       }
@@ -65,7 +71,11 @@ export function useShowcaseCarousel() {
 
 export function useWorkflowCarousel() {
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [carouselState, setCarouselState] = useState({ canScrollPrev: false, canScrollNext: false });
+  const [carouselState, setCarouselState] = useState({
+    canScrollPrev: false,
+    canScrollNext: false,
+    isScrollable: false,
+  });
 
   const updateCarouselState = useCallback(() => {
     const carousel = carouselRef.current;
@@ -75,12 +85,14 @@ export function useWorkflowCarousel() {
     const nextState = {
       canScrollPrev: carousel.scrollLeft > workCarouselEdgeTolerance,
       canScrollNext: carousel.scrollLeft < maxScrollLeft - workCarouselEdgeTolerance,
+      isScrollable: maxScrollLeft > workCarouselEdgeTolerance,
     };
 
     setCarouselState((current) => {
       if (
         current.canScrollPrev === nextState.canScrollPrev &&
-        current.canScrollNext === nextState.canScrollNext
+        current.canScrollNext === nextState.canScrollNext &&
+        current.isScrollable === nextState.isScrollable
       ) {
         return current;
       }
@@ -138,13 +150,13 @@ export function carouselControlSx(enabled: boolean) {
     boxSizing: 'border-box',
     borderRadius: '50%',
     appearance: 'none',
-    bgcolor: enabled ? '#E8E8ED' : '#F5F5F7',
-    color: enabled ? '#6E6E73' : '#C7C7CC',
+    bgcolor: enabled ? '#D2D2D7' : '#E1E1E6',
+    color: enabled ? '#4A4A4F' : '#9A9AA0',
     cursor: enabled ? 'pointer' : 'default',
     transition: 'background-color 180ms ease, color 180ms ease',
     '&:hover': {
-      bgcolor: enabled ? '#D2D2D7' : '#F5F5F7',
-      color: enabled ? '#1D1D1F' : '#C7C7CC',
+      bgcolor: enabled ? '#B8B8BE' : '#E1E1E6',
+      color: enabled ? '#1D1D1F' : '#9A9AA0',
     },
     '&:disabled': {
       pointerEvents: 'none',

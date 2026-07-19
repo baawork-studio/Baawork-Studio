@@ -5,16 +5,16 @@ import { Box, Container, Typography } from "@mui/material";
 import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "../components/motion/Reveal";
 import { Stack } from "../components/Stack";
-import { fallbackProjects } from "../data/fallbackProjects";
 import { palette, typeScale } from "../theme";
 import { restoreHomeSectionScroll } from "../utils/sectionNavigation";
-import { aiShowcaseCards, webAppShowcaseCards, workCarouselGutter } from "../features/home/data";
+import { aiShowcaseCards, lineLiffShowcaseCards, webAppShowcaseCards, workCarouselGutter } from "../features/home/data";
 import { AudienceSection, FaqSection, HeroCta, ResultsSection, ShowcaseCarousel, StartProjectSection, ToolStackSection, WorkflowSection } from "../features/home/sections";
 import type { HeroCtaPhase, HomePageProps } from "../features/home/types";
 
-export function HomePage({ initialProjects = fallbackProjects }: HomePageProps) {
+const heroBackgroundImage = 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1600&q=82';
+
+export function HomePage(_props: HomePageProps) {
   const shouldReduceMotion = useReducedMotion();
-  const projects = initialProjects.length > 0 ? initialProjects : fallbackProjects;
   const [heroCtaPhase, setHeroCtaPhase] = useState<HeroCtaPhase>('hidden');
   const heroCtaModeRef = useRef<'closed' | 'open' | null>(null);
   const heroCtaTimersRef = useRef<number[]>([]);
@@ -79,8 +79,6 @@ export function HomePage({ initialProjects = fallbackProjects }: HomePageProps) 
     };
   }, []);
 
-  const featured = projects.find((project) => project.slug === 'operations-dashboard') ?? projects[0];
-
   return (
     <Box component="main">
       <Box
@@ -93,7 +91,7 @@ export function HomePage({ initialProjects = fallbackProjects }: HomePageProps) 
           pb: { xs: 5, md: 7 },
           pt: { xs: 6, md: 5 },
           bgcolor: palette.text,
-          backgroundImage: `url(${featured.coverImageUrl})`,
+          backgroundImage: `url(${heroBackgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -154,9 +152,21 @@ export function HomePage({ initialProjects = fallbackProjects }: HomePageProps) 
                   color: 'rgba(255,255,255,0.92)',
                   ...typeScale.intro,
                   textShadow: '0 12px 34px rgba(0,0,0,0.48)',
+                  textAlign: 'center',
                 }}
               >
-                สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ ประสบการณ์ใช้งาน และเทคโนโลยีให้พร้อมใช้งานในธุรกิจจริง
+                <Box component="span" sx={{ display: { xs: 'none', md: 'none', lg: 'inline' }, whiteSpace: 'nowrap' }}>
+                  สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ ประสบการณ์ใช้งาน และเทคโนโลยีให้พร้อมใช้งานในธุรกิจจริง
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'none', md: 'inline', lg: 'none' }, whiteSpace: 'nowrap' }}>
+                  สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ ประสบการณ์ใช้งาน<br />
+                  และเทคโนโลยีให้พร้อมใช้งานในธุรกิจจริง
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'inline', md: 'none' }, whiteSpace: 'nowrap' }}>
+                  สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ<br />
+                  ประสบการณ์ใช้งาน และเทคโนโลยี<br />
+                  ให้พร้อมใช้งานในธุรกิจจริง
+                </Box>
               </Typography>
               <HeroCta phase={heroCtaPhase} />
             </Stack>
@@ -211,6 +221,30 @@ export function HomePage({ initialProjects = fallbackProjects }: HomePageProps) 
           </Box>
 
           <Box sx={{ bgcolor: palette.softGray, py: { xs: 6, sm: 7, md: 8 } }}>
+            <Stack
+              spacing={1.25}
+              sx={{
+                px: workCarouselGutter,
+                maxWidth: { xs: '100%', md: 900, lg: 980 },
+                alignItems: 'flex-start',
+                textAlign: 'left',
+              }}
+            >
+              <Typography
+                variant="h2"
+                sx={{
+                  color: palette.text,
+                  ...typeScale.sectionTitle,
+                  whiteSpace: { sm: 'nowrap' },
+                }}
+              >
+                ระบบเว็บแอปผ่าน LINE LIFF
+              </Typography>
+            </Stack>
+            <ShowcaseCarousel cards={lineLiffShowcaseCards} label="ผลงานระบบ LINE LIFF" />
+          </Box>
+
+          <Box sx={{ bgcolor: '#FFFFFF', py: { xs: 6, sm: 7, md: 8 } }}>
             <Stack
               spacing={1.25}
               sx={{

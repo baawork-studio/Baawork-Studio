@@ -17,9 +17,16 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
     [slug],
   );
   const project = initialProject ?? fallback;
+  const alternatingSectionSx = (backgroundColor: string) => ({
+    bgcolor: backgroundColor,
+    position: 'relative',
+    left: `calc(${pageGutter} * -1)`,
+    width: `calc(100% + (${pageGutter} * 2))`,
+    px: pageGutter,
+  });
 
   return (
-    <Box component="main">
+    <Box component="main" sx={{ overflowX: 'hidden' }}>
       <Box sx={{ px: pageGutter, pt: { xs: 8, sm: 9, md: 10, lg: 11 }, pb: { xs: 8, sm: 9, md: 11, lg: 12 } }}>
         <Stack spacing={{ xs: 5, md: 6 }}>
           <Stack
@@ -56,13 +63,25 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
 
           <Reveal variant="scale"><ProjectDeviceShowcase project={project} /></Reveal>
 
-          <Stack spacing={{ xs: 4, md: 5 }} sx={{ width: '100%' }}>
-            <Reveal variant="slide-right"><ProjectPurposeSection project={project} /></Reveal>
-            <Reveal variant="slide-left"><ProjectCapabilitySection project={project} /></Reveal>
-            <Reveal variant="scale"><ProjectSystemPreviewSection project={project} /></Reveal>
-            <Reveal variant="slide-right"><ProjectUsageGuideSection project={project} /></Reveal>
-            <Reveal variant="slide-left"><ProjectHighlightsSection project={project} /></Reveal>
-            <Reveal variant="scale"><ProjectTechSection project={project} /></Reveal>
+          <Stack spacing={0} sx={{ width: '100%' }}>
+            <Box sx={alternatingSectionSx('#FFFFFF')}>
+              <Reveal variant="slide-right"><ProjectPurposeSection project={project} /></Reveal>
+            </Box>
+            <Box sx={alternatingSectionSx('#F7F8FA')}>
+              <Reveal variant="slide-left"><ProjectCapabilitySection project={project} /></Reveal>
+            </Box>
+            <Box sx={alternatingSectionSx('#FFFFFF')}>
+              <Reveal variant="scale"><ProjectSystemPreviewSection project={project} /></Reveal>
+            </Box>
+            <Box sx={alternatingSectionSx('#F7F8FA')}>
+              <Reveal variant="slide-right"><ProjectUsageGuideSection project={project} /></Reveal>
+            </Box>
+            <Box sx={alternatingSectionSx('#FFFFFF')}>
+              <Reveal variant="slide-left"><ProjectHighlightsSection project={project} /></Reveal>
+            </Box>
+            <Box sx={alternatingSectionSx('#F7F8FA')}>
+              <Reveal variant="scale"><ProjectTechSection project={project} /></Reveal>
+            </Box>
           </Stack>
 
         </Stack>

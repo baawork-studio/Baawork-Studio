@@ -4,6 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { Reveal } from '../components/motion/Reveal';
 import { Stack } from '../components/Stack';
 import { palette, typeScale } from '../theme';
+import { useHorizontalDragScroll } from '../utils/useHorizontalDragScroll';
 
 const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 
@@ -56,6 +57,8 @@ const deliveryPoints = [
 ];
 
 export function WhyUsPage() {
+  const dragScroll = useHorizontalDragScroll();
+
   return (
     <Box sx={{ bgcolor: palette.background, color: palette.text, overflow: 'hidden' }}>
       <Box
@@ -199,12 +202,18 @@ export function WhyUsPage() {
         </Stack>
 
         <Box
+          {...dragScroll}
           sx={{
             display: 'flex',
             gap: { xs: 2, md: 2.5 },
             overflowX: 'auto',
             scrollSnapType: 'x mandatory',
             scrollBehavior: 'smooth',
+            cursor: 'grab',
+            touchAction: 'pan-y',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            '& img': { WebkitUserDrag: 'none' },
             px: pageGutter,
             pb: { xs: 2, md: 3 },
             scrollbarWidth: 'none',

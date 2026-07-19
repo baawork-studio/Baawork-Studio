@@ -1,9 +1,15 @@
 import { Box, Typography } from "@mui/material";
+import AccountTreeRounded from '@mui/icons-material/AccountTreeRounded';
+import AddBoxRounded from '@mui/icons-material/AddBoxRounded';
+import ExtensionRounded from '@mui/icons-material/ExtensionRounded';
+import HubRounded from '@mui/icons-material/HubRounded';
+import TrendingUpRounded from '@mui/icons-material/TrendingUpRounded';
 import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "../../components/motion/Reveal";
 import { Stack } from "../../components/Stack";
 import { palette, typeScale } from "../../theme";
 import { navigateToHomeSection } from "../../utils/sectionNavigation";
+import { useHorizontalDragScroll } from "../../utils/useHorizontalDragScroll";
 import {
   aiPhoneScreens,
   audienceGroups,
@@ -16,6 +22,13 @@ import {
 } from "./data";
 import { carouselControlSx, useShowcaseCarousel, useWorkflowCarousel } from "./hooks";
 import type { HeroCtaPhase, ShowcaseCard } from "./types";
+
+const futureSystemExpansionIcons = [
+  { Icon: TrendingUpRounded, color: '#6D5BFF', bottom: { xs: '26%', sm: '24%', md: '22%', lg: '20%' }, left: '-6%' },
+  { Icon: ExtensionRounded, color: '#0F9DA8', bottom: { xs: '26%', sm: '24%', md: '22%', lg: '20%' }, right: '-6%' },
+  { Icon: AddBoxRounded, color: '#F15A24', bottom: '-8%', left: '20%' },
+  { Icon: AccountTreeRounded, color: '#2563EB', bottom: '-8%', right: '20%' },
+];
 
 export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
   const isOpen = phase === 'open';
@@ -404,12 +417,14 @@ function AiPhoneScreen({
 
 export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; label: string }) {
   const { carouselRef, carouselState, scrollCards } = useShowcaseCarousel();
+  const dragScroll = useHorizontalDragScroll();
 
   return (
     <>
       <Box
         ref={carouselRef}
         aria-label={label}
+        {...dragScroll}
         sx={{
           mt: 0,
           display: 'flex',
@@ -417,6 +432,11 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
           overflowX: 'auto',
           scrollSnapType: 'x mandatory',
           scrollBehavior: 'smooth',
+          cursor: 'grab',
+          touchAction: 'pan-y',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          '& img': { WebkitUserDrag: 'none' },
           overscrollBehaviorX: 'contain',
           pr: workCarouselGutter,
           pt: workCarouselVerticalGap,
@@ -437,10 +457,9 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
 
           return (
             <motion.div
-              key={project.id}
+              key={project.slug}
               initial={{ opacity: 0, y: 34 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.18 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.56, delay: Math.min(index * 0.07, 0.28), ease: [0.22, 1, 0.36, 1] }}
               style={{ flex: '0 0 auto' }}
             >
@@ -497,17 +516,6 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
                   pointerEvents: 'none',
                 }}
               />
-              <Box
-                sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  background:
-                    isPhoneAi
-                      ? 'linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.12) 42%, rgba(0,0,0,0.18) 100%)'
-                      : 'linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.42) 36%, rgba(0,0,0,0.10) 72%, rgba(0,0,0,0.18) 100%)',
-                  zIndex: 3,
-                }}
-              />
               <Stack
                 spacing={{ xs: 1.7, md: 2.5 }}
                 sx={{
@@ -562,6 +570,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
           );
         })}
       </Box>
+      {carouselState.isScrollable && (
       <Stack
         direction="row"
         justifyContent="flex-end"
@@ -609,6 +618,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
           />
         </Box>
       </Stack>
+      )}
     </>
   );
 }
@@ -620,7 +630,7 @@ export function ToolStackSection() {
     <Box
       component="section"
       sx={{
-        bgcolor: palette.softGray,
+        bgcolor: '#FFFFFF',
         color: palette.text,
         py: { xs: 7, sm: 8, md: 10 },
       }}
@@ -663,9 +673,15 @@ export function ToolStackSection() {
           role="list"
           sx={{
             position: 'relative',
+            display: { xs: 'flex', md: 'block' },
+            flexWrap: { xs: 'wrap' },
+            justifyContent: { xs: 'center' },
+            alignItems: { xs: 'center' },
+            columnGap: { xs: 2, sm: 2.5 },
+            rowGap: { xs: 2.5, sm: 3 },
             width: '100%',
             maxWidth: 1040,
-            minHeight: { xs: 390, sm: 440, md: 460 },
+            minHeight: { xs: 'auto', md: 460 },
             mx: 'auto',
             mt: { xs: 4.5, md: 6 },
             isolation: 'isolate',
@@ -676,11 +692,11 @@ export function ToolStackSection() {
               key={tool.title}
               role="listitem"
               sx={{
-                position: 'absolute',
-                left: { xs: `${tool.mobileX}%`, md: `${tool.x}%` },
-                top: { xs: `${tool.mobileY}%`, md: `${tool.y}%` },
-                width: { xs: tool.mobileSize, md: tool.size },
-                transform: 'translate(-50%, -50%)',
+                position: { xs: 'relative', md: 'absolute' },
+                left: { md: `${tool.x}%` },
+                top: { md: `${tool.y}%` },
+                width: { xs: tool.mobileSize, sm: tool.size, md: tool.size },
+                transform: { xs: 'none', md: 'translate(-50%, -50%)' },
               }}
             >
               <motion.div
@@ -745,7 +761,7 @@ export function AudienceSection() {
       component="section"
       aria-labelledby="audience-title"
       sx={{
-        bgcolor: '#FFFFFF',
+        bgcolor: palette.softGray,
         color: palette.text,
         px: workCarouselGutter,
         py: { xs: 7, sm: 8, md: 10, lg: 12 },
@@ -774,38 +790,34 @@ export function AudienceSection() {
       >
         {audienceGroups.map((group, index) => (
           <motion.div
-            key={group.mark}
+            key={group.src}
             role="listitem"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
+            whileHover={shouldReduceMotion ? undefined : { y: -8, scale: 1.06 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.48, delay: shouldReduceMotion ? 0 : index * 0.07, ease: [0.22, 1, 0.36, 1] }}
           >
             <Box
               sx={{
-                minHeight: { xs: 116, sm: 128 },
                 display: 'grid',
                 placeItems: 'center',
-                alignContent: 'center',
-                gap: 1.25,
-                px: 1.5,
-                border: `1px solid ${palette.border}`,
-                borderRadius: '8px',
-                bgcolor: '#FFFFFF',
-                transition: 'transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease',
-                '&:hover': {
-                  transform: 'translate3d(0, -3px, 0)',
-                  borderColor: group.accent,
-                  boxShadow: '0 14px 28px rgba(17,24,39,0.08)',
-                },
+                aspectRatio: '1 / 1',
+                p: { xs: 0.5, sm: 1 },
               }}
             >
-              <Typography sx={{ color: group.accent, fontFamily: 'var(--font-roboto, Roboto), sans-serif', fontSize: { xs: 25, md: 28 }, lineHeight: 1, fontWeight: 800, letterSpacing: 0 }}>
-                {group.mark}
-              </Typography>
-              <Typography sx={{ color: '#4B5563', fontSize: { xs: 14, md: 15 }, lineHeight: 1.3, fontWeight: 600, textAlign: 'center' }}>
-                {group.label}
-              </Typography>
+              <Box
+                component="img"
+                src={group.src}
+                alt=""
+                aria-hidden="true"
+                sx={{
+                  display: 'block',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                }}
+              />
             </Box>
           </motion.div>
         ))}
@@ -863,13 +875,14 @@ function ResultIcon({ icon, color }: { icon: (typeof resultCards)[number]['icon'
 
 export function WorkflowSection() {
   const { carouselRef, carouselState, scrollCards } = useWorkflowCarousel();
+  const dragScroll = useHorizontalDragScroll();
 
   return (
     <Box
       component="section"
       id="workflow"
       sx={{
-        bgcolor: '#FFFFFF',
+        bgcolor: palette.softGray,
         py: { xs: 6, sm: 7, md: 8 },
       }}
     >
@@ -902,6 +915,7 @@ export function WorkflowSection() {
       <Box
         ref={carouselRef}
         aria-label="กระบวนการทำงาน"
+        {...dragScroll}
         sx={{
           mt: workCarouselVerticalGap,
           display: { xs: 'flex', md: 'grid' },
@@ -916,6 +930,11 @@ export function WorkflowSection() {
           overflowX: { xs: 'auto', md: 'visible' },
           scrollSnapType: { xs: 'x mandatory', md: 'none' },
           scrollBehavior: 'smooth',
+          cursor: { xs: 'grab', md: 'default' },
+          touchAction: 'pan-y',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          '& img': { WebkitUserDrag: 'none' },
           overscrollBehaviorX: 'contain',
           scrollbarWidth: 'none',
           '&::-webkit-scrollbar': { display: 'none' },
@@ -1034,6 +1053,7 @@ export function WorkflowSection() {
         />
       </Box>
 
+      {carouselState.isScrollable && (
       <Stack
         direction="row"
         justifyContent="flex-end"
@@ -1087,6 +1107,7 @@ export function WorkflowSection() {
             />
         </Box>
       </Stack>
+      )}
     </Box>
   );
 }
@@ -1100,8 +1121,11 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
       sx={{
         position: 'relative',
         minHeight: isLarge
-          ? { xs: 430, sm: 520, md: 570, lg: 620 }
+          ? { xs: 560, sm: 650, md: 700, lg: 740 }
           : { xs: 250, sm: 280, md: 310, lg: 340 },
+        height: isLarge
+          ? { xs: 560, sm: 650, md: 700, lg: 740 }
+          : 'auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -1146,14 +1170,68 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
         <Box
           aria-hidden="true"
           sx={{
-            mt: 'auto',
-            width: '112%',
-            maxWidth: 720,
-            height: { xs: 170, sm: 230, md: 270, lg: 310 },
-            position: 'relative',
+            mt: card.icon === 'growth' ? 0 : 'auto',
+            width: card.icon === 'growth' ? '100%' : card.icon === 'screen' ? { xs: '132%', sm: '126%', md: '132%', lg: '138%' } : '112%',
+            maxWidth: card.icon === 'growth' || card.icon === 'screen' ? 'none' : 720,
+            height: card.icon === 'screen'
+              ? { xs: 240, sm: 310, md: 370, lg: 430 }
+              : card.icon === 'growth'
+                ? '100%'
+              : { xs: 170, sm: 230, md: 270, lg: 310 },
+            mb: 0,
+            position: card.icon === 'growth' ? 'absolute' : 'relative',
+            inset: card.icon === 'growth' ? 0 : undefined,
+            zIndex: 1,
+            transform: card.icon === 'screen'
+              ? { xs: 'translateX(-2.5%)', md: 'translateX(-3.5%)', lg: 'translateX(-5%)' }
+              : 'none',
           }}
         >
-          {card.icon === 'screen' ? (
+          {card.icon === 'growth' ? (
+            <Box
+              sx={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              {futureSystemExpansionIcons.map(({ Icon, color, ...position }, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    position: 'absolute',
+                    ...position,
+                  }}
+                >
+                  <Icon sx={{ fontSize: { xs: 104, sm: 142, md: 174, lg: 212 }, color }} />
+                </Box>
+              ))}
+          <HubRounded
+            sx={{
+              position: 'absolute',
+              left: '50%',
+              top: '58%',
+              transform: 'translate(-50%, -50%)',
+              fontSize: { xs: 96, sm: 128, md: 156, lg: 188 },
+                  color: palette.primaryPink,
+                }}
+              />
+            </Box>
+          ) : Boolean(card.imageUrl) ? (
+            <Box
+              component="img"
+              src={card.imageUrl ?? ''}
+              alt=""
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: 'center bottom',
+              }}
+            />
+          ) : card.icon === 'screen' ? (
             <Box
               sx={{
                 position: 'absolute',
@@ -1290,7 +1368,7 @@ export function ResultsSection() {
       component="section"
       id="results"
       sx={{
-        bgcolor: palette.softGray,
+        bgcolor: '#FFFFFF',
         color: palette.text,
         py: { xs: 7, sm: 8, md: 10, lg: 12 },
       }}
@@ -1343,7 +1421,7 @@ export function StartProjectSection() {
       component="section"
       id="start-project"
       sx={{
-        bgcolor: palette.background,
+        bgcolor: palette.softGray,
         color: palette.text,
         px: workCarouselGutter,
         py: { xs: 8, sm: 10, md: 13, lg: 15 },
@@ -1467,7 +1545,7 @@ export function FaqSection() {
       component="section"
       id="faq"
       sx={{
-        bgcolor: palette.softGray,
+        bgcolor: '#FFFFFF',
         color: palette.text,
         px: workCarouselGutter,
         py: { xs: 7, sm: 8, md: 10, lg: 12 },

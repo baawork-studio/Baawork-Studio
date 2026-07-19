@@ -3,20 +3,19 @@ import carouselMobileImageAlt from "../../assets/carousel-mobile-2.png";
 import { palette } from "../../theme";
 import type { ShowcaseCard } from "./types";
 
-export const aiShowcaseCards: ShowcaseCard[] = [
+const allAiShowcaseCards: ShowcaseCard[] = [
   {
     id: 'ai-command-center',
-    slug: 'ai-command-center',
-    title: 'ศูนย์สั่งการ AI',
-    shortDescription: 'ศูนย์วิเคราะห์งานแบบเรียลไทม์ที่สรุปสถานะ เคสเร่งด่วน และแนวโน้มความเสี่ยงให้ทีมตัดสินใจเร็วขึ้น',
-    coverImageUrl: carouselMobileImageAlt.src,
-    presentation: 'phoneAiDark',
+    slug: 'linora-facebook-page-analytics',
+    title: 'Linora วิเคราะห์เพจ Facebook',
+    shortDescription: 'เว็บแอปบน LINE สำหรับเชื่อมต่อเพจ Facebook วิเคราะห์โพสต์ คอมเมนต์ และการมีส่วนร่วม พร้อมคำแนะนำที่นำไปใช้พัฒนาเพจได้ทันที',
+    coverImageUrl: '/showcase/showcase-linora.png',
   },
   {
     id: 'ai-sales-forecast',
-    slug: 'ai-sales-forecast',
-    title: 'ระบบคาดการณ์ยอดขาย',
-    shortDescription: 'แดชบอร์ดคาดการณ์ยอดขายและพฤติกรรมลูกค้าด้วยโมเดล Machine Learning สำหรับทีมบริหาร',
+    slug: 'shadow-ceo-business-assistant',
+    title: 'Shadow CEO',
+    shortDescription: 'AI Business Assistant บน LINE ที่สรุปข้อมูลล่าสุด แจ้งเตือนโอกาสสำคัญ และตอบคำถามว่า วันนี้ธุรกิจควรทำอะไรต่อ',
     coverImageUrl: carouselMobileImage.src,
     presentation: 'phoneAiLight',
   },
@@ -46,55 +45,73 @@ export const aiShowcaseCards: ShowcaseCard[] = [
   },
 ];
 
-export const webAppShowcaseCards: ShowcaseCard[] = [
+const allWebAppShowcaseCards: ShowcaseCard[] = [
   {
-    id: 'operations-dashboard',
-    slug: 'operations-dashboard',
-    title: 'แดชบอร์ดควบคุมงาน',
-    shortDescription: 'ระบบติดตามคำขอ สถานะงาน และการส่งมอบสำหรับทีมปฏิบัติการที่ต้องดูข้อมูลหลายมุมพร้อมกัน',
-    coverImageUrl: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80',
+    id: 'rentflow-car-rental-platform',
+    slug: 'rentflow-car-rental-platform',
+    title: 'RentFlowCar ระบบบริหารธุรกิจรถเช่า',
+    shortDescription: 'แพลตฟอร์มรถเช่าแบบครบวงจร รวมหน้าจองรถ ระบบบริหารร้าน และพอร์ทัลพาร์ทเนอร์ไว้ในระบบเดียว',
+    coverImageUrl: '/showcase/showcase-rentflowcar.png',
   },
   {
-    id: 'booking-platform',
-    slug: 'booking-platform',
+    id: 'service-booking-template',
+    slug: 'service-booking-template',
     title: 'ระบบจองบริการออนไลน์',
-    shortDescription: 'เว็บแอปสำหรับเลือกบริการ ตรวจสอบเวลาว่าง และยืนยันการจองได้ทันทีจากทุกอุปกรณ์',
-    coverImageUrl: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
+    shortDescription: 'ระบบจองบริการที่ให้ลูกค้าเลือกช่วงเวลาว่าง จอง เลื่อนนัด และให้ผู้ดูแลจัดการตารางได้จากที่เดียว',
+    coverImageUrl: '/showcase/showcase-service-booking.png',
   },
   {
-    id: 'crm-workspace',
-    slug: 'crm-workspace',
-    title: 'พื้นที่ทำงาน CRM',
-    shortDescription: 'ระบบจัดการลูกค้า งานขาย และประวัติการติดต่อในหน้าเดียวเพื่อให้ทีมทำงานต่อเนื่อง',
-    coverImageUrl: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
+    id: 'line-membership-loyalty-platform',
+    slug: 'line-membership-loyalty-platform',
+    title: 'ระบบสมาชิกและสะสมแต้มบน LINE',
+    shortDescription: 'แพลตฟอร์มสมาชิกสำหรับสมัคร ยืนยันตัวตน สะสมแต้ม รับโปรโมชัน และบริหารสมาชิกผ่าน LINE',
+    coverImageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80',
   },
   {
-    id: 'inventory-control',
-    slug: 'inventory-control',
-    title: 'ระบบจัดการสต็อก',
-    shortDescription: 'เว็บแอปสำหรับตรวจนับสินค้า อัปเดตสถานะ และดูคำเตือนเมื่อจำนวนคงเหลือต่ำกว่ากำหนด',
-    coverImageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+    id: 'product-warranty-and-customer-platform',
+    slug: 'product-warranty-and-customer-platform',
+    title: 'แพลตฟอร์มรับประกันสินค้าและดูแลลูกค้า',
+    shortDescription: 'ระบบตรวจ Serial Number ลงทะเบียนรับประกัน แสดงข้อมูลสินค้า และส่งต่อโปรโมชันผ่าน LINE',
+    coverImageUrl: '/showcase/showcase-product-warranty.png',
   },
   {
-    id: 'analytics-portal',
-    slug: 'analytics-portal',
-    title: 'พอร์ทัลวิเคราะห์ธุรกิจ',
-    shortDescription: 'หน้ารายงานผู้บริหารที่รวมตัวเลขสำคัญ กราฟเปรียบเทียบ และ insight เพื่อใช้ตัดสินใจเร็วขึ้น',
-    coverImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+    id: 'online-learning-platform-with-ai',
+    slug: 'online-learning-platform-with-ai',
+    title: 'แพลตฟอร์มเรียนออนไลน์พร้อม AI',
+    shortDescription: 'ระบบคอร์สออนไลน์สำหรับผู้เรียน ผู้สอน และผู้ดูแล พร้อม AI ช่วยสรุปบทเรียน ตอบคำถาม และสร้างแบบทดสอบ',
+    coverImageUrl: '/showcase/showcase-online-learning.png',
   },
 ];
+
+export const aiShowcaseCards = allAiShowcaseCards.filter((card) =>
+  ['linora-facebook-page-analytics', 'shadow-ceo-business-assistant'].includes(card.slug),
+);
+
+const lineLiffProjectSlugs = new Set([
+  'service-booking-template',
+  'line-membership-loyalty-platform',
+  'product-warranty-and-customer-platform',
+]);
+
+export const lineLiffShowcaseCards = allWebAppShowcaseCards.filter((card) =>
+  lineLiffProjectSlugs.has(card.slug),
+);
+
+export const webAppShowcaseCards = allWebAppShowcaseCards.filter(
+  (card) => !lineLiffProjectSlugs.has(card.slug),
+);
 
 export const workCarouselGutter = 'clamp(24px, 6.27vw, 127.5px)';
 export const workCarouselVerticalGap = '24px';
 export const workCarouselEdgeTolerance = 24;
 
 export const audienceGroups = [
-  { mark: 'B2B', label: 'องค์กรเอกชน', accent: '#FF008C' },
-  { mark: 'GOV', label: 'หน่วยงานภาครัฐ', accent: '#2563EB' },
-  { mark: 'OPS', label: 'ทีมปฏิบัติการ', accent: '#0F9DA8' },
-  { mark: 'SME', label: 'ธุรกิจเติบโต', accent: '#7C3AED' },
-  { mark: 'RTL', label: 'ค้าปลีกและบริการ', accent: '#F15A24' },
-  { mark: 'HQ', label: 'องค์กรหลายสาขา', accent: '#111827' },
+  { src: '/audience/audience-private-business.png' },
+  { src: '/audience/audience-government.png' },
+  { src: '/audience/audience-operations.png' },
+  { src: '/audience/audience-sme.png' },
+  { src: '/audience/audience-retail.png' },
+  { src: '/audience/audience-multi-branch.png' },
 ] as const;
 
 export const toolLogos = [
@@ -127,14 +144,14 @@ export const aiPhoneScreens = [
   },
   {
     variant: 'forecast',
-    title: 'Forecast',
-    label: 'Revenue Fit',
-    score: '92',
-    delta: '+18%',
+    title: 'CEO Brief',
+    label: 'Business Health',
+    score: '86',
+    delta: 'today',
     items: [
-      ['Lead', 82],
-      ['Pipeline', 69],
-      ['Close', 91],
+      ['Revenue', 82],
+      ['Social', 76],
+      ['Tasks', 91],
     ],
   },
   {
@@ -206,6 +223,7 @@ export const resultCards = [
     color: palette.primaryPink,
     icon: 'screen',
     size: 'large',
+    imageUrl: '/homepage/results-ready-system-dashboard.png',
   },
   {
     title: 'หน้าจอใช้งานง่าย',
@@ -213,6 +231,7 @@ export const resultCards = [
     color: '#6D5BFF',
     icon: 'spark',
     size: 'compact',
+    imageUrl: null,
   },
   {
     title: 'ข้อมูลเชื่อมต่อครบ',
@@ -220,6 +239,7 @@ export const resultCards = [
     color: '#0F9DA8',
     icon: 'data',
     size: 'compact',
+    imageUrl: null,
   },
   {
     title: 'ต่อยอดได้ในอนาคต',
@@ -227,6 +247,7 @@ export const resultCards = [
     color: '#F15A24',
     icon: 'growth',
     size: 'large',
+    imageUrl: '/results-future-system-expansion.png',
   },
 ] as const;
 

@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
   const canonical = `/projects/${project.slug}`;
   const description = project.shortDescription || project.description;
-  const image = project.coverImageUrl || '/baawork-logo.png';
+  const image = project.coverImageUrl || '/homepage/baawork-logo.png';
 
   return {
     title: `${project.title} - ${project.subtitle}`,

@@ -1,116 +1,53 @@
-import type { CapabilityCard, MockupTemplate, ScreenSlot, SystemPreviewCopy } from "./types";
+import type { CapabilityCard, SystemPreviewCopy } from "./types";
 
 export const pageGutter = "clamp(24px, 6.27vw, 127.5px)";
 export const detailCarouselVerticalGap = "24px";
 export const detailCarouselEdgeTolerance = 24;
 
-export const mockupAssets: Record<MockupTemplate, string> = {
-  macbook: '/project-detail-macbook.png',
-  macbookMobile: '/project-detail-macbook-mobile.png',
-  mobiles: '/project-detail-mobiles.png',
-};
-
-export const screenSlots: Record<MockupTemplate, ScreenSlot[]> = {
-  macbook: [
-    {
-      key: 'desktop',
-      left: '31.0417%',
-      top: '19.4444%',
-      width: '41.4062%',
-      height: '46.8519%',
-      mask: '/project-screen-masks/macbook-screen.png',
-    },
-  ],
-  macbookMobile: [
-    {
-      key: 'desktop',
-      left: '31.0417%',
-      top: '19.4444%',
-      width: '41.4062%',
-      height: '46.8519%',
-      mask: '/project-screen-masks/macbook-mobile-desktop.png',
-    },
-    {
-      key: 'mobile',
-      left: '70.4167%',
-      top: '37.8704%',
-      width: '11.3542%',
-      height: '43.6111%',
-      mask: '/project-screen-masks/macbook-mobile-phone.png',
-    },
-  ],
-  mobiles: [
-    {
-      key: 'mobile1',
-      left: '28.8021%',
-      top: '26.7593%',
-      width: '13.2812%',
-      height: '53.6111%',
-      mask: '/project-screen-masks/mobiles-left.png',
-    },
-    {
-      key: 'mobile2',
-      left: '42.0833%',
-      top: '19.6296%',
-      width: '15.8333%',
-      height: '60.6481%',
-      mask: '/project-screen-masks/mobiles-center.png',
-    },
-    {
-      key: 'mobile3',
-      left: '57.8646%',
-      top: '26.7593%',
-      width: '13.3333%',
-      height: '53.6111%',
-      mask: '/project-screen-masks/mobiles-right.png',
-    },
-  ],
-};
-
-export const projectVisuals: Record<string, { accent: string; tint: string; template: MockupTemplate }> = {
-  'ai-command-center': { accent: '#FF008C', tint: '#FFF0F8', template: 'macbookMobile' },
-  'ai-sales-forecast': { accent: '#7C3AED', tint: '#F5F0FF', template: 'macbook' },
-  'ai-document-review': { accent: '#0EA5E9', tint: '#EFF9FF', template: 'mobiles' },
-  'ai-service-agent': { accent: '#10B981', tint: '#ECFDF5', template: 'macbookMobile' },
-  'ai-api-monitor': { accent: '#F97316', tint: '#FFF7ED', template: 'macbook' },
-  'operations-dashboard': { accent: '#FF008C', tint: '#FFF0F8', template: 'macbookMobile' },
-  'booking-platform': { accent: '#2563EB', tint: '#EFF6FF', template: 'macbook' },
-  'crm-workspace': { accent: '#8B5CF6', tint: '#F5F3FF', template: 'macbookMobile' },
-  'inventory-control': { accent: '#059669', tint: '#ECFDF5', template: 'mobiles' },
-  'analytics-portal': { accent: '#DC2626', tint: '#FEF2F2', template: 'macbook' },
+export const projectVisuals: Record<string, { accent: string; tint: string }> = {
+  'linora-facebook-page-analytics': { accent: '#FF008C', tint: '#FFF0F8' },
+  'shadow-ceo-business-assistant': { accent: '#7C3AED', tint: '#F5F0FF' },
+  'ai-document-review': { accent: '#0EA5E9', tint: '#EFF9FF' },
+  'ai-service-agent': { accent: '#10B981', tint: '#ECFDF5' },
+  'ai-api-monitor': { accent: '#F97316', tint: '#FFF7ED' },
+  'rentflow-car-rental-platform': { accent: '#FF008C', tint: '#FFF0F8' },
+  'service-booking-template': { accent: '#2563EB', tint: '#EFF6FF' },
+  'line-membership-loyalty-platform': { accent: '#8B5CF6', tint: '#F5F3FF' },
+  'product-warranty-and-customer-platform': { accent: '#059669', tint: '#ECFDF5' },
+  'online-learning-platform-with-ai': { accent: '#DC2626', tint: '#FEF2F2' },
 };
 
 export const capabilityCardsBySlug: Record<string, CapabilityCard[]> = {
-  'ai-command-center': [
+  'linora-facebook-page-analytics': [
     {
-      title: 'รวมสถานะงาน',
-      description: 'ดึงข้อมูลจากหลายทีมมาไว้ในหน้าจอเดียว เพื่อให้เห็นภาพรวมงานที่กำลังเดินอยู่แบบเรียลไทม์',
+      title: 'เชื่อมต่อและเลือกเพจ',
+      description: 'ผู้ใช้เข้าสู่ระบบผ่าน Facebook แล้วเลือกเฉพาะเพจที่ดูแล เพื่อให้ Linora ใช้ข้อมูลจากเพจที่อนุญาตสำหรับจัดทำรายงาน',
     },
     {
-      title: 'วิเคราะห์ความเสี่ยง',
-      description: 'สรุปเคสที่มีแนวโน้มล่าช้า ผิดปกติ หรือควรได้รับการดูแลก่อนจากสัญญาณสำคัญของระบบ',
+      title: 'คะแนนสุขภาพเพจ',
+      description: 'สรุปภาพรวมของเพจเป็นคะแนนที่อ่านง่าย พร้อมบอกสถานะและข้อมูลประกอบ เพื่อให้เห็นจุดที่ควรพัฒนาจากหน้าจอเดียว',
     },
     {
-      title: 'จัดลำดับเคสเร่งด่วน',
-      description: 'ช่วยทีมเลือกงานที่ควรลงมือก่อน ลดเวลาค้นหาข้อมูล และทำให้การตัดสินใจแม่นยำขึ้น',
+      title: 'วิเคราะห์โพสต์และคอมเมนต์',
+      description: 'คัดโพสต์ที่น่าสนใจและคอมเมนต์สำคัญ พร้อมเหตุผลและคำแนะนำ เพื่อให้ผู้ดูแลเพจติดตามประเด็นที่ควรตอบหรือพัฒนาต่อได้เร็วขึ้น',
     },
     {
-      title: 'สรุปสำหรับผู้บริหาร',
-      description: 'เปลี่ยนข้อมูลปฏิบัติการให้เป็น insight ที่อ่านง่าย พร้อมนำไปใช้ประชุมหรือวางแผนต่อได้ทันที',
+      title: 'แนะนำเวลาลงโพสต์',
+      description: 'วิเคราะห์แนวโน้มการมีส่วนร่วมรายวันและช่วงเวลา แล้วเสนอคำแนะนำเรื่องการลงคอนเทนต์ รวมถึงสรุปผลผ่าน LINE',
     },
   ],
-  'ai-sales-forecast': [
+  'shadow-ceo-business-assistant': [
     {
-      title: 'พยากรณ์ยอดขาย',
-      description: 'ประเมินแนวโน้มยอดขายจากข้อมูล pipeline และประวัติลูกค้า เพื่อช่วยวางแผนเป้าหมายล่วงหน้า',
+      title: 'Morning CEO Brief',
+      description: 'ส่งสรุปสิ่งสำคัญของธุรกิจให้เจ้าของทุกวันผ่าน LINE เพื่อเริ่มต้นวันด้วยข้อมูลที่พร้อมตัดสินใจ',
     },
     {
-      title: 'แยกกลุ่มลูกค้า',
-      description: 'ช่วยระบุลูกค้าที่มีโอกาสปิดการขายสูง เพื่อให้ทีมขายโฟกัสกับงานที่มีผลต่อรายได้มากที่สุด',
+      title: 'ถาม AI ผ่าน LINE',
+      description: 'ถามคำถามอย่าง “ทำไมยอดตก” หรือ “วันนี้ควรโพสต์อะไร” แล้วรับคำตอบที่สรุปจากข้อมูลล่าสุดพร้อมข้อเสนอแนะที่ทำต่อได้',
     },
     {
-      title: 'ติดตาม performance',
-      description: 'แสดงตัวเลขสำคัญของทีมขายในหน้าเดียว พร้อมเทียบผลลัพธ์กับเป้าหมายของแต่ละช่วงเวลา',
+      title: 'Smart Alert และรายงานรายสัปดาห์',
+      description: 'แจ้งเตือนเมื่อพบความผิดปกติหรือโอกาสเร่งด่วน และส่งรายงานภาพรวมประจำสัปดาห์เพื่อช่วยวางแผนต่อเนื่อง',
     },
   ],
   'ai-document-review': [
@@ -228,38 +165,38 @@ export const capabilityCardsBySlug: Record<string, CapabilityCard[]> = {
 };
 
 export const systemPreviewCopyBySlug: Record<string, SystemPreviewCopy[]> = {
-  'ai-command-center': [
+  'linora-facebook-page-analytics': [
     {
-      title: 'หน้ารวมสถานะงาน',
-      description: 'รวมเคส งานค้าง สถานะล่าสุด และสัญญาณสำคัญไว้ในมุมมองเดียว เพื่อให้ทีมเห็นภาพรวมก่อนลงรายละเอียด',
-      focus: 'ภาพรวมแบบเรียลไทม์',
+      title: 'แดชบอร์ดสุขภาพเพจ',
+      description: 'แสดงคะแนนสุขภาพเพจ ข้อมูลการเข้าถึงและการมีส่วนร่วม รวมถึงสรุปผลล่าสุด เพื่อให้ผู้ดูแลเข้าใจภาพรวมของเพจได้ทันที',
+      focus: 'ภาพรวมของเพจที่อ่านง่าย',
     },
     {
-      title: 'มุมมองเคสเร่งด่วน',
-      description: 'แยกงานที่มีความเสี่ยงหรือควรจัดการก่อน พร้อมข้อมูลประกอบที่ช่วยให้ตัดสินใจได้เร็วขึ้น',
-      focus: 'จัดลำดับงานสำคัญ',
+      title: 'อินไซต์โพสต์และคอมเมนต์',
+      description: 'เลือกแสดงโพสต์ที่มีผลงานเด่น คอมเมนต์สำคัญ และคำแนะนำในการตอบกลับ เพื่อช่วยให้การดูแลเพจมีบริบทครบขึ้น',
+      focus: 'ติดตามประเด็นที่ควรดูแล',
     },
     {
-      title: 'สรุปสำหรับหัวหน้าทีม',
-      description: 'เปลี่ยนข้อมูลปฏิบัติการให้เป็น insight ที่อ่านง่าย เหมาะกับการประชุม ติดตามงาน และวางแผนต่อ',
-      focus: 'อ่านง่ายสำหรับผู้บริหาร',
+      title: 'คำแนะนำเพื่อพัฒนาเพจ',
+      description: 'ระบบสรุปแนวทางคอนเทนต์และช่วงเวลาที่เหมาะกับการโพสต์จากข้อมูลของเพจ พร้อมส่งข้อความสรุปให้ติดตามต่อผ่าน LINE',
+      focus: 'เปลี่ยนข้อมูลเป็นแผนที่ทำต่อได้',
     },
   ],
-  'ai-sales-forecast': [
+  'shadow-ceo-business-assistant': [
     {
-      title: 'แดชบอร์ดยอดขาย',
-      description: 'แสดงยอดขาย เป้าหมาย และแนวโน้มสำคัญให้ทีมเห็นสถานะของ pipeline ได้เร็วจากหน้าจอเดียว',
-      focus: 'มองเห็นแนวโน้มยอดขาย',
+      title: 'สรุปธุรกิจประจำวัน',
+      description: 'Morning CEO Brief รวบรวมสัญญาณสำคัญจากข้อมูลล่าสุดไว้ในข้อความเดียว เพื่อให้เจ้าของธุรกิจเห็นสิ่งที่ควรโฟกัสทันที',
+      focus: 'รู้ว่าควรทำอะไรในวันนี้',
     },
     {
-      title: 'คะแนนโอกาสปิดการขาย',
-      description: 'ช่วยจัดลำดับลูกค้าที่ควรติดตามก่อนจากพฤติกรรมและข้อมูลย้อนหลัง เพื่อให้ทีมขายใช้เวลาได้คุ้มขึ้น',
-      focus: 'โฟกัสลูกค้าที่มีโอกาสสูง',
+      title: 'ผู้ช่วยตอบคำถามผ่าน LINE',
+      description: 'ผู้ใช้ถามเรื่องผลประกอบการหรือคอนเทนต์ได้จากแชต โดยระบบส่งสถานะกำลังประมวลผลก่อน แล้วผลักคำตอบสุดท้ายกลับมาให้',
+      focus: 'คำตอบที่มีบริบทจากข้อมูลจริง',
     },
     {
-      title: 'รายงานเปรียบเทียบทีม',
-      description: 'ดูผลลัพธ์ตามช่วงเวลา ทีม หรือแคมเปญ เพื่อให้ผู้จัดการประเมินภาพรวมและปรับแผนได้ทัน',
-      focus: 'รายงานพร้อมตัดสินใจ',
+      title: 'แจ้งเตือนและรายงานอัตโนมัติ',
+      description: 'Smart Alert และ Weekly CEO Report ช่วยติดตามความผิดปกติ โอกาสเร่งด่วน และภาพรวมธุรกิจโดยไม่ต้องเปิดแดชบอร์ด',
+      focus: 'ข้อมูลสำคัญส่งถึงเจ้าของธุรกิจ',
     },
   ],
   'ai-document-review': [

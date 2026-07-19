@@ -2,32 +2,29 @@ import { Box, Typography } from "@mui/material";
 import { Stack } from "../../components/Stack";
 import type { Project } from "../../data/fallbackProjects";
 import { palette, typeScale } from "../../theme";
-import { detailCarouselVerticalGap, mockupAssets, pageGutter, screenSlots, techIcons } from "./data";
-import { carouselControlSx, getAudienceCards, getCapabilityCards, getCapabilityDetailRows, getConnectionItems, getOutcomeCards, getProjectVisual, getProjectVisualImage, getProjectVisualImages, getScreenImage, getSystemPreviewItems, getTechReason, getWorkflowSteps, renderHighlightedDescription, useDetailCarousel } from "./utils";
-import type { CapabilityCard, DetailInfoCard, SystemPreviewItem } from "./types";
+import { useHorizontalDragScroll } from "../../utils/useHorizontalDragScroll";
+import { detailCarouselVerticalGap, pageGutter, techIcons } from "./data";
+import { carouselControlSx, getAudienceCards, getCapabilityCards, getCapabilityDetailRows, getConnectionItems, getOutcomeCards, getProjectVisual, getProjectVisualImage, getProjectVisualImages, getTechReason, getWorkflowSteps, renderHighlightedDescription, useDetailCarousel } from "./utils";
+import type { CapabilityCard, DetailInfoCard } from "./types";
 
 export function ProjectDeviceShowcase({ project }: { project: Project }) {
-  const visual = getProjectVisual(project);
-  const slots = screenSlots[visual.template];
-
+  const imageUrl = project.detailImageUrl ?? getProjectVisualImages(project)[0] ?? project.coverImageUrl;
   return (
     <Box
       sx={{
         position: 'relative',
         width: '100%',
-        maxWidth: { xs: 960, md: 1260, lg: 1440 },
+        maxWidth: { xs: 680, sm: 880, md: 1120, lg: 1280 },
         mx: 'auto',
         aspectRatio: '16 / 9',
-        overflow: 'hidden',
       }}
     >
       <Box
         component="img"
-        src={mockupAssets[visual.template]}
+        src={imageUrl}
         alt={`${project.title} บนหน้าจออุปกรณ์`}
         sx={{
-          position: 'absolute',
-          inset: 0,
+          display: 'block',
           width: '100%',
           height: '100%',
           objectFit: 'contain',
@@ -35,49 +32,6 @@ export function ProjectDeviceShowcase({ project }: { project: Project }) {
           pointerEvents: 'none',
         }}
       />
-
-      {slots.map((slot, index) => {
-        const imageUrl = getScreenImage(project, slot.key, index);
-
-        return (
-          <Box
-            key={`${slot.key}-${slot.mask}`}
-            sx={{
-              position: 'absolute',
-              left: slot.left,
-              top: slot.top,
-              width: slot.width,
-              height: slot.height,
-              overflow: 'hidden',
-              WebkitMaskImage: `url(${slot.mask})`,
-              maskImage: `url(${slot.mask})`,
-              WebkitMaskRepeat: 'no-repeat',
-              maskRepeat: 'no-repeat',
-              WebkitMaskSize: '100% 100%',
-              maskSize: '100% 100%',
-              WebkitMaskPosition: 'center',
-              maskPosition: 'center',
-            }}
-          >
-            <Box
-              component="img"
-              src={imageUrl}
-              alt={`${project.title} ${slot.key}`}
-              loading="lazy"
-              decoding="async"
-              sx={{
-                display: 'block',
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                userSelect: 'none',
-                pointerEvents: 'none',
-              }}
-            />
-          </Box>
-        );
-      })}
     </Box>
   );
 }
@@ -90,230 +44,157 @@ export function ProjectPurposeSection({ project }: { project: Project }) {
       component="section"
       sx={{
         width: '100%',
-        mx: 'auto',
         py: { xs: 2, md: 3.5 },
       }}
     >
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1.08fr) minmax(360px, 0.92fr)' },
-          gap: { xs: 2.5, md: 3.5, lg: 5 },
-          alignItems: 'center',
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            minHeight: { xs: 360, sm: 460, md: 540, lg: 620 },
-            overflow: 'hidden',
-            borderRadius: { xs: '30px', md: '44px' },
-            bgcolor: visual.tint,
-            boxShadow: '0 28px 80px rgba(17,24,39,0.1)',
-          }}
-        >
-          <Box
-            component="img"
-            src={getProjectVisualImage(project, 1)}
-            alt={`${project.title} ภาพรวมการใช้งาน`}
-            loading="lazy"
-            decoding="async"
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center',
-            }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              background:
-                'linear-gradient(180deg, rgba(17,24,39,0.12) 0%, rgba(17,24,39,0.08) 42%, rgba(17,24,39,0.56) 100%)',
-            }}
-          />
-          <Stack
-            spacing={{ xs: 1, md: 1.25 }}
-            sx={{
-              position: 'absolute',
-              left: { xs: 24, md: 42 },
-              right: { xs: 24, md: 42 },
-              bottom: { xs: 24, md: 40 },
-            }}
-          >
-            <Typography
-              sx={{
-                color: '#FFFFFF',
-                fontSize: { xs: 18, md: 21 },
-                lineHeight: 1.25,
-                fontWeight: 700,
-              }}
-            >
-              เห็นภาพงานจริงก่อนลงรายละเอียด
-            </Typography>
-            <Typography
-              variant="h2"
-              sx={{
-                color: '#FFFFFF',
-                ...typeScale.sectionTitle,
-                maxWidth: 780,
-              }}
-            >
-              {project.title}
-            </Typography>
-          </Stack>
-        </Box>
-
-        <Stack
-          spacing={{ xs: 2, md: 2.5 }}
-          sx={{
-            maxWidth: 660,
-            mx: { xs: 'auto', lg: 0 },
-            textAlign: { xs: 'center', lg: 'left' },
-          }}
-        >
-          <Typography
-            variant="h2"
-            sx={{
-              color: visual.accent,
-              ...typeScale.display,
-            }}
-          >
-            สร้างมาเพื่ออะไร
-          </Typography>
-          <Typography
-            sx={{
-              color: '#6E6E73',
-              ...typeScale.intro,
-              fontWeight: 600,
-            }}
-          >
-            {renderHighlightedDescription(project, visual.accent)}
-          </Typography>
-        </Stack>
-      </Box>
-    </Box>
-  );
-}
-
-function SystemPreviewCard({
-  item,
-  accent,
-  featured = false,
-}: {
-  item: SystemPreviewItem;
-  accent: string;
-  featured?: boolean;
-}) {
-  return (
-    <Box
-      component="article"
-      sx={{
-        minHeight: 0,
-        overflow: 'hidden',
-        borderRadius: { xs: '28px', md: '34px' },
-        bgcolor: '#FFFFFF',
-        boxShadow: '0 20px 54px rgba(17,24,39,0.08)',
-        transition:
-          'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1)',
-        '&:hover': {
-          transform: 'translate3d(0, -6px, 0)',
-          boxShadow: '0 28px 72px rgba(17,24,39,0.12)',
-        },
-      }}
-    >
-      <Box
-        sx={{
-          position: 'relative',
-          aspectRatio: featured ? { xs: '16 / 11', md: '16 / 10' } : '16 / 9',
-          overflow: 'hidden',
-          bgcolor: '#EEF0F4',
-        }}
-      >
-        <Box
-          component="img"
-          src={item.imageUrl}
-          alt={item.title}
-          loading="lazy"
-          decoding="async"
-          sx={{
-            display: 'block',
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center',
-            transform: 'scale(1.01)',
-          }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(180deg, rgba(17,24,39,0.12) 0%, rgba(17,24,39,0) 48%)',
-            pointerEvents: 'none',
-          }}
-        />
-      </Box>
-
       <Stack
-        spacing={{ xs: 1, md: 1.25 }}
+        spacing={{ xs: 2, md: 2.5 }}
         sx={{
-          p: { xs: 2.5, sm: 3, md: featured ? 4 : 3.25 },
+          textAlign: { xs: 'center', md: 'left' },
         }}
       >
         <Typography
+          variant="h2"
           sx={{
-            color: accent,
-            fontSize: { xs: 15, md: 16 },
-            lineHeight: 1.35,
-            fontWeight: 700,
+            color: visual.accent,
+            ...typeScale.display,
           }}
         >
-          {item.focus}
+          สร้างมาเพื่ออะไร
         </Typography>
-        <Typography
-          variant="h3"
-          sx={{
-            color: palette.text,
-            fontSize: featured
-              ? { xs: 31, sm: 36, md: 44, lg: 48 }
-              : { xs: 26, sm: 28, md: 31 },
-            lineHeight: 1.08,
-            letterSpacing: 0,
-            fontWeight: 700,
-          }}
-        >
-          {item.title}
-        </Typography>
-        <Typography
-          sx={{
-            color: '#4B5563',
-            ...typeScale.bodyLarge,
-            maxWidth: featured ? 760 : '100%',
-          }}
-        >
-          {item.description}
-        </Typography>
+        <Stack spacing={{ xs: 1.5, md: 2 }}>
+          {(project.purposeParagraphs ?? [project.description]).map((paragraph, index) => (
+            <Typography
+              key={`${project.slug}-purpose-${index}`}
+              sx={{
+                color: '#6E6E73',
+                ...typeScale.intro,
+                fontWeight: 600,
+              }}
+            >
+              {renderHighlightedDescription(project, visual.accent, paragraph)}
+            </Typography>
+          ))}
+        </Stack>
       </Stack>
     </Box>
   );
 }
 
-export function ProjectSystemPreviewSection({ project }: { project: Project }) {
-  const visual = getProjectVisual(project);
-  const items = getSystemPreviewItems(project);
-  const [featured, ...supportItems] = items;
+const systemPreviewDevices = [
+  { name: 'MacBook', label: 'หน้าจอ MacBook', imageUrl: '/project-screen-previews/macbook.png', maxHeight: { xs: 360, sm: 400 }, width: { xs: 'min(100%, 400px)', sm: '400px' }, gap: { xs: 1, md: 1.25 } },
+  { name: 'iPad', label: 'หน้าจอ iPad', imageUrl: '/project-screen-previews/ipad.png', maxHeight: { xs: 260, sm: 300, lg: 340 }, width: { xs: 'min(100%, 280px)', sm: '300px' }, gap: { xs: 0.5, md: 0.75 } },
+  { name: 'iPhone', label: 'หน้าจอ iPhone', imageUrl: '/project-screen-previews/iphone.png', maxHeight: { xs: 340, sm: 380, lg: 420 }, width: { xs: 'min(100%, 220px)', sm: '240px' }, gap: { xs: 0.25, md: 0.5 } },
+] as const;
 
-  if (!featured) return null;
+function SystemPreviewCarousel({
+  project,
+  device,
+}: {
+  project: Project;
+  device: (typeof systemPreviewDevices)[number];
+}) {
+  const { carouselRef, carouselState, scrollCards } = useDetailCarousel();
+  const dragScroll = useHorizontalDragScroll();
+  const canScroll = carouselState.canScrollPrev || carouselState.canScrollNext;
+
+  return (
+    <Stack spacing={{ xs: 2, md: 2.5 }}>
+      <Typography
+        variant="h3"
+        sx={{
+          color: palette.text,
+          fontSize: { xs: 20, md: 23 },
+          lineHeight: 1.2,
+          fontWeight: 700,
+          textAlign: 'left',
+        }}
+      >
+        {device.label}
+      </Typography>
+
+      <Box>
+        <Box
+          ref={carouselRef}
+          {...dragScroll}
+          sx={{
+            display: 'flex',
+            gap: device.gap,
+            overflowX: 'auto',
+            overscrollBehaviorX: 'contain',
+            scrollSnapType: 'x mandatory',
+            scrollBehavior: 'smooth',
+            scrollbarWidth: 'none',
+            cursor: 'grab',
+            touchAction: 'pan-y',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+            '& img': { WebkitUserDrag: 'none' },
+          }}
+        >
+          {Array.from({ length: 6 }).map((_, imageIndex) => (
+            <Box
+              key={`${device.name}-${imageIndex}`}
+              component="img"
+              src={device.imageUrl}
+              alt={`${project.title} บน ${device.name} ${imageIndex + 1}`}
+              loading="lazy"
+              decoding="async"
+              sx={{
+                display: 'block',
+                flex: '0 0 auto',
+                width: device.width,
+                maxWidth: '100%',
+                maxHeight: device.maxHeight,
+                objectFit: 'contain',
+                objectPosition: 'left center',
+                scrollSnapAlign: 'start',
+                pointerEvents: 'none',
+              }}
+            />
+          ))}
+        </Box>
+
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="flex-end"
+          sx={{ mt: 1.5, visibility: canScroll ? 'visible' : 'hidden' }}
+        >
+          <Box
+            component="button"
+            type="button"
+            aria-label={`เลื่อนภาพ ${device.name} ไปก่อนหน้า`}
+            disabled={!carouselState.canScrollPrev}
+            onClick={() => scrollCards(-1)}
+            sx={carouselControlSx(carouselState.canScrollPrev)}
+          >
+            <Box component="span" sx={{ width: 12, height: 12, ml: 0.5, borderLeft: '3px solid currentColor', borderBottom: '3px solid currentColor', transform: 'rotate(45deg)' }} />
+          </Box>
+          <Box
+            component="button"
+            type="button"
+            aria-label={`เลื่อนภาพ ${device.name} ไปถัดไป`}
+            disabled={!carouselState.canScrollNext}
+            onClick={() => scrollCards(1)}
+            sx={carouselControlSx(carouselState.canScrollNext)}
+          >
+            <Box component="span" sx={{ width: 12, height: 12, mr: 0.5, borderRight: '3px solid currentColor', borderBottom: '3px solid currentColor', transform: 'rotate(-45deg)' }} />
+          </Box>
+        </Stack>
+      </Box>
+    </Stack>
+  );
+}
+
+export function ProjectSystemPreviewSection({ project }: { project: Project }) {
 
   return (
     <Box
       component="section"
       sx={{
-        bgcolor: '#F7F8FA',
+        bgcolor: '#FFFFFF',
         position: 'relative',
         left: `calc(${pageGutter} * -1)`,
         width: `calc(100% + (${pageGutter} * 2))`,
@@ -322,14 +203,7 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
         overflow: 'visible',
       }}
     >
-      <Stack
-        spacing={{ xs: 1.25, md: 1.5 }}
-        sx={{
-          px: pageGutter,
-          mb: { xs: 3, md: 4 },
-          maxWidth: { xs: '100%', md: 960 },
-        }}
-      >
+      <Stack sx={{ px: pageGutter, mb: { xs: 3, md: 4 } }}>
         <Typography
           variant="h2"
           sx={{
@@ -338,15 +212,6 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
           }}
         >
           พรีวิวหน้าจอระบบจริง
-        </Typography>
-        <Typography
-          sx={{
-            color: '#4B5563',
-            ...typeScale.bodyLarge,
-            maxWidth: 760,
-          }}
-        >
-          ตัวอย่างหน้าจอสำคัญที่ลูกค้าจะได้เห็นในระบบจริง ตั้งแต่ภาพรวม รายละเอียดงาน ไปจนถึง workflow ที่ทีมใช้ต่อได้ทันที
         </Typography>
       </Stack>
 
@@ -359,17 +224,14 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1.15fr) minmax(320px, 0.85fr)' },
-            gap: { xs: 2, md: 2.5, lg: 3 },
-            alignItems: 'stretch',
+            gridTemplateColumns: 'minmax(0, 1fr)',
+            gap: { xs: 6, md: 8 },
+            alignItems: 'start',
           }}
         >
-          <SystemPreviewCard item={featured} accent={visual.accent} featured />
-          <Stack spacing={{ xs: 2, md: 2.5, lg: 3 }}>
-            {supportItems.map((item) => (
-              <SystemPreviewCard key={item.title} item={item} accent={visual.accent} />
-            ))}
-          </Stack>
+          {systemPreviewDevices.map((device) => (
+            <SystemPreviewCarousel key={device.name} project={project} device={device} />
+          ))}
         </Box>
       </Box>
     </Box>
@@ -759,6 +621,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
   const cards = getCapabilityCards(project);
   const { carouselRef, carouselState, scrollCards } = useDetailCarousel();
+  const dragScroll = useHorizontalDragScroll();
   const fallbackImages = Array.from(new Set([project.coverImageUrl, ...project.galleryImageUrls].filter(Boolean)));
 
   return (
@@ -797,6 +660,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
       <Box
         ref={carouselRef}
         aria-label={`รายละเอียดการทำงานของ ${project.title}`}
+        {...dragScroll}
         sx={{
           mt: 0,
           display: 'flex',
@@ -804,6 +668,11 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
           overflowX: 'auto',
           scrollSnapType: 'x mandatory',
           scrollBehavior: 'smooth',
+          cursor: 'grab',
+          touchAction: 'pan-y',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          '& img': { WebkitUserDrag: 'none' },
           overscrollBehaviorX: 'contain',
           pr: pageGutter,
           pt: detailCarouselVerticalGap,
@@ -1005,32 +874,36 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
 
 export function ProjectTechSection({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
+  const technologyPositions = [
+    { x: 12, y: 24, size: 108, mobileSize: 72 },
+    { x: 31, y: 62, size: 132, mobileSize: 82 },
+    { x: 50, y: 20, size: 120, mobileSize: 78 },
+    { x: 69, y: 57, size: 128, mobileSize: 84 },
+    { x: 87, y: 28, size: 104, mobileSize: 70 },
+    { x: 20, y: 88, size: 96, mobileSize: 68 },
+    { x: 50, y: 91, size: 112, mobileSize: 76 },
+    { x: 80, y: 87, size: 98, mobileSize: 70 },
+  ];
 
   return (
     <Box
       sx={{
-        display: 'grid',
-        gridTemplateColumns: { xs: '1fr', md: 'minmax(360px, 0.85fr) minmax(420px, 1fr)' },
-        alignItems: 'center',
-        gap: { xs: 4, md: 7, lg: 9 },
-        mt: { xs: 1, md: 2 },
         py: { xs: 3, md: 4 },
       }}
     >
-      <Stack spacing={{ xs: 1.75, md: 2.25 }} sx={{ maxWidth: 620, alignItems: 'flex-start', textAlign: 'left' }}>
+      <Stack spacing={{ xs: 1.75, md: 2.25 }} alignItems="center" textAlign="center" sx={{ maxWidth: 840, mx: 'auto' }}>
         <Typography
           variant="h2"
           sx={{
             color: visual.accent,
-            ...typeScale.sectionTitle,
-            fontWeight: 600,
+            ...typeScale.display,
           }}
         >
           เทคโนโลยีที่ใช้
         </Typography>
         <Typography
           sx={{
-            maxWidth: 620,
+            maxWidth: 720,
             color: '#4B5563',
             ...typeScale.bodyLarge,
           }}
@@ -1041,72 +914,86 @@ export function ProjectTechSection({ project }: { project: Project }) {
 
       <Box
         aria-label={`เทคโนโลยีที่ใช้ใน ${project.title}`}
+        role="list"
         sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: 'repeat(3, minmax(0, 1fr))',
-            sm: 'repeat(5, minmax(0, 1fr))',
-          },
-          gap: { xs: 1.25, sm: 1.5, md: 1.8 },
-          justifySelf: { xs: 'stretch', md: 'end' },
+          position: 'relative',
+          display: { xs: 'flex', md: 'block' },
+          flexWrap: { xs: 'wrap' },
+          justifyContent: { xs: 'center' },
+          alignItems: { xs: 'center' },
+          columnGap: { xs: 2, sm: 2.5 },
+          rowGap: { xs: 2.5, sm: 3 },
           width: '100%',
-          maxWidth: { xs: '100%', md: 520 },
+          maxWidth: 1040,
+          minHeight: { xs: 'auto', md: 460 },
+          mx: 'auto',
+          mt: { xs: 4.5, md: 6 },
+          isolation: 'isolate',
         }}
       >
-        {project.stack.map((item) => {
+        {project.stack.map((item, index) => {
           const icon = techIcons[item] ?? { label: item.slice(0, 4) };
+          const position = technologyPositions[index % technologyPositions.length];
 
           return (
             <Box
               key={item}
+              role="listitem"
               title={item}
               sx={{
-                aspectRatio: '1 / 1',
-                display: 'grid',
-                placeItems: 'center',
-                borderRadius: { xs: '18px', md: '20px' },
-                bgcolor: '#F7F8FA',
-                boxShadow: '0 16px 36px rgba(17,24,39,0.06)',
-                transition:
-                  'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), background-color 260ms ease, box-shadow 260ms ease',
-                '&:hover': {
-                  transform: 'translate3d(0, -4px, 0)',
-                  bgcolor: '#F3F4F6',
-                  boxShadow: '0 20px 42px rgba(17,24,39,0.1)',
-                },
+                position: { xs: 'relative', md: 'absolute' },
+                left: { md: `${position.x}%` },
+                top: { md: `${position.y}%` },
+                width: { xs: position.mobileSize, sm: position.size, md: position.size },
+                transform: { xs: 'none', md: 'translate(-50%, -50%)' },
               }}
             >
-              {icon.src ? (
-                <Box
-                  component="img"
-                  src={icon.src}
-                  alt={item}
-                  loading="lazy"
-                  decoding="async"
-                  onError={(event) => {
-                    event.currentTarget.style.display = 'none';
-                  }}
-                  sx={{
-                    width: { xs: 34, sm: 38, md: 44 },
-                    height: { xs: 34, sm: 38, md: 44 },
-                    objectFit: 'contain',
-                    filter: icon.invert
-                      ? 'invert(1) drop-shadow(0 10px 24px rgba(17,24,39,0.12))'
-                      : 'drop-shadow(0 10px 24px rgba(17,24,39,0.12))',
-                  }}
-                />
-              ) : (
-                <Typography
-                  sx={{
-                    color: visual.accent,
-                    fontSize: { xs: 18, md: 21 },
-                    lineHeight: 1,
-                    fontWeight: 800,
-                  }}
-                >
-                  {icon.label}
-                </Typography>
-              )}
+              <Box
+                sx={{
+                  aspectRatio: '1 / 1',
+                  display: 'grid',
+                  placeItems: 'center',
+                  borderRadius: { xs: '20px', md: '24px' },
+                  bgcolor: 'rgba(243,244,246,0.86)',
+                  boxShadow: '0 14px 30px rgba(17,24,39,0.045), inset 0 1px 0 rgba(255,255,255,0.72)',
+                  transition: 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
+                  '&:hover': {
+                    transform: 'translate3d(0, -4px, 0)',
+                    bgcolor: 'rgba(255,255,255,0.66)',
+                    boxShadow: '0 20px 42px rgba(17,24,39,0.08), inset 0 1px 0 rgba(255,255,255,0.86)',
+                  },
+                }}
+              >
+                {icon.src ? (
+                  <Box
+                    component="img"
+                    src={icon.src}
+                    alt={item}
+                    loading="lazy"
+                    decoding="async"
+                    onError={(event) => {
+                      event.currentTarget.style.display = 'none';
+                    }}
+                    sx={{
+                      width: '53%',
+                      height: '53%',
+                      objectFit: 'contain',
+                      filter: icon.invert ? 'invert(1)' : undefined,
+                    }}
+                  />
+                ) : (
+                  <Typography
+                    sx={{
+                      color: visual.accent,
+                      fontSize: { xs: 18, md: 21 },
+                      lineHeight: 1,
+                      fontWeight: 800,
+                    }}
+                  >
+                    {icon.label}
+                  </Typography>
+                )}
+              </Box>
             </Box>
           );
         })}

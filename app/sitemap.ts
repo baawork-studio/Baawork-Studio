@@ -43,7 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...fallbackProjects.map((project) => ({
       url: `${siteUrl}/projects/${project.slug}`,
-      lastModified: new Date(project.updatedAt),
+      lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     })),

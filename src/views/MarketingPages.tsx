@@ -468,7 +468,7 @@ export function ContactPage() {
           >
             <Box
               component="img"
-              src="/line-qr.png"
+              src="/homepage/line-qr.png"
               alt="QR code สำหรับติดต่อ LINE Baawork"
               sx={{ width: { xs: 220, md: 280 }, height: { xs: 220, md: 280 }, objectFit: 'contain' }}
             />

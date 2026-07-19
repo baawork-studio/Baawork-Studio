@@ -81,7 +81,13 @@ export function AppShell({ children }: AppShellProps) {
           },
         }}
       >
-        <Container maxWidth="lg" sx={{ height: '100%' }}>
+        <Container
+          maxWidth={false}
+          sx={{
+            height: '100%',
+            px: { xs: 3, md: 6, lg: '120.384px' },
+          }}
+        >
           <Box sx={{ position: 'relative', height: '100%' }}>
             <Box
               component="a"
@@ -104,7 +110,7 @@ export function AppShell({ children }: AppShellProps) {
             >
               <Box
                 component="img"
-                src="/baawork-logo.png"
+                src="/homepage/baawork-logo.png"
                 alt="คนบ้างงาน"
                 sx={{
                   display: 'block',
@@ -189,7 +195,7 @@ export function AppShell({ children }: AppShellProps) {
               <Stack direction="row" alignItems="center" spacing={1.5}>
                 <Box
                   component="img"
-                  src="/baawork-logo.png"
+                  src="/homepage/baawork-logo.png"
                   alt="คนบ้างงาน"
                   sx={{
                     display: 'block',
@@ -364,7 +370,7 @@ export function AppShell({ children }: AppShellProps) {
                 </Stack>
                 <Box
                   component="img"
-                  src="/line-qr.png"
+                  src="/homepage/line-qr.png"
                   alt="QR code สำหรับติดต่อ LINE Baawork"
                   loading="lazy"
                   decoding="async"

@@ -3,14 +3,13 @@ import { Box, Typography } from "@mui/material";
 import { Stack } from "../../components/Stack";
 import type { Project } from "../../data/fallbackProjects";
 import { palette, typeScale } from "../../theme";
-import { capabilityCardsBySlug, defaultSystemPreviewCopy, descriptionHighlightTerms, detailCarouselEdgeTolerance, mockupAssets, projectVisuals, screenSlots, systemPreviewCopyBySlug } from "./data";
+import { capabilityCardsBySlug, defaultSystemPreviewCopy, descriptionHighlightTerms, detailCarouselEdgeTolerance, projectVisuals, systemPreviewCopyBySlug } from "./data";
 import type { CapabilityCard, CapabilityDetailRow, DetailFlowStep, DetailInfoCard, ScreenImageKey, SystemPreviewItem } from "./types";
 
 export function getProjectVisual(project: Project) {
   return projectVisuals[project.slug] ?? {
     accent: palette.primaryPink,
     tint: '#FFF0F8',
-    template: 'macbookMobile' as const,
   };
 }
 
@@ -84,13 +83,13 @@ export function carouselControlSx(enabled: boolean) {
     boxSizing: 'border-box',
     borderRadius: '50%',
     appearance: 'none',
-    bgcolor: enabled ? '#E8E8ED' : '#F5F5F7',
-    color: enabled ? '#6E6E73' : '#C7C7CC',
+    bgcolor: enabled ? '#D2D2D7' : '#E1E1E6',
+    color: enabled ? '#4A4A4F' : '#9A9AA0',
     cursor: enabled ? 'pointer' : 'default',
     transition: 'background-color 180ms ease, color 180ms ease',
     '&:hover': {
-      bgcolor: enabled ? '#D2D2D7' : '#F5F5F7',
-      color: enabled ? '#1D1D1F' : '#C7C7CC',
+      bgcolor: enabled ? '#B8B8BE' : '#E1E1E6',
+      color: enabled ? '#1D1D1F' : '#9A9AA0',
     },
     '&:disabled': {
       pointerEvents: 'none',
@@ -214,10 +213,10 @@ export function getDescriptionHighlightTerms(project: Project) {
     .sort((a, b) => b.length - a.length);
 }
 
-export function renderHighlightedDescription(project: Project, accent: string) {
+export function renderHighlightedDescription(project: Project, accent: string, description = project.description) {
   const terms = getDescriptionHighlightTerms(project);
   const nodes = [];
-  let remaining = project.description;
+  let remaining = description;
   let key = 0;
 
   while (remaining.length > 0) {

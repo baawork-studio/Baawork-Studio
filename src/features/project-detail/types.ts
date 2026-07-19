@@ -9,16 +9,7 @@ const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 const detailCarouselVerticalGap = '24px';
 const detailCarouselEdgeTolerance = 24;
 
-export type MockupTemplate = 'macbook' | 'macbookMobile' | 'mobiles';
 export type ScreenImageKey = 'desktop' | 'mobile' | 'mobile1' | 'mobile2' | 'mobile3';
-export type ScreenSlot = {
-  key: ScreenImageKey;
-  left: string;
-  top: string;
-  width: string;
-  height: string;
-  mask: string;
-};
 export type CapabilityCard = {
   title: string;
   description: string;
