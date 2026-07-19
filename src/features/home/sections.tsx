@@ -1461,7 +1461,7 @@ export function StartProjectSection() {
         >
           <Box
             component="a"
-            href="#contact"
+            href="/consult"
             sx={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -1497,7 +1497,7 @@ export function StartProjectSection() {
               },
             }}
           >
-            คุยกับเรา
+            ปรึกษาเรา
           </Box>
           <Box
             component="a"

@@ -1,483 +1,112 @@
 'use client';
 
+import type { FormEvent } from 'react';
 import { Box, Typography } from '@mui/material';
-import { Reveal } from '../components/motion/Reveal';
+import { DetailStylePage, DetailStyleSection } from '../components/DetailStylePage';
 import { Stack } from '../components/Stack';
 import { palette, typeScale } from '../theme';
 
-const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
-
-const serviceCards = [
-  {
-    title: 'ระบบเว็บแอป',
-    body: 'หน้าบ้าน หลังบ้าน และแดชบอร์ดสำหรับทีมที่ต้องจัดการงานจริงทุกวัน',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1500&q=84',
-  },
-  {
-    title: 'ระบบ AI',
-    body: 'สรุปข้อมูล วิเคราะห์สัญญาณสำคัญ และช่วยทีมตัดสินใจจากข้อมูลที่มีอยู่',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1500&q=84',
-  },
-  {
-    title: 'ระบบหลังบ้าน',
-    body: 'จัดการข้อมูล รูปภาพ สถานะงาน สิทธิ์ผู้ใช้ และเนื้อหาที่ต้องอัปเดตเอง',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1500&q=84',
-  },
-  {
-    title: 'API และ Production',
-    body: 'วางฐานข้อมูล เชื่อม API deploy และเตรียมระบบให้ดูแลต่อได้หลังส่งมอบ',
-    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1500&q=84',
-  },
+const services = [
+  ['Web Application', 'ออกแบบระบบสำหรับลูกค้า ทีมงาน และผู้ดูแลให้ทำงานร่วมกันได้จริง'],
+  ['UX/UI Design', 'วางโครงสร้างข้อมูลและหน้าจอให้เข้าใจง่าย ใช้งานสะดวก'],
+  ['Dashboard & Admin', 'จัดการข้อมูล สถานะงาน และสิทธิ์ผู้ใช้งานจากจุดเดียว'],
+  ['API & Production', 'เชื่อมต่อข้อมูล วางโครงสร้าง และเตรียมระบบพร้อมใช้งาน'],
 ];
 
-const startSteps = [
-  {
-    step: '01',
-    title: 'คุยโจทย์',
-    body: 'ทำความเข้าใจเป้าหมาย ปัญหาเดิม ผู้ใช้งาน และข้อมูลที่ระบบต้องเชื่อมต่อ',
-  },
-  {
-    step: '02',
-    title: 'วางขอบเขต',
-    body: 'สรุปฟีเจอร์หลัก flow การทำงาน และสิ่งที่ต้องส่งมอบให้เห็นภาพเดียวกัน',
-  },
-  {
-    step: '03',
-    title: 'ออกแบบ UX/UI',
-    body: 'จัดลำดับข้อมูล หน้าจอ และประสบการณ์ใช้งานให้เหมาะกับทีมที่ใช้จริง',
-  },
-  {
-    step: '04',
-    title: 'พัฒนาและเชื่อมข้อมูล',
-    body: 'สร้าง frontend, backend, API, database และหน้า admin ตามขอบเขตงาน',
-  },
-  {
-    step: '05',
-    title: 'ทดสอบและส่งมอบ',
-    body: 'ตรวจการใช้งานจริง deploy และสรุปแนวทางดูแลระบบหลังขึ้น production',
-  },
+const projectSteps = [
+  ['01', 'คุยโจทย์', 'ทำความเข้าใจเป้าหมาย ผู้ใช้งาน และปัญหาที่ต้องแก้'],
+  ['02', 'วางขอบเขต', 'สรุป flow ฟีเจอร์ และสิ่งส่งมอบให้เห็นภาพเดียวกัน'],
+  ['03', 'ออกแบบ UX/UI', 'เรียงลำดับข้อมูลและประสบการณ์ใช้งานก่อนพัฒนา'],
+  ['04', 'พัฒนาและเชื่อมต่อ', 'สร้างระบบ หน้าจอ API และฐานข้อมูลตามขอบเขต'],
+  ['05', 'ทดสอบและส่งมอบ', 'ตรวจสอบการใช้งานจริง พร้อมแนวทางดูแลระบบต่อ'],
 ];
 
-const faqItems = [
-  {
-    question: 'Baawork รับทำระบบประเภทไหน',
-    answer: 'รับทำระบบเว็บแอป ระบบ AI หน้า admin dashboard API และระบบหลังบ้านที่ต้องเชื่อมข้อมูลกับงานจริง',
-  },
-  {
-    question: 'ต้องมีดีไซน์มาก่อนหรือไม่',
-    answer: 'ไม่จำเป็น เราช่วยวาง UX/UI จากโจทย์ธุรกิจและ flow งานเดิมได้ตั้งแต่ต้น',
-  },
-  {
-    question: 'เชื่อมระบบเดิมหรือ API ภายนอกได้ไหม',
-    answer: 'ได้ สามารถเชื่อม API, database, Google Sheet, CRM, POS, LINE หรือระบบหลังบ้านเดิมตามความพร้อมของข้อมูล',
-  },
-  {
-    question: 'มีหน้า admin ให้จัดการข้อมูลไหม',
-    answer: 'มีได้ตามขอบเขตงาน เช่น เพิ่มผลงาน อัปโหลดรูป แก้คำอธิบาย จัดการสถานะ หรือจัดการข้อมูลลูกค้า',
-  },
-  {
-    question: 'ใช้เวลาทำนานแค่ไหน',
-    answer: 'ขึ้นกับขนาดระบบและจำนวนฟีเจอร์ หลังคุยโจทย์เราจะช่วยแยกเฟสและประเมินเวลาที่เหมาะสมให้ชัดเจน',
-  },
-  {
-    question: 'ดูแลหลังส่งมอบได้ไหม',
-    answer: 'ได้ ทั้งการแก้ไขเล็กน้อย เพิ่มฟีเจอร์ ตรวจระบบ และช่วยดู production ต่อหลังเปิดใช้งาน',
-  },
-];
+const consultationEmail = process.env.NEXT_PUBLIC_CONSULT_EMAIL ?? 'baaworkstudio@gmail.com';
 
-const socials = [
-  {
-    label: 'Facebook',
-    href: 'https://www.facebook.com/BAAWORK',
-    color: '#1877F2',
-    iconSrc: 'https://thesvg.org/icons/facebook/default.svg',
-  },
-  {
-    label: 'YouTube',
-    href: 'https://www.youtube.com/@baawork',
-    color: '#FF0033',
-    iconSrc: 'https://thesvg.org/icons/youtube/default.svg',
-  },
-  {
-    label: 'LINE',
-    href: 'https://line.me/R/ti/p/@baawork',
-    color: '#06C755',
-    iconSrc: 'https://thesvg.org/icons/line/default.svg',
-  },
-];
+const sectionTitleSx = { ...typeScale.sectionTitle, color: palette.text };
+const bodySx = { ...typeScale.bodyLarge, color: '#4B5563', maxWidth: 760 };
+const cardSx = { bgcolor: '#FFFFFF', borderRadius: { xs: '24px', md: '28px' }, p: { xs: 3, md: 3.5 }, boxShadow: '0 12px 28px rgba(17,24,39,0.05)' };
 
-function PageHero({
-  eyebrow,
-  title,
-  description,
-}: {
-  eyebrow: string;
-  title: string;
-  description: string;
-}) {
+function SectionHeading({ title, description }: { title: string; description: string }) {
   return (
-    <Box
-      component="section"
-      sx={{
-        px: pageGutter,
-        pt: { xs: 13, sm: 15, md: 18 },
-        pb: { xs: 6, md: 9 },
-        textAlign: 'center',
-      }}
-    >
-      <Reveal>
-      <Stack spacing={{ xs: 2.5, md: 3 }} sx={{ maxWidth: 980, mx: 'auto', alignItems: 'center' }}>
-        <Typography sx={{ color: palette.primaryPink, fontSize: 17, lineHeight: 1.35, fontWeight: 700 }}>
-          {eyebrow}
-        </Typography>
-        <Typography
-          component="h1"
-          sx={{
-            ...typeScale.hero,
-            fontSize: { xs: 44, sm: 64, md: 88, lg: 96 },
-            color: palette.text,
-          }}
-        >
-          {title}
-        </Typography>
-        <Typography sx={{ ...typeScale.intro, maxWidth: 820, color: '#4B5563' }}>{description}</Typography>
-      </Stack>
-      </Reveal>
-    </Box>
-  );
-}
-
-function PrimaryLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Box
-      component="a"
-      href={href}
-      sx={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 54,
-        px: { xs: 3.5, md: 4.5 },
-        borderRadius: 999,
-        bgcolor: palette.primaryPink,
-        color: '#FFFFFF',
-        textDecoration: 'none',
-        fontSize: 17,
-        lineHeight: 1.23,
-        fontWeight: 700,
-        transition: 'transform 240ms cubic-bezier(0.22, 1, 0.36, 1), background-color 180ms ease',
-        '&:hover': {
-          bgcolor: '#E6007E',
-          transform: 'translate3d(0, -2px, 0)',
-        },
-      }}
-    >
-      {children}
-    </Box>
+    <Stack spacing={{ xs: 1.5, md: 2 }} sx={{ mb: { xs: 4, md: 5 } }}>
+      <Typography component="h2" sx={sectionTitleSx}>{title}</Typography>
+      <Typography sx={bodySx}>{description}</Typography>
+    </Stack>
   );
 }
 
 export function ServicesPage() {
   return (
-    <Box sx={{ bgcolor: palette.background, color: palette.text, overflow: 'hidden' }}>
-      <PageHero
-        eyebrow="บริการ"
-        title="บริการของ Baawork"
-        description="ออกแบบและพัฒนาระบบเว็บแอป ระบบ AI และเครื่องมือหลังบ้านที่เชื่อมกับข้อมูลจริงของธุรกิจ"
-      />
-
-      <Box component="section" sx={{ px: pageGutter, pb: { xs: 7, md: 10 } }}>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
-            gap: { xs: 2, md: 2.5 },
-          }}
-        >
-          {serviceCards.map((item) => (
-            <Box
-              key={item.title}
-              sx={{
-                position: 'relative',
-                minHeight: { xs: 420, sm: 500, md: 560 },
-                borderRadius: { xs: '28px', md: '34px' },
-                overflow: 'hidden',
-                color: '#fff',
-                isolation: 'isolate',
-                transition: 'transform 340ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 340ms ease',
-                '&:hover': {
-                  transform: 'translate3d(0, -6px, 0)',
-                  boxShadow: '0 28px 60px rgba(17,24,39,0.16)',
-                },
-              }}
-            >
-              <Box
-                component="img"
-                src={item.image}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: -2 }}
-              />
-              <Box sx={{ position: 'absolute', inset: 0, bgcolor: 'rgba(17,24,39,0.48)', zIndex: -1 }} />
-              <Stack spacing={2} sx={{ p: { xs: 3.5, md: 5 }, maxWidth: 620 }}>
-                <Typography sx={{ ...typeScale.cardTitle, color: '#FFFFFF' }}>{item.title}</Typography>
-                <Typography sx={{ ...typeScale.bodyLarge, color: 'rgba(255,255,255,0.86)' }}>{item.body}</Typography>
-              </Stack>
-            </Box>
+    <DetailStylePage title="บริการของ Baawork" subtitle="ออกแบบประสบการณ์ใช้งานและพัฒนาระบบที่เชื่อมกับงานจริงของธุรกิจ">
+      <DetailStyleSection backgroundColor="#FFFFFF" variant="slide-right">
+        <SectionHeading title="บริการที่ต่อกันเป็นระบบเดียว" description="ทุกส่วนของงานถูกวางให้ทำงานต่อเนื่อง ตั้งแต่หน้าจอที่ผู้ใช้เห็น ไปจนถึงข้อมูลและระบบหลังบ้าน" />
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 } }}>
+          {services.map(([title, description]) => (
+            <Stack key={title} spacing={1.25} sx={cardSx}>
+              <Typography sx={{ ...typeScale.cardTitle, color: palette.primaryPink }}>{title}</Typography>
+              <Typography sx={{ ...typeScale.body, color: '#4B5563' }}>{description}</Typography>
+            </Stack>
           ))}
         </Box>
-      </Box>
-
-      <Box component="section" sx={{ px: pageGutter, py: { xs: 7, md: 10 }, bgcolor: palette.softGray }}>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 0.92fr) minmax(0, 1.08fr)' },
-            gap: { xs: 4, md: 7 },
-            alignItems: 'center',
-          }}
-        >
-          <Stack spacing={2.5}>
-            <Typography component="h2" sx={{ ...typeScale.sectionTitle, color: palette.primaryPink }}>
-              บริการที่ต่อกันเป็นระบบเดียว
-            </Typography>
-            <Typography sx={{ ...typeScale.bodyLarge, color: '#4B5563' }}>
-              เราไม่ได้แยกงานออกแบบกับงานระบบออกจากกัน แต่จัด UX/UI, frontend, backend, API และฐานข้อมูลให้ไปในทิศทางเดียวกันตั้งแต่ต้น
-            </Typography>
-            <Box sx={{ pt: 1 }}>
-              <PrimaryLink href="/start-project">เริ่มคุยโปรเจกต์</PrimaryLink>
-            </Box>
-          </Stack>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' },
-              gap: 2,
-            }}
-          >
-            {['UX/UI', 'ระบบ', 'Production'].map((label) => (
-              <Stack
-                key={label}
-                sx={{
-                  minHeight: 220,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  borderRadius: '28px',
-                  bgcolor: '#FFFFFF',
-                }}
-              >
-                <Typography sx={{ fontSize: { xs: 32, md: 40 }, lineHeight: 1.1, fontWeight: 700 }}>{label}</Typography>
-              </Stack>
-            ))}
-          </Box>
+      </DetailStyleSection>
+      <DetailStyleSection backgroundColor="#F7F8FA" variant="slide-left">
+        <SectionHeading title="พร้อมใช้งานและต่อยอดได้" description="เราออกแบบให้ UX/UI, frontend, backend, API และฐานข้อมูลไปในทิศทางเดียวกันตั้งแต่ต้น" />
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' }, gap: 2 }}>
+          {['UX/UI', 'ระบบหลังบ้าน', 'Production'].map((item) => <Box key={item} sx={{ ...cardSx, textAlign: 'center' }}><Typography sx={{ ...typeScale.cardTitle }}>{item}</Typography></Box>)}
         </Box>
-      </Box>
-    </Box>
+      </DetailStyleSection>
+    </DetailStylePage>
   );
 }
 
 export function StartProjectPage() {
   return (
-    <Box sx={{ bgcolor: palette.background, color: palette.text, overflow: 'hidden' }}>
-      <PageHero
-        eyebrow="วิธีเริ่มโปรเจกต์"
-        title="เริ่มโปรเจกต์กับ Baawork"
-        description="คุยโจทย์ให้ชัด วางขอบเขตให้เห็นภาพ แล้วค่อยพัฒนาเป็นระบบที่พร้อมใช้งานจริง"
-      />
-
-      <Box component="section" sx={{ px: pageGutter, pb: { xs: 7, md: 10 } }}>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: 'repeat(5, minmax(0, 1fr))' },
-            gap: { xs: 2, md: 1.5 },
-          }}
-        >
-          {startSteps.map((item) => (
-            <Stack
-              key={item.step}
-              spacing={3}
-              sx={{
-                minHeight: { xs: 260, md: 420 },
-                p: { xs: 3, md: 3.2 },
-                borderRadius: '28px',
-                bgcolor: item.step === '01' ? palette.primaryPink : palette.softGray,
-                color: item.step === '01' ? '#FFFFFF' : palette.text,
-                justifyContent: 'space-between',
-              }}
-            >
-              <Typography sx={{ fontSize: 17, lineHeight: 1.35, fontWeight: 700, opacity: 0.85 }}>{item.step}</Typography>
-              <Box>
-                <Typography sx={{ fontSize: { xs: 32, md: 34 }, lineHeight: 1.1, fontWeight: 700, mb: 1.5 }}>
-                  {item.title}
-                </Typography>
-                <Typography sx={{ ...typeScale.body, color: item.step === '01' ? 'rgba(255,255,255,0.86)' : '#4B5563' }}>
-                  {item.body}
-                </Typography>
-              </Box>
-            </Stack>
-          ))}
+    <DetailStylePage title="เริ่มโปรเจกต์กับ Baawork" subtitle="คุยโจทย์ให้ชัด วางขอบเขตให้เห็นภาพ แล้วพัฒนาเป็นระบบที่พร้อมใช้งานจริง">
+      <DetailStyleSection backgroundColor="#FFFFFF" variant="slide-right">
+        <SectionHeading title="ขั้นตอนการทำงาน" description="เราแบ่งงานเป็นขั้นตอนที่ชัดเจน เพื่อให้ทุกฝ่ายเห็นภาพและติดตามงานได้ตลอดโปรเจกต์" />
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(5, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 } }}>
+          {projectSteps.map(([number, title, description]) => <Stack key={number} spacing={3} sx={{ ...cardSx, minHeight: { xs: 220, lg: 300 }, justifyContent: 'space-between' }}><Typography sx={{ color: palette.primaryPink, fontWeight: 700 }}>{number}</Typography><Box><Typography sx={{ ...typeScale.cardTitle, mb: 1 }}>{title}</Typography><Typography sx={{ ...typeScale.body, color: '#4B5563' }}>{description}</Typography></Box></Stack>)}
         </Box>
-      </Box>
-
-      <Box component="section" sx={{ px: pageGutter, py: { xs: 7, md: 10 }, bgcolor: palette.softGray }}>
-        <Stack spacing={2.5} sx={{ maxWidth: 860, mb: { xs: 4, md: 5 } }}>
-          <Typography component="h2" sx={{ ...typeScale.sectionTitle, color: palette.text }}>
-            เตรียมแค่นี้ก็เริ่มคุยได้
-          </Typography>
-          <Typography sx={{ ...typeScale.bodyLarge, color: '#4B5563' }}>
-            ยังไม่ต้องมีเอกสารครบ แค่มีเป้าหมาย ตัวอย่างระบบที่ชอบ หรือปัญหาที่อยากแก้ ก็เริ่มวางแนวทางได้แล้ว
-          </Typography>
-        </Stack>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' },
-            gap: 2,
-          }}
-        >
-          {['เป้าหมายของระบบ', 'ตัวอย่างที่อยากได้', 'ข้อมูลที่ต้องเชื่อม', 'ระยะเวลาที่ต้องใช้'].map((item) => (
-            <Stack key={item} sx={{ minHeight: 180, borderRadius: '26px', bgcolor: '#fff', p: 3, justifyContent: 'flex-end' }}>
-              <Typography sx={{ fontSize: { xs: 24, md: 28 }, lineHeight: 1.18, fontWeight: 700 }}>{item}</Typography>
-            </Stack>
-          ))}
+      </DetailStyleSection>
+      <DetailStyleSection backgroundColor="#F7F8FA" variant="slide-left">
+        <SectionHeading title="เตรียมข้อมูลเพียงเล็กน้อย" description="ยังไม่ต้องมีเอกสารครบ แค่แชร์เป้าหมาย ตัวอย่างที่ชอบ ข้อมูลที่ต้องเชื่อม และช่วงเวลาที่ต้องการใช้งาน" />
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' }, gap: 2 }}>
+          {['เป้าหมายของระบบ', 'ตัวอย่างที่อยากได้', 'ข้อมูลที่ต้องเชื่อม', 'ช่วงเวลาที่ต้องการ'].map((item) => <Box key={item} sx={cardSx}><Typography sx={{ ...typeScale.cardTitle }}>{item}</Typography></Box>)}
         </Box>
-      </Box>
-    </Box>
+      </DetailStyleSection>
+    </DetailStylePage>
   );
 }
 
-export function FaqPage() {
+export function ConsultPage() {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const values = new FormData(event.currentTarget);
+    const subject = encodeURIComponent(`ปรึกษาโปรเจกต์จาก ${String(values.get('name') ?? '')}`);
+    const body = encodeURIComponent(['ชื่อ: ' + String(values.get('name') ?? ''), 'อีเมล: ' + String(values.get('email') ?? ''), 'โทรศัพท์: ' + String(values.get('phone') ?? '-'), 'บริษัท: ' + String(values.get('company') ?? '-'), 'ประเภทระบบ: ' + String(values.get('projectType') ?? '-'), '', 'รายละเอียด:', String(values.get('message') ?? '')].join('\n'));
+    window.location.href = `mailto:${consultationEmail}?subject=${subject}&body=${body}`;
+  };
+
+  const inputSx = { width: '100%', minHeight: 48, boxSizing: 'border-box', border: '1px solid #D1D5DB', borderRadius: '14px', px: 1.5, bgcolor: '#FFFFFF', color: palette.text, font: 'inherit', outline: 'none', '&:focus': { borderColor: palette.primaryPink, boxShadow: '0 0 0 3px rgba(255,0,140,0.14)' } };
+
   return (
-    <Box sx={{ bgcolor: palette.background, color: palette.text, overflow: 'hidden' }}>
-      <PageHero
-        eyebrow="FAQ"
-        title="คำถามที่พบบ่อย"
-        description="คำตอบสั้นๆ สำหรับคนที่กำลังคิดจะทำระบบเว็บแอป ระบบ AI หรือหลังบ้านกับ Baawork"
-      />
-
-      <Box component="section" sx={{ px: pageGutter, pb: { xs: 7, md: 10 } }}>
-        <Stack spacing={1.5} sx={{ maxWidth: 980, mx: 'auto' }}>
-          {faqItems.map((item) => (
-            <Box
-              key={item.question}
-              component="details"
-              sx={{
-                borderRadius: '24px',
-                bgcolor: palette.softGray,
-                px: { xs: 2.5, md: 3.5 },
-                py: { xs: 2.2, md: 2.8 },
-                '&[open]': { bgcolor: '#fff', boxShadow: '0 18px 46px rgba(17,24,39,0.08)' },
-              }}
-            >
-              <Box
-                component="summary"
-                sx={{
-                  cursor: 'pointer',
-                  listStyle: 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 2,
-                  '&::-webkit-details-marker': { display: 'none' },
-                }}
-              >
-                <Typography sx={{ fontSize: { xs: 21, md: 28 }, lineHeight: 1.18, fontWeight: 700 }}>
-                  {item.question}
-                </Typography>
-                <Typography aria-hidden="true" sx={{ color: palette.primaryPink, fontSize: 24, lineHeight: 1, fontWeight: 700 }}>
-                  ›
-                </Typography>
-              </Box>
-              <Typography sx={{ ...typeScale.bodyLarge, color: '#4B5563', maxWidth: 820, pt: 2 }}>{item.answer}</Typography>
-            </Box>
-          ))}
-        </Stack>
-      </Box>
-    </Box>
-  );
-}
-
-export function ContactPage() {
-  return (
-    <Box sx={{ bgcolor: palette.background, color: palette.text, overflow: 'hidden' }}>
-      <PageHero
-        eyebrow="ติดต่อเรา"
-        title="คุยกับ Baawork"
-        description="ส่งโจทย์ ระบบที่อยากทำ หรือปัญหาที่อยากแก้มาให้เราเริ่มดูภาพรวมร่วมกัน"
-      />
-
-      <Box component="section" sx={{ px: pageGutter, pb: { xs: 7, md: 10 } }}>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 0.95fr) minmax(280px, 0.7fr)' },
-            gap: { xs: 4, md: 8 },
-            alignItems: 'start',
-          }}
-        >
-          <Stack spacing={3}>
-            <Typography component="h2" sx={{ ...typeScale.sectionTitle, color: palette.primaryPink }}>
-              สนใจร่วมงานติดต่อได้ที่
-            </Typography>
-            <Typography sx={{ ...typeScale.bodyLarge, color: '#4B5563', maxWidth: 720 }}>
-              บอกเป้าหมายของระบบ ประเภทงาน และช่องทางที่สะดวกติดต่อกลับได้เลย เราจะช่วยไล่ภาพรวมและขอบเขตงานให้ชัดขึ้น
-            </Typography>
-            <Stack spacing={1.5} sx={{ pt: 1 }}>
-              {socials.map((social) => (
-                <Box
-                  key={social.label}
-                  component="a"
-                  href={social.href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  sx={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 1.75,
-                    color: '#4B5563',
-                    textDecoration: 'none',
-                    fontSize: { xs: 24, md: 32 },
-                    lineHeight: 1.2,
-                    fontWeight: 600,
-                    transition: 'color 180ms ease, transform 220ms ease',
-                    '&:hover': { color: social.color, transform: 'translate3d(0, -2px, 0)' },
-                  }}
-                >
-                  <Box
-                    component="img"
-                    src={social.iconSrc}
-                    alt=""
-                    aria-hidden="true"
-                    sx={{ width: { xs: 28, md: 34 }, height: { xs: 28, md: 34 }, objectFit: 'contain' }}
-                  />
-                  {social.label}
-                </Box>
-              ))}
-            </Stack>
-          </Stack>
-
-          <Stack
-            spacing={2}
-            sx={{
-              alignItems: { xs: 'flex-start', md: 'center' },
-              p: { xs: 0, md: 4 },
-            }}
-          >
-            <Box
-              component="img"
-              src="/homepage/line-qr.png"
-              alt="QR code สำหรับติดต่อ LINE Baawork"
-              sx={{ width: { xs: 220, md: 280 }, height: { xs: 220, md: 280 }, objectFit: 'contain' }}
-            />
-            <Typography sx={{ ...typeScale.body, color: '#4B5563', textAlign: { xs: 'left', md: 'center' } }}>
-              สแกนเพื่อคุยผ่าน LINE
-            </Typography>
-          </Stack>
+    <DetailStylePage title="ปรึกษา Baawork" subtitle="ส่งโจทย์ ระบบที่อยากทำ หรือปัญหาที่อยากแก้มาให้เราเริ่มดูภาพรวมร่วมกัน">
+      <DetailStyleSection backgroundColor="#FFFFFF" variant="slide-right">
+        <SectionHeading title="เล่าโจทย์ให้เราฟัง" description="กรอกข้อมูลแล้วกดส่ง ระบบจะเปิดอีเมลพร้อมรายละเอียดของคุณให้ส่งหา Baawork ได้ทันที" />
+        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 }, ...cardSx }}>
+          {[['ชื่อของคุณ', 'name', 'text'], ['อีเมลสำหรับติดต่อกลับ', 'email', 'email'], ['เบอร์โทรศัพท์ (ถ้ามี)', 'phone', 'tel'], ['บริษัทหรือองค์กร (ถ้ามี)', 'company', 'text']].map(([label, name, type]) => <Box key={name} component="label" sx={{ display: 'grid', gap: 0.8, fontSize: 14, fontWeight: 700 }}>{label}<Box component="input" name={name} type={type} required={name === 'name' || name === 'email'} sx={inputSx} /></Box>)}
+          <Box component="label" sx={{ display: 'grid', gap: 0.8, fontSize: 14, fontWeight: 700 }}>ประเภทระบบที่สนใจ<Box component="select" name="projectType" defaultValue="" required sx={inputSx}><option value="" disabled>เลือกประเภทระบบ</option><option>เว็บแอปพลิเคชัน</option><option>ระบบ AI</option><option>ระบบหลังบ้าน / Dashboard</option><option>เชื่อมต่อ API และข้อมูล</option></Box></Box>
+          <Box component="label" sx={{ display: 'grid', gap: 0.8, fontSize: 14, fontWeight: 700 }}>รายละเอียดที่อยากปรึกษา<Box component="textarea" name="message" required rows={5} sx={{ ...inputSx, p: 1.5, resize: 'vertical' }} /></Box>
+          <Box sx={{ gridColumn: '1 / -1', display: 'flex', justifyContent: { xs: 'stretch', sm: 'flex-end' } }}><Box component="button" type="submit" sx={{ minHeight: 50, minWidth: { xs: '100%', sm: 190 }, border: 0, borderRadius: 999, px: 3, bgcolor: palette.primaryPink, color: '#FFFFFF', cursor: 'pointer', font: 'inherit', fontWeight: 700 }}>ส่งรายละเอียดทางอีเมล</Box></Box>
         </Box>
-      </Box>
-    </Box>
+      </DetailStyleSection>
+      <DetailStyleSection backgroundColor="#F7F8FA" variant="slide-left">
+        <SectionHeading title="หรือติดต่อได้ที่" description="ติดตามผลงานและส่งข้อความหาเราได้ผ่านช่องทางด้านล่าง" />
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' }, gap: 2 }}>
+          {[['Facebook', 'https://www.facebook.com/BAAWORK'], ['YouTube', 'https://www.youtube.com/@baawork'], ['LINE', 'https://line.me/R/ti/p/@baawork']].map(([label, href]) => <Box key={label} component="a" href={href} target="_blank" rel="noreferrer" sx={{ ...cardSx, color: palette.text, textDecoration: 'none', textAlign: 'center' }}><Typography sx={{ ...typeScale.cardTitle }}>{label}</Typography></Box>)}
+        </Box>
+      </DetailStyleSection>
+    </DetailStylePage>
   );
 }

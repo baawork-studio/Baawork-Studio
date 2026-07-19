@@ -30,13 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.75,
     },
     {
-      url: `${siteUrl}/faq`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.65,
-    },
-    {
-      url: `${siteUrl}/contact`,
+      url: `${siteUrl}/consult`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,

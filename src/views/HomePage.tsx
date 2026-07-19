@@ -8,7 +8,7 @@ import { Stack } from "../components/Stack";
 import { palette, typeScale } from "../theme";
 import { restoreHomeSectionScroll } from "../utils/sectionNavigation";
 import { aiShowcaseCards, lineLiffShowcaseCards, webAppShowcaseCards, workCarouselGutter } from "../features/home/data";
-import { AudienceSection, FaqSection, HeroCta, ResultsSection, ShowcaseCarousel, StartProjectSection, ToolStackSection, WorkflowSection } from "../features/home/sections";
+import { AudienceSection, HeroCta, ResultsSection, ShowcaseCarousel, StartProjectSection, ToolStackSection, WorkflowSection } from "../features/home/sections";
 import type { HeroCtaPhase, HomePageProps } from "../features/home/types";
 
 const heroBackgroundImage = 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1600&q=82';
@@ -274,7 +274,6 @@ export function HomePage(_props: HomePageProps) {
         <Reveal variant="scale"><WorkflowSection /></Reveal>
         <Reveal variant="slide-right"><ResultsSection /></Reveal>
         <Reveal variant="scale"><StartProjectSection /></Reveal>
-        <Reveal variant="slide-left"><FaqSection /></Reveal>
       </Box>
     </Box>
   );
