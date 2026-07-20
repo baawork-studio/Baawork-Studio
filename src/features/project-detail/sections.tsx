@@ -1,4 +1,5 @@
-import { Box, Typography } from "@mui/material";
+import { useState } from "react";
+import { Box, Modal, Typography } from "@mui/material";
 import { Stack } from "../../components/Stack";
 import type { Project } from "../../data/fallbackProjects";
 import { palette, typeScale } from "../../theme";
@@ -87,12 +88,22 @@ const systemPreviewDevices = [
   { name: 'iPhone', label: 'หน้าจอ iPhone', imageUrl: '/project-screen-previews/iphone.png', maxHeight: { xs: 340, sm: 380, lg: 420 }, width: { xs: 'min(100%, 220px)', sm: '240px' }, gap: { xs: 0.25, md: 0.5 } },
 ] as const;
 
+type SystemPreviewDevice = (typeof systemPreviewDevices)[number];
+const systemPreviewImageCount = 6;
+
+const mobileOnlyPreviewSlugs = new Set([
+  'linora-facebook-page-analytics',
+  'shadow-ceo-business-assistant',
+]);
+
 function SystemPreviewCarousel({
   project,
   device,
+  onPreviewOpen,
 }: {
   project: Project;
-  device: (typeof systemPreviewDevices)[number];
+  device: SystemPreviewDevice;
+  onPreviewOpen: (device: SystemPreviewDevice, imageIndex: number) => void;
 }) {
   const { carouselRef, carouselState, scrollCards } = useDetailCarousel();
   const dragScroll = useHorizontalDragScroll();
@@ -129,15 +140,29 @@ function SystemPreviewCarousel({
             touchAction: 'pan-x pan-y',
             userSelect: 'none',
             WebkitUserSelect: 'none',
+            px: { xs: 3, md: 4 },
+            pt: 3,
+            pb: 4,
+            scrollPaddingInline: { xs: 3, md: 4 },
             '&::-webkit-scrollbar': { display: 'none' },
             '& img': { WebkitUserDrag: 'none' },
           }}
         >
-          {Array.from({ length: 6 }).map((_, imageIndex) => (
+          {Array.from({ length: systemPreviewImageCount }).map((_, imageIndex) => (
             <Box
               key={`${device.name}-${imageIndex}`}
               data-carousel-item="true"
-              component="img"
+              component={"button" as unknown as "img"}
+              role="button"
+              tabIndex={0}
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={() => onPreviewOpen(device, imageIndex)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onPreviewOpen(device, imageIndex);
+                }
+              }}
               src={device.imageUrl}
               alt={`${project.title} บน ${device.name} ${imageIndex + 1}`}
               loading="lazy"
@@ -151,9 +176,49 @@ function SystemPreviewCarousel({
                 objectFit: 'contain',
                 objectPosition: 'left center',
                 scrollSnapAlign: 'start',
-                pointerEvents: 'none',
+                cursor: 'zoom-in',
+                appearance: 'none',
+                WebkitAppearance: 'none',
+                outline: 'none',
+                border: '0 !important',
+                borderRadius: 0,
+                bgcolor: 'transparent !important',
+                boxShadow: 'none !important',
+                p: '0 !important',
+                lineHeight: 0,
+                overflow: 'visible',
+                transform: 'translate3d(0, 0, 0)',
+                willChange: 'transform',
+                position: 'relative',
+                zIndex: 1,
+                transition: 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease',
+                '&:hover': {
+                  transform: 'translate3d(0, -6px, 0)',
+                  opacity: 0.92,
+                  zIndex: 2,
+                },
+                '&:focus-visible': {
+                  outline: '2px solid #FF008C',
+                  outlineOffset: 6,
+                },
               }}
-            />
+            >
+              <Box
+                component="img"
+                src={device.imageUrl}
+                alt={`${project.title} ${device.name} ${imageIndex + 1}`}
+                loading="lazy"
+                decoding="async"
+                sx={{
+                  display: 'block',
+                  width: '100%',
+                  maxHeight: device.maxHeight,
+                  objectFit: 'contain',
+                  objectPosition: 'left center',
+                  pointerEvents: 'none',
+                }}
+              />
+            </Box>
           ))}
         </Box>
 
@@ -189,7 +254,140 @@ function SystemPreviewCarousel({
   );
 }
 
+function SystemPreviewOverlay({
+  project,
+  device,
+  imageIndex,
+  onClose,
+  onNavigate,
+}: {
+  project: Project;
+  device: SystemPreviewDevice;
+  imageIndex: number;
+  onClose: () => void;
+  onNavigate: (direction: -1 | 1) => void;
+}) {
+  const stageHeight = device.name === 'iPhone'
+    ? { xs: 480, sm: 560, md: 640 }
+    : device.name === 'iPad'
+      ? { xs: 400, sm: 480, md: 580 }
+      : { xs: 330, sm: 440, md: 560 };
+
+  return (
+    <Modal
+      open
+      onClose={onClose}
+      aria-labelledby="system-preview-overlay-title"
+      sx={{
+        display: 'grid',
+        placeItems: 'center',
+        p: { xs: 2, sm: 4 },
+        bgcolor: 'transparent',
+        backdropFilter: 'none',
+      }}
+    >
+      <Stack
+        spacing={{ xs: 2, md: 2.5 }}
+        sx={{
+          width: 'min(100%, 1000px)',
+          maxHeight: '92vh',
+          overflow: 'auto',
+          p: { xs: 2, sm: 3, md: 4 },
+          borderRadius: 0,
+          bgcolor: 'transparent',
+          color: '#fff',
+          boxShadow: 'none',
+          outline: 'none',
+        }}
+      >
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+          <Stack spacing={0.3}>
+            <Typography id="system-preview-overlay-title" sx={{ fontSize: { xs: 18, md: 22 }, fontWeight: 700 }}>
+              {device.label}
+            </Typography>
+            <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, fontWeight: 600 }}>
+              {imageIndex + 1} / {systemPreviewImageCount}
+            </Typography>
+          </Stack>
+          <Box
+            component="button"
+            type="button"
+            aria-label="Close preview"
+            onClick={onClose}
+            sx={{
+              width: 42,
+              height: 42,
+              border: 0,
+              borderRadius: '50%',
+              bgcolor: 'rgba(255,255,255,0.12)',
+              color: '#fff',
+              cursor: 'pointer',
+              fontSize: 28,
+              lineHeight: 1,
+              transition: 'background-color 180ms ease, transform 180ms ease',
+              '&:hover': { bgcolor: 'rgba(255,255,255,0.2)', transform: 'scale(1.05)' },
+            }}
+          >
+            ×
+          </Box>
+        </Stack>
+
+        <Box sx={{ position: 'relative', height: stageHeight, mx: 'auto', width: '100%', maxWidth: 860 }}>
+          <Box
+            key={`${device.name}-${imageIndex}`}
+            component="img"
+            src={device.imageUrl}
+            alt={`${project.title} ${device.name} ${imageIndex + 1}`}
+            sx={{
+              position: 'absolute',
+              zIndex: 1,
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              filter: 'none',
+              animation: 'system-preview-slide-in 360ms cubic-bezier(0.22, 1, 0.36, 1)',
+              '@keyframes system-preview-slide-in': {
+                from: { opacity: 0, transform: 'translate3d(7%, 0, 0) scale(0.96)' },
+                to: { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' },
+              },
+            }}
+          />
+        </Box>
+
+        <Stack direction="row" justifyContent="center" spacing={1.25}>
+          <Box
+            component="button"
+            type="button"
+            aria-label="Previous preview"
+            onClick={() => onNavigate(-1)}
+            sx={carouselControlSx(true)}
+          >
+            <Box component="span" sx={{ width: 12, height: 12, ml: 0.5, borderLeft: '3px solid currentColor', borderBottom: '3px solid currentColor', transform: 'rotate(45deg)' }} />
+          </Box>
+          <Box
+            component="button"
+            type="button"
+            aria-label="Next preview"
+            onClick={() => onNavigate(1)}
+            sx={carouselControlSx(true)}
+          >
+            <Box component="span" sx={{ width: 12, height: 12, mr: 0.5, borderRight: '3px solid currentColor', borderBottom: '3px solid currentColor', transform: 'rotate(-45deg)' }} />
+          </Box>
+        </Stack>
+      </Stack>
+    </Modal>
+  );
+}
+
 export function ProjectSystemPreviewSection({ project }: { project: Project }) {
+  const previewDevices = mobileOnlyPreviewSlugs.has(project.slug)
+    ? systemPreviewDevices.filter((device) => device.name === 'iPhone')
+    : systemPreviewDevices;
+  const [activePreview, setActivePreview] = useState<{
+    device: SystemPreviewDevice;
+    imageIndex: number;
+  } | null>(null);
 
   return (
     <Box
@@ -230,11 +428,30 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
             alignItems: 'start',
           }}
         >
-          {systemPreviewDevices.map((device) => (
-            <SystemPreviewCarousel key={device.name} project={project} device={device} />
+          {previewDevices.map((device) => (
+            <SystemPreviewCarousel
+              key={device.name}
+              project={project}
+              device={device}
+              onPreviewOpen={(previewDevice, imageIndex) => setActivePreview({ device: previewDevice, imageIndex })}
+            />
           ))}
         </Box>
       </Box>
+      {activePreview && (
+        <SystemPreviewOverlay
+          project={project}
+          device={activePreview.device}
+          imageIndex={activePreview.imageIndex}
+          onClose={() => setActivePreview(null)}
+          onNavigate={(direction) => {
+            setActivePreview((current) => current && {
+              ...current,
+              imageIndex: (current.imageIndex + direction + systemPreviewImageCount) % systemPreviewImageCount,
+            });
+          }}
+        />
+      )}
     </Box>
   );
 }
@@ -623,7 +840,6 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
   const cards = getCapabilityCards(project);
   const { carouselRef, carouselState, scrollCards } = useDetailCarousel();
   const dragScroll = useHorizontalDragScroll();
-  const fallbackImages = Array.from(new Set([project.coverImageUrl, ...project.galleryImageUrls].filter(Boolean)));
 
   return (
     <Box
@@ -690,7 +906,6 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
           }}
         />
         {cards.map((card, index) => {
-          const imageUrl = fallbackImages[index % fallbackImages.length] ?? project.coverImageUrl;
           const detailRows = getCapabilityDetailRows(project, card);
 
           return (
@@ -704,7 +919,11 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                 height: { xs: 620, md: 680 },
                 overflow: 'hidden',
                 borderRadius: '28px',
-                bgcolor: '#000',
+                bgcolor: '#222',
+                backgroundImage:
+                  "url('/project-details/project-detail-carousel-background.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 color: '#fff',
                 scrollSnapAlign: 'start',
                 scrollMarginInline: pageGutter,
@@ -719,45 +938,16 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                   boxShadow: '0 18px 40px rgba(17,24,39,0.14)',
                   zIndex: 2,
                 },
-                '&:hover img': {
-                  transform: 'scale(1.035)',
-                },
               }}
             >
-              <Box
-                component="img"
-                src={imageUrl}
-                alt={card.title}
-                sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  transform: 'scale(1)',
-                  transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
-                  willChange: 'transform',
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                }}
-              />
-              <Box
-                sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  background:
-                    'linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.78) 30%, rgba(0,0,0,0.58) 58%, rgba(0,0,0,0.18) 78%, rgba(0,0,0,0.24) 100%)',
-                  zIndex: 1,
-                }}
-              />
               <Stack
                 spacing={{ xs: 1.45, md: 2 }}
                 sx={{
-                  position: 'relative',
+                  position: 'absolute',
+                  inset: { xs: '18px', md: '20px' },
                   zIndex: 2,
                   p: { xs: '28px', md: '32px' },
                   pr: { xs: '32px', md: '34px' },
-                  m: { xs: '18px', md: '20px' },
                   borderRadius: '22px',
                   bgcolor: 'rgba(0,0,0,0.2)',
                   backdropFilter: 'blur(6px)',

@@ -121,7 +121,7 @@ export function AppShell({ children }: AppShellProps) {
   }, [mobileMenuOpen, mobileMenuClosing]);
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: palette.background, color: palette.text }}>
+    <Box sx={{ minHeight: '100vh', overflowX: 'clip', bgcolor: palette.background, color: palette.text }}>
       <Box
         key={pathname}
         component="header"

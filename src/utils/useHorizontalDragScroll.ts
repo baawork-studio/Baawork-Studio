@@ -83,5 +83,12 @@ export function scrollToAdjacentCarouselItem(container: HTMLElement, direction: 
 
   if (targetIndex === activeIndex) return;
 
-  items[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  const targetLeft = Math.max(
+    0,
+    Math.min(container.scrollWidth - container.clientWidth, items[targetIndex].offsetLeft - firstOffset),
+  );
+
+  // Scroll only the carousel. scrollIntoView() can also shift the page itself
+  // when a control is pressed repeatedly while its smooth scroll is in flight.
+  container.scrollTo({ left: targetLeft, behavior: 'smooth' });
 }
