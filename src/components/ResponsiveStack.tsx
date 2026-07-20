@@ -3,14 +3,14 @@
 import MuiStack from '@mui/material/Stack';
 import type { ComponentProps, ElementType } from 'react';
 
-type StackProps = ComponentProps<typeof MuiStack> & {
+type ResponsiveStackProps = ComponentProps<typeof MuiStack> & {
   component?: ElementType;
   alignItems?: unknown;
   justifyContent?: unknown;
   textAlign?: unknown;
 };
 
-export function Stack({ alignItems, justifyContent, textAlign, sx, ...props }: StackProps) {
+export function ResponsiveStack({ alignItems, justifyContent, textAlign, sx, ...props }: ResponsiveStackProps) {
   return (
     <MuiStack
       {...props}

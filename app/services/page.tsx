@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { AppShell } from '../../src/components/AppShell';
-import { ServicesPage } from '../../src/views/MarketingPages';
+import { ServicesPage } from '../../src/views/MarketingPageViews';
 
 export const metadata: Metadata = {
   title: 'บริการ',

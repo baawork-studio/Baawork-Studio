@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { AppShell } from '../../src/components/AppShell';
-import { ConsultPage } from '../../src/views/MarketingPages';
+import { ConsultPage } from '../../src/views/MarketingPageViews';
 
 export const metadata: Metadata = {
   title: 'ปรึกษา Baawork',

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { AppShell } from '../../src/components/AppShell';
-import { StartProjectPage } from '../../src/views/MarketingPages';
+import { StartProjectPage } from '../../src/views/MarketingPageViews';
 
 export const metadata: Metadata = {
   title: 'วิธีเริ่มโปรเจกต์',

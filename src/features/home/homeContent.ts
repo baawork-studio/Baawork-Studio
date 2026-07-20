@@ -1,7 +1,7 @@
-import carouselMobileImage from "../../assets/carousel-mobile.png";
-import carouselMobileImageAlt from "../../assets/carousel-mobile-2.png";
-import { palette } from "../../theme";
-import type { ShowcaseCard } from "./types";
+import aiPhoneHandsImage from "../../assets/ai-phone-hands.png";
+import aiPhoneTrioImage from "../../assets/ai-phone-trio.png";
+import { palette } from "../../appTheme";
+import type { ShowcaseCard } from "./homeTypes";
 
 const allAiShowcaseCards: ShowcaseCard[] = [
   {
@@ -16,7 +16,7 @@ const allAiShowcaseCards: ShowcaseCard[] = [
     slug: 'shadow-ceo-business-assistant',
     title: 'Shadow CEO',
     shortDescription: 'AI Business Assistant บน LINE ที่สรุปข้อมูลล่าสุด แจ้งเตือนโอกาสสำคัญ และตอบคำถามว่า วันนี้ธุรกิจควรทำอะไรต่อ',
-    coverImageUrl: carouselMobileImage.src,
+    coverImageUrl: aiPhoneHandsImage.src,
     presentation: 'phoneAiLight',
   },
   {
@@ -24,7 +24,7 @@ const allAiShowcaseCards: ShowcaseCard[] = [
     slug: 'ai-document-review',
     title: 'ระบบอ่านเอกสาร AI',
     shortDescription: 'ระบบช่วยอ่านเอกสาร สกัดใจความสำคัญ และจัดหมวดหมู่คำขอจากหน้าจอเดียว',
-    coverImageUrl: carouselMobileImage.src,
+    coverImageUrl: aiPhoneHandsImage.src,
     presentation: 'phoneAiLight',
   },
   {
@@ -32,7 +32,7 @@ const allAiShowcaseCards: ShowcaseCard[] = [
     slug: 'ai-service-agent',
     title: 'ผู้ช่วยบริการอัตโนมัติ',
     shortDescription: 'ระบบผู้ช่วยตอบกลับอัตโนมัติที่ติดตามบทสนทนา งานค้าง และคุณภาพบริการของทีม',
-    coverImageUrl: carouselMobileImageAlt.src,
+    coverImageUrl: aiPhoneTrioImage.src,
     presentation: 'phoneAiDark',
   },
   {
@@ -40,7 +40,7 @@ const allAiShowcaseCards: ShowcaseCard[] = [
     slug: 'ai-api-monitor',
     title: 'ระบบเฝ้าระวัง API',
     shortDescription: 'หน้าจอตรวจจับ anomaly ของระบบ API พร้อมแจ้งเตือนเหตุการณ์ผิดปกติก่อนกระทบผู้ใช้',
-    coverImageUrl: carouselMobileImage.src,
+    coverImageUrl: aiPhoneHandsImage.src,
     presentation: 'phoneAiLight',
   },
 ];
@@ -248,33 +248,5 @@ export const resultCards = [
     icon: 'growth',
     size: 'large',
     imageUrl: '/results-future-system-expansion.png',
-  },
-] as const;
-
-export const faqItems = [
-  {
-    question: 'เริ่มโปรเจกต์ต้องเตรียมอะไรบ้าง',
-    answer:
-      'เตรียมเป้าหมายของระบบ ผู้ใช้งานหลัก ตัวอย่างหน้าจอหรือระบบที่ชอบ และข้อมูลที่อยากให้ระบบเชื่อมต่อ ถ้ายังไม่ครบเราช่วยเรียบเรียงโจทย์ให้ชัดก่อนเริ่มได้',
-  },
-  {
-    question: 'ใช้เวลาพัฒนานานแค่ไหน',
-    answer:
-      'ระยะเวลาขึ้นอยู่กับจำนวนหน้าจอ ความซับซ้อนของ workflow และการเชื่อมต่อ API โดยเริ่มจากการวาง scope ให้ชัด เพื่อให้รู้กรอบเวลาและสิ่งที่จะส่งมอบตั้งแต่ต้น',
-  },
-  {
-    question: 'ทำระบบหลังบ้านให้ด้วยไหม',
-    answer:
-      'ทำได้ทั้งหน้าบ้าน หลังบ้าน ฐานข้อมูล API และหน้า admin สำหรับจัดการข้อมูลหรือ workflow ที่ทีมต้องใช้งานจริง',
-  },
-  {
-    question: 'เชื่อมต่อ API หรือฐานข้อมูลเดิมได้ไหม',
-    answer:
-      'เชื่อมต่อได้ทั้ง API เดิม ฐานข้อมูล PostgreSQL และระบบ cache อย่าง Redis รวมถึงออกแบบ API ใหม่ให้รองรับการใช้งานต่อในอนาคต',
-  },
-  {
-    question: 'หลังส่งมอบดูแลต่อได้ไหม',
-    answer:
-      'ดูแลต่อได้ตามขอบเขตที่ตกลงกัน เช่น ปรับแก้หน้าจอ เพิ่ม feature ตรวจปัญหา production และช่วยวางแผนการต่อยอดระบบรอบถัดไป',
   },
 ] as const;

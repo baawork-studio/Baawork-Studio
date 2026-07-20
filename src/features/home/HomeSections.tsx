@@ -6,22 +6,21 @@ import HubRounded from '@mui/icons-material/HubRounded';
 import TrendingUpRounded from '@mui/icons-material/TrendingUpRounded';
 import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "../../components/motion/Reveal";
-import { Stack } from "../../components/Stack";
-import { palette, typeScale } from "../../theme";
-import { navigateToHomeSection } from "../../utils/sectionNavigation";
-import { useHorizontalDragScroll } from "../../utils/useHorizontalDragScroll";
+import { ResponsiveStack } from "../../components/ResponsiveStack";
+import { palette, typeScale } from "../../appTheme";
+import { navigateToHomeSection } from "../../utils/homeSectionNavigation";
+import { useHorizontalDragScroll } from "../../hooks/useHorizontalDragScroll";
 import {
   aiPhoneScreens,
   audienceGroups,
-  faqItems,
   resultCards,
   toolLogos,
   workCarouselGutter,
   workCarouselVerticalGap,
   workflowPanels,
-} from "./data";
-import { carouselControlSx, useShowcaseCarousel, useWorkflowCarousel } from "./hooks";
-import type { HeroCtaPhase, ShowcaseCard } from "./types";
+} from "./homeContent";
+import { carouselControlSx, useShowcaseCarousel, useWorkflowCarousel } from "./useHomeCarousels";
+import type { HeroCtaPhase, ShowcaseCard } from "./homeTypes";
 
 const futureSystemExpansionIcons = [
   { Icon: TrendingUpRounded, color: '#6D5BFF', bottom: { xs: '26%', sm: '24%', md: '22%', lg: '20%' }, left: '-6%' },
@@ -262,8 +261,8 @@ function AiPhoneScreen({
             : 'linear-gradient(180deg, #FFFFFF 0%, #F7F8FA 48%, rgba(255,0,140,0.08) 100%)',
         }}
       >
-        <Stack spacing={1.2} sx={{ height: '100%' }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <ResponsiveStack spacing={1.2} sx={{ height: '100%' }}>
+          <ResponsiveStack direction="row" alignItems="center" justifyContent="space-between">
             <Box
               sx={{
                 width: 28,
@@ -276,7 +275,7 @@ function AiPhoneScreen({
             <Typography sx={{ fontSize: 10, lineHeight: 1, fontWeight: 600, color: mutedColor }}>
               AI LIVE
             </Typography>
-          </Stack>
+          </ResponsiveStack>
 
           <Typography
             sx={{
@@ -293,51 +292,51 @@ function AiPhoneScreen({
             <>
               <Box sx={{ p: 1.2, borderRadius: '14px', bgcolor: isDarkPhone ? '#0B0F19' : '#111827', color: '#fff' }}>
                 <Typography sx={{ fontSize: 9, lineHeight: 1.2, color: 'rgba(255,255,255,0.64)' }}>{screen.label}</Typography>
-                <Stack direction="row" alignItems="flex-end" spacing={0.6}>
+                <ResponsiveStack direction="row" alignItems="flex-end" spacing={0.6}>
                   <Typography sx={{ fontSize: 30, lineHeight: 1, fontWeight: 600 }}>{screen.score}</Typography>
                   <Typography sx={{ pb: 0.35, fontSize: 10, color: palette.accentYellow }}>{screen.delta}</Typography>
-                </Stack>
+                </ResponsiveStack>
               </Box>
 
-              <Stack spacing={0.7}>
+              <ResponsiveStack spacing={0.7}>
                 {screen.items.map(([label, width], itemIndex) => (
                   <Box key={label} sx={{ p: 1, borderRadius: '12px', bgcolor: panelColor, boxShadow: panelShadow }}>
-                    <Stack direction="row" justifyContent="space-between" sx={{ mb: 0.7 }}>
+                    <ResponsiveStack direction="row" justifyContent="space-between" sx={{ mb: 0.7 }}>
                       <Typography sx={{ fontSize: 8.5, fontWeight: 600, color: textColor }}>
                         {label}
                       </Typography>
                       <Typography sx={{ fontSize: 8.5, color: mutedColor }}>{width}%</Typography>
-                    </Stack>
+                    </ResponsiveStack>
                   </Box>
                 ))}
-              </Stack>
+              </ResponsiveStack>
             </>
           )}
 
           {screen.variant === 'document' && (
-            <Stack spacing={0.85}>
+            <ResponsiveStack spacing={0.85}>
               <Box sx={{ p: 1.2, borderRadius: '16px', bgcolor: '#111827', color: '#fff' }}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <ResponsiveStack direction="row" alignItems="center" justifyContent="space-between">
                   <Typography sx={{ fontSize: 9, color: 'rgba(255,255,255,0.68)' }}>{screen.label}</Typography>
                   <Typography sx={{ fontSize: 10, fontWeight: 600, color: palette.accentYellow }}>{screen.delta}</Typography>
-                </Stack>
+                </ResponsiveStack>
                 <Typography sx={{ fontSize: 31, lineHeight: 1.05, fontWeight: 600 }}>{screen.score}</Typography>
               </Box>
               {screen.documents.map(([label, status], itemIndex) => (
-                <Stack key={label} direction="row" alignItems="center" spacing={0.9} sx={{ p: 1, borderRadius: '13px', bgcolor: panelColor, boxShadow: panelShadow }}>
+                <ResponsiveStack key={label} direction="row" alignItems="center" spacing={0.9} sx={{ p: 1, borderRadius: '13px', bgcolor: panelColor, boxShadow: panelShadow }}>
                   <Box sx={{ width: 20, height: 24, borderRadius: '6px', bgcolor: itemIndex === 2 ? palette.primaryPink : '#E5E7EB' }} />
                   <Box sx={{ minWidth: 0, flex: 1 }}>
                     <Typography sx={{ fontSize: 9, fontWeight: 600, color: textColor }}>{label}</Typography>
                     <Typography sx={{ fontSize: 8, color: mutedColor }}>AI extract</Typography>
                   </Box>
                   <Typography sx={{ fontSize: 8.5, fontWeight: 600, color: itemIndex === 2 ? palette.primaryPink : mutedColor }}>{status}</Typography>
-                </Stack>
+                </ResponsiveStack>
               ))}
-            </Stack>
+            </ResponsiveStack>
           )}
 
           {screen.variant === 'agent' && (
-            <Stack spacing={0.8}>
+            <ResponsiveStack spacing={0.8}>
               {screen.messages.map(([label, value], itemIndex) => (
                 <Box
                   key={label}
@@ -357,16 +356,16 @@ function AiPhoneScreen({
               <Box sx={{ mt: 'auto', p: 1, borderRadius: 999, bgcolor: 'rgba(255,255,255,0.08)' }}>
                 <Typography sx={{ fontSize: 8.5, color: 'rgba(255,255,255,0.62)' }}>AI draft ready...</Typography>
               </Box>
-            </Stack>
+            </ResponsiveStack>
           )}
 
           {screen.variant === 'monitor' && (
-            <Stack spacing={0.9}>
+            <ResponsiveStack spacing={0.9}>
               <Box sx={{ p: 1.2, borderRadius: '16px', bgcolor: '#111827', color: '#fff' }}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <ResponsiveStack direction="row" alignItems="center" justifyContent="space-between">
                   <Typography sx={{ fontSize: 9, color: 'rgba(255,255,255,0.68)' }}>{screen.label}</Typography>
                   <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#4ADE80' }} />
-                </Stack>
+                </ResponsiveStack>
                 <Typography sx={{ fontSize: 31, lineHeight: 1.05, fontWeight: 600 }}>{screen.score}</Typography>
               </Box>
               <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0.8 }}>
@@ -394,9 +393,9 @@ function AiPhoneScreen({
                   />
                 ))}
               </Box>
-            </Stack>
+            </ResponsiveStack>
           )}
-        </Stack>
+        </ResponsiveStack>
       </Box>
       <Box
         sx={{
@@ -517,7 +516,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
                   pointerEvents: 'none',
                 }}
               />
-              <Stack
+              <ResponsiveStack
                 spacing={{ xs: 1.7, md: 2.5 }}
                 sx={{
                   position: 'relative',
@@ -544,7 +543,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
                 >
                   {project.shortDescription}
                 </Typography>
-              </Stack>
+              </ResponsiveStack>
               <Box
                 aria-hidden="true"
                 sx={{
@@ -572,7 +571,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
         })}
       </Box>
       {carouselState.isScrollable && (
-      <Stack
+      <ResponsiveStack
         direction="row"
         justifyContent="flex-end"
         spacing={2}
@@ -618,7 +617,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
             }}
           />
         </Box>
-      </Stack>
+      </ResponsiveStack>
       )}
     </>
   );
@@ -642,7 +641,7 @@ export function ToolStackSection() {
         }}
       >
         <Reveal>
-          <Stack
+          <ResponsiveStack
             spacing={{ xs: 2, md: 2.5 }}
             alignItems="center"
             textAlign="center"
@@ -666,7 +665,7 @@ export function ToolStackSection() {
             >
               เราเลือกเทคโนโลยีที่เสถียร เชื่อมต่อกันได้ดี และเหมาะกับการสร้างระบบที่ใช้งานจริงตั้งแต่เริ่มต้นจนดูแลต่อใน production
             </Typography>
-          </Stack>
+          </ResponsiveStack>
         </Reveal>
 
         <Box
@@ -718,14 +717,7 @@ export function ToolStackSection() {
                       aspectRatio: '1 / 1',
                       display: 'grid',
                       placeItems: 'center',
-                      borderRadius: { xs: '20px', md: '24px' },
-                      bgcolor: 'rgba(243,244,246,0.86)',
-                      boxShadow: '0 14px 30px rgba(17,24,39,0.045), inset 0 1px 0 rgba(255,255,255,0.72)',
-                      transition: 'background-color 220ms ease, box-shadow 220ms ease',
-                      '&:hover': {
-                        bgcolor: 'rgba(255,255,255,0.66)',
-                        boxShadow: '0 20px 42px rgba(17,24,39,0.08), inset 0 1px 0 rgba(255,255,255,0.86)',
-                      },
+                      bgcolor: 'transparent',
                     }}
                   >
                     <Box
@@ -738,8 +730,8 @@ export function ToolStackSection() {
                         event.currentTarget.style.display = 'none';
                       }}
                       sx={{
-                        width: '53%',
-                        height: '53%',
+                        width: '64%',
+                        height: '64%',
                         objectFit: 'contain',
                       }}
                     />
@@ -769,14 +761,14 @@ export function AudienceSection() {
       }}
     >
       <Reveal variant="scale">
-        <Stack spacing={{ xs: 1.5, md: 2 }} alignItems="center" textAlign="center" sx={{ maxWidth: 820, mx: 'auto' }}>
+        <ResponsiveStack spacing={{ xs: 1.5, md: 2 }} alignItems="center" textAlign="center" sx={{ maxWidth: 820, mx: 'auto' }}>
           <Typography id="audience-title" variant="h2" sx={{ color: palette.primaryPink, ...typeScale.sectionTitle }}>
             ออกแบบสำหรับทีมที่ทำงานจริง
           </Typography>
           <Typography sx={{ color: '#4B5563', ...typeScale.bodyLarge }}>
             ตั้งแต่ทีมเล็กที่กำลังเติบโต ไปจนถึงองค์กรที่ต้องจัดการข้อมูล คน และ workflow หลายส่วนพร้อมกัน
           </Typography>
-        </Stack>
+        </ResponsiveStack>
       </Reveal>
 
       <Box
@@ -892,7 +884,7 @@ export function WorkflowSection() {
           px: workCarouselGutter,
         }}
       >
-      <Stack
+      <ResponsiveStack
           spacing={1.25}
           sx={{
             maxWidth: { xs: '100%', md: 900, lg: 980 },
@@ -910,7 +902,7 @@ export function WorkflowSection() {
           >
             กระบวนการทำงาน
           </Typography>
-        </Stack>
+        </ResponsiveStack>
       </Box>
 
       <Box
@@ -1009,7 +1001,7 @@ export function WorkflowSection() {
                     'linear-gradient(180deg, rgba(0,0,0,0.24) 0%, rgba(0,0,0,0.40) 42%, rgba(0,0,0,0.62) 100%)',
                 }}
               />
-              <Stack
+              <ResponsiveStack
                 spacing={{ xs: 1.9, md: 2.35 }}
                 alignItems="center"
                 justifyContent="center"
@@ -1042,7 +1034,7 @@ export function WorkflowSection() {
                 >
                   {panel.description}
                 </Typography>
-              </Stack>
+              </ResponsiveStack>
             </Box>
           ))}
         <Box
@@ -1056,7 +1048,7 @@ export function WorkflowSection() {
       </Box>
 
       {carouselState.isScrollable && (
-      <Stack
+      <ResponsiveStack
         direction="row"
         justifyContent="flex-end"
         spacing={2}
@@ -1108,7 +1100,7 @@ export function WorkflowSection() {
               }}
             />
         </Box>
-      </Stack>
+      </ResponsiveStack>
       )}
     </Box>
   );
@@ -1205,7 +1197,7 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                     ...position,
                   }}
                 >
-                  <Icon sx={{ fontSize: { xs: 104, sm: 142, md: 174, lg: 212 }, color }} />
+                  <Icon sx={{ fontSize: { xs: 104, sm: 124, md: 138, lg: 158 }, color }} />
                 </Box>
               ))}
           <HubRounded
@@ -1214,7 +1206,7 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
               left: '50%',
               top: '58%',
               transform: 'translate(-50%, -50%)',
-              fontSize: { xs: 96, sm: 128, md: 156, lg: 188 },
+              fontSize: { xs: 96, sm: 112, md: 124, lg: 144 },
                   color: palette.primaryPink,
                 }}
               />
@@ -1252,7 +1244,7 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                   background: 'linear-gradient(135deg, rgba(255,0,140,0.14), transparent 46%)',
                 }}
               />
-              <Stack
+              <ResponsiveStack
                 direction="row"
                 spacing={1}
                 sx={{
@@ -1278,7 +1270,7 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
                 >
                   READY
                 </Box>
-              </Stack>
+              </ResponsiveStack>
               {[29, 47, 65].map((top, index) => (
                 <Box
                   key={top}
@@ -1376,7 +1368,7 @@ export function ResultsSection() {
       }}
     >
       <Box sx={{ px: workCarouselGutter }}>
-        <Stack
+        <ResponsiveStack
           spacing={1.25}
           sx={{
             maxWidth: { xs: '100%', md: 900, lg: 980 },
@@ -1394,7 +1386,7 @@ export function ResultsSection() {
           >
             สิ่งที่ลูกค้าจะได้หลังจบโปรเจกต์
           </Typography>
-        </Stack>
+        </ResponsiveStack>
 
         <Box
           sx={{
@@ -1405,11 +1397,11 @@ export function ResultsSection() {
           }}
         >
           {[leftCards, rightCards].map((column, columnIndex) => (
-            <Stack key={columnIndex} spacing={{ xs: 2, md: 3 }}>
+            <ResponsiveStack key={columnIndex} spacing={{ xs: 2, md: 3 }}>
               {column.map((card) => (
                 <ResultCard key={card.title} card={card} />
               ))}
-            </Stack>
+            </ResponsiveStack>
           ))}
         </Box>
       </Box>
@@ -1430,7 +1422,7 @@ export function StartProjectSection() {
         textAlign: 'center',
       }}
     >
-      <Stack
+      <ResponsiveStack
         spacing={{ xs: 2.5, md: 3 }}
         alignItems="center"
       >
@@ -1454,7 +1446,7 @@ export function StartProjectSection() {
         >
           เล่าไอเดียหรือปัญหาของระบบที่อยากสร้าง แล้วเราช่วยวางแนวทางให้พร้อมเริ่มพัฒนาได้จริง
         </Typography>
-        <Stack
+        <ResponsiveStack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={1.5}
           alignItems="center"
@@ -1535,129 +1527,8 @@ export function StartProjectSection() {
           >
             ดูผลงานอีกครั้ง
           </Box>
-        </Stack>
-      </Stack>
-    </Box>
-  );
-}
-
-export function FaqSection() {
-  return (
-    <Box
-      component="section"
-      id="faq"
-      sx={{
-        bgcolor: '#FFFFFF',
-        color: palette.text,
-        px: workCarouselGutter,
-        py: { xs: 7, sm: 8, md: 10, lg: 12 },
-      }}
-    >
-      <Stack spacing={{ xs: 3, md: 4 }}>
-        <Typography
-          variant="h2"
-          sx={{
-            color: palette.primaryPink,
-            ...typeScale.sectionTitle,
-            textAlign: 'center',
-          }}
-        >
-          คำถามที่พบบ่อย
-        </Typography>
-
-        <Stack spacing={1.5}>
-          {faqItems.map((item) => (
-            <Box
-              key={item.question}
-              component="details"
-              sx={{
-                bgcolor: '#FFFFFF',
-                borderRadius: { xs: '24px', md: '30px' },
-                boxShadow: '0 16px 48px rgba(17,24,39,0.06)',
-                overflow: 'hidden',
-                transition: 'box-shadow 220ms ease, transform 220ms ease',
-                '&:hover': {
-                  transform: 'translate3d(0, -1px, 0)',
-                  boxShadow: '0 20px 58px rgba(17,24,39,0.08)',
-                },
-                '&[open] .faq-plus': {
-                  transform: 'rotate(45deg)',
-                  bgcolor: palette.primaryPink,
-                  color: '#FFFFFF !important',
-                },
-                '& summary:focus': {
-                  outline: 'none',
-                },
-                '& summary:focus-visible': {
-                  outline: 'none',
-                },
-                '& summary::-webkit-details-marker': {
-                  display: 'none',
-                },
-              }}
-            >
-              <Box
-                component="summary"
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: { xs: 2, md: 4 },
-                  cursor: 'pointer',
-                  px: { xs: 3, sm: 4, md: 5 },
-                  py: { xs: 2.5, sm: 3, md: 3.5 },
-                  listStyle: 'none',
-                }}
-              >
-                <Typography
-                  variant="h3"
-                  sx={{
-                    color: palette.text,
-                    fontSize: { xs: 19, sm: 21, md: 24 },
-                    lineHeight: 1.25,
-                    fontWeight: 600,
-                    letterSpacing: 0,
-                  }}
-                >
-                  {item.question}
-                </Typography>
-                <Box
-                  component="span"
-                  className="faq-plus"
-                  aria-hidden="true"
-                  sx={{
-                    display: 'grid',
-                    placeItems: 'center',
-                    flex: '0 0 auto',
-                    width: { xs: 38, sm: 42 },
-                    height: { xs: 38, sm: 42 },
-                    borderRadius: '50%',
-                    bgcolor: '#F5F5F7',
-                    color: palette.text,
-                    fontSize: { xs: 28, sm: 30 },
-                    lineHeight: 1,
-                    fontWeight: 500,
-                    transition: 'transform 220ms ease, background-color 220ms ease, color 220ms ease',
-                  }}
-                >
-                  +
-                </Box>
-              </Box>
-              <Typography
-                sx={{
-                  color: '#4B5563',
-                  ...typeScale.body,
-                  px: { xs: 3, sm: 4, md: 5 },
-                  pb: { xs: 3, sm: 3.5, md: 4 },
-                  maxWidth: 920,
-                }}
-              >
-                {item.answer}
-              </Typography>
-            </Box>
-          ))}
-        </Stack>
-      </Stack>
+        </ResponsiveStack>
+      </ResponsiveStack>
     </Box>
   );
 }

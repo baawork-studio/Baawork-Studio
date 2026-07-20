@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { workCarouselEdgeTolerance } from "./data";
-import { scrollToAdjacentCarouselItem } from "../../utils/useHorizontalDragScroll";
+import { workCarouselEdgeTolerance } from "./homeContent";
+import { scrollToAdjacentCarouselItem } from "../../hooks/useHorizontalDragScroll";
 
 export function useShowcaseCarousel() {
   const carouselRef = useRef<HTMLDivElement>(null);

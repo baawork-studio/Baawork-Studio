@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { AppShell } from '../../../src/components/AppShell';
-import { fallbackProjects } from '../../../src/data/fallbackProjects';
+import { projectCatalog } from '../../../src/data/projectCatalog';
 import { ProjectDetailPage } from '../../../src/views/ProjectDetailPage';
 
 type ProjectPageProps = {
@@ -13,11 +13,11 @@ type ProjectPageProps = {
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://baawork-studio.up.railway.app';
 
 function getFallbackProject(slug: string) {
-  return fallbackProjects.find((project) => project.slug === slug);
+  return projectCatalog.find((project) => project.slug === slug);
 }
 
 export async function generateStaticParams() {
-  return fallbackProjects.map((project) => ({ slug: project.slug }));
+  return projectCatalog.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {

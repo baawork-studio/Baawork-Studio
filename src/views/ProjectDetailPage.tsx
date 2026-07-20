@@ -3,17 +3,18 @@
 import { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { Reveal } from "../components/motion/Reveal";
-import { Stack } from "../components/Stack";
-import { fallbackProjects } from "../data/fallbackProjects";
-import { palette, typeScale } from "../theme";
-import { pageGutter } from "../features/project-detail/data";
-import { ProjectCapabilitySection, ProjectDeviceShowcase, ProjectHighlightsSection, ProjectPurposeSection, ProjectSystemPreviewSection, ProjectTechSection, ProjectUsageGuideSection } from "../features/project-detail/sections";
-import { getProjectVisual } from "../features/project-detail/utils";
-import type { ProjectDetailPageProps } from "../features/project-detail/types";
+import { ResponsiveStack } from "../components/ResponsiveStack";
+import { projectCatalog } from "../data/projectCatalog";
+import { palette, typeScale } from "../appTheme";
+import { pageGutter } from "../features/project-detail/projectDetailContent";
+import { ProjectCapabilitySection, ProjectHighlightsSection, ProjectSystemPreviewSection, ProjectTechSection, ProjectUsageGuideSection } from "../features/project-detail/ProjectDetailSections";
+import { ProjectDeviceShowcase, ProjectPurposeSection } from "../features/project-detail/ProjectHeroSections";
+import { getProjectVisual } from "../features/project-detail/projectDetailHelpers";
+import type { ProjectDetailPageProps } from "../features/project-detail/projectDetailTypes";
 
 export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPageProps) {
   const fallback = useMemo(
-    () => fallbackProjects.find((project) => project.slug === slug) ?? fallbackProjects[0],
+    () => projectCatalog.find((project) => project.slug === slug) ?? projectCatalog[0],
     [slug],
   );
   const project = initialProject ?? fallback;
@@ -28,8 +29,8 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
   return (
     <Box component="main" sx={{ overflowX: 'hidden' }}>
       <Box sx={{ px: pageGutter, pt: { xs: 8, sm: 9, md: 10, lg: 11 }, pb: { xs: 8, sm: 9, md: 11, lg: 12 } }}>
-        <Stack spacing={{ xs: 5, md: 6 }}>
-          <Stack
+        <ResponsiveStack spacing={{ xs: 5, md: 6 }}>
+          <ResponsiveStack
             spacing={{ xs: 1.25, sm: 1.5, md: 1.75 }}
             alignItems="center"
             textAlign="center"
@@ -59,11 +60,11 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
             >
               {project.subtitle}
             </Typography>
-          </Stack>
+          </ResponsiveStack>
 
           <Reveal variant="scale"><ProjectDeviceShowcase project={project} /></Reveal>
 
-          <Stack spacing={0} sx={{ width: '100%' }}>
+          <ResponsiveStack spacing={0} sx={{ width: '100%' }}>
             <Box sx={alternatingSectionSx('#FFFFFF')}>
               <Reveal variant="slide-right"><ProjectPurposeSection project={project} /></Reveal>
             </Box>
@@ -82,9 +83,9 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
             <Box sx={alternatingSectionSx('#F7F8FA')}>
               <Reveal variant="scale"><ProjectTechSection project={project} /></Reveal>
             </Box>
-          </Stack>
+          </ResponsiveStack>
 
-        </Stack>
+        </ResponsiveStack>
       </Box>
     </Box>
   );

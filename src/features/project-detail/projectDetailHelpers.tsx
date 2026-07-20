@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { Stack } from "../../components/Stack";
-import { scrollToAdjacentCarouselItem } from "../../utils/useHorizontalDragScroll";
-import type { Project } from "../../data/fallbackProjects";
-import { palette, typeScale } from "../../theme";
-import { capabilityCardsBySlug, defaultSystemPreviewCopy, descriptionHighlightTerms, detailCarouselEdgeTolerance, projectVisuals, systemPreviewCopyBySlug } from "./data";
-import type { CapabilityCard, CapabilityDetailRow, DetailFlowStep, DetailInfoCard, ScreenImageKey, SystemPreviewItem } from "./types";
+import { ResponsiveStack } from "../../components/ResponsiveStack";
+import { scrollToAdjacentCarouselItem } from "../../hooks/useHorizontalDragScroll";
+import type { Project } from "../../data/projectCatalog";
+import { palette, typeScale } from "../../appTheme";
+import { capabilityCardsBySlug, defaultSystemPreviewCopy, descriptionHighlightTerms, detailCarouselEdgeTolerance, projectVisuals, systemPreviewCopyBySlug } from "./projectDetailContent";
+import type { CapabilityCard, CapabilityDetailRow, DetailFlowStep, DetailInfoCard, ScreenImageKey, SystemPreviewItem } from "./projectDetailTypes";
 
 export function getProjectVisual(project: Project) {
   return projectVisuals[project.slug] ?? {

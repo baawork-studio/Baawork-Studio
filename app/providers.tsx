@@ -3,7 +3,7 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import type { ReactNode } from 'react';
-import { theme } from '../src/theme';
+import { appTheme } from '../src/appTheme';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -12,7 +12,7 @@ type ProvidersProps = {
 export function Providers({ children }: ProvidersProps) {
   return (
     <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={appTheme}>
         <CssBaseline />
         {children}
       </ThemeProvider>

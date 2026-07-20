@@ -13,7 +13,7 @@ export type Project = {
   highlights: string[];
 };
 
-const allFallbackProjects: Project[] = [
+const allProjects: Project[] = [
   {
     slug: 'linora-facebook-page-analytics',
     title: 'Linora วิเคราะห์เพจ Facebook',
@@ -175,7 +175,7 @@ const allFallbackProjects: Project[] = [
   },
 ];
 
-const realProjectSlugs = new Set([
+const publishedProjectSlugs = new Set([
   'linora-facebook-page-analytics',
   'shadow-ceo-business-assistant',
   'rentflow-car-rental-platform',
@@ -185,4 +185,4 @@ const realProjectSlugs = new Set([
   'online-learning-platform-with-ai',
 ]);
 
-export const fallbackProjects = allFallbackProjects.filter((project) => realProjectSlugs.has(project.slug));
+export const projectCatalog = allProjects.filter((project) => publishedProjectSlugs.has(project.slug));

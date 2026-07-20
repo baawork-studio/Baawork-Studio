@@ -1,4 +1,4 @@
-import type { CapabilityCard, SystemPreviewCopy } from "./types";
+import type { CapabilityCard, SystemPreviewCopy } from "./projectDetailTypes";
 
 export const pageGutter = "clamp(24px, 6.27vw, 127.5px)";
 export const detailCarouselVerticalGap = "24px";

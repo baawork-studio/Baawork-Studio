@@ -3,7 +3,7 @@ import { Noto_Sans_Thai, Roboto } from 'next/font/google';
 import Script from 'next/script';
 import type { ReactNode } from 'react';
 import { Providers } from './providers';
-import '../src/styles.css';
+import '../src/globals.css';
 
 const roboto = Roboto({
   subsets: ['latin'],

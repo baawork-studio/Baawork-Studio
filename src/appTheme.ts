@@ -57,7 +57,7 @@ export const typeScale = {
   },
 } as const;
 
-export const theme = createTheme({
+export const appTheme = createTheme({
   palette: {
     primary: {
       main: palette.primaryPink,

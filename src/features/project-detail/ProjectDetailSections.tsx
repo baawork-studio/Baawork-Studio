@@ -1,86 +1,12 @@
 import { useState } from "react";
 import { Box, Modal, Typography } from "@mui/material";
-import { Stack } from "../../components/Stack";
-import type { Project } from "../../data/fallbackProjects";
-import { palette, typeScale } from "../../theme";
-import { useHorizontalDragScroll } from "../../utils/useHorizontalDragScroll";
-import { detailCarouselVerticalGap, pageGutter, techIcons } from "./data";
-import { carouselControlSx, getAudienceCards, getCapabilityCards, getCapabilityDetailRows, getConnectionItems, getOutcomeCards, getProjectVisual, getProjectVisualImage, getProjectVisualImages, getTechReason, getWorkflowSteps, renderHighlightedDescription, useDetailCarousel } from "./utils";
-import type { CapabilityCard, DetailInfoCard } from "./types";
-
-export function ProjectDeviceShowcase({ project }: { project: Project }) {
-  const imageUrl = project.detailImageUrl ?? getProjectVisualImages(project)[0] ?? project.coverImageUrl;
-  return (
-    <Box
-      sx={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: { xs: 680, sm: 880, md: 1120, lg: 1280 },
-        mx: 'auto',
-        aspectRatio: '16 / 9',
-      }}
-    >
-      <Box
-        component="img"
-        src={imageUrl}
-        alt={`${project.title} บนหน้าจออุปกรณ์`}
-        sx={{
-          display: 'block',
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
-          userSelect: 'none',
-          pointerEvents: 'none',
-        }}
-      />
-    </Box>
-  );
-}
-
-export function ProjectPurposeSection({ project }: { project: Project }) {
-  const visual = getProjectVisual(project);
-
-  return (
-    <Box
-      component="section"
-      sx={{
-        width: '100%',
-        py: { xs: 2, md: 3.5 },
-      }}
-    >
-      <Stack
-        spacing={{ xs: 2, md: 2.5 }}
-        sx={{
-          textAlign: { xs: 'center', md: 'left' },
-        }}
-      >
-        <Typography
-          variant="h2"
-          sx={{
-            color: visual.accent,
-            ...typeScale.display,
-          }}
-        >
-          สร้างมาเพื่ออะไร
-        </Typography>
-        <Stack spacing={{ xs: 1.5, md: 2 }}>
-          {(project.purposeParagraphs ?? [project.description]).map((paragraph, index) => (
-            <Typography
-              key={`${project.slug}-purpose-${index}`}
-              sx={{
-                color: '#6E6E73',
-                ...typeScale.intro,
-                fontWeight: 600,
-              }}
-            >
-              {renderHighlightedDescription(project, visual.accent, paragraph)}
-            </Typography>
-          ))}
-        </Stack>
-      </Stack>
-    </Box>
-  );
-}
+import { ResponsiveStack } from "../../components/ResponsiveStack";
+import type { Project } from "../../data/projectCatalog";
+import { palette, typeScale } from "../../appTheme";
+import { useHorizontalDragScroll } from "../../hooks/useHorizontalDragScroll";
+import { detailCarouselVerticalGap, pageGutter, techIcons } from "./projectDetailContent";
+import { carouselControlSx, getAudienceCards, getCapabilityCards, getCapabilityDetailRows, getConnectionItems, getOutcomeCards, getProjectVisual, getProjectVisualImage, getTechReason, getWorkflowSteps, useDetailCarousel } from "./projectDetailHelpers";
+import type { CapabilityCard, DetailInfoCard } from "./projectDetailTypes";
 
 const systemPreviewDevices = [
   { name: 'MacBook', label: 'หน้าจอ MacBook', imageUrl: '/project-screen-previews/macbook.png', maxHeight: { xs: 360, sm: 400 }, width: { xs: 'min(100%, 400px)', sm: '400px' }, gap: { xs: 1, md: 1.25 } },
@@ -110,7 +36,7 @@ function SystemPreviewCarousel({
   const canScroll = carouselState.canScrollPrev || carouselState.canScrollNext;
 
   return (
-    <Stack spacing={{ xs: 2, md: 2.5 }}>
+    <ResponsiveStack spacing={{ xs: 2, md: 2.5 }}>
       <Typography
         variant="h3"
         sx={{
@@ -222,7 +148,7 @@ function SystemPreviewCarousel({
           ))}
         </Box>
 
-        <Stack
+        <ResponsiveStack
           direction="row"
           spacing={1}
           justifyContent="flex-end"
@@ -248,9 +174,9 @@ function SystemPreviewCarousel({
           >
             <Box component="span" sx={{ width: 12, height: 12, mr: 0.5, borderRight: '3px solid currentColor', borderBottom: '3px solid currentColor', transform: 'rotate(-45deg)' }} />
           </Box>
-        </Stack>
+        </ResponsiveStack>
       </Box>
-    </Stack>
+    </ResponsiveStack>
   );
 }
 
@@ -286,7 +212,7 @@ function SystemPreviewOverlay({
         backdropFilter: 'none',
       }}
     >
-      <Stack
+      <ResponsiveStack
         spacing={{ xs: 2, md: 2.5 }}
         sx={{
           width: 'min(100%, 1000px)',
@@ -300,15 +226,15 @@ function SystemPreviewOverlay({
           outline: 'none',
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-          <Stack spacing={0.3}>
+        <ResponsiveStack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+          <ResponsiveStack spacing={0.3}>
             <Typography id="system-preview-overlay-title" sx={{ fontSize: { xs: 18, md: 22 }, fontWeight: 700 }}>
               {device.label}
             </Typography>
             <Typography sx={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, fontWeight: 600 }}>
               {imageIndex + 1} / {systemPreviewImageCount}
             </Typography>
-          </Stack>
+          </ResponsiveStack>
           <Box
             component="button"
             type="button"
@@ -330,7 +256,7 @@ function SystemPreviewOverlay({
           >
             ×
           </Box>
-        </Stack>
+        </ResponsiveStack>
 
         <Box sx={{ position: 'relative', height: stageHeight, mx: 'auto', width: '100%', maxWidth: 860 }}>
           <Box
@@ -355,7 +281,7 @@ function SystemPreviewOverlay({
           />
         </Box>
 
-        <Stack direction="row" justifyContent="center" spacing={1.25}>
+        <ResponsiveStack direction="row" justifyContent="center" spacing={1.25}>
           <Box
             component="button"
             type="button"
@@ -374,8 +300,8 @@ function SystemPreviewOverlay({
           >
             <Box component="span" sx={{ width: 12, height: 12, mr: 0.5, borderRight: '3px solid currentColor', borderBottom: '3px solid currentColor', transform: 'rotate(-45deg)' }} />
           </Box>
-        </Stack>
-      </Stack>
+        </ResponsiveStack>
+      </ResponsiveStack>
     </Modal>
   );
 }
@@ -402,7 +328,7 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
         overflow: 'visible',
       }}
     >
-      <Stack sx={{ px: pageGutter, mb: { xs: 3, md: 4 } }}>
+      <ResponsiveStack sx={{ px: pageGutter, mb: { xs: 3, md: 4 } }}>
         <Typography
           variant="h2"
           sx={{
@@ -412,7 +338,7 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
         >
           พรีวิวหน้าจอระบบจริง
         </Typography>
-      </Stack>
+      </ResponsiveStack>
 
       <Box
         sx={{
@@ -466,7 +392,7 @@ function DetailSectionHeading({
   accent: string;
 }) {
   return (
-    <Stack spacing={{ xs: 1, md: 1.25 }} sx={{ maxWidth: 860 }}>
+    <ResponsiveStack spacing={{ xs: 1, md: 1.25 }} sx={{ maxWidth: 860 }}>
       <Typography
         variant="h2"
         sx={{
@@ -487,7 +413,7 @@ function DetailSectionHeading({
           {description}
         </Typography>
       )}
-    </Stack>
+    </ResponsiveStack>
   );
 }
 
@@ -509,7 +435,7 @@ function VisualInfoCard({
   dark?: boolean;
 }) {
   return (
-    <Stack
+    <ResponsiveStack
       component="article"
       sx={{
         position: 'relative',
@@ -557,7 +483,7 @@ function VisualInfoCard({
             : `linear-gradient(180deg, rgba(255,255,255,0.82) 0%, ${visualTintFromAccent(accent)} 100%)`,
         }}
       />
-      <Stack
+      <ResponsiveStack
         spacing={{ xs: 1.35, md: 1.6 }}
         sx={{
           position: 'relative',
@@ -601,8 +527,8 @@ function VisualInfoCard({
         >
           {description}
         </Typography>
-      </Stack>
-    </Stack>
+      </ResponsiveStack>
+    </ResponsiveStack>
   );
 }
 
@@ -618,8 +544,8 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
   const outcomeCards = getOutcomeCards(project);
 
   return (
-    <Stack component="section" spacing={{ xs: 6, md: 8 }} sx={{ py: { xs: 2, md: 3 }, overflow: 'visible' }}>
-      <Stack spacing={{ xs: 3, md: 4 }}>
+    <ResponsiveStack component="section" spacing={{ xs: 6, md: 8 }} sx={{ py: { xs: 2, md: 3 }, overflow: 'visible' }}>
+      <ResponsiveStack spacing={{ xs: 3, md: 4 }}>
         <DetailSectionHeading
           title="ระบบนี้ช่วยงานใครบ้าง"
           description="ดูจากบทบาทจริงในทีมก่อน แล้วค่อยลงรายละเอียดว่าหน้าจอไหนช่วยงานส่วนไหน"
@@ -644,7 +570,7 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
             />
           ))}
         </Box>
-      </Stack>
+      </ResponsiveStack>
 
       <Box
         sx={{
@@ -657,7 +583,7 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
           overflow: 'visible',
         }}
       >
-        <Stack spacing={{ xs: 3, md: 4 }} sx={{ px: pageGutter }}>
+        <ResponsiveStack spacing={{ xs: 3, md: 4 }} sx={{ px: pageGutter }}>
           <DetailSectionHeading
             title="Flow การใช้งานจริง"
             description="ภาพรวมการไหลของงานจริง ตั้งแต่รับข้อมูล ไปจนถึงทีมเห็นผลลัพธ์พร้อมใช้งาน"
@@ -682,7 +608,7 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
               />
             ))}
           </Box>
-        </Stack>
+        </ResponsiveStack>
       </Box>
 
       <Box
@@ -760,7 +686,7 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
           px: pageGutter,
         }}
       >
-        <Stack spacing={{ xs: 3, md: 4 }}>
+        <ResponsiveStack spacing={{ xs: 3, md: 4 }}>
           <DetailSectionHeading
             title="ผลลัพธ์ที่ลูกค้าจะได้"
             description="สรุปเป็นภาษาง่ายๆ ว่าหลังใช้งานแล้วทีมควรเห็นความเปลี่ยนแปลงตรงไหน"
@@ -786,9 +712,9 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
               />
             ))}
           </Box>
-        </Stack>
+        </ResponsiveStack>
       </Box>
-    </Stack>
+    </ResponsiveStack>
   );
 }
 
@@ -804,7 +730,7 @@ export function ProjectHighlightsSection({ project }: { project: Project }) {
         overflow: 'visible',
       }}
     >
-      <Stack spacing={{ xs: 3, md: 4 }}>
+      <ResponsiveStack spacing={{ xs: 3, md: 4 }}>
         <DetailSectionHeading
           title="จุดเด่นของระบบ"
           description="เล่าเป็นภาพให้เห็นว่าสิ่งที่เด่นจริงของระบบนี้ช่วยให้งานง่ายขึ้นตรงไหน"
@@ -830,7 +756,7 @@ export function ProjectHighlightsSection({ project }: { project: Project }) {
             />
           ))}
         </Box>
-      </Stack>
+      </ResponsiveStack>
     </Box>
   );
 }
@@ -853,7 +779,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
         overflow: 'visible',
       }}
     >
-      <Stack
+      <ResponsiveStack
         spacing={1.25}
         sx={{
           px: pageGutter,
@@ -872,7 +798,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
         >
           ระบบทำอะไรได้บ้าง
         </Typography>
-      </Stack>
+      </ResponsiveStack>
 
       <Box
         ref={carouselRef}
@@ -940,7 +866,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                 },
               }}
             >
-              <Stack
+              <ResponsiveStack
                 spacing={{ xs: 1.45, md: 2 }}
                 sx={{
                   position: 'absolute',
@@ -975,7 +901,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                 >
                   {card.title}
                 </Typography>
-                <Stack
+                <ResponsiveStack
                   spacing={{ xs: 1.15, md: 1.25 }}
                   sx={{
                     pt: { xs: 0.35, md: 0.5 },
@@ -1006,14 +932,14 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                       </Typography>
                     </Box>
                   ))}
-                </Stack>
-              </Stack>
+                </ResponsiveStack>
+              </ResponsiveStack>
             </Box>
           );
         })}
       </Box>
 
-      <Stack
+      <ResponsiveStack
         direction="row"
         justifyContent="flex-end"
         spacing={2}
@@ -1059,7 +985,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
             }}
           />
         </Box>
-      </Stack>
+      </ResponsiveStack>
     </Box>
   );
 }
@@ -1083,7 +1009,7 @@ export function ProjectTechSection({ project }: { project: Project }) {
         py: { xs: 3, md: 4 },
       }}
     >
-      <Stack spacing={{ xs: 1.75, md: 2.25 }} alignItems="center" textAlign="center" sx={{ maxWidth: 840, mx: 'auto' }}>
+      <ResponsiveStack spacing={{ xs: 1.75, md: 2.25 }} alignItems="center" textAlign="center" sx={{ maxWidth: 840, mx: 'auto' }}>
         <Typography
           variant="h2"
           sx={{
@@ -1102,7 +1028,7 @@ export function ProjectTechSection({ project }: { project: Project }) {
         >
           {getTechReason(project)}
         </Typography>
-      </Stack>
+      </ResponsiveStack>
 
       <Box
         aria-label={`เทคโนโลยีที่ใช้ใน ${project.title}`}

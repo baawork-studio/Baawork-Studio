@@ -1,4 +1,4 @@
-import type { Project } from "../../data/fallbackProjects";
+import type { Project } from "../../data/projectCatalog";
 
 export type ProjectDetailPageProps = {
   slug: string;
