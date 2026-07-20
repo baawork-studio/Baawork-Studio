@@ -126,7 +126,7 @@ function SystemPreviewCarousel({
             scrollBehavior: 'smooth',
             scrollbarWidth: 'none',
             cursor: 'grab',
-            touchAction: 'pan-y',
+            touchAction: 'pan-x pan-y',
             userSelect: 'none',
             WebkitUserSelect: 'none',
             '&::-webkit-scrollbar': { display: 'none' },
@@ -136,6 +136,7 @@ function SystemPreviewCarousel({
           {Array.from({ length: 6 }).map((_, imageIndex) => (
             <Box
               key={`${device.name}-${imageIndex}`}
+              data-carousel-item="true"
               component="img"
               src={device.imageUrl}
               alt={`${project.title} บน ${device.name} ${imageIndex + 1}`}
@@ -669,7 +670,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
           scrollSnapType: 'x mandatory',
           scrollBehavior: 'smooth',
           cursor: 'grab',
-          touchAction: 'pan-y',
+          touchAction: 'pan-x pan-y',
           userSelect: 'none',
           WebkitUserSelect: 'none',
           '& img': { WebkitUserDrag: 'none' },
@@ -695,6 +696,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
           return (
             <Box
               key={card.title}
+              data-carousel-item="true"
               sx={{
                 position: 'relative',
                 flex: '0 0 auto',

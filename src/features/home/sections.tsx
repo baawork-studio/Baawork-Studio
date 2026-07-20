@@ -433,7 +433,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
           scrollSnapType: 'x mandatory',
           scrollBehavior: 'smooth',
           cursor: 'grab',
-          touchAction: 'pan-y',
+          touchAction: 'pan-x pan-y',
           userSelect: 'none',
           WebkitUserSelect: 'none',
           '& img': { WebkitUserDrag: 'none' },
@@ -458,6 +458,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
           return (
             <motion.div
               key={project.slug}
+              data-carousel-item="true"
               initial={{ opacity: 0, y: 34 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.56, delay: Math.min(index * 0.07, 0.28), ease: [0.22, 1, 0.36, 1] }}
@@ -931,7 +932,7 @@ export function WorkflowSection() {
           scrollSnapType: { xs: 'x mandatory', md: 'none' },
           scrollBehavior: 'smooth',
           cursor: { xs: 'grab', md: 'default' },
-          touchAction: 'pan-y',
+          touchAction: 'pan-x pan-y',
           userSelect: 'none',
           WebkitUserSelect: 'none',
           '& img': { WebkitUserDrag: 'none' },
@@ -953,6 +954,7 @@ export function WorkflowSection() {
               key={panel.title}
               component="article"
               data-workflow-card="true"
+              data-carousel-item="true"
               sx={{
                 position: 'relative',
                 flex: {

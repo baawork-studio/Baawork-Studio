@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { workCarouselEdgeTolerance } from "./data";
+import { scrollToAdjacentCarouselItem } from "../../utils/useHorizontalDragScroll";
 
 export function useShowcaseCarousel() {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -63,7 +64,7 @@ export function useShowcaseCarousel() {
     if (direction === -1 && !carouselState.canScrollPrev) return;
     if (direction === 1 && !carouselState.canScrollNext) return;
 
-    carousel.scrollBy({ left: direction * 392, behavior: 'smooth' });
+    scrollToAdjacentCarouselItem(carousel, direction);
   };
 
   return { carouselRef, carouselState, scrollCards };
@@ -128,12 +129,7 @@ export function useWorkflowCarousel() {
     if (direction === -1 && !carouselState.canScrollPrev) return;
     if (direction === 1 && !carouselState.canScrollNext) return;
 
-    const firstCard = carousel.querySelector('[data-workflow-card="true"]') as HTMLElement | null;
-    const styles = window.getComputedStyle(carousel);
-    const gap = Number.parseFloat(styles.columnGap || styles.gap || '0') || 0;
-    const distance = firstCard ? firstCard.offsetWidth + gap : carousel.clientWidth * 0.86;
-
-    carousel.scrollBy({ left: direction * distance, behavior: 'smooth' });
+    scrollToAdjacentCarouselItem(carousel, direction);
   };
 
   return { carouselRef, carouselState, scrollCards };

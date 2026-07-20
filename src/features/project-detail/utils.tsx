@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { Stack } from "../../components/Stack";
+import { scrollToAdjacentCarouselItem } from "../../utils/useHorizontalDragScroll";
 import type { Project } from "../../data/fallbackProjects";
 import { palette, typeScale } from "../../theme";
 import { capabilityCardsBySlug, defaultSystemPreviewCopy, descriptionHighlightTerms, detailCarouselEdgeTolerance, projectVisuals, systemPreviewCopyBySlug } from "./data";
@@ -66,7 +67,7 @@ export function useDetailCarousel() {
     if (direction === -1 && !carouselState.canScrollPrev) return;
     if (direction === 1 && !carouselState.canScrollNext) return;
 
-    carousel.scrollBy({ left: direction * 392, behavior: 'smooth' });
+    scrollToAdjacentCarouselItem(carousel, direction);
   };
 
   return { carouselRef, carouselState, scrollCards };
