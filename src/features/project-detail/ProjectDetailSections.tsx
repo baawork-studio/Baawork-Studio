@@ -39,9 +39,21 @@ function SystemPreviewCarousel({
     : device.name === 'iPhone'
       ? { xs: 300, sm: 340, lg: 380 }
       : device.maxHeight;
+  const previewItemWidth = device.name === 'iPad'
+    ? { xs: 180, sm: 245, lg: 260 }
+    : device.name === 'iPhone'
+      ? { xs: 150, sm: 195, lg: 210 }
+      : { xs: 'calc(100vw - 64px)', sm: 400 };
 
   return (
-    <ResponsiveStack spacing={{ xs: 2, md: 2.5 }}>
+    <ResponsiveStack
+      spacing={{ xs: 2, md: 2.5 }}
+      sx={{
+        position: 'relative',
+        left: `calc(${pageGutter} * -1)`,
+        width: `calc(100% + (${pageGutter} * 2))`,
+      }}
+    >
       <Typography
         variant="h3"
         sx={{
@@ -50,6 +62,7 @@ function SystemPreviewCarousel({
           lineHeight: 1.2,
           fontWeight: 700,
           textAlign: 'left',
+          px: pageGutter,
         }}
       >
         {device.label}
@@ -61,7 +74,9 @@ function SystemPreviewCarousel({
           {...dragScroll}
           sx={{
             display: 'flex',
-            gap: { xs: '12px', md: '16px' },
+            gap: device.name === 'MacBook'
+              ? { xs: 2, md: '20px' }
+              : { xs: 1, md: '20px' },
             overflowX: 'auto',
             overscrollBehaviorX: 'contain',
             scrollSnapType: 'x mandatory',
@@ -71,66 +86,36 @@ function SystemPreviewCarousel({
             touchAction: 'pan-x pan-y',
             userSelect: 'none',
             WebkitUserSelect: 'none',
-            px: 0,
-            pt: 3,
-            pb: 4,
-            scrollPaddingInline: 0,
+            pr: pageGutter,
+            pt: detailCarouselVerticalGap,
+            pb: { xs: 7, md: 8 },
             '&::-webkit-scrollbar': { display: 'none' },
             '& img': { WebkitUserDrag: 'none' },
           }}
         >
+          <Box
+            aria-hidden="true"
+            sx={{ flex: '0 0 auto', width: pageGutter }}
+          />
           {Array.from({ length: systemPreviewImageCount }).map((_, imageIndex) => (
             <Box
               key={`${device.name}-${imageIndex}`}
               data-carousel-item="true"
-              component={"button" as unknown as "img"}
-              role="button"
-              tabIndex={0}
+              component="button"
+              type="button"
+              aria-label={`Open ${device.name} preview ${imageIndex + 1}`}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => onPreviewOpen(device, imageIndex)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  onPreviewOpen(device, imageIndex);
-                }
-              }}
-              src={device.imageUrl}
-              alt={`${project.title} บน ${device.name} ${imageIndex + 1}`}
-              loading="lazy"
-              decoding="async"
               sx={{
                 display: 'block',
                 flex: '0 0 auto',
-                width: device.name === 'iPhone'
-                  ? {
-                      xs: '100%',
-                      sm: 'calc((100% - 12px) / 2)',
-                      md: 'calc((100% - 48px) / 4)',
-                      lg: 'calc((100% - 80px) / 6)',
-                    }
-                  : device.name === 'iPad'
-                    ? {
-                        xs: '100%',
-                        sm: 'calc((100% - 12px) / 2)',
-                        md: 'calc((100% - 48px) / 4)',
-                        lg: 'calc((100% - 64px) / 5)',
-                      }
-                    : {
-                        xs: '100%',
-                        sm: 'calc((100% - 12px) / 2)',
-                        md: 'calc((100% - 32px) / 3)',
-                        lg: 'calc((100% - 48px) / 4)',
-                      },
-                maxWidth: device.name === 'iPad'
-                  ? { xs: 230, sm: 245, lg: 260 }
-                  : device.name === 'iPhone'
-                    ? { xs: 185, sm: 195, lg: 210 }
-                    : 'none',
+                width: previewItemWidth,
+                maxWidth: '100%',
                 maxHeight: previewMaxHeight,
                 objectFit: 'contain',
                 objectPosition: 'left center',
                 scrollSnapAlign: 'start',
-                scrollSnapStop: 'always',
+                scrollMarginInline: pageGutter,
                 cursor: 'zoom-in',
                 appearance: 'none',
                 WebkitAppearance: 'none',
@@ -181,7 +166,13 @@ function SystemPreviewCarousel({
           direction="row"
           spacing={2}
           justifyContent="flex-end"
-          sx={{ mt: 1.5, visibility: canScroll ? 'visible' : 'hidden' }}
+          sx={{
+            mt: { xs: -4, md: -5 },
+            px: pageGutter,
+            position: 'relative',
+            zIndex: 2,
+            visibility: canScroll ? 'visible' : 'hidden',
+          }}
         >
           <Box
             component="button"
@@ -223,10 +214,10 @@ function SystemPreviewOverlay({
   onNavigate: (direction: -1 | 1) => void;
 }) {
   const stageHeight = device.name === 'iPhone'
-    ? { xs: 320, sm: 420, md: 500 }
+    ? { xs: 300, sm: 360, md: 420, lg: 480, xl: 520 }
     : device.name === 'iPad'
-      ? { xs: 260, sm: 340, md: 420 }
-      : { xs: 220, sm: 320, md: 400 };
+      ? { xs: 340, sm: 420, md: 500, lg: 580, xl: 640 }
+      : { xs: 220, sm: 280, md: 360, lg: 440, xl: 500 };
 
   return (
     <Modal
@@ -236,8 +227,9 @@ function SystemPreviewOverlay({
       slotProps={{
         backdrop: {
           sx: {
-            bgcolor: 'transparent',
-            backdropFilter: 'none',
+            bgcolor: 'rgba(9, 11, 18, 0.5)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
           },
         },
       }}
@@ -252,21 +244,22 @@ function SystemPreviewOverlay({
         p: { xs: 2, sm: 4 },
         bgcolor: 'transparent',
         backdropFilter: 'none',
+        WebkitBackdropFilter: 'none',
       }}
     >
       <ResponsiveStack
         spacing={{ xs: 2, md: 2.5 }}
         sx={{
-          width: 'min(calc(100vw - 32px), 1000px)',
-          flex: '0 1 1000px',
+          width: 'min(calc(100vw - 32px), 760px)',
+          flex: '0 1 760px',
           m: 0,
           maxHeight: 'calc(100dvh - 32px)',
-          overflow: 'hidden',
-          p: { xs: 2, sm: 3, md: 4 },
-          borderRadius: { xs: '24px', md: '30px' },
-          bgcolor: '#11131A',
+          overflow: 'visible',
+          p: 0,
+          borderRadius: 0,
+          bgcolor: 'transparent',
           color: '#fff',
-          boxShadow: '0 32px 80px rgba(0,0,0,0.5)',
+          boxShadow: 'none',
           outline: 'none',
         }}
       >
@@ -304,33 +297,30 @@ function SystemPreviewOverlay({
             mx: 'auto',
             width: '100%',
             maxWidth: 860,
-            overflow: 'hidden',
+            overflow: 'visible',
           }}
         >
           <Box
-            key={`${device.name}-${imageIndex}`}
-            component="img"
-            src={device.imageUrl}
-            alt={`${project.title} ${device.name} ${imageIndex + 1}`}
-            sx={{
-              position: 'relative',
-              zIndex: 1,
-              width: 'auto',
-              height: 'auto',
-              maxWidth: '100%',
-              maxHeight: '100%',
-              objectFit: 'contain',
-              filter: 'none',
-              animation: 'system-preview-slide-in 360ms cubic-bezier(0.22, 1, 0.36, 1)',
-              '@keyframes system-preview-slide-in': {
-                from: { opacity: 0, transform: 'translate3d(7%, 0, 0) scale(0.96)' },
-                to: { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' },
-              },
-            }}
-          />
+              component="img"
+              src={device.imageUrl}
+              alt={`${project.title} ${device.name} ${imageIndex + 1}`}
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                zIndex: 1,
+                display: 'block',
+                m: 'auto',
+                width: 'auto',
+                height: 'auto',
+                maxWidth: '100%',
+                maxHeight: stageHeight,
+                objectFit: 'contain',
+                filter: 'none',
+              }}
+            />
         </Box>
 
-        <ResponsiveStack direction="row" justifyContent="center" spacing={1.25} sx={{ width: '100%', alignSelf: 'center' }}>
+        <ResponsiveStack direction="row" justifyContent="center" spacing={2} sx={{ width: '100%', alignSelf: 'center', flexShrink: 0, position: 'relative', zIndex: 2 }}>
           <Box
             component="button"
             type="button"
@@ -416,10 +406,10 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
       {activePreview && (
         <SystemPreviewOverlay
           project={project}
-          device={activePreview.device}
-          imageIndex={activePreview.imageIndex}
-          onClose={() => setActivePreview(null)}
-          onNavigate={(direction) => {
+              device={activePreview.device}
+              imageIndex={activePreview.imageIndex}
+              onClose={() => setActivePreview(null)}
+              onNavigate={(direction) => {
             setActivePreview((current) => current && {
               ...current,
               imageIndex: (current.imageIndex + direction + systemPreviewImageCount) % systemPreviewImageCount,

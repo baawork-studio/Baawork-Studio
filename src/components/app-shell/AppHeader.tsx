@@ -12,22 +12,23 @@ import { mobileNavigation, primaryNavigation } from './navigation';
 
 function MobileMenuGlyph({ open }: { open: boolean }) {
   return (
-    <Box sx={{ position: 'relative', display: 'block', width: 16, height: 16 }} aria-hidden="true">
-      {[5, 10].map((top, index) => (
+    <Box sx={{ position: 'relative', display: 'block', width: 20, height: 18 }} aria-hidden="true">
+      {[5, 11].map((top, index) => (
         <Box
           key={top}
           sx={{
             position: 'absolute',
             top,
             left: 0,
-            width: 16,
-            height: 1,
+            width: 20,
+            height: 2,
             borderRadius: 99,
-            bgcolor: 'rgba(255,255,255,0.92)',
+            bgcolor: '#FFFFFF',
             transform: open
-              ? `translateY(${index === 0 ? 2.5 : -2.5}px) rotate(${index === 0 ? 45 : -45}deg)`
+              ? `translateY(${index === 0 ? 3 : -3}px) rotate(${index === 0 ? 45 : -45}deg)`
               : 'translateY(0) rotate(0deg)',
-            transition: 'transform 420ms cubic-bezier(0.22, 1, 0.36, 1)',
+            transformOrigin: 'center',
+            transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         />
       ))}
