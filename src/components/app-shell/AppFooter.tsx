@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { ResponsiveStack } from '../ResponsiveStack';
-import { palette, typeScale } from '../../appTheme';
+import { Reveal } from '../motion/Reveal';
+import { hover, palette, typeScale } from '../../appTheme';
 import { navigateToHomeSection } from '../../utils/homeSectionNavigation';
 import { footerNavigation, socialLinks } from './navigation';
 
@@ -9,7 +10,8 @@ const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 export function AppFooter() {
   return (
     <Box component="footer" id="contact" sx={{ bgcolor: palette.background, color: palette.text, py: { xs: 7, sm: 8, md: 10 }, px: pageGutter }}>
-      <Box
+      <Reveal>
+        <Box
         sx={{
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1.25fr) minmax(280px, 0.75fr)' },
@@ -24,7 +26,7 @@ export function AppFooter() {
               Baawork Studio
             </Typography>
           </ResponsiveStack>
-          <Typography variant="h2" sx={{ ...typeScale.sectionTitle, color: palette.text, maxWidth: 720, fontSize: { xs: 30, sm: 34, md: 38, lg: 42 }, lineHeight: 1.16 }}>
+          <Typography variant="h3" sx={{ color: palette.text, maxWidth: 720 }}>
             สร้างระบบจริงกับทีมที่เข้าใจงาน
           </Typography>
           <Typography sx={{ ...typeScale.bodyLarge, color: '#4B5563', maxWidth: 680 }}>
@@ -44,7 +46,7 @@ export function AppFooter() {
                   component="a"
                   href={link.href}
                   onClick={link.sectionId ? (event) => navigateToHomeSection(event, link.sectionId!) : undefined}
-                  sx={{ color: '#4B5563', textDecoration: 'none', fontSize: 17, lineHeight: 1.353, fontWeight: 500, transition: 'color 180ms ease', '&:hover': { color: palette.text } }}
+                  sx={{ color: '#4B5563', textDecoration: 'none', fontSize: 17, lineHeight: 1.353, fontWeight: 500, transition: hover.transition.color, '&:hover': { color: palette.text } }}
                 >
                   {link.label}
                 </Typography>
@@ -65,7 +67,7 @@ export function AppFooter() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={`${social.label} Baawork`}
-                  sx={{ display: 'inline-flex', alignItems: 'center', gap: 1.25, color: '#4B5563', textDecoration: 'none', fontSize: 17, lineHeight: 1.353, fontWeight: 500, transition: 'color 180ms ease, transform 220ms ease', '&:hover': { color: social.color, transform: 'translate3d(0, -1px, 0)' } }}
+                  sx={{ display: 'inline-flex', alignItems: 'center', gap: 1.25, color: '#4B5563', textDecoration: 'none', fontSize: 17, lineHeight: 1.353, fontWeight: 500, transition: hover.transition.interactive, '&:hover': { color: social.color, transform: hover.subtleLift } }}
                 >
                   <Box component="img" src={social.iconSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" sx={{ width: 24, height: 24, minWidth: 24, objectFit: 'contain', flex: '0 0 auto' }} />
                   {social.label}
@@ -75,16 +77,19 @@ export function AppFooter() {
             <Box component="img" src="/homepage/line-qr.png" alt="QR code สำหรับติดต่อ LINE Baawork" loading="lazy" decoding="async" sx={{ display: 'block', width: { xs: 112, sm: 148, md: 156 }, height: { xs: 112, sm: 148, md: 156 }, mt: { xs: 2.25, md: 2.5 }, objectFit: 'contain' }} />
           </Box>
         </Box>
-      </Box>
+        </Box>
+      </Reveal>
 
-      <Box sx={{ mt: { xs: 6, md: 8 }, pt: { xs: 3, md: 4 }, borderTop: `1px solid ${palette.border}`, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1.5, alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}>
+      <Reveal delay={0.08}>
+        <Box sx={{ mt: { xs: 6, md: 8 }, pt: { xs: 3, md: 4 }, borderTop: `1px solid ${palette.border}`, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1.5, alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}>
         <Typography sx={{ color: '#4B5563', fontSize: { xs: 13, sm: 14 }, lineHeight: 1.5, fontWeight: 600, letterSpacing: 0 }}>
           บริษัท คนบ้างาน จำกัด
         </Typography>
         <Typography sx={{ color: '#6B7280', fontSize: { xs: 13, sm: 14 }, lineHeight: 1.5 }}>
           ออกแบบ พัฒนา และส่งมอบระบบดิจิทัลสำหรับใช้งานจริง
         </Typography>
-      </Box>
+        </Box>
+      </Reveal>
     </Box>
   );
 }

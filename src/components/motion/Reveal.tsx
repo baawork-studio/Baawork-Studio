@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'motion/react';
+import { motion as motionTokens } from '../../appTheme';
 
 type RevealProps = {
   children: React.ReactNode;
@@ -8,9 +9,10 @@ type RevealProps = {
   distance?: number;
   once?: boolean;
   variant?: 'rise' | 'scale' | 'slide-left' | 'slide-right';
+  fill?: boolean;
 };
 
-export function Reveal({ children, delay = 0, distance = 42, once = true, variant = 'rise' }: RevealProps) {
+export function Reveal({ children, delay = 0, distance = 42, once = true, variant = 'rise', fill = false }: RevealProps) {
   const shouldReduceMotion = useReducedMotion();
   const initial = {
     rise: { opacity: 0, y: distance, scale: 0.975 },
@@ -21,10 +23,15 @@ export function Reveal({ children, delay = 0, distance = 42, once = true, varian
 
   return (
     <motion.div
+      style={fill ? { height: '100%' } : undefined}
       initial={shouldReduceMotion ? false : initial}
       whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      viewport={{ once, amount: 0.16, margin: '0px 0px -8% 0px' }}
-      transition={{ duration: 0.78, delay: shouldReduceMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ ...motionTokens.reveal.viewport, once }}
+      transition={{
+        duration: motionTokens.reveal.duration,
+        delay: shouldReduceMotion ? 0 : delay,
+        ease: motionTokens.reveal.ease,
+      }}
     >
       {children}
     </motion.div>

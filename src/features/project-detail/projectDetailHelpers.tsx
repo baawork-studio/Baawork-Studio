@@ -3,14 +3,14 @@ import { Box, Typography } from "@mui/material";
 import { ResponsiveStack } from "../../components/ResponsiveStack";
 import { scrollToAdjacentCarouselItem } from "../../hooks/useHorizontalDragScroll";
 import type { Project } from "../../data/projectCatalog";
-import { palette, typeScale } from "../../appTheme";
+import { fontWeight, hover, overlay, palette, radii, typeScale } from "../../appTheme";
 import { capabilityCardsBySlug, defaultSystemPreviewCopy, descriptionHighlightTerms, detailCarouselEdgeTolerance, projectVisuals, systemPreviewCopyBySlug } from "./projectDetailContent";
-import type { CapabilityCard, CapabilityDetailRow, DetailFlowStep, DetailInfoCard, ScreenImageKey, SystemPreviewItem } from "./projectDetailTypes";
+import type { CapabilityCard, CapabilityDetailRow, DetailInfoCard, ScreenImageKey, SystemPreviewItem } from "./projectDetailTypes";
 
 export function getProjectVisual(project: Project) {
   return projectVisuals[project.slug] ?? {
     accent: palette.primaryPink,
-    tint: '#FFF0F8',
+    tint: overlay.lightTintPink,
   };
 }
 
@@ -82,15 +82,15 @@ export function carouselControlSx(enabled: boolean) {
     p: 0,
     border: 0,
     boxSizing: 'border-box',
-    borderRadius: '50%',
+    borderRadius: radii.circle,
     appearance: 'none',
-    bgcolor: enabled ? '#D2D2D7' : '#E1E1E6',
-    color: enabled ? '#4A4A4F' : '#9A9AA0',
+    bgcolor: enabled ? palette.control : palette.controlDisabled,
+    color: enabled ? palette.controlText : palette.controlTextDisabled,
     cursor: enabled ? 'pointer' : 'default',
-    transition: 'background-color 180ms ease, color 180ms ease',
+    transition: hover.transition.control,
     '&:hover': {
-      bgcolor: enabled ? '#B8B8BE' : '#E1E1E6',
-      color: enabled ? '#1D1D1F' : '#9A9AA0',
+      bgcolor: enabled ? palette.controlHover : palette.controlDisabled,
+      color: enabled ? palette.controlTextHover : palette.controlTextDisabled,
     },
     '&:disabled': {
       pointerEvents: 'none',
@@ -241,7 +241,7 @@ export function renderHighlightedDescription(project: Project, accent: string, d
         component="span"
         sx={{
           color: accent,
-          fontWeight: 700,
+          fontWeight: fontWeight.bold,
         }}
       >
         {nextMatch.term}
@@ -300,106 +300,6 @@ export function getSystemPreviewItems(project: Project): SystemPreviewItem[] {
 
 export function isAiProject(project: Project) {
   return project.slug.startsWith('ai-') || project.stack.some((item) => /AI|ML|OCR|Forecast|Document/i.test(item));
-}
-
-export function getAudienceCards(project: Project): DetailInfoCard[] {
-  if (isAiProject(project)) {
-    return [
-      {
-        title: 'เจ้าของธุรกิจ',
-        description: 'เห็นภาพรวมงาน ความเสี่ยง และสิ่งที่ควรตัดสินใจก่อนโดยไม่ต้องไล่อ่านข้อมูลหลายหน้า',
-      },
-      {
-        title: 'หัวหน้าทีม',
-        description: 'ติดตามงานค้าง เคสสำคัญ และผลลัพธ์ของทีมได้ชัดขึ้น ทำให้จัดลำดับงานได้เร็ว',
-      },
-      {
-        title: 'ทีมปฏิบัติการ',
-        description: 'รู้ว่าต้องทำอะไรต่อจากหน้าจอเดียว ลดการค้นหาข้อมูลและลดงานประสานซ้ำ',
-      },
-      {
-        title: 'ทีมดูแลลูกค้า',
-        description: 'เข้าใจบริบทของแต่ละเคสเร็วขึ้น พร้อมข้อมูลช่วยตอบกลับและติดตามงานต่อได้ครบ',
-      },
-    ];
-  }
-
-  return [
-    {
-      title: 'เจ้าของธุรกิจ',
-      description: 'ดูภาพรวมงานและสถานะระบบหลังบ้านได้ง่ายขึ้น เห็นจุดที่ต้องปรับปรุงหรือเร่งจัดการ',
-    },
-    {
-      title: 'ทีมแอดมิน',
-      description: 'จัดการข้อมูล คำขอ รายการ และสถานะงานจากระบบเดียว ลดการทำงานข้ามหลายเครื่องมือ',
-    },
-    {
-      title: 'ทีมขายและบริการ',
-      description: 'เห็นข้อมูลลูกค้าหรือรายการงานที่เกี่ยวข้องครบขึ้น ทำให้ติดตามและให้บริการได้ต่อเนื่อง',
-    },
-    {
-      title: 'ทีมปฏิบัติการ',
-      description: 'ทำงานตาม workflow ได้ชัดเจน ตั้งแต่รับเรื่อง ตรวจสอบ อัปเดตสถานะ ไปจนถึงส่งมอบ',
-    },
-  ];
-}
-
-export function getWorkflowSteps(project: Project): DetailFlowStep[] {
-  if (isAiProject(project)) {
-    return [
-      {
-        label: '01',
-        title: 'รับข้อมูล',
-        description: 'ดึงข้อมูลจาก API ฐานข้อมูล เอกสาร หรือระบบที่ทีมใช้อยู่เข้ามารวมใน workflow เดียว',
-      },
-      {
-        label: '02',
-        title: 'วิเคราะห์',
-        description: 'ประมวลผลข้อมูลด้วยเงื่อนไขงานจริงและ logic ของระบบ เพื่อหาสัญญาณที่ควรให้ความสำคัญ',
-      },
-      {
-        label: '03',
-        title: 'แจ้งเตือน',
-        description: 'แยกเคสเร่งด่วน ความผิดปกติ หรือโอกาสสำคัญให้ทีมเห็นก่อนงานทั่วไป',
-      },
-      {
-        label: '04',
-        title: 'สรุปผล',
-        description: 'แสดงผลเป็นหน้าจอ รายงาน หรือรายการ action ที่ทีมสามารถนำไปใช้ตัดสินใจต่อได้ทันที',
-      },
-    ];
-  }
-
-  return [
-    {
-      label: '01',
-      title: 'รับรายการ',
-      description: 'เก็บข้อมูลจากผู้ใช้ ระบบหลังบ้าน หรือช่องทางที่เชื่อมต่อเข้ามาให้เป็นโครงสร้างเดียวกัน',
-    },
-    {
-      label: '02',
-      title: 'จัดการงาน',
-      description: 'ให้ทีมตรวจสอบ แก้ไข อัปเดตสถานะ และมอบหมายงานผ่านหน้าจอที่ออกแบบตาม workflow จริง',
-    },
-    {
-      label: '03',
-      title: 'เชื่อมข้อมูล',
-      description: 'ส่งต่อข้อมูลผ่าน API ฐานข้อมูล หรือบริการภายนอก เพื่อให้ระบบทำงานต่อกันได้ครบ',
-    },
-    {
-      label: '04',
-      title: 'ส่งมอบผลลัพธ์',
-      description: 'แสดงสถานะ รายงาน และข้อมูลล่าสุดให้ทีมกับลูกค้าเห็นตรงกัน ลดการประสานงานซ้ำ',
-    },
-  ];
-}
-
-export function getConnectionItems(project: Project) {
-  const defaults = isAiProject(project)
-    ? ['API', 'Database', 'เอกสาร', 'แดชบอร์ด', 'LINE', 'ระบบหลังบ้านเดิม']
-    : ['API', 'Database', 'Admin', 'CRM', 'POS', 'ระบบหลังบ้านเดิม'];
-
-  return Array.from(new Set([...defaults, ...project.stack])).slice(0, 10);
 }
 
 export function getOutcomeCards(project: Project): DetailInfoCard[] {

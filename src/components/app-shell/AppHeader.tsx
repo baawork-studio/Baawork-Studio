@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { Box, Container, Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { ResponsiveStack } from '../ResponsiveStack';
-import { palette } from '../../appTheme';
+import { hover, palette } from '../../appTheme';
 import { navigateToHomeSection } from '../../utils/homeSectionNavigation';
 import { useAutoHideHeader } from '../../hooks/useAutoHideHeader';
 import { mobileNavigation, primaryNavigation } from './navigation';
@@ -88,7 +88,20 @@ export function AppHeader() {
       }}
     >
       <Container maxWidth={false} sx={{ height: '100%', px: { xs: 3, md: 6, lg: '120.384px' } }}>
-        <Box sx={{ position: 'relative', height: '100%' }}>
+        <Box
+          sx={{
+            position: 'relative',
+            height: '100%',
+            // Keep the header itself fixed.  Only ease its contents in, without
+            // fading them, so a refresh or route change never looks like a flash.
+            animation: 'baawork-header-content-in 960ms cubic-bezier(0.16, 1, 0.3, 1) both',
+            '@keyframes baawork-header-content-in': {
+              from: { transform: 'translateY(-14px)' },
+              to: { transform: 'translateY(0)' },
+            },
+            '@media (prefers-reduced-motion: reduce)': { animation: 'none' },
+          }}
+        >
           <Box
             component="a"
             href="/"
@@ -103,7 +116,7 @@ export function AppHeader() {
               transform: 'translateY(-50%)',
               borderRadius: '50%',
               outlineOffset: 4,
-              transition: 'opacity 180ms ease',
+              transition: hover.transition.interactive,
               '&:hover': { opacity: 0.82 },
               '@media (max-width: 800px)': { left: '50%', transform: 'translate(-50%, -50%)' },
             }}
@@ -145,7 +158,7 @@ export function AppHeader() {
                 component="a"
                 href={link.href}
                 onClick={link.sectionId ? (event) => navigateToHomeSection(event, link.sectionId!) : undefined}
-                sx={{ color: '#FFFFFF !important', textDecoration: 'none', fontSize: 12, lineHeight: '44px', fontWeight: 300, whiteSpace: 'nowrap', opacity: 1, transition: 'opacity 180ms ease', '&:visited, &:active, &:focus': { color: '#FFFFFF !important' }, '&:hover, &:focus-visible': { color: '#FFFFFF !important', opacity: 0.82 } }}
+                sx={{ color: '#FFFFFF !important', textDecoration: 'none', fontSize: 12, lineHeight: '44px', fontWeight: 300, whiteSpace: 'nowrap', opacity: 1, transition: hover.transition.interactive, '&:visited, &:active, &:focus': { color: '#FFFFFF !important' }, '&:hover, &:focus-visible': { color: '#FFFFFF !important', opacity: 0.82 } }}
               >
                 {link.label}
               </Box>
@@ -158,7 +171,7 @@ export function AppHeader() {
             sx={{
               position: 'absolute', right: 0, top: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minHeight: 30, px: { xs: 1.6, sm: 2 }, borderRadius: 999,
               bgcolor: palette.primaryPink, color: '#FFFFFF !important', textDecoration: 'none', fontSize: { xs: 11, sm: 12 }, lineHeight: 1, fontWeight: 500, whiteSpace: 'nowrap', transform: 'translateY(-50%)', zIndex: 1,
-              transition: 'background-color 220ms ease, box-shadow 220ms ease, filter 220ms ease', boxShadow: '0 6px 14px rgba(255,0,140,0.2)',
+              transition: hover.transition.interactive, boxShadow: '0 6px 14px rgba(255,0,140,0.2)',
               '&:visited, &:active': { color: '#FFFFFF !important' },
               '&:hover': { bgcolor: '#FF1495', color: '#FFFFFF !important', filter: 'brightness(1.03)', boxShadow: '0 8px 18px rgba(255,0,140,0.28)' },
               '&:focus-visible': { outline: `2px solid ${palette.accentYellow}`, outlineOffset: 3 },
@@ -195,7 +208,7 @@ export function AppHeader() {
                       if (link.sectionId) navigateToHomeSection(event, link.sectionId);
                       closeMobileMenu();
                     }}
-                    sx={{ display: 'flex', alignItems: 'center', minHeight: 0, px: 0, py: 0, mb: '10px', borderRadius: 0, bgcolor: 'transparent', color: '#1D1D1F', fontSize: { xs: 26, sm: 28 }, fontWeight: 500, lineHeight: 1.22, letterSpacing: '-0.03em', textDecoration: 'none', transition: 'opacity 180ms ease', animation: `baawork-mobile-menu-item-in 360ms cubic-bezier(0.22, 1, 0.36, 1) ${80 + index * 45}ms both`, '&:hover, &:focus-visible': { bgcolor: 'transparent', color: '#1D1D1F', opacity: 0.62 } }}
+                    sx={{ display: 'flex', alignItems: 'center', minHeight: 0, px: 0, py: 0, mb: '10px', borderRadius: 0, bgcolor: 'transparent', color: '#1D1D1F', fontSize: { xs: 26, sm: 28 }, fontWeight: 500, lineHeight: 1.22, letterSpacing: '-0.03em', textDecoration: 'none', transition: hover.transition.interactive, animation: `baawork-mobile-menu-item-in 360ms cubic-bezier(0.22, 1, 0.36, 1) ${80 + index * 45}ms both`, '&:hover, &:focus-visible': { bgcolor: 'transparent', color: '#1D1D1F', opacity: 0.62 } }}
                   >
                     {link.label}
                   </Box>

@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { Box } from '@mui/material';
-import { Reveal } from '../components/motion/Reveal';
 import { restoreHomeSectionScroll } from '../utils/homeSectionNavigation';
 import { HomeHero } from '../features/home/HomeHero';
 import { WorkShowcase } from '../features/home/WorkShowcase';
@@ -26,9 +25,9 @@ export function HomePage(_props: HomePageProps) {
       <WorkShowcase />
       <AudienceSection />
       <ToolStackSection />
-      <Reveal variant="scale"><WorkflowSection /></Reveal>
-      <Reveal variant="slide-right"><ResultsSection /></Reveal>
-      <Reveal variant="scale"><StartProjectSection /></Reveal>
+      <WorkflowSection />
+      <ResultsSection />
+      <StartProjectSection />
     </Box>
   );
 }

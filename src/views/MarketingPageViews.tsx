@@ -4,14 +4,20 @@ import type { FormEvent } from 'react';
 import { Box, Typography } from '@mui/material';
 import { MarketingPageLayout, MarketingContentSection } from '../components/MarketingPageLayout';
 import { ResponsiveStack } from '../components/ResponsiveStack';
-import { palette, typeScale } from '../appTheme';
+import { Reveal } from '../components/motion/Reveal';
+import { fontWeight, layout, motion as motionTokens, palette, typeScale } from '../appTheme';
 import { cardSx, SectionHeading } from '../features/marketing/MarketingSectionComponents';
-import { contactChannels, projectSteps, services } from '../features/marketing/marketingContent';
+import {
+  contactChannels,
+  projectSteps,
+  serviceOfferings,
+  services,
+} from '../features/marketing/marketingContent';
 
 const consultationEmail = process.env.NEXT_PUBLIC_CONSULT_EMAIL ?? 'baaworkstudio@gmail.com';
 
 
-export function ServicesPage() {
+function LegacyServicesPage() {
   return (
     <MarketingPageLayout title="บริการของ Baawork" subtitle="ออกแบบประสบการณ์ใช้งานและพัฒนาระบบที่เชื่อมกับงานจริงของธุรกิจ">
       <MarketingContentSection backgroundColor="#FFFFFF" variant="slide-right">
@@ -35,12 +41,88 @@ export function ServicesPage() {
   );
 }
 
+export function ServicesPage() {
+  return (
+    <MarketingPageLayout
+      title="บริการของเรา"
+      subtitle="ออกแบบประสบการณ์ใช้งานและพัฒนาระบบที่เชื่อมกับงานจริงของธุรกิจ"
+    >
+      <MarketingContentSection backgroundColor={palette.background} variant="slide-right">
+        <SectionHeading
+          title="บริการที่ออกแบบตามงานจริง"
+          description="เลือกทำเฉพาะส่วนที่ตอบโจทย์ธุรกิจ หรือวางให้ทุกส่วนทำงานเชื่อมกันตั้งแต่ต้นก็ได้"
+        />
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' },
+            gap: layout.cardGridGap,
+          }}
+        >
+          {serviceOfferings.map(({ title, description, suitedFor }, index) => (
+            <Box
+              key={title}
+              sx={{
+                minHeight: index === 0 ? layout.bentoFeatureCardMinHeight : layout.bentoCardMinHeight,
+                gridColumn: index === 0 ? { sm: 'span 2', lg: 'span 3' } : index >= 3 ? { lg: 'span 2' } : { lg: 'span 3' },
+                gridRow: index === 0 ? { lg: 'span 2' } : undefined,
+              }}
+            >
+              <Reveal fill variant="rise" distance={motionTokens.reveal.cardDistance} delay={index * motionTokens.reveal.stagger}>
+                <ResponsiveStack spacing={layout.cardContentGap} sx={{ ...cardSx, height: '100%' }}>
+                  <Typography component="h3" sx={{ ...typeScale.tertiary, color: palette.primaryPink }}>{title}</Typography>
+                  <Typography sx={{ ...typeScale.body, color: palette.textSecondary }}>{description}</Typography>
+                  <Typography sx={{ ...typeScale.caption, color: palette.textMuted }}>{suitedFor}</Typography>
+                </ResponsiveStack>
+              </Reveal>
+            </Box>
+          ))}
+        </Box>
+      </MarketingContentSection>
+
+      <MarketingContentSection backgroundColor={palette.surfaceAlt} variant="slide-left">
+        <SectionHeading
+          title="เริ่มงานอย่างเป็นขั้นตอน"
+          description="สรุปสิ่งที่ต้องทำให้เห็นภาพเดียวกันก่อน แล้วค่อยออกแบบ พัฒนา และส่งมอบอย่างเป็นระบบ"
+        />
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' },
+            gap: layout.cardGridGap,
+          }}
+        >
+          {projectSteps.map(([step, title, description], index) => (
+            <Box
+              key={step}
+              sx={{
+                minHeight: index === 0 ? layout.bentoFeatureCardMinHeight : layout.bentoCardMinHeight,
+                gridColumn: index === 0 ? { sm: 'span 2', lg: 'span 3' } : index >= 3 ? { lg: 'span 2' } : { lg: 'span 3' },
+                gridRow: index === 0 ? { lg: 'span 2' } : undefined,
+              }}
+            >
+              <Reveal fill variant="rise" distance={motionTokens.reveal.cardDistance} delay={index * motionTokens.reveal.stagger}>
+                <ResponsiveStack spacing={layout.cardCompactGap} sx={{ ...cardSx, height: '100%' }}>
+                  <Typography sx={{ ...typeScale.caption, color: palette.primaryPink, fontWeight: fontWeight.bold }}>{step}</Typography>
+                  <Typography component="h3" sx={{ ...typeScale.tertiary, color: palette.text }}>{title}</Typography>
+                  <Typography sx={{ ...typeScale.body, color: palette.textSecondary }}>{description}</Typography>
+                </ResponsiveStack>
+              </Reveal>
+            </Box>
+          ))}
+        </Box>
+      </MarketingContentSection>
+
+    </MarketingPageLayout>
+  );
+}
+
 export function StartProjectPage() {
   return (
-    <MarketingPageLayout title="เริ่มโปรเจกต์กับ Baawork" subtitle="คุยโจทย์ให้ชัด วางขอบเขตให้เห็นภาพ แล้วพัฒนาเป็นระบบที่พร้อมใช้งานจริง">
+    <MarketingPageLayout title="เริ่มโปรเจกต์กับเรา" subtitle="คุยโจทย์ให้ชัด วางขอบเขตให้เห็นภาพ แล้วพัฒนาเป็นระบบที่พร้อมใช้งานจริง">
       <MarketingContentSection backgroundColor="#FFFFFF" variant="slide-right">
         <SectionHeading title="ขั้นตอนการทำงาน" description="เราแบ่งงานเป็นขั้นตอนที่ชัดเจน เพื่อให้ทุกฝ่ายเห็นภาพและติดตามงานได้ตลอดโปรเจกต์" />
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(5, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 } }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 } }}>
           {projectSteps.map(([number, title, description]) => <ResponsiveStack key={number} spacing={3} sx={{ ...cardSx, minHeight: { xs: 220, lg: 300 }, justifyContent: 'space-between' }}><Typography sx={{ color: palette.primaryPink, fontWeight: 700 }}>{number}</Typography><Box><Typography sx={{ ...typeScale.cardTitle, mb: 1 }}>{title}</Typography><Typography sx={{ ...typeScale.body, color: '#4B5563' }}>{description}</Typography></Box></ResponsiveStack>)}
         </Box>
       </MarketingContentSection>

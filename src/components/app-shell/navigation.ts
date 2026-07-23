@@ -5,10 +5,10 @@ export type NavigationLink = {
 };
 
 export const primaryNavigation: NavigationLink[] = [
-  { label: 'ผลงาน', href: '/', sectionId: 'work' },
-  { label: 'บริการ', href: '/services' },
+  { label: 'ผลงานของเรา', href: '/', sectionId: 'work' },
+  { label: 'บริการของเรา', href: '/services' },
   { label: 'ทำไมต้องเรา', href: '/why-us' },
-  { label: 'เริ่มโปรเจกต์', href: '/start-project' },
+  { label: 'เริ่มโปรเจกต์กับเรา', href: '/start-project' },
 ];
 
 export const mobileNavigation: NavigationLink[] = [
@@ -17,10 +17,10 @@ export const mobileNavigation: NavigationLink[] = [
 ];
 
 export const footerNavigation: NavigationLink[] = [
-  { label: 'ผลงาน', href: '/', sectionId: 'work' },
-  { label: 'บริการ', href: '/services' },
+  { label: 'ผลงานของเรา', href: '/', sectionId: 'work' },
+  { label: 'บริการของเรา', href: '/services' },
   { label: 'ทำไมต้องเรา', href: '/why-us' },
-  { label: 'วิธีเริ่มโปรเจกต์', href: '/start-project' },
+  { label: 'เริ่มโปรเจกต์กับเรา', href: '/start-project' },
   { label: 'กระบวนการทำงาน', href: '/', sectionId: 'workflow' },
   { label: 'ปรึกษา Baawork', href: '/consult' },
 ];

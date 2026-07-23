@@ -1,7 +1,5 @@
-import type { Project } from "../../data/projectCatalog";
-
 export type ShowcaseCard = {
-  id: string;
+  id?: string;
   slug: string;
   title: string;
   shortDescription: string;
@@ -12,5 +10,5 @@ export type ShowcaseCard = {
 export type HeroCtaPhase = 'hidden' | 'seed' | 'open';
 
 export type HomePageProps = {
-  initialProjects?: Project[];
+  initialProjects?: import('../../data/projectCatalog').Project[];
 };

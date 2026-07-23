@@ -1,7 +1,8 @@
 import { Box, Typography } from '@mui/material';
+import { Reveal } from '../../components/motion/Reveal';
 import { ResponsiveStack } from '../../components/ResponsiveStack';
 import type { Project } from '../../data/projectCatalog';
-import { typeScale } from '../../appTheme';
+import { palette, typeScale } from '../../appTheme';
 import { getProjectVisual, getProjectVisualImages, renderHighlightedDescription } from './projectDetailHelpers';
 
 export function ProjectDeviceShowcase({ project }: { project: Project }) {
@@ -24,18 +25,20 @@ export function ProjectPurposeSection({ project }: { project: Project }) {
 
   return (
     <Box component="section" sx={{ width: '100%', py: { xs: 2, md: 3.5 } }}>
+      <Reveal variant="slide-right" distance={32}>
       <ResponsiveStack spacing={{ xs: 2, md: 2.5 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
         <Typography variant="h2" sx={{ color: visual.accent, ...typeScale.display }}>
           สร้างมาเพื่ออะไร
         </Typography>
         <ResponsiveStack spacing={{ xs: 1.5, md: 2 }}>
           {(project.purposeParagraphs ?? [project.description]).map((paragraph, index) => (
-            <Typography key={`${project.slug}-purpose-${index}`} sx={{ color: '#6E6E73', ...typeScale.intro, fontWeight: 600 }}>
+            <Typography key={`${project.slug}-purpose-${index}`} sx={{ color: palette.textMuted, ...typeScale.intro }}>
               {renderHighlightedDescription(project, visual.accent, paragraph)}
             </Typography>
           ))}
         </ResponsiveStack>
       </ResponsiveStack>
+      </Reveal>
     </Box>
   );
 }

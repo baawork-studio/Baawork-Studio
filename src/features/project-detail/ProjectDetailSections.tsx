@@ -1,17 +1,32 @@
 import { useState } from "react";
 import { Box, Modal, Typography } from "@mui/material";
+import { motion, useReducedMotion } from "motion/react";
+import { Reveal } from "../../components/motion/Reveal";
 import { ResponsiveStack } from "../../components/ResponsiveStack";
 import type { Project } from "../../data/projectCatalog";
-import { palette, typeScale } from "../../appTheme";
+import { fontWeight, hover, overlay, palette, radii, shadows, typeScale } from "../../appTheme";
 import { useHorizontalDragScroll } from "../../hooks/useHorizontalDragScroll";
 import { detailCarouselVerticalGap, pageGutter, techIcons } from "./projectDetailContent";
-import { carouselControlSx, getAudienceCards, getCapabilityCards, getCapabilityDetailRows, getConnectionItems, getOutcomeCards, getProjectVisual, getProjectVisualImage, getTechReason, getWorkflowSteps, useDetailCarousel } from "./projectDetailHelpers";
+import { carouselControlSx, getCapabilityCards, getCapabilityDetailRows, getOutcomeCards, getProjectVisual, getProjectVisualImage, getTechReason, useDetailCarousel } from "./projectDetailHelpers";
 import type { CapabilityCard, DetailInfoCard } from "./projectDetailTypes";
 
 const systemPreviewDevices = [
   { name: 'MacBook', label: 'หน้าจอ MacBook', imageUrl: '/project-screen-previews/macbook.png', maxHeight: { xs: 360, sm: 400 }, width: { xs: 'min(100%, 400px)', sm: '400px' }, gap: { xs: 1, md: 1.25 } },
   { name: 'iPad', label: 'หน้าจอ iPad', imageUrl: '/project-screen-previews/ipad.png', maxHeight: { xs: 260, sm: 300, lg: 340 }, width: { xs: 'min(100%, 280px)', sm: '300px' }, gap: { xs: 0.5, md: 0.75 } },
   { name: 'iPhone', label: 'หน้าจอ iPhone', imageUrl: '/project-screen-previews/iphone.png', maxHeight: { xs: 340, sm: 380, lg: 420 }, width: { xs: 'min(100%, 220px)', sm: '240px' }, gap: { xs: 0.25, md: 0.5 } },
+] as const;
+
+const projectOutcomeBackgrounds = [
+  '/project-outcomes/streamlined-workflow.png',
+  '/project-outcomes/faster-delivery.png',
+  '/project-outcomes/shared-data.png',
+  '/project-outcomes/scalable-system.png',
+] as const;
+
+const projectHighlightBackgrounds = [
+  '/project-highlights/connected-services.png',
+  '/project-highlights/operations-management.png',
+  '/project-highlights/data-insights.png',
 ] as const;
 
 type SystemPreviewDevice = (typeof systemPreviewDevices)[number];
@@ -58,9 +73,6 @@ function SystemPreviewCarousel({
         variant="h3"
         sx={{
           color: palette.text,
-          fontSize: { xs: 20, md: 23 },
-          lineHeight: 1.2,
-          fontWeight: 700,
           textAlign: 'left',
           px: pageGutter,
         }}
@@ -131,14 +143,14 @@ function SystemPreviewCarousel({
                 willChange: 'transform',
                 position: 'relative',
                 zIndex: 1,
-                transition: 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease',
+                transition: hover.transition.interactive,
                 '&:hover': {
-                  transform: 'translate3d(0, -6px, 0)',
+                  transform: hover.lift,
                   opacity: 0.92,
                   zIndex: 2,
                 },
                 '&:focus-visible': {
-                  outline: '2px solid #FF008C',
+                  outline: `2px solid ${palette.primaryPink}`,
                   outlineOffset: 6,
                 },
               }}
@@ -227,7 +239,7 @@ function SystemPreviewOverlay({
       slotProps={{
         backdrop: {
           sx: {
-            bgcolor: 'rgba(9, 11, 18, 0.5)',
+            bgcolor: overlay.modalBackdrop,
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
           },
@@ -258,7 +270,7 @@ function SystemPreviewOverlay({
           p: 0,
           borderRadius: 0,
           bgcolor: 'transparent',
-          color: '#fff',
+          color: palette.textOnDark,
           boxShadow: 'none',
           outline: 'none',
         }}
@@ -273,14 +285,14 @@ function SystemPreviewOverlay({
               width: 42,
               height: 42,
               border: 0,
-              borderRadius: '50%',
-              bgcolor: 'rgba(255,255,255,0.12)',
-              color: '#fff',
+              borderRadius: radii.circle,
+              bgcolor: overlay.control,
+              color: palette.textOnDark,
               cursor: 'pointer',
               fontSize: 28,
               lineHeight: 1,
-              transition: 'background-color 180ms ease, transform 180ms ease',
-              '&:hover': { bgcolor: 'rgba(255,255,255,0.2)', transform: 'scale(1.05)' },
+              transition: hover.transition.interactive,
+              '&:hover': { bgcolor: overlay.controlHover, transform: hover.controlScale },
             }}
           >
             ×
@@ -358,7 +370,7 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
     <Box
       component="section"
       sx={{
-        bgcolor: '#FFFFFF',
+        bgcolor: palette.background,
         position: 'relative',
         left: `calc(${pageGutter} * -1)`,
         width: `calc(100% + (${pageGutter} * 2))`,
@@ -367,7 +379,8 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
         overflow: 'visible',
       }}
     >
-      <ResponsiveStack sx={{ px: pageGutter, mb: { xs: 3, md: 4 } }}>
+      <Reveal distance={28}>
+        <ResponsiveStack sx={{ px: pageGutter, mb: { xs: 3, md: 4 } }}>
         <Typography
           variant="h2"
           sx={{
@@ -377,7 +390,8 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
         >
           พรีวิวหน้าจอระบบจริง
         </Typography>
-      </ResponsiveStack>
+        </ResponsiveStack>
+      </Reveal>
 
       <Box
         sx={{
@@ -393,13 +407,14 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
             alignItems: 'start',
           }}
         >
-          {previewDevices.map((device) => (
-            <SystemPreviewCarousel
-              key={device.name}
-              project={project}
-              device={device}
-              onPreviewOpen={(previewDevice, imageIndex) => setActivePreview({ device: previewDevice, imageIndex })}
-            />
+          {previewDevices.map((device, index) => (
+            <Reveal key={device.name} delay={Math.min(index * 0.1, 0.2)} variant={index % 2 === 0 ? 'slide-right' : 'slide-left'}>
+              <SystemPreviewCarousel
+                project={project}
+                device={device}
+                onPreviewOpen={(previewDevice, imageIndex) => setActivePreview({ device: previewDevice, imageIndex })}
+              />
+            </Reveal>
           ))}
         </Box>
       </Box>
@@ -431,6 +446,7 @@ function DetailSectionHeading({
   accent: string;
 }) {
   return (
+    <Reveal distance={28}>
     <ResponsiveStack spacing={{ xs: 1, md: 1.25 }} sx={{ maxWidth: 860 }}>
       <Typography
         variant="h2"
@@ -444,7 +460,7 @@ function DetailSectionHeading({
       {description && (
         <Typography
           sx={{
-            color: '#4B5563',
+            color: palette.textSecondary,
             ...typeScale.bodyLarge,
             maxWidth: 760,
           }}
@@ -453,6 +469,7 @@ function DetailSectionHeading({
         </Typography>
       )}
     </ResponsiveStack>
+    </Reveal>
   );
 }
 
@@ -462,6 +479,7 @@ function VisualInfoCard({
   imageUrl,
   accent,
   label,
+  centered = false,
   tall = false,
   dark = true,
 }: {
@@ -470,6 +488,7 @@ function VisualInfoCard({
   imageUrl: string;
   accent: string;
   label?: string;
+  centered?: boolean;
   tall?: boolean;
   dark?: boolean;
 }) {
@@ -480,17 +499,17 @@ function VisualInfoCard({
         position: 'relative',
         minHeight: tall ? { xs: 360, md: 460 } : { xs: 300, md: 360 },
         overflow: 'hidden',
-        borderRadius: { xs: '28px', md: '36px' },
-        bgcolor: dark ? '#05060A' : '#FFFFFF',
-        color: dark ? '#FFFFFF' : palette.text,
-        boxShadow: '0 24px 64px rgba(17,24,39,0.09)',
-        transition: 'transform 300ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease',
+        borderRadius: radii.card,
+        bgcolor: dark ? palette.surfaceDark : palette.background,
+        color: dark ? palette.textOnDark : palette.text,
+        boxShadow: shadows.card,
+        transition: hover.transition.card,
         '&:hover': {
-          transform: 'translate3d(0, -6px, 0)',
-          boxShadow: '0 32px 82px rgba(17,24,39,0.13)',
+          transform: hover.lift,
+          boxShadow: shadows.cardHover,
         },
         '&:hover img': {
-          transform: 'scale(1.045)',
+          transform: hover.detailImageScale,
         },
       }}
     >
@@ -509,7 +528,7 @@ function VisualInfoCard({
           objectPosition: 'center',
           opacity: dark ? 0.86 : 0.2,
           transform: 'scale(1.01)',
-          transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
+          transition: hover.transition.image,
           pointerEvents: 'none',
         }}
       />
@@ -518,8 +537,8 @@ function VisualInfoCard({
           position: 'absolute',
           inset: 0,
           background: dark
-            ? 'linear-gradient(180deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.38) 42%, rgba(0,0,0,0.78) 100%)'
-            : `linear-gradient(180deg, rgba(255,255,255,0.82) 0%, ${visualTintFromAccent(accent)} 100%)`,
+            ? overlay.imageOverlayDark
+            : `linear-gradient(180deg, ${overlay.imageOverlayLightStart} 0%, ${visualTintFromAccent(accent)} 100%)`,
         }}
       />
       <ResponsiveStack
@@ -530,16 +549,17 @@ function VisualInfoCard({
           height: '100%',
           minHeight: 'inherit',
           justifyContent: 'flex-end',
+          alignItems: centered ? 'center' : 'stretch',
           p: { xs: 3, md: 3.75 },
         }}
       >
         {label && (
           <Typography
             sx={{
-              color: dark ? 'rgba(255,255,255,0.72)' : accent,
+              color: dark ? overlay.textOnDarkMuted : accent,
               fontSize: { xs: 15, md: 16 },
               lineHeight: 1,
-              fontWeight: 800,
+              fontWeight: fontWeight.extraBold,
             }}
           >
             {label}
@@ -549,19 +569,17 @@ function VisualInfoCard({
           variant="h3"
           sx={{
             color: 'currentColor',
-            fontSize: { xs: 31, sm: 35, md: 42 },
-            lineHeight: 1.08,
-            fontWeight: 700,
-            letterSpacing: 0,
+            textAlign: centered ? 'center' : 'left',
           }}
         >
           {title}
         </Typography>
         <Typography
           sx={{
-            color: dark ? 'rgba(255,255,255,0.78)' : '#4B5563',
+            color: dark ? overlay.textOnDarkSecondary : palette.textSecondary,
             ...typeScale.bodyLarge,
             maxWidth: 560,
+            textAlign: centered ? 'center' : 'left',
           }}
         >
           {description}
@@ -572,151 +590,18 @@ function VisualInfoCard({
 }
 
 function visualTintFromAccent(accent: string) {
-  return accent === '#FF008C' ? 'rgba(255,240,248,0.92)' : 'rgba(247,248,250,0.92)';
+  return accent === palette.primaryPink ? overlay.lightTintPink : overlay.lightTintNeutral;
 }
 
 export function ProjectUsageGuideSection({ project }: { project: Project }) {
   const visual = getProjectVisual(project);
-  const audienceCards = getAudienceCards(project);
-  const workflowSteps = getWorkflowSteps(project);
-  const connectionItems = getConnectionItems(project);
   const outcomeCards = getOutcomeCards(project);
 
   return (
     <ResponsiveStack component="section" spacing={{ xs: 6, md: 8 }} sx={{ py: { xs: 2, md: 3 }, overflow: 'visible' }}>
-      <ResponsiveStack spacing={{ xs: 3, md: 4 }}>
-        <DetailSectionHeading
-          title="ระบบนี้ช่วยงานใครบ้าง"
-          description="ดูจากบทบาทจริงในทีมก่อน แล้วค่อยลงรายละเอียดว่าหน้าจอไหนช่วยงานส่วนไหน"
-          accent={visual.accent}
-        />
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
-            gap: { xs: 1.5, md: 2.25 },
-          }}
-        >
-          {audienceCards.map((card, index) => (
-            <VisualInfoCard
-              key={card.title}
-              title={card.title}
-              description={card.description}
-              imageUrl={getProjectVisualImage(project, index)}
-              accent={visual.accent}
-              label={`บทบาท ${String(index + 1).padStart(2, '0')}`}
-              tall={index === 0}
-            />
-          ))}
-        </Box>
-      </ResponsiveStack>
-
       <Box
         sx={{
-          bgcolor: '#F7F8FA',
-          position: 'relative',
-          left: `calc(${pageGutter} * -1)`,
-          width: `calc(100% + (${pageGutter} * 2))`,
-          alignSelf: 'stretch',
-          py: { xs: 6, md: 8 },
-          overflow: 'visible',
-        }}
-      >
-        <ResponsiveStack spacing={{ xs: 3, md: 4 }} sx={{ px: pageGutter }}>
-          <DetailSectionHeading
-            title="Flow การใช้งานจริง"
-            description="ภาพรวมการไหลของงานจริง ตั้งแต่รับข้อมูล ไปจนถึงทีมเห็นผลลัพธ์พร้อมใช้งาน"
-            accent={palette.text}
-          />
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: { xs: '1fr', md: 'repeat(4, minmax(0, 1fr))' },
-              gap: { xs: 1.5, md: 2.25 },
-            }}
-          >
-            {workflowSteps.map((step, index) => (
-              <VisualInfoCard
-                key={step.label}
-                title={step.title}
-                description={step.description}
-                imageUrl={getProjectVisualImage(project, index + 2)}
-                accent={visual.accent}
-                label={step.label}
-                dark={index !== 1}
-              />
-            ))}
-          </Box>
-        </ResponsiveStack>
-      </Box>
-
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', lg: 'minmax(320px, 0.72fr) minmax(0, 1.28fr)' },
-          gap: { xs: 3, md: 5, lg: 7 },
-          alignItems: 'center',
-        }}
-      >
-        <DetailSectionHeading
-          title="ข้อมูลที่ระบบเชื่อมต่อได้"
-          description="ทำให้ลูกค้าเห็นทันทีว่าระบบไม่ได้เป็นแค่หน้าจอสวย แต่ต่อกับข้อมูลจริงและเครื่องมือที่ใช้อยู่ได้"
-          accent={visual.accent}
-        />
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', sm: 'repeat(3, minmax(0, 1fr))' },
-            gap: { xs: 1.25, md: 1.5 },
-          }}
-        >
-          {connectionItems.map((item, index) => (
-            <Box
-              key={item}
-              sx={{
-                minHeight: { xs: 126, md: 148 },
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                p: { xs: 2, md: 2.35 },
-                borderRadius: { xs: '22px', md: '28px' },
-                bgcolor: index === 0 ? visual.accent : '#F7F8FA',
-                color: palette.text,
-                boxShadow: '0 18px 42px rgba(17,24,39,0.05)',
-                transition: 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease',
-                '&:hover': {
-                  transform: 'translate3d(0, -4px, 0)',
-                  boxShadow: '0 22px 54px rgba(17,24,39,0.09)',
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  width: { xs: 34, md: 42 },
-                  height: { xs: 34, md: 42 },
-                  borderRadius: '50%',
-                  bgcolor: index === 0 ? 'rgba(255,255,255,0.24)' : visual.tint,
-                }}
-              />
-              <Typography
-                sx={{
-                  color: index === 0 ? '#FFFFFF' : palette.text,
-                  fontSize: { xs: 21, md: 25 },
-                  lineHeight: 1.08,
-                  fontWeight: 700,
-                  letterSpacing: 0,
-                }}
-              >
-                {item}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          bgcolor: '#F7F8FA',
+          bgcolor: palette.surfaceAlt,
           position: 'relative',
           left: `calc(${pageGutter} * -1)`,
           width: `calc(100% + (${pageGutter} * 2))`,
@@ -739,16 +624,14 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
             }}
           >
             {outcomeCards.map((card, index) => (
-              <VisualInfoCard
-                key={`${card.title}-${index}`}
-                title={card.title}
-                description={card.description}
-                imageUrl={getProjectVisualImage(project, index + 4)}
-                accent={visual.accent}
-                label={`ผลลัพธ์ ${String(index + 1).padStart(2, '0')}`}
-                tall={index === 0}
-                dark={index !== 1}
-              />
+              <Reveal key={`${card.title}-${index}`} delay={Math.min(index * 0.1, 0.3)} distance={30}>
+                <VisualInfoCard
+                  title={card.title}
+                  description={card.description}
+                  imageUrl={projectOutcomeBackgrounds[index % projectOutcomeBackgrounds.length]}
+                  accent={visual.accent}
+                />
+              </Reveal>
             ))}
           </Box>
         </ResponsiveStack>
@@ -764,7 +647,7 @@ export function ProjectHighlightsSection({ project }: { project: Project }) {
     <Box
       component="section"
       sx={{
-        bgcolor: '#FFFFFF',
+        bgcolor: palette.background,
         py: { xs: 2, md: 3 },
         overflow: 'visible',
       }}
@@ -784,15 +667,14 @@ export function ProjectHighlightsSection({ project }: { project: Project }) {
           }}
         >
           {project.highlights.map((highlight, index) => (
+            <Reveal key={highlight} delay={Math.min(index * 0.1, 0.3)} distance={30}>
             <VisualInfoCard
-              key={highlight}
               title={highlight}
               description={getOutcomeCards(project)[index]?.description ?? 'ออกแบบให้ทีมเข้าใจง่าย ใช้ซ้ำได้จริง และต่อยอดกับระบบเดิมของธุรกิจได้'}
-              imageUrl={getProjectVisualImage(project, index + 6)}
+              imageUrl={projectHighlightBackgrounds[index % projectHighlightBackgrounds.length]}
               accent={visual.accent}
-              label={String(index + 1).padStart(2, '0')}
-              dark={index !== 1}
             />
+            </Reveal>
           ))}
         </Box>
       </ResponsiveStack>
@@ -809,7 +691,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
   return (
     <Box
       sx={{
-        bgcolor: '#F7F8FA',
+        bgcolor: palette.surfaceAlt,
         position: 'relative',
         left: `calc(${pageGutter} * -1)`,
         width: `calc(100% + (${pageGutter} * 2))`,
@@ -839,8 +721,9 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
         </Typography>
       </ResponsiveStack>
 
-      <Box
-        ref={carouselRef}
+      <Reveal delay={0.08}>
+        <Box
+          ref={carouselRef}
         aria-label={`รายละเอียดการทำงานของ ${project.title}`}
         {...dragScroll}
         sx={{
@@ -883,24 +766,24 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                 width: { xs: 'calc(100vw - 64px)', sm: 372, md: 372 },
                 height: { xs: 620, md: 680 },
                 overflow: 'hidden',
-                borderRadius: '28px',
-                bgcolor: '#222',
+                borderRadius: radii.card.xs,
+                bgcolor: palette.surfaceDarkMuted,
                 backgroundImage:
                   "url('/project-details/project-detail-carousel-background.png')",
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                color: '#fff',
+                color: palette.textOnDark,
                 scrollSnapAlign: 'start',
                 scrollMarginInline: pageGutter,
                 display: 'block',
                 boxShadow: 'none',
                 zIndex: 1,
                 transform: 'translate3d(0, 0, 0)',
-                transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
+                transition: hover.transition.card,
                 willChange: 'transform',
                 '&:hover': {
-                  transform: 'translate3d(0, -6px, 0)',
-                  boxShadow: '0 18px 40px rgba(17,24,39,0.14)',
+                  transform: hover.lift,
+                  boxShadow: shadows.carouselHover,
                   zIndex: 2,
                 },
               }}
@@ -913,19 +796,19 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                   zIndex: 2,
                   p: { xs: '28px', md: '32px' },
                   pr: { xs: '32px', md: '34px' },
-                  borderRadius: '22px',
-                  bgcolor: 'rgba(0,0,0,0.2)',
+                  borderRadius: radii.cardInner,
+                  bgcolor: overlay.darkCard,
                   backdropFilter: 'blur(6px)',
                   WebkitBackdropFilter: 'blur(6px)',
-                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.04)',
+                  boxShadow: overlay.darkCardBorder,
                 }}
               >
                 <Typography
                   sx={{
-                    color: 'rgba(255,255,255,0.68)',
+                    color: overlay.textOnDarkMuted,
                     fontSize: 17,
                     lineHeight: 1.353,
-                    fontWeight: 700,
+                    fontWeight: fontWeight.bold,
                   }}
                 >
                   {String(index + 1).padStart(2, '0')}
@@ -933,8 +816,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                 <Typography
                   variant="h3"
                   sx={{
-                    color: '#fff',
-                    ...typeScale.cardTitle,
+                    color: palette.textOnDark,
                     maxWidth: 430,
                   }}
                 >
@@ -953,7 +835,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                           color: visual.accent,
                           fontSize: 13,
                           lineHeight: 1.231,
-                          fontWeight: 700,
+                          fontWeight: fontWeight.bold,
                           mb: 0.35,
                         }}
                       >
@@ -961,10 +843,10 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                       </Typography>
                       <Typography
                         sx={{
-                          color: 'rgba(255,255,255,0.78)',
+                          color: overlay.textOnDarkSecondary,
                           fontSize: { xs: 15, md: 16 },
                           lineHeight: 1.38,
-                          fontWeight: 500,
+                          fontWeight: fontWeight.medium,
                         }}
                       >
                         {row.text}
@@ -976,7 +858,8 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
             </Box>
           );
         })}
-      </Box>
+        </Box>
+      </Reveal>
 
       <ResponsiveStack
         direction="row"
@@ -1030,130 +913,113 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
 }
 
 export function ProjectTechSection({ project }: { project: Project }) {
-  const visual = getProjectVisual(project);
+  const shouldReduceMotion = useReducedMotion();
   const technologyPositions = [
-    { x: 12, y: 24, size: 108, mobileSize: 72 },
-    { x: 31, y: 62, size: 132, mobileSize: 82 },
-    { x: 50, y: 20, size: 120, mobileSize: 78 },
-    { x: 69, y: 57, size: 128, mobileSize: 84 },
-    { x: 87, y: 28, size: 104, mobileSize: 70 },
-    { x: 20, y: 88, size: 96, mobileSize: 68 },
-    { x: 50, y: 91, size: 112, mobileSize: 76 },
-    { x: 80, y: 87, size: 98, mobileSize: 70 },
+    { x: 12, y: 24, size: 108, mobileSize: 72, delay: 0.03 },
+    { x: 31, y: 62, size: 132, mobileSize: 82, delay: 0.1 },
+    { x: 50, y: 20, size: 120, mobileSize: 78, delay: 0.17 },
+    { x: 69, y: 57, size: 128, mobileSize: 84, delay: 0.24 },
+    { x: 87, y: 28, size: 104, mobileSize: 70, delay: 0.31 },
+    { x: 20, y: 88, size: 96, mobileSize: 68, delay: 0.38 },
+    { x: 50, y: 91, size: 112, mobileSize: 76, delay: 0.45 },
+    { x: 80, y: 87, size: 98, mobileSize: 70, delay: 0.52 },
   ];
 
   return (
     <Box
       sx={{
-        py: { xs: 3, md: 4 },
+        color: palette.text,
+        py: { xs: 7, sm: 8, md: 10 },
       }}
     >
-      <ResponsiveStack spacing={{ xs: 1.75, md: 2.25 }} alignItems="center" textAlign="center" sx={{ maxWidth: 840, mx: 'auto' }}>
-        <Typography
-          variant="h2"
-          sx={{
-            color: visual.accent,
-            ...typeScale.display,
-          }}
-        >
-          เทคโนโลยีที่ใช้
-        </Typography>
-        <Typography
-          sx={{
-            maxWidth: 720,
-            color: '#4B5563',
-            ...typeScale.bodyLarge,
-          }}
-        >
-          {getTechReason(project)}
-        </Typography>
-      </ResponsiveStack>
-
       <Box
-        aria-label={`เทคโนโลยีที่ใช้ใน ${project.title}`}
-        role="list"
         sx={{
-          position: 'relative',
-          display: { xs: 'flex', md: 'block' },
-          flexWrap: { xs: 'wrap' },
-          justifyContent: { xs: 'center' },
-          alignItems: { xs: 'center' },
-          columnGap: { xs: 2, sm: 2.5 },
-          rowGap: { xs: 2.5, sm: 3 },
-          width: '100%',
-          maxWidth: 1040,
-          minHeight: { xs: 'auto', md: 460 },
-          mx: 'auto',
-          mt: { xs: 4.5, md: 6 },
-          isolation: 'isolate',
+          px: pageGutter,
         }}
       >
-        {project.stack.map((item, index) => {
-          const icon = techIcons[item] ?? { label: item.slice(0, 4) };
-          const position = technologyPositions[index % technologyPositions.length];
+        <Reveal>
+          <ResponsiveStack spacing={{ xs: 2, md: 2.5 }} alignItems="center" textAlign="center" sx={{ maxWidth: 840, mx: 'auto' }}>
+            <Typography variant="h2" sx={{ color: palette.primaryPink, ...typeScale.display }}>
+              เทคโนโลยีที่ใช้
+            </Typography>
+            <Typography sx={{ maxWidth: 720, color: palette.textSecondary, ...typeScale.bodyLarge }}>
+              {getTechReason(project)}
+            </Typography>
+          </ResponsiveStack>
+        </Reveal>
 
-          return (
-            <Box
-              key={item}
-              role="listitem"
-              title={item}
-              sx={{
-                position: { xs: 'relative', md: 'absolute' },
-                left: { md: `${position.x}%` },
-                top: { md: `${position.y}%` },
-                width: { xs: position.mobileSize, sm: position.size, md: position.size },
-                transform: { xs: 'none', md: 'translate(-50%, -50%)' },
-              }}
-            >
+        <Box
+          aria-label={`เทคโนโลยีที่ใช้ใน ${project.title}`}
+          role="list"
+          sx={{
+            position: 'relative',
+            display: { xs: 'flex', md: 'block' },
+            flexWrap: { xs: 'wrap' },
+            justifyContent: { xs: 'center' },
+            alignItems: { xs: 'center' },
+            columnGap: { xs: 2, sm: 2.5 },
+            rowGap: { xs: 2.5, sm: 3 },
+            width: '100%',
+            maxWidth: 1040,
+            minHeight: { xs: 'auto', md: 460 },
+            mx: 'auto',
+            mt: { xs: 4.5, md: 6 },
+            isolation: 'isolate',
+          }}
+        >
+          {project.stack.map((item, index) => {
+            const icon = techIcons[item] ?? { label: item.slice(0, 4) };
+            const position = technologyPositions[index % technologyPositions.length];
+
+            return (
               <Box
+                key={item}
+                role="listitem"
                 sx={{
-                  aspectRatio: '1 / 1',
-                  display: 'grid',
-                  placeItems: 'center',
-                  borderRadius: { xs: '20px', md: '24px' },
-                  bgcolor: 'rgba(243,244,246,0.86)',
-                  boxShadow: '0 14px 30px rgba(17,24,39,0.045), inset 0 1px 0 rgba(255,255,255,0.72)',
-                  transition: 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease',
-                  '&:hover': {
-                    transform: 'translate3d(0, -4px, 0)',
-                    bgcolor: 'rgba(255,255,255,0.66)',
-                    boxShadow: '0 20px 42px rgba(17,24,39,0.08), inset 0 1px 0 rgba(255,255,255,0.86)',
-                  },
+                  position: { xs: 'relative', md: 'absolute' },
+                  left: { md: `${position.x}%` },
+                  top: { md: `${position.y}%` },
+                  width: { xs: position.mobileSize, sm: position.size, md: position.size },
+                  transform: { xs: 'none', md: 'translate(-50%, -50%)' },
                 }}
               >
-                {icon.src ? (
-                  <Box
-                    component="img"
-                    src={icon.src}
-                    alt={item}
-                    loading="lazy"
-                    decoding="async"
-                    onError={(event) => {
-                      event.currentTarget.style.display = 'none';
-                    }}
-                    sx={{
-                      width: '53%',
-                      height: '53%',
-                      objectFit: 'contain',
-                      filter: icon.invert ? 'invert(1)' : undefined,
-                    }}
-                  />
-                ) : (
-                  <Typography
-                    sx={{
-                      color: visual.accent,
-                      fontSize: { xs: 18, md: 21 },
-                      lineHeight: 1,
-                      fontWeight: 800,
-                    }}
+                <motion.div
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 18, scale: 0.92 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  whileHover={shouldReduceMotion ? undefined : { scale: hover.icon.scale, transition: hover.motion }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{ duration: 0.52, delay: shouldReduceMotion ? 0 : position.delay, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <motion.div
+                    whileInView={shouldReduceMotion ? undefined : { y: [0, -7, 0], rotate: [0, -1, 0, 1, 0] }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ duration: 5.4 + position.delay * 2, delay: position.delay, repeat: Infinity, ease: 'easeInOut' }}
                   >
-                    {icon.label}
-                  </Typography>
-                )}
+                    <Box title={item} sx={{ aspectRatio: '1 / 1', display: 'grid', placeItems: 'center', bgcolor: 'transparent' }}>
+                      {icon.src ? (
+                        <Box
+                          component="img"
+                          src={icon.src}
+                          alt={item}
+                          loading="lazy"
+                          decoding="async"
+                          onError={(event) => {
+                            event.currentTarget.style.display = 'none';
+                          }}
+                          sx={{ width: '64%', height: '64%', objectFit: 'contain', filter: icon.invert ? 'invert(1)' : undefined }}
+                        />
+                      ) : (
+                        <Typography sx={{ color: palette.primaryPink, fontSize: { xs: 18, md: 21 }, lineHeight: 1, fontWeight: fontWeight.extraBold }}>
+                          {icon.label}
+                        </Typography>
+                      )}
+                    </Box>
+                  </motion.div>
+                </motion.div>
               </Box>
-            </Box>
-          );
-        })}
+            );
+          })}
+        </Box>
       </Box>
     </Box>
   );

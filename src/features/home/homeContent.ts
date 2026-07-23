@@ -1,47 +1,21 @@
-import aiPhoneHandsImage from "../../assets/ai-phone-hands.png";
-import aiPhoneTrioImage from "../../assets/ai-phone-trio.png";
-import { palette } from "../../appTheme";
-import type { ShowcaseCard } from "./homeTypes";
+import { palette } from '../../appTheme';
+import { projectCatalog } from '../../data/projectCatalog';
+import type { ShowcaseCard } from './homeTypes';
 
 const allAiShowcaseCards: ShowcaseCard[] = [
   {
-    id: 'ai-command-center',
+    id: 'linora-facebook-page-analytics',
     slug: 'linora-facebook-page-analytics',
     title: 'Linora วิเคราะห์เพจ Facebook',
     shortDescription: 'เว็บแอปบน LINE สำหรับเชื่อมต่อเพจ Facebook วิเคราะห์โพสต์ คอมเมนต์ และการมีส่วนร่วม พร้อมคำแนะนำที่นำไปใช้พัฒนาเพจได้ทันที',
     coverImageUrl: '/showcase/showcase-linora.png',
   },
   {
-    id: 'ai-sales-forecast',
+    id: 'shadow-ceo-business-assistant',
     slug: 'shadow-ceo-business-assistant',
     title: 'Shadow CEO',
-    shortDescription: 'AI Business Assistant บน LINE ที่สรุปข้อมูลล่าสุด แจ้งเตือนโอกาสสำคัญ และตอบคำถามว่า วันนี้ธุรกิจควรทำอะไรต่อ',
-    coverImageUrl: aiPhoneHandsImage.src,
-    presentation: 'phoneAiLight',
-  },
-  {
-    id: 'ai-document-review',
-    slug: 'ai-document-review',
-    title: 'ระบบอ่านเอกสาร AI',
-    shortDescription: 'ระบบช่วยอ่านเอกสาร สกัดใจความสำคัญ และจัดหมวดหมู่คำขอจากหน้าจอเดียว',
-    coverImageUrl: aiPhoneHandsImage.src,
-    presentation: 'phoneAiLight',
-  },
-  {
-    id: 'ai-service-agent',
-    slug: 'ai-service-agent',
-    title: 'ผู้ช่วยบริการอัตโนมัติ',
-    shortDescription: 'ระบบผู้ช่วยตอบกลับอัตโนมัติที่ติดตามบทสนทนา งานค้าง และคุณภาพบริการของทีม',
-    coverImageUrl: aiPhoneTrioImage.src,
-    presentation: 'phoneAiDark',
-  },
-  {
-    id: 'ai-devops-monitor',
-    slug: 'ai-api-monitor',
-    title: 'ระบบเฝ้าระวัง API',
-    shortDescription: 'หน้าจอตรวจจับ anomaly ของระบบ API พร้อมแจ้งเตือนเหตุการณ์ผิดปกติก่อนกระทบผู้ใช้',
-    coverImageUrl: aiPhoneHandsImage.src,
-    presentation: 'phoneAiLight',
+    shortDescription: 'AI Business Assistant บน LINE ที่สรุปข้อมูลล่าสุด แจ้งเตือนโอกาสสำคัญ และตอบคำถามว่าธุรกิจควรทำอะไรต่อ',
+    coverImageUrl: '/showcase/showcase-linora.png',
   },
 ];
 
@@ -64,8 +38,8 @@ const allWebAppShowcaseCards: ShowcaseCard[] = [
     id: 'line-membership-loyalty-platform',
     slug: 'line-membership-loyalty-platform',
     title: 'ระบบสมาชิกและสะสมแต้มบน LINE',
-    shortDescription: 'แพลตฟอร์มสมาชิกสำหรับสมัคร ยืนยันตัวตน สะสมแต้ม รับโปรโมชัน และบริหารสมาชิกผ่าน LINE',
-    coverImageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80',
+    shortDescription: 'แพลตฟอร์มสมาชิกบน LINE สำหรับสมัครสมาชิก สะสมแต้ม รับสิทธิประโยชน์ และดูแลลูกค้าอย่างต่อเนื่อง',
+    coverImageUrl: '/showcase/showcase-product-warranty.png',
   },
   {
     id: 'product-warranty-and-customer-platform',
@@ -83,9 +57,32 @@ const allWebAppShowcaseCards: ShowcaseCard[] = [
   },
 ];
 
-export const aiShowcaseCards = allAiShowcaseCards.filter((card) =>
-  ['linora-facebook-page-analytics', 'shadow-ceo-business-assistant'].includes(card.slug),
-);
+const getShowcaseProjects = (slugs: readonly string[]): ShowcaseCard[] =>
+  slugs.map((slug) => {
+    const project = projectCatalog.find((item) => item.slug === slug);
+
+    if (!project) {
+      throw new Error(`Project showcase is missing its catalog entry: ${slug}`);
+    }
+
+    return project;
+  });
+
+const aiProjectSlugs = [
+  'linora-facebook-page-analytics',
+  'shadow-ceo-business-assistant',
+] as const;
+
+const webAppProjectSlugs = [
+  'rentflow-car-rental-platform',
+  'service-booking-template',
+  'line-membership-loyalty-platform',
+  'product-warranty-and-customer-platform',
+  'online-learning-platform-with-ai',
+] as const;
+
+export const aiShowcaseCards = getShowcaseProjects(aiProjectSlugs);
+const catalogWebAppShowcaseCards = getShowcaseProjects(webAppProjectSlugs);
 
 const lineLiffProjectSlugs = new Set([
   'service-booking-template',
@@ -93,11 +90,11 @@ const lineLiffProjectSlugs = new Set([
   'product-warranty-and-customer-platform',
 ]);
 
-export const lineLiffShowcaseCards = allWebAppShowcaseCards.filter((card) =>
+export const lineLiffShowcaseCards = catalogWebAppShowcaseCards.filter((card) =>
   lineLiffProjectSlugs.has(card.slug),
 );
 
-export const webAppShowcaseCards = allWebAppShowcaseCards.filter(
+export const webAppShowcaseCards = catalogWebAppShowcaseCards.filter(
   (card) => !lineLiffProjectSlugs.has(card.slug),
 );
 
@@ -194,59 +191,15 @@ export const aiPhoneScreens = [
 ] as const;
 
 export const workflowPanels = [
-  {
-    title: 'วิเคราะห์โจทย์',
-    description: 'เก็บเป้าหมาย ผู้ใช้จริง ข้อมูลที่ต้องใช้ และข้อจำกัดของระบบให้ชัดก่อนเริ่มงาน',
-    imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=86',
-  },
-  {
-    title: 'ออกแบบ UX/UI',
-    description: 'วางโครงหน้าจอ ลำดับการใช้งาน และรายละเอียดการโต้ตอบให้ทีมเห็นภาพเดียวกัน',
-    imageUrl: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=1400&q=86',
-  },
-  {
-    title: 'พัฒนาระบบ',
-    description: 'สร้างหน้าบ้าน หลังบ้าน ฐานข้อมูล และ API ให้เชื่อมต่อกันเป็นระบบที่ใช้งานได้จริง',
-    imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=86',
-  },
-  {
-    title: 'ทดสอบและส่งมอบ',
-    description: 'ตรวจการแสดงผลทุกหน้าจอ ความง่ายในการใช้งาน ความเร็ว และความพร้อมก่อนใช้งานจริง',
-    imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=86',
-  },
+  { title: 'วิเคราะห์โจทย์', description: 'เก็บเป้าหมาย ผู้ใช้จริง ข้อมูลที่ต้องใช้ และข้อจำกัดของระบบให้ชัดก่อนเริ่มงาน', imageUrl: '/workflow/analyze.jpg' },
+  { title: 'ออกแบบ UX/UI', description: 'วางโครงหน้าจอ ลำดับการใช้งาน และรายละเอียดการโต้ตอบให้ทีมเห็นภาพเดียวกัน', imageUrl: '/workflow/ux-ui.jpg' },
+  { title: 'พัฒนาระบบ', description: 'สร้างหน้าบ้าน หลังบ้าน ฐานข้อมูล และ API ให้เชื่อมต่อกันเป็นระบบที่ใช้งานได้จริง', imageUrl: '/workflow/development.jpg' },
+  { title: 'ทดสอบและส่งมอบ', description: 'ตรวจการแสดงผลทุกหน้าจอ ความง่ายในการใช้งาน ความเร็ว และความพร้อมก่อนใช้งานจริง', imageUrl: '/workflow/delivery.jpg' },
 ];
 
 export const resultCards = [
-  {
-    title: 'ระบบพร้อมใช้งานจริง',
-    highlight: 'ตั้งแต่วันส่งมอบ',
-    color: palette.primaryPink,
-    icon: 'screen',
-    size: 'large',
-    imageUrl: '/homepage/results-ready-system-dashboard.png',
-  },
-  {
-    title: 'หน้าจอใช้งานง่าย',
-    highlight: 'ลดเวลาทำงานของทีม',
-    color: '#6D5BFF',
-    icon: 'spark',
-    size: 'compact',
-    imageUrl: null,
-  },
-  {
-    title: 'ข้อมูลเชื่อมต่อครบ',
-    highlight: 'ทั้ง API และฐานข้อมูล',
-    color: '#0F9DA8',
-    icon: 'data',
-    size: 'compact',
-    imageUrl: null,
-  },
-  {
-    title: 'ต่อยอดได้ในอนาคต',
-    highlight: 'รองรับการขยายระบบ',
-    color: '#F15A24',
-    icon: 'growth',
-    size: 'large',
-    imageUrl: '/results-future-system-expansion.png',
-  },
+  { title: 'ระบบพร้อมใช้งานจริง', highlight: 'ตั้งแต่วันส่งมอบ', color: palette.primaryPink, icon: 'screen', size: 'large', imageUrl: '/homepage/results-ready-system-dashboard.png' },
+  { title: 'ใช้งานได้ทุกอุปกรณ์', highlight: 'รองรับทุกขนาดหน้าจอ', color: '#6D5BFF', icon: 'spark', size: 'compact', imageUrl: null },
+  { title: 'ข้อมูลเชื่อมต่อครบ', highlight: 'ทั้ง API และฐานข้อมูล', color: '#0F9DA8', icon: 'data', size: 'compact', imageUrl: null },
+  { title: 'ต่อยอดได้ในอนาคต', highlight: 'รองรับการขยายระบบ', color: '#F15A24', icon: 'growth', size: 'large', imageUrl: '/results-future-system-expansion.png' },
 ] as const;

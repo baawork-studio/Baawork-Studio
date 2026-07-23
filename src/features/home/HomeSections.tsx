@@ -1,13 +1,20 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import AccountTreeRounded from '@mui/icons-material/AccountTreeRounded';
 import AddBoxRounded from '@mui/icons-material/AddBoxRounded';
+import ApiRounded from '@mui/icons-material/ApiRounded';
+import DesktopMacRounded from '@mui/icons-material/DesktopMacRounded';
 import ExtensionRounded from '@mui/icons-material/ExtensionRounded';
 import HubRounded from '@mui/icons-material/HubRounded';
+import LaptopMacRounded from '@mui/icons-material/LaptopMacRounded';
+import PhoneIphoneRounded from '@mui/icons-material/PhoneIphoneRounded';
+import StorageRounded from '@mui/icons-material/StorageRounded';
+import TabletMacRounded from '@mui/icons-material/TabletMacRounded';
 import TrendingUpRounded from '@mui/icons-material/TrendingUpRounded';
 import { motion, useReducedMotion } from "motion/react";
+import type { ReactNode } from "react";
 import { Reveal } from "../../components/motion/Reveal";
 import { ResponsiveStack } from "../../components/ResponsiveStack";
-import { palette, typeScale } from "../../appTheme";
+import { appTheme, hover, palette, shadows, typeScale } from "../../appTheme";
 import { navigateToHomeSection } from "../../utils/homeSectionNavigation";
 import { useHorizontalDragScroll } from "../../hooks/useHorizontalDragScroll";
 import {
@@ -29,6 +36,12 @@ const futureSystemExpansionIcons = [
   { Icon: AccountTreeRounded, color: '#2563EB', bottom: '-8%', right: '20%' },
 ];
 
+function MobileOnlyReveal({ children }: { children: ReactNode }) {
+  const isMobileViewport = useMediaQuery(appTheme.breakpoints.down('sm'));
+
+  return isMobileViewport ? <Reveal delay={0.08}>{children}</Reveal> : <>{children}</>;
+}
+
 export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
   const isOpen = phase === 'open';
   const isHidden = phase === 'hidden';
@@ -40,7 +53,7 @@ export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
       component="a"
       href="/"
       onClick={(event) => navigateToHomeSection(event, 'work')}
-      aria-label="ดูผลงานของพวกเรา"
+      aria-label="ดูผลงานของเรา"
       data-phase={phase}
       style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
       sx={{
@@ -119,7 +132,7 @@ export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           transform: 'translate3d(0, 0, 0)',
           transformOrigin: 'center',
           transition:
-            'width 560ms cubic-bezier(0.25, 0.1, 0.25, 1), opacity 260ms linear, transform 620ms cubic-bezier(0.25, 0.1, 0.25, 1), background-color 220ms ease, box-shadow 220ms ease',
+            `width 560ms cubic-bezier(0.25, 0.1, 0.25, 1), opacity 260ms linear, transform 620ms cubic-bezier(0.25, 0.1, 0.25, 1), ${hover.transition.surface}`,
         }}
       >
         <Box
@@ -143,7 +156,7 @@ export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
             transition: 'opacity 220ms linear, transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
           }}
         >
-          ดูผลงานของพวกเรา
+          ดูผลงานของเรา
         </Box>
       </Box>
       <Box
@@ -177,7 +190,7 @@ export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           transform: 'translate3d(0, 0, 0) scale(1)',
           transformOrigin: 'center',
           transition:
-            'opacity 260ms linear, transform 560ms cubic-bezier(0.25, 0.1, 0.25, 1), background-color 220ms ease, box-shadow 220ms ease',
+            `opacity 260ms linear, transform 560ms cubic-bezier(0.25, 0.1, 0.25, 1), ${hover.transition.surface}`,
           '@keyframes heroArrowDown': {
             '0%, 100%': { transform: 'translate3d(0, -1px, 0)' },
             '50%': { transform: 'translate3d(0, 2px, 0)' },
@@ -481,21 +494,18 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
                 boxShadow: 'none',
                 zIndex: 1,
                 transform: 'translate3d(0, 0, 0)',
-                transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
+                transition: hover.transition.card,
                 willChange: 'transform',
                 '&:hover': {
-                  transform: 'translate3d(0, -6px, 0)',
-                  boxShadow: '0 18px 40px rgba(17,24,39,0.14)',
+                  transform: hover.lift,
+                  boxShadow: shadows.carouselHover,
                   zIndex: 2,
                 },
                 '&:hover img': {
-                  transform: isPhoneAi ? 'scale(1)' : 'scale(1.035)',
+                  transform: isPhoneAi ? 'scale(1)' : hover.imageScale,
                 },
               }}
             >
-              {isPhoneAi && project.presentation && (
-                <AiPhoneScreen index={index} presentation={project.presentation} />
-              )}
               <Box
                 component="img"
                 src={project.coverImageUrl}
@@ -510,7 +520,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
                   height: '100%',
                   objectFit: 'cover',
                   transform: 'scale(1)',
-                  transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  transition: hover.transition.image,
                   willChange: 'transform',
                   zIndex: 0,
                   pointerEvents: 'none',
@@ -529,7 +539,6 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
                   variant="h3"
                   sx={{
                     color: '#fff',
-                    ...typeScale.cardTitle,
                     maxWidth: 430,
                   }}
                 >
@@ -544,27 +553,6 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
                   {project.shortDescription}
                 </Typography>
               </ResponsiveStack>
-              <Box
-                aria-hidden="true"
-                sx={{
-                  position: 'absolute',
-                  right: { xs: 22, md: 28 },
-                  bottom: { xs: 22, md: 28 },
-                  zIndex: 4,
-                  display: 'grid',
-                  placeItems: 'center',
-                  width: { xs: 44, md: 52 },
-                  height: { xs: 44, md: 52 },
-                  borderRadius: '50%',
-                  bgcolor: 'rgba(255,255,255,0.94)',
-                  color: '#111827',
-                  fontSize: { xs: 30, md: 36 },
-                  fontWeight: 600,
-                  lineHeight: 1,
-                }}
-              >
-                +
-              </Box>
               </Box>
             </motion.div>
           );
@@ -625,6 +613,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
 
 export function ToolStackSection() {
   const shouldReduceMotion = useReducedMotion();
+  const isDesktopViewport = useMediaQuery('(min-width:1069px)');
 
   return (
     <Box
@@ -702,9 +691,15 @@ export function ToolStackSection() {
               <motion.div
                 initial={shouldReduceMotion ? false : { opacity: 0, y: 18, scale: 0.92 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.06 }}
+                whileHover={shouldReduceMotion ? undefined : hover.icon}
                 viewport={{ once: true, amount: 0.35 }}
-                transition={{ duration: 0.52, delay: shouldReduceMotion ? 0 : tool.delay, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  duration: 0.52,
+                  delay: shouldReduceMotion ? 0 : tool.delay,
+                  ease: [0.22, 1, 0.36, 1],
+                  y: hover.motion,
+                  scale: hover.motion,
+                }}
               >
                 <motion.div
                 whileInView={shouldReduceMotion ? undefined : { y: [0, -7, 0], rotate: [0, -1, 0, 1, 0] }}
@@ -730,8 +725,8 @@ export function ToolStackSection() {
                         event.currentTarget.style.display = 'none';
                       }}
                       sx={{
-                        width: '64%',
-                        height: '64%',
+                        width: isDesktopViewport ? '100%' : '64%',
+                        height: isDesktopViewport ? '100%' : '64%',
                         objectFit: 'contain',
                       }}
                     />
@@ -787,9 +782,15 @@ export function AudienceSection() {
             role="listitem"
             initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            whileHover={shouldReduceMotion ? undefined : { y: -8, scale: 1.06 }}
+            whileHover={shouldReduceMotion ? undefined : hover.icon}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.48, delay: shouldReduceMotion ? 0 : index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.48,
+              delay: shouldReduceMotion ? 0 : index * 0.07,
+              ease: [0.22, 1, 0.36, 1],
+              y: hover.motion,
+              scale: hover.motion,
+            }}
           >
             <Box
               sx={{
@@ -820,6 +821,28 @@ export function AudienceSection() {
 }
 
 function ResultIcon({ icon, color }: { icon: (typeof resultCards)[number]['icon']; color: string }) {
+  const iconSize = { xs: 52, md: 60 };
+
+  if (icon === 'data') {
+    return (
+      <Box aria-hidden="true" sx={{ display: 'flex', alignItems: 'center', gap: 0.25, color }}>
+        <ApiRounded sx={{ fontSize: iconSize }} />
+        <StorageRounded sx={{ fontSize: iconSize }} />
+      </Box>
+    );
+  }
+
+  if (icon === 'spark') {
+    return (
+      <Box aria-hidden="true" sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.5, md: 0.75 }, color }}>
+        <DesktopMacRounded sx={{ fontSize: { xs: 44, md: 52 } }} />
+        <LaptopMacRounded sx={{ fontSize: { xs: 44, md: 52 } }} />
+        <TabletMacRounded sx={{ fontSize: { xs: 42, md: 50 } }} />
+        <PhoneIphoneRounded sx={{ fontSize: { xs: 38, md: 46 } }} />
+      </Box>
+    );
+  }
+
   const common = {
     fill: 'none',
     stroke: 'currentColor',
@@ -845,17 +868,6 @@ function ResultIcon({ icon, color }: { icon: (typeof resultCards)[number]['icon'
           <path d="M18 38h12M24 32v6M15 19h8M15 25h16" {...common} />
         </>
       )}
-      {icon === 'spark' && (
-        <>
-          <path d="M25 5 13 25h11l-2 18 13-24H24l1-14Z" {...common} />
-        </>
-      )}
-      {icon === 'data' && (
-        <>
-          <path d="M12 16c0-4 5.4-7 12-7s12 3 12 7-5.4 7-12 7-12-3-12-7Z" {...common} />
-          <path d="M12 16v16c0 4 5.4 7 12 7s12-3 12-7V16M12 24c0 4 5.4 7 12 7s12-3 12-7" {...common} />
-        </>
-      )}
       {icon === 'growth' && (
         <>
           <path d="M9 34h30M14 30V19M24 30V12M34 30V21" {...common} />
@@ -869,6 +881,8 @@ function ResultIcon({ icon, color }: { icon: (typeof resultCards)[number]['icon'
 export function WorkflowSection() {
   const { carouselRef, carouselState, scrollCards } = useWorkflowCarousel();
   const dragScroll = useHorizontalDragScroll();
+  const shouldReduceMotion = useReducedMotion();
+  const isMobileViewport = useMediaQuery(appTheme.breakpoints.down('sm'));
 
   return (
     <Box
@@ -884,14 +898,15 @@ export function WorkflowSection() {
           px: workCarouselGutter,
         }}
       >
-      <ResponsiveStack
+      <Reveal>
+        <ResponsiveStack
           spacing={1.25}
           sx={{
             maxWidth: { xs: '100%', md: 900, lg: 980 },
             alignItems: 'flex-start',
             textAlign: 'left',
           }}
-      >
+        >
           <Typography
             variant="h2"
             sx={{
@@ -903,8 +918,10 @@ export function WorkflowSection() {
             กระบวนการทำงาน
           </Typography>
         </ResponsiveStack>
+      </Reveal>
       </Box>
 
+      <MobileOnlyReveal>
       <Box
         ref={carouselRef}
         aria-label="กระบวนการทำงาน"
@@ -941,10 +958,20 @@ export function WorkflowSection() {
             display: { xs: 'block', md: 'none' },
           }}
         />
-        {workflowPanels.map((panel) => (
+        {workflowPanels.map((panel, index) => (
             <Box
               key={panel.title}
-              component="article"
+              component={motion.article}
+              initial={isMobileViewport || shouldReduceMotion ? false : { opacity: 0, y: 34, scale: 0.985 }}
+              whileInView={isMobileViewport ? undefined : { opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.18 }}
+              transition={{
+                duration: 0.72,
+                delay: isMobileViewport || shouldReduceMotion ? 0 : Math.min(index * 0.1, 0.3),
+                ease: [0.22, 1, 0.36, 1],
+                y: hover.motion,
+              }}
+              whileHover={shouldReduceMotion ? undefined : { y: hover.liftY }}
               data-workflow-card="true"
               data-carousel-item="true"
               sx={{
@@ -964,15 +991,14 @@ export function WorkflowSection() {
                 boxShadow: 'none',
                 zIndex: 1,
                 transform: 'translate3d(0, 0, 0)',
-                transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
+                transition: hover.transition.card,
                 willChange: 'transform',
                 '&:hover': {
-                  transform: 'translate3d(0, -6px, 0)',
-                  boxShadow: '0 18px 40px rgba(17,24,39,0.14)',
+                  boxShadow: shadows.carouselHover,
                   zIndex: 2,
                 },
                 '&:hover img': {
-                  transform: 'scale(1.035)',
+                  transform: hover.imageScale,
                 },
               }}
             >
@@ -989,7 +1015,7 @@ export function WorkflowSection() {
                   height: '100%',
                   objectFit: 'cover',
                   transform: 'scale(1)',
-                  transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  transition: hover.transition.image,
                   willChange: 'transform',
                 }}
               />
@@ -1015,10 +1041,9 @@ export function WorkflowSection() {
                 }}
               >
                 <Typography
-                  variant="h3"
+                  variant="h2"
                   sx={{
                     color: '#FFFFFF',
-                    ...typeScale.cardTitle,
                     textShadow: '0 3px 22px rgba(0,0,0,0.34)',
                   }}
                 >
@@ -1046,6 +1071,7 @@ export function WorkflowSection() {
           }}
         />
       </Box>
+      </MobileOnlyReveal>
 
       {carouselState.isScrollable && (
       <ResponsiveStack
@@ -1106,19 +1132,30 @@ export function WorkflowSection() {
   );
 }
 
-function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
+function ResultCard({ card, index }: { card: (typeof resultCards)[number]; index: number }) {
   const isLarge = card.size === 'large';
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <Box
-      component="article"
+      component={motion.article}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 34, scale: 0.985 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{
+        duration: 0.72,
+        delay: shouldReduceMotion ? 0 : Math.min(index * 0.1, 0.3),
+        ease: [0.22, 1, 0.36, 1],
+        y: hover.motion,
+      }}
+      whileHover={shouldReduceMotion ? undefined : { y: hover.liftY }}
       sx={{
         position: 'relative',
         minHeight: isLarge
-          ? { xs: 560, sm: 650, md: 700, lg: 740 }
+          ? { xs: 380, sm: 560, md: 610, lg: 650 }
           : { xs: 250, sm: 280, md: 310, lg: 340 },
         height: isLarge
-          ? { xs: 560, sm: 650, md: 700, lg: 740 }
+          ? { xs: 380, sm: 560, md: 610, lg: 650 }
           : 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -1131,19 +1168,16 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
         overflow: 'hidden',
         borderRadius: { xs: '28px', md: '34px' },
         bgcolor: '#FFFFFF',
-        boxShadow: '0 18px 48px rgba(17,24,39,0.055)',
+        boxShadow: shadows.card,
         transform: 'translate3d(0, 0, 0)',
-        transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease',
+        transition: hover.transition.card,
         willChange: 'transform',
         '&:hover': {
-          transform: 'translate3d(0, -6px, 0)',
-          boxShadow: '0 24px 56px rgba(17,24,39,0.11)',
+          boxShadow: shadows.cardHover,
         },
       }}
     >
-      <Box sx={{ transform: isLarge ? 'scale(1.06)' : 'scale(1)', transformOrigin: 'center' }}>
-        <ResultIcon icon={card.icon} color={card.color} />
-      </Box>
+      {!isLarge && <ResultIcon icon={card.icon} color={card.color} />}
 
       <Typography
         variant="h3"
@@ -1151,7 +1185,7 @@ function ResultCard({ card }: { card: (typeof resultCards)[number] }) {
           maxWidth: isLarge ? 520 : 470,
           color: '#6E6E73',
           textAlign: 'center',
-          ...typeScale.cardTitle,
+          mt: isLarge ? { xs: 3.5, sm: 4.5, md: 5 } : 0,
         }}
       >
         {card.title}{' '}
@@ -1368,14 +1402,15 @@ export function ResultsSection() {
       }}
     >
       <Box sx={{ px: workCarouselGutter }}>
-        <ResponsiveStack
+        <Reveal>
+          <ResponsiveStack
           spacing={1.25}
           sx={{
             maxWidth: { xs: '100%', md: 900, lg: 980 },
             alignItems: 'flex-start',
             textAlign: 'left',
           }}
-        >
+          >
           <Typography
             variant="h2"
             sx={{
@@ -1386,7 +1421,8 @@ export function ResultsSection() {
           >
             สิ่งที่ลูกค้าจะได้หลังจบโปรเจกต์
           </Typography>
-        </ResponsiveStack>
+          </ResponsiveStack>
+        </Reveal>
 
         <Box
           sx={{
@@ -1398,8 +1434,8 @@ export function ResultsSection() {
         >
           {[leftCards, rightCards].map((column, columnIndex) => (
             <ResponsiveStack key={columnIndex} spacing={{ xs: 2, md: 3 }}>
-              {column.map((card) => (
-                <ResultCard key={card.title} card={card} />
+              {column.map((card, cardIndex) => (
+                <ResultCard key={card.title} card={card} index={columnIndex * 2 + cardIndex} />
               ))}
             </ResponsiveStack>
           ))}
@@ -1422,19 +1458,20 @@ export function StartProjectSection() {
         textAlign: 'center',
       }}
     >
-      <ResponsiveStack
+      <Reveal>
+        <ResponsiveStack
         spacing={{ xs: 2.5, md: 3 }}
         alignItems="center"
-      >
+        >
         <Typography
           variant="h2"
           sx={{
             color: palette.primaryPink,
-            ...typeScale.hero,
+            ...typeScale.sectionTitle,
             maxWidth: 1120,
           }}
         >
-          พร้อมเริ่มโปรเจกต์กับ Baawork
+          พร้อมเริ่มโปรเจกต์กับเรา
         </Typography>
         <Typography
           variant="h5"
@@ -1447,11 +1484,11 @@ export function StartProjectSection() {
           เล่าไอเดียหรือปัญหาของระบบที่อยากสร้าง แล้วเราช่วยวางแนวทางให้พร้อมเริ่มพัฒนาได้จริง
         </Typography>
         <ResponsiveStack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={1.5}
+          direction="row"
+          spacing={{ xs: 1, sm: 1.5 }}
           alignItems="center"
           justifyContent="center"
-          sx={{ pt: { xs: 1, md: 1.5 } }}
+          sx={{ pt: { xs: 1, md: 1.5 }, width: { xs: '100%', sm: 'auto' }, flexWrap: 'nowrap' }}
         >
           <Box
             component="a"
@@ -1460,25 +1497,24 @@ export function StartProjectSection() {
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              minWidth: { xs: 190, sm: 210 },
-              height: { xs: 54, sm: 58 },
-              px: { xs: 3.5, sm: 4.5 },
+              minWidth: { xs: 0, sm: 210 },
+              flex: { xs: '1 1 0', sm: '0 0 auto' },
+              height: { xs: 50, sm: 58 },
+              px: { xs: 1.5, sm: 4.5 },
               borderRadius: 999,
               bgcolor: palette.primaryPink,
               color: '#FFFFFF !important',
               textDecoration: 'none',
-              fontSize: { xs: 14, sm: 17 },
-              fontWeight: 600,
-              lineHeight: 1.2,
+              ...appTheme.typography.button,
               boxShadow: '0 18px 44px rgba(255,0,140,0.24)',
-              transition: 'transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease',
+              transition: hover.transition.interactive,
               '&:visited, &:active': {
                 color: '#FFFFFF !important',
               },
               '&:hover': {
                 bgcolor: '#FF1495',
                 color: '#FFFFFF !important',
-                transform: 'translate3d(0, -1px, 0)',
+                transform: hover.subtleLift,
                 boxShadow: '0 22px 54px rgba(255,0,140,0.3)',
               },
               '&:focus': {
@@ -1501,20 +1537,22 @@ export function StartProjectSection() {
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              minWidth: { xs: 190, sm: 210 },
-              height: { xs: 54, sm: 58 },
-              px: { xs: 3.5, sm: 4.5 },
+              minWidth: { xs: 0, sm: 210 },
+              flex: { xs: '1 1 0', sm: '0 0 auto' },
+              height: { xs: 50, sm: 58 },
+              px: { xs: 1.5, sm: 4.5 },
               borderRadius: 999,
-              bgcolor: '#F5F5F7',
+              bgcolor: '#FFFFFF',
               color: palette.text,
+              border: 0,
+              boxShadow: '0 8px 22px rgba(17,24,39,0.06)',
               textDecoration: 'none',
-              fontSize: { xs: 14, sm: 17 },
-              fontWeight: 600,
-              lineHeight: 1.2,
-              transition: 'transform 220ms ease, background-color 220ms ease',
+              ...appTheme.typography.button,
+              transition: hover.transition.interactive,
               '&:hover': {
-                bgcolor: '#E8E8ED',
-                transform: 'translate3d(0, -1px, 0)',
+                bgcolor: '#FFFFFF',
+                boxShadow: '0 12px 28px rgba(17,24,39,0.1)',
+                transform: hover.subtleLift,
               },
               '&:focus': {
                 outline: 'none',
@@ -1528,7 +1566,8 @@ export function StartProjectSection() {
             ดูผลงานอีกครั้ง
           </Box>
         </ResponsiveStack>
-      </ResponsiveStack>
+        </ResponsiveStack>
+      </Reveal>
     </Box>
   );
 }

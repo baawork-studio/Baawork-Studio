@@ -5,7 +5,6 @@ import { palette } from '../appTheme';
 import { AppFooter } from './app-shell/AppFooter';
 import { AppHeader } from './app-shell/AppHeader';
 import { PageMotion } from './motion/PageMotion';
-import { Reveal } from './motion/Reveal';
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -16,9 +15,7 @@ export function AppShell({ children }: AppShellProps) {
     <Box sx={{ minHeight: '100vh', overflowX: 'clip', bgcolor: palette.background, color: palette.text }}>
       <AppHeader />
       <PageMotion>{children}</PageMotion>
-      <Reveal>
-        <AppFooter />
-      </Reveal>
+      <AppFooter />
     </Box>
   );
 }

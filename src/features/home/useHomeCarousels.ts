@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { workCarouselEdgeTolerance } from "./homeContent";
 import { scrollToAdjacentCarouselItem } from "../../hooks/useHorizontalDragScroll";
+import { hover, palette } from "../../appTheme";
 
 export function useShowcaseCarousel() {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -78,15 +79,36 @@ export function useWorkflowCarousel() {
     isScrollable: false,
   });
 
+  const getWorkflowItems = useCallback((carousel: HTMLDivElement) => (
+    Array.from(carousel.querySelectorAll<HTMLElement>('[data-workflow-card="true"]'))
+  ), []);
+
+  const getActiveWorkflowIndex = useCallback((carousel: HTMLDivElement, items: HTMLElement[]) => {
+    if (!items.length) return 0;
+
+    const firstOffset = items[0].offsetLeft;
+    const viewportOffset = carousel.scrollLeft + firstOffset;
+
+    return items.reduce((closestIndex, item, index) => (
+      Math.abs(item.offsetLeft - viewportOffset) < Math.abs(items[closestIndex].offsetLeft - viewportOffset)
+        ? index
+        : closestIndex
+    ), 0);
+  }, []);
+
   const updateCarouselState = useCallback(() => {
     const carousel = carouselRef.current;
     if (!carousel) return;
 
-    const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+    const items = getWorkflowItems(carousel);
+    const maxScrollLeft = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
+    const activeIndex = getActiveWorkflowIndex(carousel, items);
     const nextState = {
-      canScrollPrev: carousel.scrollLeft > workCarouselEdgeTolerance,
-      canScrollNext: carousel.scrollLeft < maxScrollLeft - workCarouselEdgeTolerance,
-      isScrollable: maxScrollLeft > workCarouselEdgeTolerance,
+      // The final trailing gutter is intentionally not a destination. Treat
+      // the first and last workflow cards as the true carousel boundaries.
+      canScrollPrev: activeIndex > 0,
+      canScrollNext: activeIndex < items.length - 1,
+      isScrollable: items.length > 1 && maxScrollLeft > 0,
     };
 
     setCarouselState((current) => {
@@ -100,7 +122,7 @@ export function useWorkflowCarousel() {
 
       return nextState;
     });
-  }, []);
+  }, [getActiveWorkflowIndex, getWorkflowItems]);
 
   useEffect(() => {
     const carousel = carouselRef.current;
@@ -126,10 +148,24 @@ export function useWorkflowCarousel() {
   const scrollCards = (direction: -1 | 1) => {
     const carousel = carouselRef.current;
     if (!carousel) return;
-    if (direction === -1 && !carouselState.canScrollPrev) return;
-    if (direction === 1 && !carouselState.canScrollNext) return;
 
-    scrollToAdjacentCarouselItem(carousel, direction);
+    const items = getWorkflowItems(carousel);
+    if (!items.length) return;
+
+    const maxScrollLeft = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
+    const activeIndex = getActiveWorkflowIndex(carousel, items);
+    const targetIndex = Math.max(0, Math.min(items.length - 1, activeIndex + direction));
+    if (targetIndex === activeIndex) return;
+
+    const firstOffset = items[0].offsetLeft;
+    const targetLeft = Math.max(0, Math.min(maxScrollLeft, items[targetIndex].offsetLeft - firstOffset));
+
+    carousel.scrollTo({ left: targetLeft, behavior: 'smooth' });
+    setCarouselState({
+      canScrollPrev: targetIndex > 0,
+      canScrollNext: targetIndex < items.length - 1,
+      isScrollable: items.length > 1 && maxScrollLeft > 0,
+    });
   };
 
   return { carouselRef, carouselState, scrollCards };
@@ -149,10 +185,10 @@ export function carouselControlSx(enabled: boolean) {
     bgcolor: enabled ? '#D2D2D7' : '#E1E1E6',
     color: enabled ? '#4A4A4F' : '#9A9AA0',
     cursor: enabled ? 'pointer' : 'default',
-    transition: 'background-color 180ms ease, color 180ms ease',
+    transition: hover.transition.control,
     '&:hover': {
-      bgcolor: enabled ? '#B8B8BE' : '#E1E1E6',
-      color: enabled ? '#1D1D1F' : '#9A9AA0',
+      bgcolor: enabled ? palette.controlHover : palette.controlDisabled,
+      color: enabled ? palette.controlTextHover : palette.controlTextDisabled,
     },
     '&:disabled': {
       pointerEvents: 'none',

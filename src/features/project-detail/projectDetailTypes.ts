@@ -30,6 +30,3 @@ export type DetailInfoCard = {
   title: string;
   description: string;
 };
-export type DetailFlowStep = DetailInfoCard & {
-  label: string;
-};
