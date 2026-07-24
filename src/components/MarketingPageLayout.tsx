@@ -20,7 +20,7 @@ export function MarketingPageLayout({
 }) {
   return (
     <Box component="main" sx={{ overflowX: 'hidden' }}>
-      <Box sx={{ px: pageGutter, pt: layout.pageHeaderPadding, pb: layout.pageHeaderBottomPadding }}>
+      <Box sx={{ px: pageGutter, pt: layout.pageHeaderPadding, pb: 0 }}>
         <ResponsiveStack spacing={{ xs: 5, md: 6 }}>
           <ResponsiveStack spacing={{ xs: 1.25, sm: 1.5, md: 1.75 }} alignItems="center" textAlign="center" sx={{ width: '100%', mx: 'auto', maxWidth: 1060, alignSelf: 'center' }}>
             <Typography variant="h1" sx={{ color: palette.text, ...typeScale.hero, width: '100%', textAlign: 'center' }}>

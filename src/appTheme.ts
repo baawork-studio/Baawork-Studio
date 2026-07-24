@@ -40,6 +40,7 @@ export const shadows = {
   card: '0 24px 64px rgba(17,24,39,0.09)',
   cardHover: '0 32px 82px rgba(17,24,39,0.13)',
   carouselHover: '0 18px 40px rgba(17,24,39,0.14)',
+  carouselHoverSubtle: '0 10px 24px rgba(17,24,39,0.10)',
 } as const;
 
 export const layout = {
@@ -54,6 +55,8 @@ export const layout = {
   cardCompactGap: 1,
   bentoFeatureCardMinHeight: { xs: 220, md: 252 },
   bentoCardMinHeight: { xs: 176, md: 196 },
+  marketingCarouselCardWidth: { xs: 'calc(100vw - 48px)', sm: 360, md: 380, lg: 400 },
+  marketingCarouselCardMinHeight: { xs: 460, md: 500 },
 } as const;
 
 export const motion = {

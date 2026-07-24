@@ -14,7 +14,7 @@ import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 import { Reveal } from "../../components/motion/Reveal";
 import { ResponsiveStack } from "../../components/ResponsiveStack";
-import { appTheme, hover, palette, shadows, typeScale } from "../../appTheme";
+import { appTheme, fontWeight, hover, palette, shadows, typeScale } from "../../appTheme";
 import { navigateToHomeSection } from "../../utils/homeSectionNavigation";
 import { useHorizontalDragScroll } from "../../hooks/useHorizontalDragScroll";
 import {
@@ -639,7 +639,7 @@ export function ToolStackSection() {
             <Typography
               variant="h2"
               sx={{
-                color: palette.primaryPink,
+                color: palette.text,
                 ...typeScale.display,
               }}
             >
@@ -648,8 +648,9 @@ export function ToolStackSection() {
             <Typography
               sx={{
                 maxWidth: 720,
-                color: '#4B5563',
+                color: palette.textMuted,
                 ...typeScale.bodyLarge,
+                fontWeight: fontWeight.bold,
               }}
             >
               เราเลือกเทคโนโลยีที่เสถียร เชื่อมต่อกันได้ดี และเหมาะกับการสร้างระบบที่ใช้งานจริงตั้งแต่เริ่มต้นจนดูแลต่อใน production
@@ -757,10 +758,10 @@ export function AudienceSection() {
     >
       <Reveal variant="scale">
         <ResponsiveStack spacing={{ xs: 1.5, md: 2 }} alignItems="center" textAlign="center" sx={{ maxWidth: 820, mx: 'auto' }}>
-          <Typography id="audience-title" variant="h2" sx={{ color: palette.primaryPink, ...typeScale.sectionTitle }}>
+          <Typography id="audience-title" variant="h2" sx={{ color: palette.text, ...typeScale.sectionTitle }}>
             ออกแบบสำหรับทีมที่ทำงานจริง
           </Typography>
-          <Typography sx={{ color: '#4B5563', ...typeScale.bodyLarge }}>
+          <Typography sx={{ color: palette.textMuted, ...typeScale.bodyLarge, fontWeight: fontWeight.bold }}>
             ตั้งแต่ทีมเล็กที่กำลังเติบโต ไปจนถึงองค์กรที่ต้องจัดการข้อมูล คน และ workflow หลายส่วนพร้อมกัน
           </Typography>
         </ResponsiveStack>
@@ -1466,7 +1467,7 @@ export function StartProjectSection() {
         <Typography
           variant="h2"
           sx={{
-            color: palette.primaryPink,
+            color: palette.text,
             ...typeScale.sectionTitle,
             maxWidth: 1120,
           }}
@@ -1474,10 +1475,10 @@ export function StartProjectSection() {
           พร้อมเริ่มโปรเจกต์กับเรา
         </Typography>
         <Typography
-          variant="h5"
           sx={{
-            color: '#4B5563',
-            ...typeScale.intro,
+            color: palette.textMuted,
+            ...typeScale.bodyLarge,
+            fontWeight: fontWeight.bold,
             maxWidth: 920,
           }}
         >

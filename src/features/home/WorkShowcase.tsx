@@ -14,9 +14,9 @@ const showcaseGroups = [
 export function WorkShowcase() {
   return (
     <Box id="work" sx={{ bgcolor: palette.background, overflow: 'hidden' }}>
-      <Box sx={{ px: workCarouselGutter, pt: { xs: 7, sm: 8, md: 10, lg: 12 }, pb: { xs: 4, sm: 5, md: 6 } }}>
+      <Box sx={{ px: workCarouselGutter, pt: '48px', pb: 0 }}>
         <Reveal>
-        <Typography variant="h2" sx={{ color: palette.primaryPink, ...typeScale.sectionTitle, textAlign: 'center' }}>
+        <Typography variant="h2" sx={{ color: palette.text, ...typeScale.sectionTitle, textAlign: 'center' }}>
           ผลงานของเรา
         </Typography>
         </Reveal>

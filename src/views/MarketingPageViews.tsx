@@ -1,12 +1,15 @@
 'use client';
 
-import type { FormEvent } from 'react';
+import type { FormEvent, ReactNode } from 'react';
 import { Box, Typography } from '@mui/material';
 import { MarketingPageLayout, MarketingContentSection } from '../components/MarketingPageLayout';
 import { ResponsiveStack } from '../components/ResponsiveStack';
 import { Reveal } from '../components/motion/Reveal';
-import { fontWeight, layout, motion as motionTokens, palette, typeScale } from '../appTheme';
+import { fontWeight, layout, palette, radii, shadows, typeScale } from '../appTheme';
 import { cardSx, SectionHeading } from '../features/marketing/MarketingSectionComponents';
+import { carouselControlSx, useShowcaseCarousel } from '../features/home/useHomeCarousels';
+import { useHorizontalDragScroll } from '../hooks/useHorizontalDragScroll';
+import { pageGutter } from '../features/project-detail/projectDetailContent';
 import {
   contactChannels,
   projectSteps,
@@ -15,6 +18,83 @@ import {
 } from '../features/marketing/marketingContent';
 
 const consultationEmail = process.env.NEXT_PUBLIC_CONSULT_EMAIL ?? 'baaworkstudio@gmail.com';
+
+function MarketingCardCarousel({ label, children }: { label: string; children: ReactNode }) {
+  const { carouselRef, carouselState, scrollCards } = useShowcaseCarousel();
+  const dragScroll = useHorizontalDragScroll();
+
+  return (
+    <>
+      <Box
+        ref={carouselRef}
+        aria-label={label}
+        {...dragScroll}
+        sx={{
+          position: 'relative',
+          left: `calc(${pageGutter} * -1)`,
+          width: `calc(100% + (${pageGutter} * 2))`,
+          display: 'flex',
+          gap: { xs: 2, md: '20px' },
+          overflowX: 'auto',
+          overflowY: 'visible',
+          scrollSnapType: 'x mandatory',
+          scrollBehavior: 'smooth',
+          cursor: 'grab',
+          touchAction: 'pan-x pan-y',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          overscrollBehaviorX: 'contain',
+          scrollbarWidth: 'none',
+          pr: pageGutter,
+          pt: 2,
+          pb: { xs: 7, md: 8 },
+          '&::-webkit-scrollbar': { display: 'none' },
+          '& img': { WebkitUserDrag: 'none' },
+        }}
+      >
+        <Box aria-hidden="true" sx={{ flex: '0 0 auto', width: pageGutter }} />
+        {children}
+      </Box>
+
+      {carouselState.isScrollable && (
+        <ResponsiveStack
+          direction="row"
+          justifyContent="flex-end"
+          spacing={2}
+          sx={{
+            mt: { xs: -4, md: -5 },
+            position: 'relative',
+            left: `calc(${pageGutter} * -1)`,
+            width: `calc(100% + (${pageGutter} * 2))`,
+            px: pageGutter,
+            zIndex: 2,
+          }}
+        >
+          <Box
+            component="button"
+            type="button"
+            aria-label={'เลื่อน' + label + 'ไปทางซ้าย'}
+            disabled={!carouselState.canScrollPrev}
+            onClick={() => scrollCards(-1)}
+            sx={carouselControlSx(carouselState.canScrollPrev)}
+          >
+            <Box component="span" sx={{ width: 12, height: 12, ml: 0.5, borderRight: '3px solid currentColor', borderBottom: '3px solid currentColor', transform: 'rotate(135deg)' }} />
+          </Box>
+          <Box
+            component="button"
+            type="button"
+            aria-label={'เลื่อน' + label + 'ไปทางขวา'}
+            disabled={!carouselState.canScrollNext}
+            onClick={() => scrollCards(1)}
+            sx={carouselControlSx(carouselState.canScrollNext)}
+          >
+            <Box component="span" sx={{ width: 12, height: 12, mr: 0.5, borderRight: '3px solid currentColor', borderBottom: '3px solid currentColor', transform: 'rotate(-45deg)' }} />
+          </Box>
+        </ResponsiveStack>
+      )}
+    </>
+  );
+}
 
 
 function LegacyServicesPage() {
@@ -52,32 +132,47 @@ export function ServicesPage() {
           title="บริการที่ออกแบบตามงานจริง"
           description="เลือกทำเฉพาะส่วนที่ตอบโจทย์ธุรกิจ หรือวางให้ทุกส่วนทำงานเชื่อมกันตั้งแต่ต้นก็ได้"
         />
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' },
-            gap: layout.cardGridGap,
-          }}
-        >
-          {serviceOfferings.map(({ title, description, suitedFor }, index) => (
+        <Reveal delay={0.08}>
+          <MarketingCardCarousel label="บริการที่ออกแบบตามงานจริง">
+          {serviceOfferings.map(({ title, description, suitedFor }) => (
             <Box
               key={title}
+              data-carousel-item="true"
               sx={{
-                minHeight: index === 0 ? layout.bentoFeatureCardMinHeight : layout.bentoCardMinHeight,
-                gridColumn: index === 0 ? { sm: 'span 2', lg: 'span 3' } : index >= 3 ? { lg: 'span 2' } : { lg: 'span 3' },
-                gridRow: index === 0 ? { lg: 'span 2' } : undefined,
+                flexGrow: 0,
+                flexShrink: 0,
+                flexBasis: layout.marketingCarouselCardWidth,
+                minHeight: layout.marketingCarouselCardMinHeight,
+                scrollSnapAlign: 'start',
+                scrollMarginInline: pageGutter,
               }}
             >
-              <Reveal fill variant="rise" distance={motionTokens.reveal.cardDistance} delay={index * motionTokens.reveal.stagger}>
-                <ResponsiveStack spacing={layout.cardContentGap} sx={{ ...cardSx, height: '100%' }}>
-                  <Typography component="h3" sx={{ ...typeScale.tertiary, color: palette.primaryPink }}>{title}</Typography>
-                  <Typography sx={{ ...typeScale.body, color: palette.textSecondary }}>{description}</Typography>
-                  <Typography sx={{ ...typeScale.caption, color: palette.textMuted }}>{suitedFor}</Typography>
-                </ResponsiveStack>
-              </Reveal>
+              <ResponsiveStack
+                  spacing={layout.cardContentGap}
+                  sx={{
+                    ...cardSx,
+                    height: '100%',
+                    bgcolor: palette.surfaceAlt,
+                    borderRadius: radii.card.xs,
+                    boxShadow: 'none',
+                    '&:hover': {
+                      ...cardSx['&:hover'],
+                      boxShadow: shadows.carouselHoverSubtle,
+                    },
+                  }}
+                >
+                  <Typography variant="h3" sx={{ color: palette.text }}>{title}</Typography>
+                  <Typography sx={{ color: palette.text, fontSize: { xs: 15, md: 16 }, lineHeight: 1.38, fontWeight: fontWeight.medium }}>
+                    {description}
+                  </Typography>
+                  <Typography sx={{ color: palette.text, fontSize: 13, lineHeight: 1.231, fontWeight: fontWeight.bold }}>
+                    {suitedFor}
+                  </Typography>
+              </ResponsiveStack>
             </Box>
           ))}
-        </Box>
+          </MarketingCardCarousel>
+        </Reveal>
       </MarketingContentSection>
 
       <MarketingContentSection backgroundColor={palette.surfaceAlt} variant="slide-left">
@@ -85,32 +180,44 @@ export function ServicesPage() {
           title="เริ่มงานอย่างเป็นขั้นตอน"
           description="สรุปสิ่งที่ต้องทำให้เห็นภาพเดียวกันก่อน แล้วค่อยออกแบบ พัฒนา และส่งมอบอย่างเป็นระบบ"
         />
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' },
-            gap: layout.cardGridGap,
-          }}
-        >
-          {projectSteps.map(([step, title, description], index) => (
+        <Reveal delay={0.08}>
+          <MarketingCardCarousel label="เริ่มงานอย่างเป็นขั้นตอน">
+          {projectSteps.map(([step, title, description]) => (
             <Box
               key={step}
+              data-carousel-item="true"
               sx={{
-                minHeight: index === 0 ? layout.bentoFeatureCardMinHeight : layout.bentoCardMinHeight,
-                gridColumn: index === 0 ? { sm: 'span 2', lg: 'span 3' } : index >= 3 ? { lg: 'span 2' } : { lg: 'span 3' },
-                gridRow: index === 0 ? { lg: 'span 2' } : undefined,
+                flexGrow: 0,
+                flexShrink: 0,
+                flexBasis: layout.marketingCarouselCardWidth,
+                minHeight: layout.marketingCarouselCardMinHeight,
+                scrollSnapAlign: 'start',
+                scrollMarginInline: pageGutter,
               }}
             >
-              <Reveal fill variant="rise" distance={motionTokens.reveal.cardDistance} delay={index * motionTokens.reveal.stagger}>
-                <ResponsiveStack spacing={layout.cardCompactGap} sx={{ ...cardSx, height: '100%' }}>
-                  <Typography sx={{ ...typeScale.caption, color: palette.primaryPink, fontWeight: fontWeight.bold }}>{step}</Typography>
-                  <Typography component="h3" sx={{ ...typeScale.tertiary, color: palette.text }}>{title}</Typography>
-                  <Typography sx={{ ...typeScale.body, color: palette.textSecondary }}>{description}</Typography>
-                </ResponsiveStack>
-              </Reveal>
+              <ResponsiveStack
+                  spacing={layout.cardCompactGap}
+                  sx={{
+                    ...cardSx,
+                    height: '100%',
+                    borderRadius: radii.card.xs,
+                    boxShadow: 'none',
+                    '&:hover': {
+                      ...cardSx['&:hover'],
+                      boxShadow: shadows.carouselHoverSubtle,
+                    },
+                  }}
+                >
+                  <Typography sx={{ color: palette.primaryPink, fontSize: 17, lineHeight: 1.353, fontWeight: fontWeight.bold }}>{step}</Typography>
+                  <Typography variant="h3" sx={{ color: palette.text }}>{title}</Typography>
+                  <Typography sx={{ color: palette.textSecondary, fontSize: { xs: 15, md: 16 }, lineHeight: 1.38, fontWeight: fontWeight.medium }}>
+                    {description}
+                  </Typography>
+              </ResponsiveStack>
             </Box>
           ))}
-        </Box>
+          </MarketingCardCarousel>
+        </Reveal>
       </MarketingContentSection>
 
     </MarketingPageLayout>
