@@ -80,16 +80,14 @@ export function AppFooter() {
         </Box>
       </Reveal>
 
-      <Reveal delay={0.08}>
-        <Box sx={{ mt: { xs: 6, md: 8 }, pt: { xs: 3, md: 4 }, borderTop: `1px solid ${palette.border}`, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1.5, alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}>
+      <Box sx={{ mt: { xs: 6, md: 8 }, pt: { xs: 3, md: 4 }, borderTop: `1px solid ${palette.border}`, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1.5, alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: 'space-between' }}>
         <Typography sx={{ color: '#4B5563', fontSize: { xs: 13, sm: 14 }, lineHeight: 1.5, fontWeight: 600, letterSpacing: 0 }}>
           บริษัท คนบ้างาน จำกัด
         </Typography>
         <Typography sx={{ color: '#6B7280', fontSize: { xs: 13, sm: 14 }, lineHeight: 1.5 }}>
           ออกแบบ พัฒนา และส่งมอบระบบดิจิทัลสำหรับใช้งานจริง
         </Typography>
-        </Box>
-      </Reveal>
+      </Box>
     </Box>
   );
 }

@@ -162,10 +162,10 @@ export function ServicesPage() {
                   }}
                 >
                   <Typography variant="h3" sx={{ color: palette.text }}>{title}</Typography>
-                  <Typography sx={{ color: palette.text, fontSize: { xs: 15, md: 16 }, lineHeight: 1.38, fontWeight: fontWeight.medium }}>
+                  <Typography sx={{ color: palette.textSecondary, fontSize: { xs: 15, md: 16 }, lineHeight: 1.38, fontWeight: fontWeight.regular }}>
                     {description}
                   </Typography>
-                  <Typography sx={{ color: palette.text, fontSize: 13, lineHeight: 1.231, fontWeight: fontWeight.bold }}>
+                  <Typography sx={{ color: palette.textSecondary, fontSize: { xs: 15, md: 16 }, lineHeight: 1.231, fontWeight: fontWeight.regular }}>
                     {suitedFor}
                   </Typography>
               </ResponsiveStack>
@@ -210,7 +210,7 @@ export function ServicesPage() {
                 >
                   <Typography sx={{ color: palette.primaryPink, fontSize: 17, lineHeight: 1.353, fontWeight: fontWeight.bold }}>{step}</Typography>
                   <Typography variant="h3" sx={{ color: palette.text }}>{title}</Typography>
-                  <Typography sx={{ color: palette.textSecondary, fontSize: { xs: 15, md: 16 }, lineHeight: 1.38, fontWeight: fontWeight.medium }}>
+                  <Typography sx={{ color: palette.textSecondary, fontSize: { xs: 15, md: 16 }, lineHeight: 1.38, fontWeight: fontWeight.regular }}>
                     {description}
                   </Typography>
               </ResponsiveStack>

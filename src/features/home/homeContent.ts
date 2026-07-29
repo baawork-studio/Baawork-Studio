@@ -198,8 +198,36 @@ export const workflowPanels = [
 ];
 
 export const resultCards = [
-  { title: 'ระบบพร้อมใช้งานจริง', highlight: 'ตั้งแต่วันส่งมอบ', color: palette.primaryPink, icon: 'screen', size: 'large', imageUrl: '/homepage/results-ready-system-dashboard.png' },
-  { title: 'ใช้งานได้ทุกอุปกรณ์', highlight: 'รองรับทุกขนาดหน้าจอ', color: '#6D5BFF', icon: 'spark', size: 'compact', imageUrl: null },
-  { title: 'ข้อมูลเชื่อมต่อครบ', highlight: 'ทั้ง API และฐานข้อมูล', color: '#0F9DA8', icon: 'data', size: 'compact', imageUrl: null },
-  { title: 'ต่อยอดได้ในอนาคต', highlight: 'รองรับการขยายระบบ', color: '#F15A24', icon: 'growth', size: 'large', imageUrl: '/results-future-system-expansion.png' },
+  {
+    title: 'ระบบพร้อมใช้งานจริง พร้อมโครงสร้างที่ทีมใช้งานและดูแลต่อได้',
+    highlight: 'ตั้งแต่วันส่งมอบ',
+    color: palette.primaryPink,
+    icon: 'screen',
+    size: 'large',
+    imageUrl: '/homepage/results-ready-system-dashboard.png',
+  },
+  {
+    title: 'ใช้งานได้ทุกอุปกรณ์ แสดงผลลื่นไหลทั้งเดสก์ท็อป แท็บเล็ต และมือถือ',
+    highlight: 'รองรับทุกขนาดหน้าจอ',
+    color: '#6D5BFF',
+    icon: 'spark',
+    size: 'compact',
+    imageUrl: null,
+  },
+  {
+    title: 'ข้อมูลเชื่อมต่อครบ ให้ข้อมูลสำคัญไหลต่อเนื่องในระบบเดียว',
+    highlight: 'ทั้ง API และฐานข้อมูล',
+    color: '#0F9DA8',
+    icon: 'data',
+    size: 'compact',
+    imageUrl: null,
+  },
+  {
+    title: 'ต่อยอดได้ในอนาคต วางรากฐานให้เพิ่มฟีเจอร์และรองรับการเติบโต',
+    highlight: 'รองรับการขยายระบบ',
+    color: '#F15A24',
+    icon: 'growth',
+    size: 'large',
+    imageUrl: '/results-future-system-expansion.png',
+  },
 ] as const;
