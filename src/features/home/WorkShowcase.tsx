@@ -6,9 +6,9 @@ import { aiShowcaseCards, lineLiffShowcaseCards, webAppShowcaseCards, workCarous
 import { ShowcaseCarousel } from './HomeSections';
 
 const showcaseGroups = [
-  { title: 'ระบบ AI อัจฉริยะ', cards: aiShowcaseCards, label: 'ผลงานระบบ AI', background: '#FFFFFF', padding: { xs: 4, sm: 5, md: 6 } },
-  { title: 'ระบบเว็บแอปผ่าน LINE LIFF', cards: lineLiffShowcaseCards, label: 'ผลงานระบบ LINE LIFF', background: palette.softGray, padding: { xs: 6, sm: 7, md: 8 } },
-  { title: 'ระบบเว็บแอป', cards: webAppShowcaseCards, label: 'ผลงานระบบ Web App', background: '#FFFFFF', padding: { xs: 6, sm: 7, md: 8 } },
+  { title: 'ระบบ AI อัจฉริยะ', cards: aiShowcaseCards, label: 'ผลงานระบบ AI', background: '#FFFFFF', padding: '48px' },
+  { title: 'ระบบเว็บแอปผ่าน LINE LIFF', cards: lineLiffShowcaseCards, label: 'ผลงานระบบ LINE LIFF', background: palette.softGray, padding: '48px' },
+  { title: 'ระบบเว็บแอป', cards: webAppShowcaseCards, label: 'ผลงานระบบ Web App', background: '#FFFFFF', padding: '48px' },
 ];
 
 export function WorkShowcase() {

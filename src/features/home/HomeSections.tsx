@@ -621,7 +621,7 @@ export function ToolStackSection() {
       sx={{
         bgcolor: '#FFFFFF',
         color: palette.text,
-        py: { xs: 7, sm: 8, md: 10 },
+        py: '48px',
       }}
     >
       <Box
@@ -753,7 +753,7 @@ export function AudienceSection() {
         bgcolor: palette.softGray,
         color: palette.text,
         px: workCarouselGutter,
-        py: { xs: 7, sm: 8, md: 10, lg: 12 },
+        py: '48px',
       }}
     >
       <Reveal variant="scale">
@@ -891,7 +891,7 @@ export function WorkflowSection() {
       id="workflow"
       sx={{
         bgcolor: palette.softGray,
-        py: { xs: 6, sm: 7, md: 8 },
+        py: '48px',
       }}
     >
       <Box
@@ -1399,7 +1399,7 @@ export function ResultsSection() {
       sx={{
         bgcolor: '#FFFFFF',
         color: palette.text,
-        py: { xs: 7, sm: 8, md: 10, lg: 12 },
+        py: '48px',
       }}
     >
       <Box sx={{ px: workCarouselGutter }}>
@@ -1455,7 +1455,7 @@ export function StartProjectSection() {
         bgcolor: palette.softGray,
         color: palette.text,
         px: workCarouselGutter,
-        py: { xs: 8, sm: 10, md: 13, lg: 15 },
+        py: '48px',
         textAlign: 'center',
       }}
     >

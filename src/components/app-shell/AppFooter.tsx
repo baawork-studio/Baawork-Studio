@@ -9,7 +9,7 @@ const pageGutter = 'clamp(24px, 6.27vw, 127.5px)';
 
 export function AppFooter() {
   return (
-    <Box component="footer" id="contact" sx={{ bgcolor: palette.background, color: palette.text, py: { xs: 7, sm: 8, md: 10 }, px: pageGutter }}>
+    <Box component="footer" id="contact" sx={{ bgcolor: palette.background, color: palette.text, py: '48px', px: pageGutter }}>
       <Reveal>
         <Box
         sx={{
