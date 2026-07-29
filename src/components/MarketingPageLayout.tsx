@@ -14,7 +14,7 @@ export function MarketingPageLayout({
   children,
 }: {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   accent?: string;
   children: ReactNode;
 }) {
@@ -22,14 +22,18 @@ export function MarketingPageLayout({
     <Box component="main" sx={{ overflowX: 'hidden' }}>
       <Box sx={{ px: pageGutter, pt: layout.pageHeaderPadding, pb: 0 }}>
         <ResponsiveStack spacing={{ xs: 5, md: 6 }}>
-          <ResponsiveStack spacing={{ xs: 1.25, sm: 1.5, md: 1.75 }} alignItems="center" textAlign="center" sx={{ width: '100%', mx: 'auto', maxWidth: 1060, alignSelf: 'center' }}>
-            <Typography variant="h1" sx={{ color: palette.text, ...typeScale.hero, width: '100%', textAlign: 'center' }}>
-              {title}
-            </Typography>
-            <Typography variant="h5" sx={{ color: accent, ...typeScale.intro, width: '100%', maxWidth: 880, fontWeight: 700, textAlign: 'center' }}>
-              {subtitle}
-            </Typography>
-          </ResponsiveStack>
+          <Reveal distance={28}>
+            <ResponsiveStack spacing={{ xs: 1.25, sm: 1.5, md: 1.75 }} alignItems="center" textAlign="center" sx={{ width: '100%', mx: 'auto', maxWidth: 1060, alignSelf: 'center' }}>
+              <Typography variant="h1" sx={{ color: palette.text, ...typeScale.hero, width: '100%', textAlign: 'center' }}>
+                {title}
+              </Typography>
+              {subtitle ? (
+                <Typography variant="h5" sx={{ color: accent, ...typeScale.intro, width: '100%', maxWidth: 880, fontWeight: 700, textAlign: 'center' }}>
+                  {subtitle}
+                </Typography>
+              ) : null}
+            </ResponsiveStack>
+          </Reveal>
 
           <ResponsiveStack spacing={0} sx={{ width: '100%' }}>
             {children}
