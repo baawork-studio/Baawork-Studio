@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import type { DragEvent, MouseEvent, PointerEvent } from 'react';
+import type { DragEvent, PointerEvent } from 'react';
 
 type DragState = {
   pointerId: number;
@@ -10,7 +10,6 @@ type DragState = {
 
 export function useHorizontalDragScroll() {
   const dragState = useRef<DragState>(null);
-  const suppressClick = useRef(false);
 
   const onPointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
     // Keep touch gestures native so a finger swipe scrolls naturally on mobile.
@@ -44,28 +43,18 @@ export function useHorizontalDragScroll() {
   const endDrag = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (dragState.current?.pointerId !== event.pointerId) return;
 
-    const hasMoved = dragState.current?.hasMoved;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
     event.currentTarget.style.cursor = '';
     dragState.current = null;
-    suppressClick.current = Boolean(hasMoved);
   }, []);
 
   const onDragStart = useCallback((event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   }, []);
 
-  const onClickCapture = useCallback((event: MouseEvent<HTMLDivElement>) => {
-    if (!suppressClick.current) return;
-
-    event.preventDefault();
-    event.stopPropagation();
-    suppressClick.current = false;
-  }, []);
-
-  return { onPointerDown, onPointerMove, onPointerUp: endDrag, onPointerCancel: endDrag, onDragStart, onClickCapture };
+  return { onPointerDown, onPointerMove, onPointerUp: endDrag, onPointerCancel: endDrag, onDragStart };
 }
 
 export function scrollToAdjacentCarouselItem(container: HTMLElement, direction: -1 | 1) {

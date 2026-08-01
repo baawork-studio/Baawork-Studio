@@ -479,6 +479,7 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
               <Box
               component="a"
               href={`/projects/${project.slug}`}
+              onPointerDown={(event) => event.stopPropagation()}
               sx={{
                 position: 'relative',
                 flex: '0 0 auto',

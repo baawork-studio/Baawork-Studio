@@ -31,6 +31,10 @@ const systemPreviewImageCount = 6;
 const mobileOnlyPreviewSlugs = new Set([
   'linora-facebook-page-analytics',
   'shadow-ceo-business-assistant',
+  'ceo-partner-ai-automation',
+  'heylth-line-health-tracking',
+  'car-sales-line-oa-template',
+  'car-rental-line-oa-template',
 ]);
 
 function SystemPreviewCarousel({

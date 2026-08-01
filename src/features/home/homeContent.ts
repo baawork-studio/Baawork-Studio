@@ -13,8 +13,8 @@ const allAiShowcaseCards: ShowcaseCard[] = [
   {
     id: 'shadow-ceo-business-assistant',
     slug: 'shadow-ceo-business-assistant',
-    title: 'Shadow CEO',
-    shortDescription: 'AI Business Assistant บน LINE ที่สรุปข้อมูลล่าสุด แจ้งเตือนโอกาสสำคัญ และตอบคำถามว่าธุรกิจควรทำอะไรต่อ',
+    title: 'Shadow CEO วิเคราะห์เพจ Facebook',
+    shortDescription: 'ผู้ช่วยบน LINE ที่สรุปข้อมูลล่าสุด แจ้งเตือนโอกาสสำคัญ และช่วยตอบว่าธุรกิจควรทำอะไรต่อ',
     coverImageUrl: '/showcase/showcase-linora.png',
   },
 ];
@@ -45,7 +45,7 @@ const allWebAppShowcaseCards: ShowcaseCard[] = [
     id: 'product-warranty-and-customer-platform',
     slug: 'product-warranty-and-customer-platform',
     title: 'แพลตฟอร์มรับประกันสินค้าและดูแลลูกค้า',
-    shortDescription: 'ระบบตรวจ Serial Number ลงทะเบียนรับประกัน แสดงข้อมูลสินค้า และส่งต่อโปรโมชันผ่าน LINE',
+    shortDescription: 'ระบบตรวจสอบรหัสสินค้า ลงทะเบียนรับประกัน แสดงข้อมูลสินค้า และส่งข้อเสนอผ่าน LINE',
     coverImageUrl: '/showcase/showcase-product-warranty.png',
   },
   {
@@ -71,6 +71,7 @@ const getShowcaseProjects = (slugs: readonly string[]): ShowcaseCard[] =>
 const aiProjectSlugs = [
   'linora-facebook-page-analytics',
   'shadow-ceo-business-assistant',
+  'ceo-partner-ai-automation',
 ] as const;
 
 const webAppProjectSlugs = [
@@ -79,6 +80,9 @@ const webAppProjectSlugs = [
   'line-membership-loyalty-platform',
   'product-warranty-and-customer-platform',
   'online-learning-platform-with-ai',
+  'heylth-line-health-tracking',
+  'car-sales-line-oa-template',
+  'car-rental-line-oa-template',
 ] as const;
 
 export const aiShowcaseCards = getShowcaseProjects(aiProjectSlugs);
@@ -88,6 +92,9 @@ const lineLiffProjectSlugs = new Set([
   'service-booking-template',
   'line-membership-loyalty-platform',
   'product-warranty-and-customer-platform',
+  'heylth-line-health-tracking',
+  'car-sales-line-oa-template',
+  'car-rental-line-oa-template',
 ]);
 
 export const lineLiffShowcaseCards = catalogWebAppShowcaseCards.filter((card) =>

@@ -107,21 +107,21 @@ export function carouselControlSx(enabled: boolean) {
 export function getCapabilityCards(project: Project) {
   const cards = capabilityCardsBySlug[project.slug] ?? project.highlights.map((highlight) => ({
     title: highlight,
-    description: `ออกแบบให้ทีมใช้ ${highlight} ได้จากระบบเดียว พร้อมเชื่อมข้อมูลจริงและต่อยอด workflow ได้ในระยะยาว`,
+    description: `ออกแบบให้ทีมใช้ ${highlight} ได้ชัดเจนจากที่เดียว และปรับให้เข้ากับงานที่เปลี่ยนไปได้`,
   }));
 
   const supportCards: CapabilityCard[] = [
     {
-      title: 'เชื่อมต่อข้อมูลจริง',
-      description: 'ต่อข้อมูลจาก API ฐานข้อมูล และระบบหลังบ้าน เพื่อให้สิ่งที่แสดงในหน้าใช้งานตรงกับข้อมูลจริง',
+      title: 'เห็นข้อมูลสำคัญในที่เดียว',
+      description: 'รวบรวมรายละเอียดที่ทีมต้องใช้ไว้ในหน้าเดียว ลดเวลาสลับไปมาระหว่างหลายเครื่องมือ',
     },
     {
       title: 'ใช้งานได้ทุกอุปกรณ์',
-      description: 'วาง responsive layout ให้เหมาะกับ desktop, tablet และ mobile เพื่อให้ทีมเข้าถึงงานได้สะดวก',
+      description: 'จัดหน้าจอให้ใช้งานสะดวกทั้งคอมพิวเตอร์ แท็บเล็ต และมือถือ เพื่อให้ทีมเข้าถึงงานสำคัญได้ทุกที่',
     },
     {
-      title: 'ต่อยอดระบบได้',
-      description: 'จัดโครงสร้างหน้าบ้าน หลังบ้าน และข้อมูลให้เพิ่มฟีเจอร์ใหม่ได้ง่ายเมื่อ workflow เติบโต',
+      title: 'พร้อมเติบโตไปกับธุรกิจ',
+      description: 'วางระบบให้เพิ่มรูปแบบงานและบริการใหม่ได้ โดยประสบการณ์ใช้งานยังต่อเนื่อง',
     },
   ];
 
@@ -202,10 +202,10 @@ export function getCapabilityDetailRows(project: Project, card: CapabilityCard):
 
 export function getTechReason(project: Project) {
   if (project.slug.startsWith('ai-')) {
-    return `โปรเจกต์นี้ใช้ ${project.stack.join(', ')} เพื่อให้หน้าจอทำงานเร็ว เชื่อมต่อ API และประมวลผลข้อมูล AI ได้เป็นระบบ ตั้งแต่การดึงข้อมูล วิเคราะห์ผล ไปจนถึงส่ง insight ให้ทีมใช้งานจริง`;
+    return 'เลือกเครื่องมือให้เหมาะกับการสรุปข้อมูลและเสนอคำแนะนำ เพื่อให้ทีมเห็นประเด็นสำคัญและตัดสินใจได้ไวขึ้น';
   }
 
-  return `โปรเจกต์นี้ใช้ ${project.stack.join(', ')} เพื่อสร้างเว็บแอปที่ดูแลง่าย เชื่อมต่อข้อมูลจริงได้ครบ และรองรับ workflow หลังบ้านที่ทีมต้องใช้งานต่อเนื่องทุกวัน`;
+  return 'เลือกเครื่องมือให้เหมาะกับการใช้งานจริง เพื่อให้ระบบลื่นไหล ดูแลง่าย และรองรับงานประจำวันของทีมได้ต่อเนื่อง';
 }
 
 export function getDescriptionHighlightTerms(project: Project) {
@@ -315,7 +315,7 @@ export function getOutcomeCards(project: Project): DetailInfoCard[] {
         },
         {
           title: 'ตัดสินใจจากข้อมูลจริง',
-          description: 'ทุกหน้าจอออกแบบให้เชื่อมข้อมูลจริงและแสดงผลตาม workflow ที่ธุรกิจใช้งานอยู่',
+          description: 'ทุกหน้าจอจัดลำดับข้อมูลให้ทีมเห็นสิ่งที่ต้องตัดสินใจ และทำงานต่อได้อย่างมั่นใจ',
         },
         {
           title: 'ต่อยอดระบบได้',
@@ -333,11 +333,11 @@ export function getOutcomeCards(project: Project): DetailInfoCard[] {
         },
         {
           title: 'ข้อมูลตรงกันทั้งทีม',
-          description: 'สถานะ รายการ และประวัติการอัปเดตอยู่บนฐานข้อมูลเดียว ลดความคลาดเคลื่อนในการประสานงาน',
+          description: 'สถานะ รายการ และประวัติการอัปเดตอยู่ในจุดที่ทุกคนเข้าถึงได้ ลดความคลาดเคลื่อนในการประสานงาน',
         },
         {
           title: 'พร้อมขยายต่อ',
-          description: 'วางโครงสร้าง frontend, backend และ API ให้เพิ่มฟีเจอร์ใหม่ได้โดยไม่ต้องเริ่มระบบใหม่',
+          description: 'วางระบบให้เพิ่มบริการหรือรูปแบบงานใหม่ได้ โดยไม่ต้องเริ่มทำทุกอย่างใหม่',
         },
       ];
 
