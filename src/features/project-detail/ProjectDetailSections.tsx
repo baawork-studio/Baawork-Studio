@@ -6,6 +6,7 @@ import { ResponsiveStack } from "../../components/ResponsiveStack";
 import type { Project } from "../../data/projectCatalog";
 import { fontWeight, hover, overlay, palette, radii, shadows, typeScale } from "../../appTheme";
 import { useHorizontalDragScroll } from "../../hooks/useHorizontalDragScroll";
+import { toolLogos } from "../home/homeContent";
 import { detailCarouselVerticalGap, pageGutter, techIcons } from "./projectDetailContent";
 import { carouselControlSx, getCapabilityCards, getCapabilityDetailRows, getOutcomeCards, getProjectVisual, getProjectVisualImage, useDetailCarousel } from "./projectDetailHelpers";
 import type { CapabilityCard, DetailInfoCard } from "./projectDetailTypes";
@@ -917,16 +918,6 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
 
 export function ProjectTechSection({ project }: { project: Project }) {
   const shouldReduceMotion = useReducedMotion();
-  const technologyPositions = [
-    { x: 12, y: 24, size: 108, mobileSize: 72, delay: 0.03 },
-    { x: 31, y: 62, size: 132, mobileSize: 82, delay: 0.1 },
-    { x: 50, y: 20, size: 120, mobileSize: 78, delay: 0.17 },
-    { x: 69, y: 57, size: 128, mobileSize: 84, delay: 0.24 },
-    { x: 87, y: 28, size: 104, mobileSize: 70, delay: 0.31 },
-    { x: 20, y: 88, size: 96, mobileSize: 68, delay: 0.38 },
-    { x: 50, y: 91, size: 112, mobileSize: 76, delay: 0.45 },
-    { x: 80, y: 87, size: 98, mobileSize: 70, delay: 0.52 },
-  ];
 
   return (
     <Box
@@ -969,7 +960,7 @@ export function ProjectTechSection({ project }: { project: Project }) {
         >
           {project.stack.map((item, index) => {
             const icon = techIcons[item] ?? { label: item.slice(0, 4) };
-            const position = technologyPositions[index % technologyPositions.length];
+            const position = toolLogos[index % toolLogos.length];
 
             return (
               <Box
@@ -986,9 +977,15 @@ export function ProjectTechSection({ project }: { project: Project }) {
                 <motion.div
                   initial={shouldReduceMotion ? false : { opacity: 0, y: 18, scale: 0.92 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  whileHover={shouldReduceMotion ? undefined : { scale: hover.icon.scale, transition: hover.motion }}
+                  whileHover={shouldReduceMotion ? undefined : hover.icon}
                   viewport={{ once: true, amount: 0.35 }}
-                  transition={{ duration: 0.52, delay: shouldReduceMotion ? 0 : position.delay, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{
+                    duration: 0.52,
+                    delay: shouldReduceMotion ? 0 : position.delay,
+                    ease: [0.22, 1, 0.36, 1],
+                    y: hover.motion,
+                    scale: hover.motion,
+                  }}
                 >
                   <motion.div
                     whileInView={shouldReduceMotion ? undefined : { y: [0, -7, 0], rotate: [0, -1, 0, 1, 0] }}
@@ -1006,7 +1003,7 @@ export function ProjectTechSection({ project }: { project: Project }) {
                           onError={(event) => {
                             event.currentTarget.style.display = 'none';
                           }}
-                          sx={{ width: '64%', height: '64%', objectFit: 'contain', filter: icon.invert ? 'invert(1)' : undefined }}
+                          sx={{ width: { xs: '64%', md: '100%' }, height: { xs: '64%', md: '100%' }, objectFit: 'contain', filter: icon.invert ? 'invert(1)' : undefined }}
                         />
                       ) : (
                         <Typography sx={{ color: palette.primaryPink, fontSize: { xs: 18, md: 21 }, lineHeight: 1, fontWeight: fontWeight.extraBold }}>

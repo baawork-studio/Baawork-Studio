@@ -33,7 +33,7 @@ export const projectCatalog: Project[] = [
     ],
     coverImageUrl: '/showcase/showcase-linora.png',
     detailImageUrl: '/project-details/linora.png',
-    stack: ['React', 'TypeScript', 'MUI', 'Go', 'PostgreSQL', 'OpenAI'],
+    stack: ['React', 'TypeScript', 'MUI', 'Go', 'Vite', 'LINE', 'Meta', 'Facebook', 'PostgreSQL', 'Redis', 'DeepSeek'],
     highlights: ['เลือกและเชื่อมต่อเพจ Facebook ที่ผู้ใช้ดูแล', 'สรุปสุขภาพเพจ โพสต์ และการมีส่วนร่วม', 'คำแนะนำสำหรับการวางแผนคอนเทนต์'],
   }),
   project({
@@ -48,7 +48,7 @@ export const projectCatalog: Project[] = [
     ],
     coverImageUrl: '/showcase/showcase-example.png',
     detailImageUrl: '/project-details/example.png',
-    stack: ['React', 'TypeScript', 'Go', 'PostgreSQL', 'LINE LIFF', 'OpenAI'],
+    stack: ['React', 'TypeScript', 'Vite', 'Go', 'PostgreSQL', 'LINE LIFF', 'Meta', 'Facebook', 'Gemini API'],
     highlights: ['สรุปประเด็นธุรกิจผ่าน LINE', 'ติดตามงานและการแจ้งเตือนสำคัญ', 'ออกแบบสำหรับผู้บริหารที่ต้องการข้อมูลกระชับ'],
   }),
   project({
@@ -63,7 +63,7 @@ export const projectCatalog: Project[] = [
     ],
     coverImageUrl: '/showcase/showcase-rentflowcar.png',
     detailImageUrl: '/project-details/rentflowcar.png',
-    stack: ['React', 'TypeScript', 'Go', 'PostgreSQL', 'Redis', 'Docker'],
+    stack: ['Next.js', 'React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Go', 'PostgreSQL', 'Redis', 'Ollama'],
     highlights: ['หน้าค้นหาและจองรถสำหรับลูกค้า', 'ระบบจัดการร้านและพาร์ทเนอร์', 'ข้อมูลธุรกิจและการดำเนินงานในที่เดียว'],
   }),
   project({
@@ -78,7 +78,7 @@ export const projectCatalog: Project[] = [
     ],
     coverImageUrl: '/showcase/showcase-service-booking.png',
     detailImageUrl: '/project-details/service-booking.png',
-    stack: ['React', 'TypeScript', 'Go', 'PostgreSQL', 'Redis', 'WebSocket', 'LINE LIFF'],
+    stack: ['React', 'TypeScript', 'Vite', 'Go', 'PostgreSQL', 'Redis', 'WebSocket', 'LINE LIFF'],
     highlights: ['จอง ยกเลิก และเลื่อนนัดได้ด้วยตนเอง', 'จัดการบริการ ช่วงเวลา และสถานะการจอง', 'แจ้งเตือนสถานะแบบเรียลไทม์'],
   }),
   project({
@@ -93,7 +93,7 @@ export const projectCatalog: Project[] = [
     ],
     coverImageUrl: '/showcase/showcase-example.png',
     detailImageUrl: '/project-details/example.png',
-    stack: ['React', 'TypeScript', 'Go', 'PostgreSQL', 'Redis', 'LINE LIFF', 'LINE Messaging API'],
+    stack: ['React', 'TypeScript', 'Vite', 'Go', 'PostgreSQL', 'Redis', 'LINE'],
     highlights: ['สมัครและยืนยันตัวตนผ่าน LINE', 'จัดการคะแนนและสิทธิประโยชน์', 'หลังบ้านสำหรับดูแลข้อมูลสมาชิก'],
   }),
   project({
@@ -108,7 +108,7 @@ export const projectCatalog: Project[] = [
     ],
     coverImageUrl: '/showcase/showcase-product-warranty.png',
     detailImageUrl: '/project-details/product-warranty.png',
-    stack: ['React', 'TypeScript', 'Go', 'Gin', 'PostgreSQL', 'LINE LIFF', 'LINE Messaging API'],
+    stack: ['React', 'TypeScript', 'Vite', 'Go', 'PostgreSQL', 'Redis', 'LINE'],
     highlights: ['ตรวจสอบ Serial Number และลงทะเบียนรับประกัน', 'แสดงข้อมูลสินค้าและสิทธิประโยชน์', 'หลังบ้านจัดการข้อมูลลูกค้าและการรับประกัน'],
   }),
   project({
@@ -123,7 +123,7 @@ export const projectCatalog: Project[] = [
     ],
     coverImageUrl: '/showcase/showcase-online-learning.png',
     detailImageUrl: '/project-details/online-learning.png',
-    stack: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Docker', 'Gemini API'],
+    stack: ['React', 'TypeScript', 'JavaScript', 'Vite', 'Tailwind CSS', 'Node.js', 'PostgreSQL', 'Gemini API', 'FFmpeg'],
     highlights: ['พื้นที่ใช้งานแยกตามบทบาท', 'จัดการคอร์สและติดตามการเรียนรู้', 'AI ช่วยสรุปบทเรียนและตอบคำถาม'],
   }),
 ];
