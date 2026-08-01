@@ -108,7 +108,7 @@ export const overlay = {
 } as const;
 
 export const appFontFamily =
-  '"SF Pro TH", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", var(--font-noto-sans-thai, "Noto Sans Thai"), sans-serif';
+  'var(--font-roboto, "Roboto"), var(--font-noto-sans-thai, "Noto Sans Thai"), sans-serif';
 
 // These values intentionally match Apple Thailand's type breakpoints.
 // 0–734px: iPhone | 735–1068px: iPad | 1069px+: MacBook and desktop

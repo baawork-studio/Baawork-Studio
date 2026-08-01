@@ -12,6 +12,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background: #ffffff;
+  font-family: var(--font-roboto, "Roboto"), var(--font-noto-sans-thai, "Noto Sans Thai"), sans-serif;
 }
 
 a {
