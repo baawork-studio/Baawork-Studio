@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   description: siteDescription,
   applicationName: 'Baawork Studio',
   authors: [{ name: 'Baawork Studio' }],
+  verification: {
+    google: 'SGYkymcJ12L-Nvj5toiBawhztIbPOuVIkMbWWpricWw',
+  },
   icons: {
     icon: [{ url: '/homepage/baawork-logo.png', type: 'image/png' }],
     apple: [{ url: '/homepage/baawork-logo.png', type: 'image/png' }],
