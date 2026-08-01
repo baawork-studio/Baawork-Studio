@@ -2,6 +2,18 @@
 
 import type { FormEvent, ReactNode } from 'react';
 import { Box, Typography } from '@mui/material';
+import BuildRounded from '@mui/icons-material/BuildRounded';
+import CodeRounded from '@mui/icons-material/CodeRounded';
+import DashboardRounded from '@mui/icons-material/DashboardRounded';
+import DesignServicesRounded from '@mui/icons-material/DesignServicesRounded';
+import FactCheckRounded from '@mui/icons-material/FactCheckRounded';
+import ForumRounded from '@mui/icons-material/ForumRounded';
+import HubRounded from '@mui/icons-material/HubRounded';
+import LanguageRounded from '@mui/icons-material/LanguageRounded';
+import PaletteRounded from '@mui/icons-material/PaletteRounded';
+import RuleRounded from '@mui/icons-material/RuleRounded';
+import SupportAgentRounded from '@mui/icons-material/SupportAgentRounded';
+import TrendingUpRounded from '@mui/icons-material/TrendingUpRounded';
 import { MarketingPageLayout, MarketingContentSection } from '../components/MarketingPageLayout';
 import { ResponsiveStack } from '../components/ResponsiveStack';
 import { Reveal } from '../components/motion/Reveal';
@@ -18,6 +30,9 @@ import {
 } from '../features/marketing/marketingContent';
 
 const consultationEmail = process.env.NEXT_PUBLIC_CONSULT_EMAIL ?? 'baaworkstudio@gmail.com';
+const serviceOfferingIcons = [DesignServicesRounded, LanguageRounded, DashboardRounded, HubRounded, BuildRounded, SupportAgentRounded];
+const projectStepIcons = [ForumRounded, RuleRounded, PaletteRounded, CodeRounded, FactCheckRounded, TrendingUpRounded];
+const carouselCardIconSx = { color: palette.primaryPink, lineHeight: 0 };
 
 function MarketingCardCarousel({ label, children }: { label: string; children: ReactNode }) {
   const { carouselRef, carouselState, scrollCards } = useShowcaseCarousel();
@@ -130,11 +145,13 @@ export function ServicesPage() {
       <MarketingContentSection backgroundColor={palette.background} variant="slide-right">
         <SectionHeading
           title="บริการที่ออกแบบตามงานจริง"
-          description="เลือกทำเฉพาะส่วนที่ตอบโจทย์ธุรกิจ หรือวางให้ทุกส่วนทำงานเชื่อมกันตั้งแต่ต้นก็ได้"
         />
         <Reveal delay={0.08}>
           <MarketingCardCarousel label="บริการที่ออกแบบตามงานจริง">
-          {serviceOfferings.map(({ title, description, suitedFor }) => (
+          {serviceOfferings.map(({ title, description, suitedFor }, index) => {
+            const Icon = serviceOfferingIcons[index];
+
+            return (
             <Box
               key={title}
               data-carousel-item="true"
@@ -152,6 +169,8 @@ export function ServicesPage() {
                   sx={{
                     ...cardSx,
                     height: '100%',
+                    minHeight: layout.marketingCarouselCardMinHeight,
+                    position: 'relative',
                     bgcolor: palette.surfaceAlt,
                     borderRadius: radii.card.xs,
                     boxShadow: 'none',
@@ -168,9 +187,11 @@ export function ServicesPage() {
                   <Typography sx={{ color: palette.textSecondary, fontSize: { xs: 15, md: 16 }, lineHeight: 1.231, fontWeight: fontWeight.regular }}>
                     {suitedFor}
                   </Typography>
+                  <Box sx={{ ...carouselCardIconSx, position: 'absolute', left: '50%', bottom: 80, transform: 'translateX(-50%)' }}><Icon sx={{ fontSize: 120 }} /></Box>
               </ResponsiveStack>
             </Box>
-          ))}
+            );
+          })}
           </MarketingCardCarousel>
         </Reveal>
       </MarketingContentSection>
@@ -178,11 +199,13 @@ export function ServicesPage() {
       <MarketingContentSection backgroundColor={palette.surfaceAlt} variant="slide-left">
         <SectionHeading
           title="เริ่มงานอย่างเป็นขั้นตอน"
-          description="สรุปสิ่งที่ต้องทำให้เห็นภาพเดียวกันก่อน แล้วค่อยออกแบบ พัฒนา และส่งมอบอย่างเป็นระบบ"
         />
         <Reveal delay={0.08}>
           <MarketingCardCarousel label="เริ่มงานอย่างเป็นขั้นตอน">
-          {projectSteps.map(([step, title, description]) => (
+          {projectSteps.map(([step, title, description], index) => {
+            const Icon = projectStepIcons[index];
+
+            return (
             <Box
               key={step}
               data-carousel-item="true"
@@ -200,6 +223,8 @@ export function ServicesPage() {
                   sx={{
                     ...cardSx,
                     height: '100%',
+                    minHeight: layout.marketingCarouselCardMinHeight,
+                    position: 'relative',
                     borderRadius: radii.card.xs,
                     boxShadow: 'none',
                     '&:hover': {
@@ -213,9 +238,11 @@ export function ServicesPage() {
                   <Typography sx={{ color: palette.textSecondary, fontSize: { xs: 15, md: 16 }, lineHeight: 1.38, fontWeight: fontWeight.regular }}>
                     {description}
                   </Typography>
+                  <Box sx={{ ...carouselCardIconSx, position: 'absolute', left: '50%', bottom: 80, transform: 'translateX(-50%)' }}><Icon sx={{ fontSize: 120 }} /></Box>
               </ResponsiveStack>
             </Box>
-          ))}
+            );
+          })}
           </MarketingCardCarousel>
         </Reveal>
       </MarketingContentSection>

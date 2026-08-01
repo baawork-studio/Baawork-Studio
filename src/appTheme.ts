@@ -46,7 +46,7 @@ export const shadows = {
 export const layout = {
   pageHeaderPadding: { xs: 8, sm: 9, md: 10, lg: 11 },
   pageHeaderBottomPadding: { xs: 8, sm: 9, md: 11, lg: 12 },
-  sectionPadding: { xs: 5, sm: 6, md: 7 },
+  sectionPadding: { xs: 5, sm: 6, md: 6 },
   cardPadding: { xs: 3, md: 3.5 },
   sectionHeadingGap: { xs: 1.5, md: 2 },
   sectionHeadingMarginBottom: { xs: 4, md: 5 },
