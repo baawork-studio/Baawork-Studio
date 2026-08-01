@@ -746,6 +746,7 @@ export function ToolStackSection() {
 
 export function AudienceSection() {
   const shouldReduceMotion = useReducedMotion();
+  const shouldLoopAudience = useMediaQuery('(max-width: 1327px)');
 
   return (
     <Box
@@ -759,22 +760,112 @@ export function AudienceSection() {
       }}
     >
       <Reveal variant="scale">
-        <ResponsiveStack spacing={{ xs: 1.5, md: 2 }} alignItems="center" textAlign="center" sx={{ maxWidth: 820, mx: 'auto' }}>
+        <ResponsiveStack spacing={{ xs: 1.5, md: 2 }} alignItems="center" textAlign="center" sx={{ maxWidth: 'none', mx: 'auto' }}>
           <Typography id="audience-title" variant="h2" sx={{ color: palette.text, ...typeScale.sectionTitle }}>
-            ออกแบบสำหรับทีมที่ทำงานจริง
+            องค์กรที่ไว้วางใจเรา
           </Typography>
-          <Typography sx={{ color: palette.textMuted, ...typeScale.bodyLarge, fontWeight: fontWeight.bold }}>
-            ตั้งแต่ทีมเล็กที่กำลังเติบโต ไปจนถึงองค์กรที่ต้องจัดการข้อมูล คน และ workflow หลายส่วนพร้อมกัน
+          <Typography sx={{ color: palette.textMuted, ...typeScale.bodyLarge, fontWeight: fontWeight.bold, whiteSpace: { xs: 'normal', lg: 'nowrap' } }}>
+            ร่วมสร้างระบบที่ตอบโจทย์การทำงานขององค์กร ตั้งแต่ทีมเริ่มต้นจนถึงงานขนาดใหญ่
           </Typography>
         </ResponsiveStack>
       </Reveal>
+
+      <motion.div
+        initial={shouldReduceMotion ? false : { opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.8, margin: '0px 0px -20% 0px' }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      >
+      <Box
+        aria-label="องค์กรที่ไว้วางใจเรา"
+        sx={{
+          display: 'block',
+          mt: { xs: 4, md: 5 },
+          overflow: 'hidden',
+          mx: `calc(-1 * ${workCarouselGutter})`,
+          position: 'relative',
+          '&::before, &::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            width: { xs: 56, sm: 72, lg: 96 },
+            zIndex: 1,
+            pointerEvents: 'none',
+            display: shouldLoopAudience ? 'block' : 'none',
+          },
+          '&::before': {
+            left: 0,
+            background: `linear-gradient(90deg, ${palette.softGray} 0%, ${palette.softGray} 34%, transparent 100%)`,
+          },
+          '&::after': {
+            right: 0,
+            background: `linear-gradient(270deg, ${palette.softGray} 0%, ${palette.softGray} 34%, transparent 100%)`,
+          },
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            width: 'max-content',
+            gap: 8,
+            bgcolor: palette.softGray,
+            isolation: 'isolate',
+            willChange: 'transform',
+            mx: shouldLoopAudience ? 0 : 'auto',
+            animation: shouldReduceMotion || !shouldLoopAudience ? 'none' : 'audienceLogoLoop 26s linear infinite',
+            '@keyframes audienceLogoLoop': {
+              from: { transform: 'translate3d(0, 0, 0)' },
+              to: { transform: 'translate3d(calc(-50% - 32px), 0, 0)' },
+            },
+          }}
+        >
+          {(shouldLoopAudience ? [false, true] : [false]).map((isDuplicate) => (
+            <Box key={String(isDuplicate)} aria-hidden={isDuplicate} sx={{ display: 'flex', gap: 8 }}>
+              {audienceGroups.map((group) => (
+                <Box
+                  key={`${isDuplicate ? 'duplicate-' : ''}${group.src}`}
+                  sx={{
+                    flex: { xs: '0 0 clamp(124px, 24vw, 188px)', lg: '0 0 168px' },
+                    width: { xs: 'clamp(124px, 24vw, 188px)', lg: '168px' },
+                    height: { xs: 'clamp(124px, 24vw, 188px)', lg: '168px' },
+                    display: 'grid',
+                    placeItems: 'center',
+                    bgcolor: palette.softGray,
+                    transition: 'transform 180ms cubic-bezier(0.22, 1, 0.36, 1)',
+                    '@media (min-width: 1200px)': {
+                      '&:hover': {
+                        transform: 'translate3d(0, -8px, 0) scale(1.06)',
+                      },
+                    },
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={group.src}
+                    alt={isDuplicate ? '' : group.name}
+                    sx={{
+                      display: 'block',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      mixBlendMode: 'multiply',
+                    }}
+                  />
+                </Box>
+              ))}
+            </Box>
+          ))}
+        </Box>
+      </Box>
+      </motion.div>
 
       <Box
         role="list"
         aria-label="กลุ่มองค์กรที่ระบบเหมาะกับ"
         sx={{
+          display: 'none',
           mt: { xs: 4, md: 5 },
-          display: 'grid',
           gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', sm: 'repeat(3, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' },
           gap: { xs: 1.25, sm: 1.5, md: 2 },
         }}
@@ -786,6 +877,7 @@ export function AudienceSection() {
             initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             whileHover={shouldReduceMotion ? undefined : hover.icon}
+            style={{ backgroundColor: palette.softGray }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{
               duration: 0.48,
@@ -806,13 +898,13 @@ export function AudienceSection() {
               <Box
                 component="img"
                 src={group.src}
-                alt=""
-                aria-hidden="true"
+                alt={group.name}
                 sx={{
                   display: 'block',
-                  width: '100%',
-                  height: '100%',
+                  width: { xs: '68%', md: '62%' },
+                  height: { xs: '68%', md: '62%' },
                   objectFit: 'contain',
+                  mixBlendMode: 'multiply',
                 }}
               />
             </Box>

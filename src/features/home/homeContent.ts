@@ -110,12 +110,12 @@ export const workCarouselVerticalGap = '24px';
 export const workCarouselEdgeTolerance = 24;
 
 export const audienceGroups = [
-  { src: '/audience/audience-private-business.png' },
-  { src: '/audience/audience-government.png' },
-  { src: '/audience/audience-operations.png' },
-  { src: '/audience/audience-sme.png' },
-  { src: '/audience/audience-retail.png' },
-  { src: '/audience/audience-multi-branch.png' },
+  { name: 'ธุรกิจเอกชน', src: '/audience/audience-private-business.png' },
+  { name: 'หน่วยงานภาครัฐ', src: '/audience/audience-government.png' },
+  { name: 'ทีมปฏิบัติการ', src: '/audience/audience-operations.png' },
+  { name: 'ธุรกิจขนาดเล็กและกลาง', src: '/audience/audience-sme.png' },
+  { name: 'ธุรกิจค้าปลีก', src: '/audience/audience-retail.png' },
+  { name: 'องค์กรหลายสาขา', src: '/audience/audience-multi-branch.png' },
 ] as const;
 
 export const toolLogos = [
