@@ -7,7 +7,7 @@ import type { Project } from "../../data/projectCatalog";
 import { fontWeight, hover, overlay, palette, radii, shadows, typeScale } from "../../appTheme";
 import { useHorizontalDragScroll } from "../../hooks/useHorizontalDragScroll";
 import { detailCarouselVerticalGap, pageGutter, techIcons } from "./projectDetailContent";
-import { carouselControlSx, getCapabilityCards, getCapabilityDetailRows, getOutcomeCards, getProjectVisual, getProjectVisualImage, getTechReason, useDetailCarousel } from "./projectDetailHelpers";
+import { carouselControlSx, getCapabilityCards, getCapabilityDetailRows, getOutcomeCards, getProjectVisual, getProjectVisualImage, useDetailCarousel } from "./projectDetailHelpers";
 import type { CapabilityCard, DetailInfoCard } from "./projectDetailTypes";
 
 const systemPreviewDevices = [
@@ -17,16 +17,11 @@ const systemPreviewDevices = [
 ] as const;
 
 const projectOutcomeBackgrounds = [
-  '/project-outcomes/streamlined-workflow.png',
-  '/project-outcomes/faster-delivery.png',
-  '/project-outcomes/shared-data.png',
-  '/project-outcomes/scalable-system.png',
+  '/project-details/project-capability-card-background.png',
 ] as const;
 
 const projectHighlightBackgrounds = [
-  '/project-highlights/connected-services.png',
-  '/project-highlights/operations-management.png',
-  '/project-highlights/data-insights.png',
+  '/project-details/project-capability-card-background.png',
 ] as const;
 
 type SystemPreviewDevice = (typeof systemPreviewDevices)[number];
@@ -375,7 +370,7 @@ export function ProjectSystemPreviewSection({ project }: { project: Project }) {
         left: `calc(${pageGutter} * -1)`,
         width: `calc(100% + (${pageGutter} * 2))`,
         alignSelf: 'stretch',
-        py: { xs: 6, sm: 7, md: 8 },
+        py: 6,
         overflow: 'visible',
       }}
     >
@@ -527,7 +522,8 @@ function VisualInfoCard({
           objectFit: 'cover',
           objectPosition: 'center',
           opacity: dark ? 0.86 : 0.2,
-          transform: 'scale(1.01)',
+          filter: 'blur(8px)',
+          transform: 'scale(1.06)',
           transition: hover.transition.image,
           pointerEvents: 'none',
         }}
@@ -537,20 +533,27 @@ function VisualInfoCard({
           position: 'absolute',
           inset: 0,
           background: dark
-            ? overlay.imageOverlayDark
+            ? 'transparent'
             : `linear-gradient(180deg, ${overlay.imageOverlayLightStart} 0%, ${visualTintFromAccent(accent)} 100%)`,
         }}
       />
       <ResponsiveStack
         spacing={{ xs: 1.35, md: 1.6 }}
         sx={{
-          position: 'relative',
+          position: dark ? 'absolute' : 'relative',
+          ...(dark ? { inset: { xs: '18px', md: '20px' } } : {}),
           zIndex: 1,
-          height: '100%',
-          minHeight: 'inherit',
-          justifyContent: 'flex-end',
+          height: dark ? 'auto' : '100%',
+          minHeight: dark ? 0 : 'inherit',
+          justifyContent: centered ? 'center' : 'flex-end',
           alignItems: centered ? 'center' : 'stretch',
+          textAlign: centered ? 'center' : 'left',
           p: { xs: 3, md: 3.75 },
+          borderRadius: dark ? radii.cardInner : 0,
+          bgcolor: dark ? overlay.darkCard : 'transparent',
+          backdropFilter: dark ? 'blur(6px)' : 'none',
+          WebkitBackdropFilter: dark ? 'blur(6px)' : 'none',
+          boxShadow: 'none',
         }}
       >
         {label && (
@@ -598,22 +601,21 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
   const outcomeCards = getOutcomeCards(project);
 
   return (
-    <ResponsiveStack component="section" spacing={{ xs: 6, md: 8 }} sx={{ py: { xs: 2, md: 3 }, overflow: 'visible' }}>
+    <ResponsiveStack component="section" spacing={{ xs: 6, md: 8 }} sx={{ overflow: 'visible' }}>
       <Box
         sx={{
-          bgcolor: palette.surfaceAlt,
+          bgcolor: palette.softGray,
           position: 'relative',
           left: `calc(${pageGutter} * -1)`,
           width: `calc(100% + (${pageGutter} * 2))`,
           alignSelf: 'stretch',
-          py: { xs: 6, md: 8 },
+          py: 6,
           px: pageGutter,
         }}
       >
         <ResponsiveStack spacing={{ xs: 3, md: 4 }}>
           <DetailSectionHeading
             title="ผลลัพธ์ที่ลูกค้าจะได้"
-            description="สรุปเป็นภาษาง่ายๆ ว่าหลังใช้งานแล้วทีมควรเห็นความเปลี่ยนแปลงตรงไหน"
             accent={palette.text}
           />
           <Box
@@ -630,6 +632,7 @@ export function ProjectUsageGuideSection({ project }: { project: Project }) {
                   description={card.description}
                   imageUrl={projectOutcomeBackgrounds[index % projectOutcomeBackgrounds.length]}
                   accent={visual.accent}
+                  centered
                 />
               </Reveal>
             ))}
@@ -648,15 +651,14 @@ export function ProjectHighlightsSection({ project }: { project: Project }) {
       component="section"
       sx={{
         bgcolor: palette.background,
-        py: { xs: 2, md: 3 },
+        py: 6,
         overflow: 'visible',
       }}
     >
       <ResponsiveStack spacing={{ xs: 3, md: 4 }}>
         <DetailSectionHeading
           title="จุดเด่นของระบบ"
-          description="เล่าเป็นภาพให้เห็นว่าสิ่งที่เด่นจริงของระบบนี้ช่วยให้งานง่ายขึ้นตรงไหน"
-          accent={visual.accent}
+          accent={palette.text}
         />
 
         <Box
@@ -673,6 +675,7 @@ export function ProjectHighlightsSection({ project }: { project: Project }) {
               description={getOutcomeCards(project)[index]?.description ?? 'ออกแบบให้ทีมเข้าใจง่าย ใช้ซ้ำได้จริง และต่อยอดกับระบบเดิมของธุรกิจได้'}
               imageUrl={projectHighlightBackgrounds[index % projectHighlightBackgrounds.length]}
               accent={visual.accent}
+              centered
             />
             </Reveal>
           ))}
@@ -691,12 +694,12 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
   return (
     <Box
       sx={{
-        bgcolor: palette.surfaceAlt,
+        bgcolor: palette.softGray,
         position: 'relative',
         left: `calc(${pageGutter} * -1)`,
         width: `calc(100% + (${pageGutter} * 2))`,
         alignSelf: 'stretch',
-        py: { xs: 6, sm: 7, md: 8 },
+        py: 6,
         overflow: 'visible',
       }}
     >
@@ -766,7 +769,7 @@ export function ProjectCapabilitySection({ project }: { project: Project }) {
                 width: { xs: 'calc(100vw - 64px)', sm: 372, md: 372 },
                 height: { xs: 620, md: 680 },
                 overflow: 'hidden',
-                borderRadius: radii.card.xs,
+                borderRadius: radii.card,
                 bgcolor: palette.surfaceDarkMuted,
                 backgroundImage:
                   "url('/project-details/project-detail-carousel-background.png')",
@@ -929,7 +932,7 @@ export function ProjectTechSection({ project }: { project: Project }) {
     <Box
       sx={{
         color: palette.text,
-        py: { xs: 7, sm: 8, md: 10 },
+        py: 6,
       }}
     >
       <Box
@@ -939,11 +942,8 @@ export function ProjectTechSection({ project }: { project: Project }) {
       >
         <Reveal>
           <ResponsiveStack spacing={{ xs: 2, md: 2.5 }} alignItems="center" textAlign="center" sx={{ maxWidth: 840, mx: 'auto' }}>
-            <Typography variant="h2" sx={{ color: palette.primaryPink, ...typeScale.display }}>
+            <Typography variant="h2" sx={{ color: palette.text, ...typeScale.display }}>
               เทคโนโลยีที่ใช้
-            </Typography>
-            <Typography sx={{ maxWidth: 720, color: palette.textSecondary, ...typeScale.bodyLarge }}>
-              {getTechReason(project)}
             </Typography>
           </ResponsiveStack>
         </Reveal>

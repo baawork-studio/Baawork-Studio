@@ -154,7 +154,7 @@ export function AppHeader() {
           <ResponsiveStack component="nav" aria-label="เมนูหลัก" direction="row" spacing={{ sm: 2.25, md: 3.5, lg: 5 }} sx={{ display: 'none', '@media (min-width: 801px)': { display: 'flex' }, position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', '& a, & a:visited, & a:active': { color: '#FFFFFF !important' } }}>
             {primaryNavigation.map((link) => (
               <Box
-                key={link.href}
+                key={`${link.href}-${link.label}`}
                 component="a"
                 href={link.href}
                 onClick={link.sectionId ? (event) => navigateToHomeSection(event, link.sectionId!) : undefined}
@@ -201,7 +201,7 @@ export function AppHeader() {
               <Box sx={{ flex: 1, overflowY: 'auto', overscrollBehavior: 'contain', px: { xs: '48px', sm: '56px' }, pt: '28px', pb: '12px' }}>
                 {mobileNavigation.map((link, index) => (
                   <Box
-                    key={link.href}
+                    key={`${link.href}-${link.label}`}
                     component="a"
                     href={link.href}
                     onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {

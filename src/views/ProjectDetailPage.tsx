@@ -70,19 +70,19 @@ export function ProjectDetailPage({ slug, initialProject }: ProjectDetailPagePro
             <Box sx={alternatingSectionSx(palette.background)}>
               <ProjectPurposeSection project={project} />
             </Box>
-            <Box sx={alternatingSectionSx(palette.surfaceAlt)}>
+            <Box sx={alternatingSectionSx(palette.softGray)}>
               <ProjectCapabilitySection project={project} />
             </Box>
             <Box sx={alternatingSectionSx(palette.background)}>
               <ProjectSystemPreviewSection project={project} />
             </Box>
-            <Box sx={alternatingSectionSx(palette.surfaceAlt)}>
+            <Box sx={alternatingSectionSx(palette.softGray)}>
               <ProjectUsageGuideSection project={project} />
             </Box>
             <Box sx={alternatingSectionSx(palette.background)}>
               <ProjectHighlightsSection project={project} />
             </Box>
-            <Box sx={alternatingSectionSx(palette.surfaceAlt)}>
+            <Box sx={alternatingSectionSx(palette.softGray)}>
               <ProjectTechSection project={project} />
             </Box>
           </ResponsiveStack>

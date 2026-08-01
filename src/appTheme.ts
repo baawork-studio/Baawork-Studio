@@ -31,7 +31,7 @@ export const fontWeight = {
 } as const;
 
 export const radii = {
-  card: { xs: '28px', md: '36px' },
+  card: '28px',
   cardInner: '22px',
   circle: '50%',
 } as const;

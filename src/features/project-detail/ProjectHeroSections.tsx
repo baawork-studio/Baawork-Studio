@@ -27,7 +27,7 @@ export function ProjectPurposeSection({ project }: { project: Project }) {
     <Box component="section" sx={{ width: '100%', py: { xs: 2, md: 3.5 } }}>
       <Reveal variant="slide-right" distance={32}>
       <ResponsiveStack spacing={{ xs: 2, md: 2.5 }} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-        <Typography variant="h2" sx={{ color: visual.accent, ...typeScale.display }}>
+        <Typography variant="h2" sx={{ color: palette.text, ...typeScale.display }}>
           สร้างมาเพื่ออะไร
         </Typography>
         <ResponsiveStack spacing={{ xs: 1.5, md: 2 }}>

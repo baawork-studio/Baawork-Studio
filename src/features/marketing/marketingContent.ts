@@ -66,7 +66,7 @@ export const projectSteps = [
 ] as const;
 
 export const contactChannels = [
-  ['Facebook', 'https://www.facebook.com/BAAWORK'],
-  ['YouTube', 'https://www.youtube.com/@baawork'],
-  ['LINE', 'https://line.me/R/ti/p/@baawork'],
+  ['Facebook', 'https://www.facebook.com/BAAWORK', '/icons/facebook.svg'],
+  ['YouTube', 'https://www.youtube.com/@baawork', '/icons/youtube.svg'],
+  ['LINE', 'https://line.me/R/ti/p/@baawork', '/icons/line.svg'],
 ] as const;

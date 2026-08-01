@@ -618,6 +618,7 @@ export function ToolStackSection() {
   return (
     <Box
       component="section"
+      id="tools"
       sx={{
         bgcolor: '#FFFFFF',
         color: palette.text,
@@ -984,7 +985,7 @@ export function WorkflowSection() {
                 },
                 aspectRatio: '1 / 1',
                 overflow: 'hidden',
-                borderRadius: { xs: '24px', md: '28px' },
+                borderRadius: '28px',
                 color: '#FFFFFF',
                 bgcolor: '#111827',
                 scrollSnapAlign: 'start',
@@ -1167,7 +1168,7 @@ function ResultCard({ card, index }: { card: (typeof resultCards)[number]; index
           ? { xs: '34px 28px 0', sm: '42px 36px 0', md: '54px 54px 0' }
           : { xs: 3.5, sm: 4, md: 5 },
         overflow: 'hidden',
-        borderRadius: { xs: '28px', md: '34px' },
+        borderRadius: '28px',
         bgcolor: '#FFFFFF',
         boxShadow: shadows.card,
         transform: 'translate3d(0, 0, 0)',
@@ -1460,113 +1461,104 @@ export function StartProjectSection() {
       }}
     >
       <Reveal>
-        <ResponsiveStack
-        spacing={{ xs: 2.5, md: 3 }}
-        alignItems="center"
-        >
-        <Typography
-          variant="h2"
-          sx={{
-            color: palette.text,
-            ...typeScale.sectionTitle,
-            maxWidth: 1120,
-          }}
-        >
-          พร้อมเริ่มโปรเจกต์กับเรา
-        </Typography>
-        <Typography
-          sx={{
-            color: palette.textMuted,
-            ...typeScale.bodyLarge,
-            fontWeight: fontWeight.bold,
-            maxWidth: 920,
-          }}
-        >
-          เล่าไอเดียหรือปัญหาของระบบที่อยากสร้าง แล้วเราช่วยวางแนวทางให้พร้อมเริ่มพัฒนาได้จริง
-        </Typography>
-        <ResponsiveStack
-          direction="row"
-          spacing={{ xs: 1, sm: 1.5 }}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ pt: { xs: 1, md: 1.5 }, width: { xs: '100%', sm: 'auto' }, flexWrap: 'nowrap' }}
-        >
-          <Box
-            component="a"
-            href="/consult"
+        <ResponsiveStack spacing={{ xs: 2.5, md: 3 }} alignItems="center">
+          <Typography
+            variant="h2"
             sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: { xs: 0, sm: 210 },
-              flex: { xs: '1 1 0', sm: '0 0 auto' },
-              height: { xs: 50, sm: 58 },
-              px: { xs: 1.5, sm: 4.5 },
-              borderRadius: 999,
-              bgcolor: palette.primaryPink,
-              color: '#FFFFFF !important',
-              textDecoration: 'none',
-              ...appTheme.typography.button,
-              boxShadow: '0 18px 44px rgba(255,0,140,0.24)',
-              transition: hover.transition.interactive,
-              '&:visited, &:active': {
-                color: '#FFFFFF !important',
-              },
-              '&:hover': {
-                bgcolor: '#FF1495',
-                color: '#FFFFFF !important',
-                transform: hover.subtleLift,
-                boxShadow: '0 22px 54px rgba(255,0,140,0.3)',
-              },
-              '&:focus': {
-                outline: 'none',
-              },
-              '&:focus-visible': {
-                color: '#FFFFFF !important',
-                outline: `3px solid ${palette.accentYellow}`,
-                outlineOffset: 4,
-              },
-            }}
-          >
-            ปรึกษาเรา
-          </Box>
-          <Box
-            component="a"
-            href="/"
-            onClick={(event) => navigateToHomeSection(event, 'work')}
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: { xs: 0, sm: 210 },
-              flex: { xs: '1 1 0', sm: '0 0 auto' },
-              height: { xs: 50, sm: 58 },
-              px: { xs: 1.5, sm: 4.5 },
-              borderRadius: 999,
-              bgcolor: '#FFFFFF',
               color: palette.text,
-              border: 0,
-              boxShadow: '0 8px 22px rgba(17,24,39,0.06)',
-              textDecoration: 'none',
-              ...appTheme.typography.button,
-              transition: hover.transition.interactive,
-              '&:hover': {
-                bgcolor: '#FFFFFF',
-                boxShadow: '0 12px 28px rgba(17,24,39,0.1)',
-                transform: hover.subtleLift,
-              },
-              '&:focus': {
-                outline: 'none',
-              },
-              '&:focus-visible': {
-                outline: `3px solid ${palette.primaryPink}`,
-                outlineOffset: 4,
-              },
+              ...typeScale.sectionTitle,
+              maxWidth: 1120,
             }}
           >
-            ดูผลงานอีกครั้ง
-          </Box>
-        </ResponsiveStack>
+            พร้อมเริ่มโปรเจกต์กับเรา
+          </Typography>
+          <Typography
+            sx={{
+              color: palette.textMuted,
+              ...typeScale.bodyLarge,
+              fontWeight: fontWeight.bold,
+              maxWidth: 920,
+            }}
+          >
+            เล่าไอเดียหรือปัญหาของระบบที่อยากสร้าง แล้วเราช่วยวางแนวทางให้พร้อมเริ่มพัฒนาได้จริง
+          </Typography>
+          <ResponsiveStack
+            direction="row"
+            spacing={{ xs: 1, sm: 1.5 }}
+            alignItems="center"
+            justifyContent="center"
+            sx={{ pt: { xs: 1, md: 1.5 }, width: { xs: '100%', sm: 'auto' }, flexWrap: 'nowrap' }}
+          >
+            <Box
+              component="a"
+              href="/consult"
+              sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minWidth: { xs: 0, sm: 210 },
+                flex: { xs: '1 1 0', sm: '0 0 auto' },
+                height: { xs: 50, sm: 58 },
+                px: { xs: 1.5, sm: 4.5 },
+                borderRadius: 999,
+                bgcolor: palette.primaryPink,
+                color: '#FFFFFF !important',
+                textDecoration: 'none',
+                ...appTheme.typography.button,
+                boxShadow: '0 18px 44px rgba(255,0,140,0.24)',
+                transition: hover.transition.interactive,
+                '&:visited, &:active': { color: '#FFFFFF !important' },
+                '&:hover': {
+                  bgcolor: '#FF1495',
+                  color: '#FFFFFF !important',
+                  transform: hover.subtleLift,
+                  boxShadow: '0 22px 54px rgba(255,0,140,0.3)',
+                },
+                '&:focus': { outline: 'none' },
+                '&:focus-visible': {
+                  color: '#FFFFFF !important',
+                  outline: `3px solid ${palette.accentYellow}`,
+                  outlineOffset: 4,
+                },
+              }}
+            >
+              ปรึกษาเรา
+            </Box>
+            <Box
+              component="a"
+              href="/"
+              onClick={(event) => navigateToHomeSection(event, 'work')}
+              sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minWidth: { xs: 0, sm: 210 },
+                flex: { xs: '1 1 0', sm: '0 0 auto' },
+                height: { xs: 50, sm: 58 },
+                px: { xs: 1.5, sm: 4.5 },
+                borderRadius: 999,
+                bgcolor: '#FFFFFF',
+                color: palette.text,
+                border: 0,
+                boxShadow: '0 8px 22px rgba(17,24,39,0.06)',
+                textDecoration: 'none',
+                ...appTheme.typography.button,
+                transition: hover.transition.interactive,
+                '&:hover': {
+                  bgcolor: '#FFFFFF',
+                  boxShadow: '0 12px 28px rgba(17,24,39,0.1)',
+                  transform: hover.subtleLift,
+                },
+                '&:focus': { outline: 'none' },
+                '&:focus-visible': {
+                  outline: `3px solid ${palette.primaryPink}`,
+                  outlineOffset: 4,
+                },
+              }}
+            >
+              ดูผลงานอีกครั้ง
+            </Box>
+          </ResponsiveStack>
         </ResponsiveStack>
       </Reveal>
     </Box>

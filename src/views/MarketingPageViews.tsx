@@ -1,7 +1,8 @@
 'use client';
 
-import type { FormEvent, ReactNode } from 'react';
-import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
+import type { ComponentProps, FormEvent, ReactNode } from 'react';
+import { Box, Slide, Snackbar, SnackbarContent, Typography } from '@mui/material';
 import BuildRounded from '@mui/icons-material/BuildRounded';
 import CodeRounded from '@mui/icons-material/CodeRounded';
 import DashboardRounded from '@mui/icons-material/DashboardRounded';
@@ -29,10 +30,10 @@ import {
   services,
 } from '../features/marketing/marketingContent';
 
-const consultationEmail = process.env.NEXT_PUBLIC_CONSULT_EMAIL ?? 'baaworkstudio@gmail.com';
 const serviceOfferingIcons = [DesignServicesRounded, LanguageRounded, DashboardRounded, HubRounded, BuildRounded, SupportAgentRounded];
 const projectStepIcons = [ForumRounded, RuleRounded, PaletteRounded, CodeRounded, FactCheckRounded, TrendingUpRounded];
 const carouselCardIconSx = { color: palette.primaryPink, lineHeight: 0 };
+const SnackbarSlide = (props: ComponentProps<typeof Slide>) => <Slide {...props} direction="up" />;
 
 function MarketingCardCarousel({ label, children }: { label: string; children: ReactNode }) {
   const { carouselRef, carouselState, scrollCards } = useShowcaseCarousel();
@@ -126,7 +127,7 @@ function LegacyServicesPage() {
           ))}
         </Box>
       </MarketingContentSection>
-      <MarketingContentSection backgroundColor="#F7F8FA" variant="slide-left">
+      <MarketingContentSection backgroundColor={palette.softGray} variant="slide-left">
         <SectionHeading title="พร้อมใช้งานและต่อยอดได้" description="เราออกแบบให้ UX/UI, frontend, backend, API และฐานข้อมูลไปในทิศทางเดียวกันตั้งแต่ต้น" />
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' }, gap: 2 }}>
           {['UX/UI', 'ระบบหลังบ้าน', 'Production'].map((item) => <Box key={item} sx={{ ...cardSx, textAlign: 'center' }}><Typography sx={{ ...typeScale.cardTitle }}>{item}</Typography></Box>)}
@@ -172,7 +173,7 @@ export function ServicesPage() {
                     minHeight: layout.marketingCarouselCardMinHeight,
                     position: 'relative',
                     bgcolor: palette.surfaceAlt,
-                    borderRadius: radii.card.xs,
+                    borderRadius: radii.card,
                     boxShadow: 'none',
                     '&:hover': {
                       ...cardSx['&:hover'],
@@ -196,7 +197,7 @@ export function ServicesPage() {
         </Reveal>
       </MarketingContentSection>
 
-      <MarketingContentSection backgroundColor={palette.surfaceAlt} variant="slide-left">
+      <MarketingContentSection backgroundColor={palette.softGray} variant="slide-left">
         <SectionHeading
           title="เริ่มงานอย่างเป็นขั้นตอน"
         />
@@ -225,7 +226,7 @@ export function ServicesPage() {
                     height: '100%',
                     minHeight: layout.marketingCarouselCardMinHeight,
                     position: 'relative',
-                    borderRadius: radii.card.xs,
+                    borderRadius: radii.card,
                     boxShadow: 'none',
                     '&:hover': {
                       ...cardSx['&:hover'],
@@ -251,32 +252,42 @@ export function ServicesPage() {
   );
 }
 
-export function StartProjectPage() {
-  return (
-    <MarketingPageLayout title="เริ่มโปรเจกต์กับเรา" subtitle="คุยโจทย์ให้ชัด วางขอบเขตให้เห็นภาพ แล้วพัฒนาเป็นระบบที่พร้อมใช้งานจริง">
-      <MarketingContentSection backgroundColor="#FFFFFF" variant="slide-right">
-        <SectionHeading title="ขั้นตอนการทำงาน" description="เราแบ่งงานเป็นขั้นตอนที่ชัดเจน เพื่อให้ทุกฝ่ายเห็นภาพและติดตามงานได้ตลอดโปรเจกต์" />
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(6, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 } }}>
-          {projectSteps.map(([number, title, description]) => <ResponsiveStack key={number} spacing={3} sx={{ ...cardSx, minHeight: { xs: 220, lg: 300 }, justifyContent: 'space-between' }}><Typography sx={{ color: palette.primaryPink, fontWeight: 700 }}>{number}</Typography><Box><Typography sx={{ ...typeScale.cardTitle, mb: 1 }}>{title}</Typography><Typography sx={{ ...typeScale.body, color: '#4B5563' }}>{description}</Typography></Box></ResponsiveStack>)}
-        </Box>
-      </MarketingContentSection>
-      <MarketingContentSection backgroundColor="#F7F8FA" variant="slide-left">
-        <SectionHeading title="เตรียมข้อมูลเพียงเล็กน้อย" description="ยังไม่ต้องมีเอกสารครบ แค่แชร์เป้าหมาย ตัวอย่างที่ชอบ ข้อมูลที่ต้องเชื่อม และช่วงเวลาที่ต้องการใช้งาน" />
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' }, gap: 2 }}>
-          {['เป้าหมายของระบบ', 'ตัวอย่างที่อยากได้', 'ข้อมูลที่ต้องเชื่อม', 'ช่วงเวลาที่ต้องการ'].map((item) => <Box key={item} sx={cardSx}><Typography sx={{ ...typeScale.cardTitle }}>{item}</Typography></Box>)}
-        </Box>
-      </MarketingContentSection>
-    </MarketingPageLayout>
-  );
-}
 
 export function ConsultPage() {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [submitState, setSubmitState] = useState<'idle' | 'submitting'>('idle');
+  const [notification, setNotification] = useState({ open: false, tone: 'success' as 'success' | 'error', message: '' });
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const values = new FormData(event.currentTarget);
-    const subject = encodeURIComponent(`ปรึกษาโปรเจกต์จาก ${String(values.get('name') ?? '')}`);
-    const body = encodeURIComponent(['ชื่อ: ' + String(values.get('name') ?? ''), 'อีเมล: ' + String(values.get('email') ?? ''), 'โทรศัพท์: ' + String(values.get('phone') ?? '-'), 'บริษัท: ' + String(values.get('company') ?? '-'), 'ประเภทระบบ: ' + String(values.get('projectType') ?? '-'), '', 'รายละเอียด:', String(values.get('message') ?? '')].join('\n'));
-    window.location.href = `mailto:${consultationEmail}?subject=${subject}&body=${body}`;
+    const form = event.currentTarget;
+    const values = new FormData(form);
+    setSubmitState('submitting');
+
+    try {
+      const response = await fetch('/api/consult', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.get('name'),
+          email: values.get('email'),
+          phone: values.get('phone'),
+          company: values.get('company'),
+          message: values.get('message'),
+        }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error ?? 'ส่งอีเมลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+      }
+
+      form.reset();
+      setSubmitState('idle');
+      setNotification({ open: true, tone: 'success', message: 'ส่งรายละเอียดเรียบร้อยแล้ว' });
+    } catch (error) {
+      setSubmitState('idle');
+      setNotification({ open: true, tone: 'error', message: error instanceof Error ? error.message : 'ส่งอีเมลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง' });
+    }
   };
 
   const inputSx = { width: '100%', minHeight: 48, boxSizing: 'border-box', border: '1px solid #D1D5DB', borderRadius: '14px', px: 1.5, bgcolor: '#FFFFFF', color: palette.text, font: 'inherit', outline: 'none', '&:focus': { borderColor: palette.primaryPink, boxShadow: '0 0 0 3px rgba(255,0,140,0.14)' } };
@@ -284,18 +295,52 @@ export function ConsultPage() {
   return (
     <MarketingPageLayout title="ปรึกษา Baawork" subtitle="ส่งโจทย์ ระบบที่อยากทำ หรือปัญหาที่อยากแก้มาให้เราเริ่มดูภาพรวมร่วมกัน">
       <MarketingContentSection backgroundColor="#FFFFFF" variant="slide-right">
-        <SectionHeading title="เล่าโจทย์ให้เราฟัง" description="กรอกข้อมูลแล้วกดส่ง ระบบจะเปิดอีเมลพร้อมรายละเอียดของคุณให้ส่งหา Baawork ได้ทันที" />
+        <SectionHeading title="เล่าโจทย์ให้เราฟัง" />
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }, gap: { xs: 2, md: 2.5 }, ...cardSx }}>
           {[['ชื่อของคุณ', 'name', 'text'], ['อีเมลสำหรับติดต่อกลับ', 'email', 'email'], ['เบอร์โทรศัพท์ (ถ้ามี)', 'phone', 'tel'], ['บริษัทหรือองค์กร (ถ้ามี)', 'company', 'text']].map(([label, name, type]) => <Box key={name} component="label" sx={{ display: 'grid', gap: 0.8, fontSize: 14, fontWeight: 700 }}>{label}<Box component="input" name={name} type={type} required={name === 'name' || name === 'email'} sx={inputSx} /></Box>)}
-          <Box component="label" sx={{ display: 'grid', gap: 0.8, fontSize: 14, fontWeight: 700 }}>ประเภทระบบที่สนใจ<Box component="select" name="projectType" defaultValue="" required sx={inputSx}><option value="" disabled>เลือกประเภทระบบ</option><option>เว็บแอปพลิเคชัน</option><option>ระบบ AI</option><option>ระบบหลังบ้าน / Dashboard</option><option>เชื่อมต่อ API และข้อมูล</option></Box></Box>
-          <Box component="label" sx={{ display: 'grid', gap: 0.8, fontSize: 14, fontWeight: 700 }}>รายละเอียดที่อยากปรึกษา<Box component="textarea" name="message" required rows={5} sx={{ ...inputSx, p: 1.5, resize: 'vertical' }} /></Box>
-          <Box sx={{ gridColumn: '1 / -1', display: 'flex', justifyContent: { xs: 'stretch', sm: 'flex-end' } }}><Box component="button" type="submit" sx={{ minHeight: 50, minWidth: { xs: '100%', sm: 190 }, border: 0, borderRadius: 999, px: 3, bgcolor: palette.primaryPink, color: '#FFFFFF', cursor: 'pointer', font: 'inherit', fontWeight: 700 }}>ส่งรายละเอียดทางอีเมล</Box></Box>
+          <Box component="label" sx={{ gridColumn: '1 / -1', display: 'grid', gap: 0.8, fontSize: 14, fontWeight: 700 }}>รายละเอียดที่อยากปรึกษา<Box component="textarea" name="message" required rows={5} sx={{ ...inputSx, p: 1.5, resize: 'vertical' }} /></Box>
+          <Box sx={{ gridColumn: '1 / -1', display: 'grid', gap: 1.25, justifyItems: { xs: 'stretch', sm: 'end' } }}>
+            <Box component="button" type="submit" disabled={submitState === 'submitting'} sx={{ minHeight: 50, minWidth: { xs: '100%', sm: 190 }, border: 0, borderRadius: 999, px: 3, bgcolor: palette.primaryPink, color: '#FFFFFF', cursor: submitState === 'submitting' ? 'wait' : 'pointer', font: 'inherit', fontWeight: 700, opacity: submitState === 'submitting' ? 0.7 : 1 }}>
+              {submitState === 'submitting' ? 'กำลังส่ง...' : 'ส่งรายละเอียดทางอีเมล'}
+            </Box>
+          </Box>
         </Box>
+        <Snackbar
+          open={notification.open}
+          autoHideDuration={4500}
+          onClose={() => setNotification((current) => ({ ...current, open: false }))}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          slots={{ content: SnackbarContent, transition: SnackbarSlide }}
+          message={notification.message}
+          slotProps={{
+            content: {
+              role: notification.tone === 'error' ? 'alert' : 'status',
+              sx: {
+                bgcolor: notification.tone === 'success' ? '#15803D' : '#B91C1C',
+                color: '#FFFFFF',
+                borderRadius: '14px',
+                fontWeight: 700,
+              },
+            },
+          }}
+        />
       </MarketingContentSection>
-      <MarketingContentSection backgroundColor="#F7F8FA" variant="slide-left">
-        <SectionHeading title="หรือติดต่อได้ที่" description="ติดตามผลงานและส่งข้อความหาเราได้ผ่านช่องทางด้านล่าง" />
+      <MarketingContentSection backgroundColor={palette.softGray} variant="slide-left">
+        <SectionHeading title="หรือติดต่อได้ที่" />
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' }, gap: 2 }}>
-          {contactChannels.map(([label, href]) => <Box key={label} component="a" href={href} target="_blank" rel="noreferrer" sx={{ ...cardSx, color: palette.text, textDecoration: 'none', textAlign: 'center' }}><Typography sx={{ ...typeScale.cardTitle }}>{label}</Typography></Box>)}
+          {contactChannels.map(([label, href, iconSrc]) => (
+            <Box
+              key={label}
+              component="a"
+              href={href}
+              target="_blank"
+              rel="noreferrer noopener"
+              sx={{ ...cardSx, color: palette.text, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5 }}
+            >
+              <Box component="img" src={iconSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" sx={{ width: 32, height: 32, objectFit: 'contain', flex: '0 0 auto' }} />
+              <Typography sx={{ ...typeScale.cardTitle }}>{label}</Typography>
+            </Box>
+          ))}
         </Box>
       </MarketingContentSection>
     </MarketingPageLayout>
