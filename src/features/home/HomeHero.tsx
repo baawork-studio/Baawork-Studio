@@ -8,7 +8,11 @@ import { palette, typeScale } from '../../appTheme';
 import { HeroCta } from './HomeSections';
 import type { HeroCtaPhase } from './homeTypes';
 
-const heroBackgroundImage = 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=1920&q=85';
+const heroBackgroundImages = {
+  mobile: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=768&q=75',
+  tablet: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=1200&q=80',
+  desktop: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=1920&q=85',
+};
 
 function useHeroCtaPhase() {
   const [phase, setPhase] = useState<HeroCtaPhase>('hidden');
@@ -79,7 +83,11 @@ export function HomeHero() {
         pb: { xs: 5, md: 7 },
         pt: { xs: 6, md: 5 },
         bgcolor: palette.text,
-        backgroundImage: `url(${heroBackgroundImage})`,
+        backgroundImage: {
+          xs: `url(${heroBackgroundImages.mobile})`,
+          sm: `url(${heroBackgroundImages.tablet})`,
+          md: `url(${heroBackgroundImages.desktop})`,
+        },
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
