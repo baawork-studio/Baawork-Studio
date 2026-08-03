@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import Image from 'next/image';
 import { ResponsiveStack } from '../ResponsiveStack';
 import { Reveal } from '../motion/Reveal';
 import { hover, palette, typeScale } from '../../appTheme';
@@ -21,7 +22,9 @@ export function AppFooter() {
       >
         <ResponsiveStack spacing={{ xs: 2.5, md: 3 }} sx={{ maxWidth: 760 }}>
           <ResponsiveStack direction="row" alignItems="center" spacing={1.5}>
-            <Box component="img" src="/homepage/baawork-logo.png" alt="คนบ้างงาน" sx={{ display: 'block', width: { xs: 48, md: 56 }, height: { xs: 48, md: 56 }, borderRadius: '50%', objectFit: 'contain' }} />
+            <Box sx={{ width: { xs: 48, md: 56 }, height: { xs: 48, md: 56 }, flex: '0 0 auto' }}>
+              <Image src="/homepage/baawork-logo.png" alt="คนบ้างงาน" width={56} height={56} sizes="(max-width: 899px) 48px, 56px" style={{ display: 'block', width: '100%', height: '100%', borderRadius: '50%', objectFit: 'contain' }} />
+            </Box>
             <Typography sx={{ fontSize: { xs: 19, md: 21 }, lineHeight: 1.2, fontWeight: 600, letterSpacing: 0 }}>
               Baawork Studio
             </Typography>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Box, Container, Typography } from '@mui/material';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ResponsiveStack } from '../ResponsiveStack';
 import { hover, palette } from '../../appTheme';
@@ -105,7 +106,7 @@ export function AppHeader() {
           <Box
             component="a"
             href="/"
-            aria-label="กลับไปหน้าแรก"
+            aria-label="Baawork - คนบ้างาน"
             sx={{
               position: 'absolute',
               left: 0,
@@ -121,7 +122,7 @@ export function AppHeader() {
               '@media (max-width: 800px)': { left: '50%', transform: 'translate(-50%, -50%)' },
             }}
           >
-            <Box component="img" src="/homepage/baawork-logo.png" alt="คนบ้างงาน" sx={{ display: 'block', width: 28, height: 28, borderRadius: '50%', objectFit: 'contain' }} />
+            <Image src="/homepage/baawork-logo.png" alt="คนบ้างงาน" width={28} height={28} priority sizes="28px" style={{ display: 'block', borderRadius: '50%', objectFit: 'contain' }} />
             <Typography component="span" sx={{ color: '#FFFFFF', fontSize: { xs: 12, sm: 13 }, lineHeight: 1, fontWeight: 400, whiteSpace: 'nowrap' }}>
               Baawork - คนบ้างาน
             </Typography>
@@ -170,10 +171,10 @@ export function AppHeader() {
             href="/consult"
             sx={{
               position: 'absolute', right: 0, top: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minHeight: 30, px: { xs: 1.6, sm: 2 }, borderRadius: 999,
-              bgcolor: palette.primaryPink, color: '#FFFFFF !important', textDecoration: 'none', fontSize: { xs: 11, sm: 12 }, lineHeight: 1, fontWeight: 500, whiteSpace: 'nowrap', transform: 'translateY(-50%)', zIndex: 1,
+              bgcolor: '#D10075', color: '#FFFFFF !important', textDecoration: 'none', fontSize: { xs: 11, sm: 12 }, lineHeight: 1, fontWeight: 500, whiteSpace: 'nowrap', transform: 'translateY(-50%)', zIndex: 1,
               transition: hover.transition.interactive, boxShadow: '0 6px 14px rgba(255,0,140,0.2)',
               '&:visited, &:active': { color: '#FFFFFF !important' },
-              '&:hover': { bgcolor: '#FF1495', color: '#FFFFFF !important', filter: 'brightness(1.03)', boxShadow: '0 8px 18px rgba(255,0,140,0.28)' },
+              '&:hover': { bgcolor: '#BE0069', color: '#FFFFFF !important', filter: 'brightness(1.03)', boxShadow: '0 8px 18px rgba(255,0,140,0.28)' },
               '&:focus-visible': { outline: `2px solid ${palette.accentYellow}`, outlineOffset: 3 },
               '@media (max-width: 800px)': { display: 'none' },
             }}

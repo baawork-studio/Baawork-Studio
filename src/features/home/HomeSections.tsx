@@ -1,4 +1,5 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
+import Image from 'next/image';
 import AccountTreeRounded from '@mui/icons-material/AccountTreeRounded';
 import AddBoxRounded from '@mui/icons-material/AddBoxRounded';
 import ApiRounded from '@mui/icons-material/ApiRounded';
@@ -87,11 +88,11 @@ export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
         ...(isOpen
           ? {
               '&:hover .hero-cta-label': {
-                bgcolor: '#FF1495',
+                bgcolor: '#BE0069',
                 boxShadow: '0 17px 44px rgba(0,0,0,0.31)',
               },
               '&:hover .hero-cta-arrow': {
-                bgcolor: '#F71C91',
+                bgcolor: '#BE0069',
               },
             }
           : {}),
@@ -124,7 +125,7 @@ export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           boxSizing: 'border-box',
           px: 0,
           borderRadius: 999,
-          bgcolor: palette.primaryPink,
+          bgcolor: '#D10075',
           color: '#FFFFFF !important',
           boxShadow: '0 16px 42px rgba(0,0,0,0.28)',
           overflow: 'hidden',
@@ -183,7 +184,7 @@ export function HeroCta({ phase }: { phase: HeroCtaPhase }) {
           width: { xs: 56, sm: 58 },
           height: { xs: 56, sm: 58 },
           borderRadius: '50%',
-          bgcolor: 'rgba(255,0,140,0.84)',
+          bgcolor: '#D10075',
           boxShadow: '0 16px 42px rgba(0,0,0,0.26)',
           color: '#FFFFFF',
           opacity: 1,
@@ -507,18 +508,12 @@ export function ShowcaseCarousel({ cards, label }: { cards: ShowcaseCard[]; labe
                 },
               }}
             >
-              <Box
-                component="img"
+              <Image
+                fill
                 src={project.coverImageUrl}
                 alt={project.title}
-                sx={{
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  top: 0,
-                  width: '100%',
-                  height: '100%',
+                sizes="(max-width: 599px) calc(100vw - 64px), 372px"
+                style={{
                   objectFit: 'cover',
                   transform: 'scale(1)',
                   transition: hover.transition.image,
@@ -829,6 +824,7 @@ export function AudienceSection() {
                     flex: { xs: '0 0 clamp(124px, 24vw, 188px)', lg: '0 0 168px' },
                     width: { xs: 'clamp(124px, 24vw, 188px)', lg: '168px' },
                     height: { xs: 'clamp(124px, 24vw, 188px)', lg: '168px' },
+                    position: 'relative',
                     display: 'grid',
                     placeItems: 'center',
                     bgcolor: palette.softGray,
@@ -840,17 +836,12 @@ export function AudienceSection() {
                     },
                   }}
                 >
-                  <Box
-                    component="img"
+                  <Image
+                    fill
                     src={group.src}
                     alt={isDuplicate ? '' : group.name}
-                    sx={{
-                      display: 'block',
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                      mixBlendMode: 'multiply',
-                    }}
+                    sizes="(max-width: 1199px) clamp(124px, 24vw, 188px), 168px"
+                    style={{ display: 'block', objectFit: 'contain', mixBlendMode: 'multiply' }}
                   />
                 </Box>
               ))}
@@ -889,23 +880,19 @@ export function AudienceSection() {
           >
             <Box
               sx={{
+                position: 'relative',
                 display: 'grid',
                 placeItems: 'center',
                 aspectRatio: '1 / 1',
                 p: { xs: 0.5, sm: 1 },
               }}
             >
-              <Box
-                component="img"
+              <Image
+                fill
                 src={group.src}
                 alt={group.name}
-                sx={{
-                  display: 'block',
-                  width: { xs: '68%', md: '62%' },
-                  height: { xs: '68%', md: '62%' },
-                  objectFit: 'contain',
-                  mixBlendMode: 'multiply',
-                }}
+                sizes="(max-width: 599px) 34vw, (max-width: 899px) 21vw, 11vw"
+                style={{ display: 'block', objectFit: 'contain', mixBlendMode: 'multiply' }}
               />
             </Box>
           </motion.div>
@@ -1097,17 +1084,12 @@ export function WorkflowSection() {
                 },
               }}
             >
-              <Box
-                component="img"
+              <Image
+                fill
                 src={panel.imageUrl}
                 alt={panel.title}
-                loading="lazy"
-                decoding="async"
-                sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
+                sizes="(max-width: 599px) calc(100vw - 64px), (max-width: 899px) min(560px, calc(100vw - 96px)), 33vw"
+                style={{
                   objectFit: 'cover',
                   transform: 'scale(1)',
                   transition: hover.transition.image,
@@ -1341,18 +1323,12 @@ function ResultCard({ card, index }: { card: (typeof resultCards)[number]; index
               />
             </Box>
           ) : Boolean(card.imageUrl) ? (
-            <Box
-              component="img"
+            <Image
+              fill
               src={card.imageUrl ?? ''}
               alt=""
-              sx={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                objectPosition: 'center bottom',
-              }}
+              sizes="(max-width: 599px) 100vw, 50vw"
+              style={{ objectFit: 'contain', objectPosition: 'center bottom' }}
             />
           ) : card.icon === 'screen' ? (
             <Box

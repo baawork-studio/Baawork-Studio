@@ -95,9 +95,9 @@ export function HomeHero() {
               Baawork Studio
             </Typography>
           </motion.div>
-          <motion.div initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.72, delay: 0.34, ease: [0.22, 1, 0.36, 1] }}>
+          <div>
             <ResponsiveStack spacing={{ xs: 2.5, md: 3 }} alignItems="center" sx={{ maxWidth: 980 }}>
-              <Typography variant="h5" sx={{ color: 'rgba(255,255,255,0.92)', ...typeScale.intro, textShadow: '0 12px 34px rgba(0,0,0,0.48)', textAlign: 'center' }}>
+              <Typography component="p" sx={{ color: 'rgba(255,255,255,0.92)', ...typeScale.intro, textShadow: '0 12px 34px rgba(0,0,0,0.48)', textAlign: 'center' }}>
                 <Box component="span" sx={{ display: { xs: 'none', md: 'none', lg: 'inline' }, whiteSpace: 'nowrap' }}>
                   สตูดิโอพัฒนาระบบดิจิทัลที่รวมงานออกแบบ ประสบการณ์ใช้งาน และเทคโนโลยีให้พร้อมใช้งานในธุรกิจจริง
                 </Box>
@@ -110,7 +110,7 @@ export function HomeHero() {
               </Typography>
               <HeroCta phase={ctaPhase} />
             </ResponsiveStack>
-          </motion.div>
+          </div>
         </ResponsiveStack>
       </Container>
     </Box>
