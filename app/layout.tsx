@@ -24,6 +24,14 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://baawork-studio.up.r
 const siteDescription =
   'Baawork Studio ออกแบบและพัฒนาระบบเว็บแอป ระบบ AI และประสบการณ์ดิจิทัลสำหรับใช้งานจริง';
 
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Baawork Studio',
+  alternateName: 'Baawork',
+  url: siteUrl,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -50,20 +58,11 @@ export const metadata: Metadata = {
     siteName: 'Baawork Studio',
     title: 'Baawork Studio - รับออกแบบและพัฒนาระบบเว็บแอป ระบบ AI',
     description: siteDescription,
-    images: [
-      {
-        url: '/homepage/baawork-logo.png',
-        width: 1200,
-        height: 1200,
-        alt: 'Baawork Studio',
-      },
-    ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: 'Baawork Studio - รับออกแบบและพัฒนาระบบเว็บแอป ระบบ AI',
     description: siteDescription,
-    images: ['/homepage/baawork-logo.png'],
   },
   robots: {
     index: true,
@@ -71,7 +70,7 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-image-preview': 'large',
+      'max-image-preview': 'none',
       'max-snippet': -1,
       'max-video-preview': -1,
     },
@@ -87,6 +86,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="th">
+      <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+      </head>
       <body className={`${roboto.variable} ${notoSansThai.variable}`}>
         <Script id="reset-initial-scroll" strategy="beforeInteractive">
           {`if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; if (!window.location.hash) window.scrollTo(0, 0);`}
